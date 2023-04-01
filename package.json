@@ -3,14 +3,15 @@
     "version": "0.0.0",
     "source": "src/index.html",
     "scripts": {
-        "dev": "parcel",
-        "build": "parcel build"
+        "build": "parcel build",
+        "watch": "parcel watch"
     },
     "devDependencies": {
         "@parcel/bundler-default": "^2.8.3",
         "@parcel/compressor-raw": "^2.8.3",
         "@parcel/config-default": "^2.8.3",
         "@parcel/namer-default": "^2.8.3",
+        "@parcel/optimizer-css": "^2.8.3",
         "@parcel/optimizer-htmlnano": "^2.8.3",
         "@parcel/packager-css": "^2.8.3",
         "@parcel/packager-html": "^2.8.3",

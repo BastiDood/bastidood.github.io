@@ -4,7 +4,6 @@
         "*.css": ["@parcel/transformer-css"],
         "*.html": ["@parcel/transformer-html"]
     },
-    "optimizers": { "*.{png,svg}": [ ] },
     "namers": ["@parcel/namer-default"],
     "optimizers": {
         "*.css": ["@parcel/optimizer-css"],

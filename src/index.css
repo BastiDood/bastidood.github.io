@@ -1,0 +1,12 @@
+@import './vars.css';
+
+body {
+    margin: 0;
+}
+
+main {
+    background-image: linear-gradient(0, white 0%, var(--sky-color) 100%);
+    background-repeat: no-repeat;
+    height: 100dvh;
+    width: 100dvw;
+}
