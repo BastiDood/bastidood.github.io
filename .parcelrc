@@ -1,0 +1,20 @@
+{
+    "bundler": "@parcel/bundler-default",
+    "transformers": {
+        "*.css": ["@parcel/transformer-css"],
+        "*.html": ["@parcel/transformer-html"]
+    },
+    "optimizers": { "*.{png,svg}": [ ] },
+    "namers": ["@parcel/namer-default"],
+    "optimizers": {
+        "*.css": ["@parcel/optimizer-css"],
+        "*.html": ["@parcel/optimizer-htmlnano"]
+    },
+    "packagers": {
+        "*.css": "@parcel/packager-css",
+        "*.html": "@parcel/packager-html",
+        "*": "@parcel/packager-raw"
+    },
+    "compressors": { "*": ["@parcel/compressor-raw"] },
+    "resolvers": ["@parcel/resolver-default"]
+}

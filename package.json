@@ -1,0 +1,22 @@
+{
+    "name": "basti-ortiz",
+    "version": "0.0.0",
+    "source": "src/index.html",
+    "scripts": {
+        "dev": "parcel",
+        "build": "parcel build"
+    },
+    "devDependencies": {
+        "@parcel/bundler-default": "^2.8.3",
+        "@parcel/compressor-raw": "^2.8.3",
+        "@parcel/config-default": "^2.8.3",
+        "@parcel/namer-default": "^2.8.3",
+        "@parcel/optimizer-htmlnano": "^2.8.3",
+        "@parcel/packager-css": "^2.8.3",
+        "@parcel/packager-html": "^2.8.3",
+        "@parcel/resolver-default": "^2.8.3",
+        "@parcel/transformer-css": "^2.8.3",
+        "@parcel/transformer-html": "^2.8.3",
+        "parcel": "^2.8.3"
+    }
+}
