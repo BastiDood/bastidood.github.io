@@ -21,7 +21,6 @@ File | Author | License
 [Node.js Logo](./src/icons/tech/node.svg) | [OpenJS Foundation] | [Trademark Policy][OpenJS Foundation Trademark Policy]
 [PostgreSQL Logo](./src/icons/tech/postgres.svg) | [PostgreSQL Community Association of Canada](https://www.postgres.ca/) | [Trademark Policy](https://www.postgresql.org/about/policies/trademarks/)
 [Python Logo](./src/icons/lang/python.svg) | [Python Software Foundation](https://www.python.org/psf-landing/) | [Trademark Policy](https://www.python.org/psf/trademarks/)
-[Reddit Logo](./src/icons/social/reddit.svg) | [Reddit, Inc.](https://www.redditinc.com/) | [Brand Guidelines](https://www.redditinc.com/brand)
 [Rust Logo](./src/icons/lang/rust.svg) | [Rust Foundation](https://foundation.rust-lang.org/) | [CC BY 4.0]
 [Svelte Logo](./src/icons/lib/svelte.svg) | [Svelte](https://svelte.dev/) | [Branding Guidelines](https://github.com/sveltejs/branding/blob/c4dfca6743572087a6aef0e109ffe3d95596e86a/README.md)
 [Tokio Logo](./src/icons/lib/tokio.svg) | [Carl Lerche] & Tokio Website Contributors | [MIT][MIT Tokio]
