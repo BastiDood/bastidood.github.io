@@ -16,15 +16,15 @@ main {
 }
 
 #social {
+    --radius: 0.5rem;
     background-color: #ffffff80;
-    border-radius: 1rem;
-    display: inline-flex;
-    gap: 1rem;
-    padding: 1rem;
+    border-radius: var(--radius);
+    display: inline-block;
 }
 
 #social > a {
-    display: block;
+    display: inherit;
+    margin: var(--radius);
 }
 
 #social img {
