@@ -22,6 +22,9 @@ devDependencies:
   '@parcel/packager-html':
     specifier: ^2.8.3
     version: 2.8.3(@parcel/core@2.8.3)
+  '@parcel/packager-raw':
+    specifier: ^2.8.3
+    version: 2.8.3(@parcel/core@2.8.3)
   '@parcel/resolver-default':
     specifier: ^2.8.3
     version: 2.8.3(@parcel/core@2.8.3)
