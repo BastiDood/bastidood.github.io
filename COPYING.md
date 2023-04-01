@@ -13,6 +13,7 @@ File | Author | License
 [Express Logo](./src/icons/lib/express.svg) | [OpenJS Foundation] | [Trademark Policy][OpenJS Foundation Trademark Policy]
 [Flask Logo](./src/icons/lib/flask.svg) | [Pallets](https://palletsprojects.com/p/flask/) | [License](https://github.com/pallets/flask/blob/7ed89d3f9d2207c9a607f5dcdce106c0278e1332/artwork/LICENSE.rst)
 [Git Logo](./src/icons/tech/git.svg) | [Jason Long](https://jasonlong.me/) | [CC BY 3.0]
+[GitHub Logo](./src/icons/social/github.svg) | [GitHub](https://github.com) | [Logos and Usage](https://github.com/logos)
 [Hyper Logo](./src/icons/lib/hyper.svg) | [Carl Lerche] & Tokio Website Contributors | [MIT][MIT Tokio]
 [HTML5 Logo](./src/icons/lang/html.svg) | [World Wide Web Consortium](https://www.w3.org/) | [CC BY 3.0]
 [JavaScript Logo](./src/icons/lang/js.svg) | [Christopher Williams](https://www.voodootikigod.com/) | [MIT](https://github.com/voodootikigod/logo.js/blob/1544bdeed6d618a6cfe4f0650d04ab8d9cfa76d9/LICENSE)
