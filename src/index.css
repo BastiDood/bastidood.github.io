@@ -1,6 +1,6 @@
 @import './vars.css';
 
-body, h1, h2, h3 {
+body, h1, h2, h3, p {
     margin: 0;
 }
 
@@ -13,4 +13,21 @@ header {
 
 main {
     background-color: white;
+}
+
+#social {
+    background-color: #ffffff80;
+    border-radius: 1rem;
+    display: inline-flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+#social > a {
+    display: block;
+}
+
+#social img {
+    height: 50px;
+    width: 50px;
 }
