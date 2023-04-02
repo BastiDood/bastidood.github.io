@@ -1,0 +1,35 @@
+main {
+    background-color: white;
+    margin: var(--outer-margin);
+}
+
+article {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-around;
+}
+
+figure {
+    display: inline-block;
+    margin: 0.5rem;
+}
+
+figure > img.icon {
+    --icon-size: 48px;
+    display: block;
+    margin: 0 auto;
+}
+
+figcaption {
+    text-align: center;
+}
+
+article > section > div {
+    margin: 0.25rem;
+    text-align: center;
+}
+
+article h2 {
+    text-align: center;
+}

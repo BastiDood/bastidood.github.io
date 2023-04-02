@@ -1,0 +1,15 @@
+:root {
+    --outer-margin: 1rem;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+body, h1, h2, h3, p {
+    margin: 0;
+}
+
+img.icon {
+    --icon-size: 32px;
+    display: inline-block;
+    height: var(--icon-size);
+    width: var(--icon-size);
+}
