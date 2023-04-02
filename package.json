@@ -4,7 +4,8 @@
     "source": "src/index.html",
     "scripts": {
         "build": "parcel build",
-        "watch": "parcel watch"
+        "dev": "parcel --no-hmr",
+        "watch": "parcel watch --no-hmr"
     },
     "devDependencies": {
         "@parcel/bundler-default": "^2.8.3",
@@ -16,6 +17,7 @@
         "@parcel/packager-css": "^2.8.3",
         "@parcel/packager-html": "^2.8.3",
         "@parcel/packager-raw": "^2.8.3",
+        "@parcel/reporter-dev-server": "^2.8.3",
         "@parcel/resolver-default": "^2.8.3",
         "@parcel/transformer-css": "^2.8.3",
         "@parcel/transformer-html": "^2.8.3",
