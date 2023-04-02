@@ -1,0 +1,8 @@
+:root {
+    --outer-margin: 1rem;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+body, h1, h2, h3, p {
+    margin: 0;
+}
