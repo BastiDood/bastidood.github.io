@@ -41,3 +41,9 @@ header img {
     height: 32px;
     width: 32px;
 }
+
+article {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
