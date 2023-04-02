@@ -21,6 +21,7 @@
         "@parcel/resolver-default": "^2.8.3",
         "@parcel/transformer-css": "^2.8.3",
         "@parcel/transformer-html": "^2.8.3",
-        "parcel": "^2.8.3"
+        "parcel": "^2.8.3",
+        "parcel-transformer-meta-image": "^1.0.4"
     }
 }

@@ -2,7 +2,7 @@
     "bundler": "@parcel/bundler-default",
     "transformers": {
         "*.css": ["@parcel/transformer-css"],
-        "*.html": ["@parcel/transformer-html"]
+        "*.html": ["@parcel/transformer-html", "parcel-transformer-meta-image"]
     },
     "namers": ["@parcel/namer-default"],
     "optimizers": {

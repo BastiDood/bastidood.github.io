@@ -43,6 +43,9 @@ devDependencies:
   parcel:
     specifier: ^2.8.3
     version: 2.8.3
+  parcel-transformer-meta-image:
+    specifier: ^1.0.4
+    version: 1.0.4(@parcel/core@2.8.3)
 
 packages:
 
@@ -1431,6 +1434,15 @@ packages:
 
   /ordered-binary@1.4.0:
     resolution: {integrity: sha512-EHQ/jk4/a9hLupIKxTfUsQRej1Yd/0QLQs3vGvIqg5ZtCYSzNhkzHoZc7Zf4e4kUlDaC3Uw8Q/1opOLNN2OKRQ==}
+    dev: true
+
+  /parcel-transformer-meta-image@1.0.4(@parcel/core@2.8.3):
+    resolution: {integrity: sha512-BmaTBVB78/cTfEPt/lt896JbbLGS/52fmzDXRLfiK8j6sTkZ6zTb4b9F8hzwfpOJdA0tej9yYoa912Wb/x1FQA==}
+    engines: {node: '>= 8.0.0', parcel: ^2.0.0-alpha.1.1}
+    dependencies:
+      '@parcel/plugin': 2.8.3(@parcel/core@2.8.3)
+    transitivePeerDependencies:
+      - '@parcel/core'
     dev: true
 
   /parcel@2.8.3:
