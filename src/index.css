@@ -40,8 +40,9 @@ header a {
 
 article {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 1rem;
+    justify-content: space-around;
 }
 
 figure {
@@ -61,5 +62,9 @@ figcaption {
 
 article > section > div {
     margin: 0.25rem;
+    text-align: center;
+}
+
+article h2 {
     text-align: center;
 }
