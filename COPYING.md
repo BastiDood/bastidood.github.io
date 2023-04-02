@@ -9,6 +9,7 @@ File | Author | License
 [C++ Logo](./src/icons/lang/cpp.svg) | [Jeremy Kratz](https://jeremykratz.com/) & [The Standard C++ Foundation](https://isocpp.org/home/terms-of-use) | [Public Domain](https://isocpp.org/home/terms-of-use)
 [Deno Logo](./src/icons/tech/deno.svg) | [Kevin Qian](https://ksm.sh/) & [Deno](https://deno.com/) | [MIT](https://github.com/denoland/dotland/blob/925ae4fd931935f8ea479a61b8bfaa97584c1feb/LICENSE)
 [dev.to Logo](./src/icons/social/dev.svg) | [DEV](https://dev.to/) | [Brand Guidelines](https://dev.to/brand)
+[discord.js Logo](./src/icons/lib/discord.js.svg) | [discord.js](https://discord.js.org/) | [Apache 2.0](https://github.com/discordjs/discord.js/blob/6aba9e99eb92429ed84a010a2051e658d0c641c4/packages/discord.js/LICENSE)
 [Django Logo](./src/icons/lib/django.svg) | [Django Software Foundation](https://www.djangoproject.com/foundation/) | [Trademark License Agreement](https://www.djangoproject.com/trademarks/)
 [Express Logo](./src/icons/lib/express.svg) | [OpenJS Foundation] | [Trademark Policy][OpenJS Foundation Trademark Policy]
 [Flask Logo](./src/icons/lib/flask.svg) | [Pallets](https://palletsprojects.com/p/flask/) | [License](https://github.com/pallets/flask/blob/7ed89d3f9d2207c9a607f5dcdce106c0278e1332/artwork/LICENSE.rst)
