@@ -40,24 +40,25 @@ article h2 {
     text-align: center;
 }
 
-#projects {
+#projects, #projects > section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-#soundrave {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+#projects > section {
+    background-color: var(--card-color);
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
-#soundrave > div {
+#projects > section > div {
     display: flex;
     gap: 0.5rem;
 }
 
-#soundrave img {
+#projects > section img {
+    --img-min: 768px;
     min-width: 0;
-    max-height: 768px;
+    max-height: var(--img-min);
 }
