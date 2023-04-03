@@ -1,38 +1,63 @@
 main {
+    display: flex;
     background-color: white;
+    flex-direction: column;
+    gap: 4rem;
     margin: var(--outer-margin);
 }
 
-article {
+article h2 {
+    text-align: center;
+}
+
+#proficiencies {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-article > section {
+#proficiencies > section {
     flex: 1 1 0;
 }
 
-figure {
+#proficiencies figure {
     display: inline-block;
     margin: 0.5rem;
 }
 
-figure > img.icon {
+#proficiencies figure > img.icon {
     --icon-size: 48px;
     display: block;
     margin: 0 auto;
 }
 
-figcaption {
+#proficiencies figcaption {
     text-align: center;
 }
 
-article > section > div {
+#proficiencies > section > div {
     margin: 0.25rem;
     text-align: center;
 }
 
-article h2 {
-    text-align: center;
+#projects {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#soundrave {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#soundrave > div {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#soundrave img {
+    min-width: 0;
+    max-height: 768px;
 }
