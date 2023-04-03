@@ -40,7 +40,13 @@ article h2 {
     text-align: center;
 }
 
-#projects, #projects > section {
+#projects {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(32ch, 100%), 1fr));
+}
+
+#projects > section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -57,7 +63,7 @@ article h2 {
     gap: 0.5rem;
 }
 
-#projects > section img {
+#projects img {
     --img-min: 768px;
     min-width: 0;
     max-height: var(--img-min);
