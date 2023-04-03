@@ -2,7 +2,6 @@ footer {
     background-color: var(--brand-color);
     color: white;
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-around;
     padding: 2rem;
 }
