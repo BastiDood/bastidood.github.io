@@ -76,3 +76,7 @@ article h2 {
 #quizzo img {
     --img-min: 549px;
 }
+
+#snake img {
+    --img-min: 840px;
+}

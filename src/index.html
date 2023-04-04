@@ -199,7 +199,7 @@
                     <p><a href="https://github.com/BastiDood/quizzo-bot">Quizzo</a> is a <a href="https://tokio.rs/">Tokio</a>-powered <a href="https://discord.com/api/oauth2/authorize?client_id=823813267133956136&scope=applications.commands">Discord bot</a> written in <a href="https://www.rust-lang.org/">Rust</a> for hosting limited-time quizzes. With Discord's built-in <a href="https://discord.com/developers/docs/interactions/message-components#message-components">message components</a>, Quizzo provides an easy-to-use interface (and a trivially scalable setup) for large-scale quizzes with many users. When the quiz timer expires, Quizzo notifies everyone in the channel which users answered the quiz correctly. The pioneer use of message components differentiates Chrozone from the other bots in the market which use clunky reaction-based polling mechanisms.</p>
                     <div>
                         <img src="images/quizzo/logo.webp" alt="Quizzo Logo" loading="lazy" />
-                        <img src="images/quizzo/result.png" alt="Quizzo Logo" loading="lazy" />
+                        <img src="images/quizzo/result.png" alt="Quizzo Chat Output" loading="lazy" />
                     </div>
                 </section>
                 <section id="multicast">
@@ -207,6 +207,16 @@
                     <p>The <a href="https://github.com/BastiDood/udp-multicast-chat"><dfn><abbr title="User Datagram Protocol">UDP</abbr></dfn> Multicast Chat Project</a> is a basic chat application written in Rust. The front-end GUI uses the popular <a href="https://www.egui.rs/"><code>egui</code></a> library to render the updates from the back end. Meanwhile, the back end is a <a href="https://tokio.rs/">Tokio</a>-powered server that listens for UDP messages over a specified multicast address. The same multicast channel is also used for sending new messages. This setup effectively allows multiple hosts in the local area network to communicate with each other via a common UDP multicast channel.</p>
                     <div>
                         <img src="images/multicast/screenshot.png" alt="UDP Multicast Chat Preview" loading="lazy" />
+                    </div>
+                </section>
+                <section id="snake">
+                    <h3>Snake Clone with SDL2</h3>
+                    <p>Using the popular <a href="https://www.libsdl.org/"><dfn><abbr title="Simple DirectMedia Layer 2.0">SDL2</abbr></dfn></a> library, the <a href="https://github.com/BastiDood/sdl-basic-snake"><code>sdl-basic-snake</code></a> project reimplements the classic game <a href="https://en.wikipedia.org/wiki/Snake_(video_game_genre)">Snake</a> with modern object-oriented C++20 code.</p>
+                    <p>In line with the theme of modern best practices, the project also uses <a href="https://cmake.org/">CMake</a> as its cross-platform build system generator. Assuming the necessary system dependencies have been set up, the project may be built and run on any platform.</p>
+                    <div>
+                        <img src="images/snake/score-1.webp" alt="Snake Score 1" loading="lazy" />
+                        <img src="images/snake/score-6.webp" alt="Snake Score 6" loading="lazy" />
+                        <img src="images/snake/score-16.webp" alt="Snake Score 16" loading="lazy" />
                     </div>
                 </section>
             </article>
