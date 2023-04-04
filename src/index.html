@@ -219,6 +219,14 @@
                         <img src="images/snake/score-16.webp" alt="Snake Score 16" loading="lazy" />
                     </div>
                 </section>
+                <section id="option-block">
+                    <h3>A Block of Optionals!</h3>
+                    <p>The <a href="https://github.com/BastiDood/option-block"><code>option-block</code></a> crate is an open-source Rust package that provides a basic direct address look-up table, where empty slots are tracked by a single bit mask. Although it is rather simple, this is a fundamental data structure in embedded development, where memory constraints especially matter.</p>
+                    <p>From the pull request <a href="https://github.com/dlkj/usbd-human-interface-device/pull/89#issue-1574171393"><code>dlkj/usbd-human-interface-device#89</code></a> by <a href="https://github.com/jedrzejboczar">@jedrzejboczar</a>:</p>
+                    <blockquote cite="https://github.com/dlkj/usbd-human-interface-device/pull/89#issue-1574171393">
+                        Currently, <code>heapless::FnvIndexMap</code> is used to store idle times for reports, which takes 260B (out of 460B for whole <code>RawInterface</code>) to store at most 32 <code>u8</code> values. This PR changes it to use <a href="https://github.com/BastiDood/option-block"><code>option-block</code></a> which basically is <code>[u8; 32]</code> with <code>u32</code> bitmask of "used" slots, which takes 36B (<code>RawInterface</code> is now 236B)... In my use case, with 3 HID interfaces, this <strong>saves 672 bytes of RAM usage</strong>, while I also observed minor improvement in code size—<a href="https://github.com/dlkj/usbd-human-interface-device"><code>usbd-human-interface-device</code></a> takes <strong>406 bytes less space</strong>.
+                    </blockquote>
+                </section>
             </article>
         </main>
         <footer>
