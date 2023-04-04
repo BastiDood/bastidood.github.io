@@ -175,9 +175,10 @@
                     <h3>DocTrack</h3>
                     <p><a href="https://github.com/BastiDood/doc-track">DocTrack</a> is a mobile-first document tracking system built for the modern age. It reimplements and improves on the <a href="https://drs.up.edu.ph/"><dfn><abbr title="Document Routing System">DRS</abbr></dfn></a> by the <a href="https://up.edu.ph/"><dfn><abbr title="University of the Philippines">UP</abbr></dfn></a> <a href="https://itdc.up.edu.ph/"><dfn><abbr title="Information Technology Development Center">ITDC</abbr></dfn></a> by leveraging <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"><dfn><abbr title="Progressive Web App">PWA</abbr></dfn></a> technologies for:
                     <ul>
-                        <li>Delivering real-time push notifications via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Push_API">Web Push API</a>.</li>
-                        <li>Maintaining an offline app experience via <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers">Service Workers</a>.</li>
+                        <li>Delivering push notifications via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Push_API">Web Push API</a>.</li>
+                        <li>Maintaining an offline experience via <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers">Service Workers</a>.</li>
                     </ul>
+                    <p>Wherever possible, the project utilizes a <a href="https://www.typescriptlang.org/">TypeScript</a>-centric application stack. With <a href="https://svelte.dev/">Svelte</a> in the front end, TypeScript ensures that events, messages, and interactions between UI components remain consistent. In the back end, <a href="https://deno.land/">Deno</a> facilitates the development of robust type-safe <dfn><abbr title="Hypertext Transfer Protocol">HTTP</abbr></dfn> request handlers for the <dfn><abbr title="Representational State Transfer">REST</abbr></dfn> API.</p>
                     <div>
                         <img src="images/doctrack/mobile.png" alt="DocTrack Mobile" loading="lazy" />
                         <img src="images/doctrack/desktop.png" alt="DocTrack Desktop" loading="lazy" />
@@ -185,7 +186,8 @@
                 </section>
                 <section id="chrozone">
                     <h3>Chrozone</h3>
-                    <p><a href="https://github.com/BastiDood/chrozone">Chrozone</a> is a <a href="https://discord.com/api/oauth2/authorize?client_id=1008989318901137459&scope=applications.commands">Discord bot</a>.</p>
+                    <p><a href="https://github.com/BastiDood/chrozone">Chrozone</a> is a <a href="https://tokio.rs/">Tokio</a>-powered <a href="https://discord.com/api/oauth2/authorize?client_id=1008989318901137459&scope=applications.commands">Discord bot</a> written in <a href="https://www.rust-lang.org/">Rust</a> that provides time-based utilities via <a href="https://discord.com/developers/docs/interactions/application-commands#slash-commands">slash commands</a>. One of its primary features is to format a given date as a dynamic timestamp message (as seen in the screenshots below).</p>
+                    <p>For global Discord communities that have special timezone considerations, Chrozone empowers users to send timezone-adaptive announcements. No need to convert the timezones yourself! Let Chrozone do the work.</p>
                     <div>
                         <img src="images/chrozone/logo.webp" alt="Chrozone Logo" loading="lazy" />
                         <img src="images/chrozone/autocomplete.png" alt="Chrozone Autocompletion Menu" loading="lazy" />
