@@ -43,7 +43,7 @@ article h2 {
 #projects {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(32ch, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(52ch, 100%), 1fr));
 }
 
 #projects > section {
@@ -67,4 +67,12 @@ article h2 {
     --img-min: 768px;
     min-width: 0;
     max-height: var(--img-min);
+}
+
+#chrozone img {
+    --img-min: 596px;
+}
+
+#quizzo img {
+    --img-min: 549px;
 }
