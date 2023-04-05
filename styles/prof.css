@@ -1,0 +1,33 @@
+#proficiencies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+#proficiencies h1 {
+    text-align: center;
+}
+
+#proficiencies > section {
+    flex: 1 1 0;
+}
+
+#proficiencies figure {
+    display: inline-block;
+    margin: 0.5rem;
+}
+
+#proficiencies figure > img.icon {
+    --icon-size: 48px;
+    display: block;
+    margin: 0 auto;
+}
+
+#proficiencies figcaption {
+    text-align: center;
+}
+
+#proficiencies > section > div {
+    margin: 0.25rem;
+    text-align: center;
+}

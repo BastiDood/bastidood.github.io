@@ -1,4 +1,49 @@
-<figure>
-    <img class="icon" src="{{ src }}" alt="{{ lang }} Logo" loading="lazy" />
-    <figcaption>{{ lang }}</figcaption>
-</figure>
+<article id="proficiencies">
+    <section>
+        <h1>Languages</h1>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/rust.svg", "lang": "Rust" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/ts.svg", "lang": "TypeScript" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/js.svg", "lang": "JavaScript" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/html.svg", "lang": "HTML" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/css.svg", "lang": "CSS" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/python.svg", "lang": "Python" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/cpp.svg", "lang": "C++" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lang/c.svg", "lang": "C" }</include>
+        </div>
+    </section>
+    <section>
+        <h1>Libraries & Frameworks</h1>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/svelte.svg", "lang": "Svelte" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/tokio.svg", "lang": "Tokio" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/hyper.svg", "lang": "Hyper" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/express.svg", "lang": "Express.js" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/discord.js.svg", "lang": "discord.js" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/flask.svg", "lang": "Flask" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/lib/django.svg", "lang": "Django" }</include>
+        </div>
+    </section>
+    <section>
+        <h1>Technologies</h1>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/tech/git.svg", "lang": "Git" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/tech/deno.svg", "lang": "Deno" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/tech/node.svg", "lang": "Node.js" }</include>
+        </div>
+        <div>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/tech/mongo.svg", "lang": "MongoDB" }</include>
+            <include src="partials/logo.html">{ "src": "{{ root }}/icons/tech/postgres.svg", "lang": "PostgreSQL" }</include>
+        </div>
+    </section>
+</article>

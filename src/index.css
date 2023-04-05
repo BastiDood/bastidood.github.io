@@ -3,6 +3,7 @@
 @import '../styles/global.css';
 
 @import '../styles/nav.css';
+@import '../styles/prof.css';
 @import '../styles/footer.css';
 
 main {
@@ -39,35 +40,5 @@ header a {
 }
 
 article h2 {
-    text-align: center;
-}
-
-#proficiencies {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-#proficiencies > section {
-    flex: 1 1 0;
-}
-
-#proficiencies figure {
-    display: inline-block;
-    margin: 0.5rem;
-}
-
-#proficiencies figure > img.icon {
-    --icon-size: 48px;
-    display: block;
-    margin: 0 auto;
-}
-
-#proficiencies figcaption {
-    text-align: center;
-}
-
-#proficiencies > section > div {
-    margin: 0.25rem;
     text-align: center;
 }
