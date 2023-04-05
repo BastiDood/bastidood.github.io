@@ -1,3 +1,16 @@
 @import '../../styles/font.css';
 @import '../../styles/vars.css';
 @import '../../styles/global.css';
+
+@import '../../styles/projects.css';
+@import '../../styles/footer.css';
+
+main {
+    background-color: var(--sky-color);
+    background-image: linear-gradient(0, white 0%, var(--sky-color) 100%);
+    padding: var(--outer-margin);
+}
+
+h1 {
+    text-align: center;
+}
