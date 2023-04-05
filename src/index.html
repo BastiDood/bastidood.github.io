@@ -6,8 +6,15 @@
         <include src="partials/meta.html"></include>
         <include src="partials/og.html"></include>
 
+        <meta property="og:image" content="../images/og.webp" />
+        <meta property="twitter:image" content="../images/og.webp" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+
         <!-- Imports -->
         <link rel="stylesheet" href="index.css" />
+        <link rel="icon" href="../images/favicon.png" />
     </head>
     <body>
         <header>
@@ -37,108 +44,48 @@
                 <section>
                     <h2>Languages</h2>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lang/rust.svg" alt="Rust Logo" loading="lazy" />
-                            <figcaption>Rust</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lang/ts.svg" alt="TypeScript Logo" loading="lazy" />
-                            <figcaption>TypeScript</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lang/js.svg" alt="JavaScript Logo" loading="lazy" />
-                            <figcaption>JavaScript</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/rust.svg", "lang": "Rust" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/ts.svg", "lang": "TypeScript" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/js.svg", "lang": "JavaScript" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lang/html.svg" alt="HTML Logo" loading="lazy" />
-                            <figcaption>HTML</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lang/css.svg" alt="CSS Logo" loading="lazy" />
-                            <figcaption>CSS</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lang/python.svg" alt="Python Logo" loading="lazy" />
-                            <figcaption>Python</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/html.svg", "lang": "HTML" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/CSS.svg", "lang": "CSS" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/python.svg", "lang": "Python" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lang/cpp.svg" alt="C++ Logo" loading="lazy" />
-                            <figcaption>C++</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lang/c.svg" alt="C Logo" loading="lazy" />
-                            <figcaption>C</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/cpp.svg", "lang": "C++" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lang/c.svg", "lang": "C" }</include>
                     </div>
                 </section>
                 <section>
                     <h2>Libraries & Frameworks</h2>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lib/svelte.svg" alt="Svelte Logo" loading="lazy" />
-                            <figcaption>Svelte</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/svelte.svg", "lang": "Svelte" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lib/tokio.svg" alt="Tokio Logo" loading="lazy" />
-                            <figcaption>Tokio</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lib/hyper.svg" alt="Hyper Logo" loading="lazy" />
-                            <figcaption>Hyper</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/tokio.svg", "lang": "Tokio" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/hyper.svg", "lang": "Hyper" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/lib/express.svg" alt="Express Logo" loading="lazy" />
-                            <figcaption>Express</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lib/discord.js.svg" alt="discord.js Logo" loading="lazy" />
-                            <figcaption>discord.js</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lib/flask.svg" alt="Flask Logo" loading="lazy" />
-                            <figcaption>Flask</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/lib/django.svg" alt="Django Logo" loading="lazy" />
-                            <figcaption>Django</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/express.svg", "lang": "Express.js" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/discord.js.svg", "lang": "discord.js" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/flask.svg", "lang": "Flask" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/lib/django.svg", "lang": "Django" }</include>
                     </div>
                 </section>
                 <section>
                     <h2>Technologies</h2>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/tech/git.svg" alt="Git Logo" loading="lazy" />
-                            <figcaption>Git</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/tech/git.svg", "lang": "Git" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/tech/deno.svg" alt="Deno Logo" loading="lazy" />
-                            <figcaption>Deno</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/tech/node.svg" alt="Node.js Logo" loading="lazy" />
-                            <figcaption>Node.js</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/tech/deno.svg", "lang": "Deno" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/tech/node.svg", "lang": "Node.js" }</include>
                     </div>
                     <div>
-                        <figure>
-                            <img class="icon" src="../icons/tech/mongo.svg" alt="MongoDB Logo" loading="lazy" />
-                            <figcaption>MongoDB</figcaption>
-                        </figure>
-                        <figure>
-                            <img class="icon" src="../icons/tech/postgres.svg" alt="PostgreSQL Logo" loading="lazy" />
-                            <figcaption>PostgreSQL</figcaption>
-                        </figure>
+                        <include src="partials/prof.html">{ "src": "../icons/tech/mongo.svg", "lang": "MongoDB" }</include>
+                        <include src="partials/prof.html">{ "src": "../icons/tech/postgres.svg", "lang": "PostgreSQL" }</include>
                     </div>
                 </section>
             </article>
