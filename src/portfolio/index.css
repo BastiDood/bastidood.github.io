@@ -19,3 +19,9 @@ main {
 h1 {
     text-align: center;
 }
+
+#proficiencies > section {
+    border-radius: 1rem;
+    background-color: var(--prof-color);
+    padding: 1rem;
+}
