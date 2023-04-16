@@ -6,6 +6,10 @@
 @import '../styles/prof.css';
 @import '../styles/footer.css';
 
+:root, body, header {
+    height: 100%;
+}
+
 main {
     display: flex;
     background-color: white;
@@ -21,7 +25,6 @@ header {
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
-    height: 100svh;
 }
 
 header > div {
