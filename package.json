@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "source": [
         "src/index.html",
+        "src/articles/index.html",
         "src/portfolio/index.html"
     ],
     "scripts": {

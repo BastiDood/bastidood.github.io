@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Basti Ortiz | Articles</title>
+
+        <include src="partials/meta.html"></include>
+        <include src="partials/og.html"></include>
+
+        <meta property="og:image" content="../../images/og.webp" />
+        <meta property="twitter:image" content="../../images/og.webp" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+
+        <!-- Imports -->
+        <script type="module" src="index.js"></script>
+        <link rel="stylesheet" href="index.css" />
+        <link rel="icon" href="../../images/favicon.png" />
+    </head>
+    <body>
+        <include src="partials/nav.html"></include>
+        <main>
+            <header>
+                <h1>Articles</h1>
+                <p>
+                    In my spare time, I write technical blog posts at <a href="https://dev.to">dev.to</a> (<a href="https://dev.to/somedood">@somedood</a>)
+                    about various topics in web development, systems programming, and computer science. As such, many of my articles discuss JavaScript best
+                    practices, design patterns, performance techniques, and limitations. In other times, I focus on the low-level implications of systems
+                    programming patterns—particularly in the context of Rust, C, and C++.
+                </p>
+            </header>
+            <section>
+                <h2>Featured Articles</h2>
+                <div>
+                    <div class="dev-article">
+                        <a href="https://dev.to/somedood/programming-is-hard-2p87">
+                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--yLAwBlXq--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://thepracticaldev.s3.amazonaws.com/i/2viihq3r5g6c9h7zatbo.png" alt="Listing of performance, security, teamwork, functionality, maintainability, readability, and user experience." />
+                            <h3>Programming is Hard</h3>
+                        </a>
+                        <p>
+                            Published <time datetime="2019-02-17">February 17, 2019</time>
+                        </p>
+                        <p>
+                            Indeed it is. Hollywood films often portray programmers as fast-typing computer wizards who can "hack" into anything. We all know
+                            that this can never be farther from the truth. Here is an article that discusses what goes into the many aspects of "real" programming.
+                        </p>
+                    </div>
+                    <div class="dev-article">
+                        <a href="https://dev.to/somedood/18-essential-videos-that-fundamentally-shaped-my-understanding-of-javascript-3ib">
+                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s---ipK7V2d--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/dvi7ktu6s10mqfdb7j7e.png" alt="A collection of YouTube thumbnails featuring the 18 essential videos." />
+                            <h3>18 Essential Videos That Fundamentally Shaped My Understanding of JavaScript</h3>
+                        </a>
+                        <p>
+                            Published <time datetime="2020-07-08">July 8, 2020</time>
+                        </p>
+                        <p>
+                            Learning JavaScript is a wild, tempestuous journey. With so much to learn, it is difficult to keep up with the times. Here are 18 videos
+                            I consider to be "essential" in learning JavaScript at a deeper level. Each of these videos once sparked a "eureka moment" within me that
+                            ultimately helped in piecing together the JavaScript puzzle.
+                        </p>
+                    </div>
+                    <div class="dev-article">
+                        <a href="https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1">
+                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--Ht2L9e3o--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/5u4cv4vj6f6y0dtv0pd9.png" alt="My character featuring multiple instances of Ferris the Crab on a beach." />
+                            <h3>🦀 Rust Reviewed: Is the hype justified? 🦀</h3>
+                        </a>
+                        <p>
+                            Published <time datetime="2020-12-23">December 23, 2020</time>
+                        </p>
+                        <p>
+                            The Rust programming language has steadily been on the rise in terms of adoption and popularity. But is all the hype justified?
+                            In this article, I reflect on my experience with Rust in the past year, tackling the golden moments as well as the pain points.
+                        </p>
+                    </div>
+                    <div class="dev-article">
+                        <a href="https://dev.to/somedood/the-proper-way-to-write-async-constructors-in-javascript-1o8c">
+                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--TLVfqzI4--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mgfbm1966l0yesgi9hs3.png" alt="My character in front of a cartoonish construction site." />
+                            <h3>The Proper Way to Write Async Constructors</h3>
+                        </a>
+                        <p>
+                            Published <time datetime="2021-08-18">August 18, 2021</time>
+                        </p>
+                        <p>
+                            At the moment, there is no standardized way to write asynchronous constructors in JavaScript. However, this does not mean there
+                            aren't any workarounds! In this article, we will discuss the various ways to emulate <code>async</code> in <code>constructor</code>.
+                            Most of them are not-so-ideal, but in the end, I will demonstrate the proper way. Tagged with javascript, typescript, tips, async.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h2>Latest Articles</h2>
+                <div id="latest">
+                    <!-- Latest Articles -->
+                </div>
+            </section>
+        </main>
+        <footer>
+            <section>
+                <img src="../../images/profile.webp" alt="BastiDood Profile Picture" width="500" height="500" loading="lazy" />
+                <p>&#169; 2023 Basti Ortiz</p>
+            </section>
+            <include src="partials/links.html"></include>
+            <include src="partials/code.html"></include>
+        </footer>
+    </body>
+</html>
