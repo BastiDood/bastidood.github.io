@@ -5,6 +5,7 @@ The following assets below have been retrieved from external sources. As such, t
 File | Author | License
 ---- | ------ | -------
 [C Logo](icons/lang/c.svg) | [ElodinKaldwin](https://commons.wikimedia.org/wiki/File:C_Programming_Language.svg) | Public Domain
+[CMake Logo](icons/tech/cmake.svg) | [Franceso Betti Sorbelli](https://commons.wikimedia.org/wiki/File:Cmake.svg) | [CC BY 2.0]
 [CSS3 Logo](icons/lang/css.svg) | [Rudloff](https://commons.wikimedia.org/wiki/File:CSS3_logo_and_wordmark.svg) | [CC BY 3.0]
 [C++ Logo](icons/lang/cpp.svg) | [Jeremy Kratz](https://jeremykratz.com/) & [The Standard C++ Foundation](https://isocpp.org/home/terms-of-use) | [Public Domain](https://isocpp.org/home/terms-of-use)
 [Deno Logo](icons/tech/deno.svg) | [Kevin Qian](https://ksm.sh/) & [Deno](https://deno.com/) | [MIT](https://github.com/denoland/dotland/blob/925ae4fd931935f8ea479a61b8bfaa97584c1feb/LICENSE)
@@ -35,5 +36,6 @@ File | Author | License
 [OpenJS Foundation]: https://openjsf.org/
 [OpenJS Foundation Trademark Policy]: https://trademark-policy.openjsf.org/
 [MIT Tokio]: https://github.com/tokio-rs/website/blob/f4226811e9804c133667631c0564e499e1b4deff/LICENSE
+[CC BY 2.0]: https://creativecommons.org/licenses/by/2.0/
 [CC BY 3.0]: https://creativecommons.org/licenses/by/3.0/
 [CC BY 4.0]: https://creativecommons.org/licenses/by/4.0/
