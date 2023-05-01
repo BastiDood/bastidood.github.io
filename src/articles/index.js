@@ -7,7 +7,10 @@ assert(target !== null);
 
 async function fetchArticles() {
     try {
-        const res = await fetch('https://dev.to/api/articles?username=somedood&state=all&per_page=6');
+        const res = await fetch('https://dev.to/api/articles?username=somedood&state=all&per_page=6', {
+            // https://developers.forem.com/api#version-1
+            headers: { Accept: 'application/vnd.forem.api-v1+json' },
+        });
         return Article.array().parse(await res.json());
     } catch (err) {
         console.error(err);
