@@ -34,6 +34,10 @@
     --img-min: 1080px;
 }
 
+#palai {
+    --img-min: 1080px;
+}
+
 #multicast {
     --img-min: 336px;
 }
