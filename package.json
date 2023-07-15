@@ -25,6 +25,7 @@
         "@parcel/packager-raw": "^2.9.3",
         "@parcel/reporter-dev-server": "^2.9.3",
         "@parcel/resolver-default": "^2.9.3",
+        "@parcel/runtime-js": "^2.9.3",
         "@parcel/transformer-css": "^2.9.3",
         "@parcel/transformer-html": "^2.9.3",
         "@parcel/transformer-js": "^2.9.3",
@@ -35,7 +36,6 @@
         "posthtml-include": "^1.7.4"
     },
     "dependencies": {
-        "date-fns": "^2.30.0",
         "marked": "^5.1.1",
         "zod": "^3.21.4"
     }

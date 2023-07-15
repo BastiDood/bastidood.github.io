@@ -21,6 +21,7 @@
         "*.html": "@parcel/packager-html",
         "*": "@parcel/packager-raw"
     },
+    "runtimes": ["@parcel/runtime-js"],
     "compressors": { "*": ["@parcel/compressor-raw"] },
     "resolvers": ["@parcel/resolver-default"],
     "reporters": ["@parcel/reporter-dev-server"]

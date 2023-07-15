@@ -1,6 +1,7 @@
-import format from 'date-fns/format';
 import { assert } from './assert.ts';
 import { Article } from './model.js';
+
+const format = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
 
 const target = document.getElementById('latest');
 assert(target !== null);
@@ -42,7 +43,7 @@ fetchArticles().then(articles => {
         const publish = anchor.appendChild(document.createElement('p'));
         const time = publish.appendChild(document.createElement('time'));
         time.dateTime = published_at.toISOString();
-        time.textContent = format(published_at, 'LLLL d, y');
+        time.textContent = format.format(published_at);
         time.insertAdjacentText('beforebegin', 'Published ');
 
         const body = anchor.appendChild(document.createElement('p'));
