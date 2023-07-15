@@ -38,6 +38,10 @@
     --img-min: 1080px;
 }
 
+#drippy {
+    --img-min: 543px;
+}
+
 #multicast {
     --img-min: 336px;
 }
