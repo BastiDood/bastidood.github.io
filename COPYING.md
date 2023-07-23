@@ -12,6 +12,7 @@ File | Author | License
 [dev.to Logo](icons/social/dev.svg) | [DEV](https://dev.to/) | [Brand Guidelines](https://dev.to/brand)
 [discord.js Logo](icons/lib/discord.js.svg) | [discord.js](https://discord.js.org/) | [Apache 2.0](https://github.com/discordjs/discord.js/blob/6aba9e99eb92429ed84a010a2051e658d0c641c4/packages/discord.js/LICENSE)
 [Django Logo](icons/lib/django.svg) | [Django Software Foundation](https://www.djangoproject.com/foundation/) | [Trademark License Agreement](https://www.djangoproject.com/trademarks/)
+[Docker Logo](icons/tech/docker.svg) | [Terence Eden](https://github.com/edent/SuperTinyIcons) | [MIT](https://github.com/edent/SuperTinyIcons/blob/9384edf56607d09037ad46b3c49d979c27ecad18/LICENSE)
 [Electron Logo](icons/lib/electron.svg) | [OpenJS Foundation] and [Electron Contributors](https://www.electronjs.org/) | [Apache 2.0](https://github.com/electron/website/blob/fd468b519b67488a872060ff7c0b037f73e16de4/LICENSE)
 [Express Logo](icons/lib/express.svg) | [OpenJS Foundation] | [Trademark Policy][OpenJS Foundation Trademark Policy]
 [Fira Code](fonts/Fira-Code/) | [The Fira Code Project Authors](https://github.com/tonsky/FiraCode) | [SIL OFL v1.1](./src/fonts/Fira-Code/OFL.txt)
