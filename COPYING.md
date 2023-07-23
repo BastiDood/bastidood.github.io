@@ -20,6 +20,7 @@ File | Author | License
 [Git Logo](icons/tech/git.svg) | [Jason Long](https://jasonlong.me/) | [CC BY 3.0]
 [GitHub Logo](icons/social/github.svg) | [GitHub](https://github.com) | [Logos and Usage](https://github.com/logos)
 [Hyper Logo](icons/lib/hyper.svg) | [Carl Lerche] & Tokio Website Contributors | [MIT][MIT Tokio]
+[Hugging Face Logo](icons/lib/huggingface.svg) | [Hugging Face](https://huggingface.co/) | [Hugging Face Brand Assets](https://huggingface.co/brand)
 [HTML5 Logo](icons/lang/html.svg) | [World Wide Web Consortium](https://www.w3.org/) | [CC BY 3.0]
 [JavaScript Logo](icons/lang/js.svg) | [Christopher Williams](https://www.voodootikigod.com/) | [MIT](https://github.com/voodootikigod/logo.js/blob/1544bdeed6d618a6cfe4f0650d04ab8d9cfa76d9/LICENSE)
 [LinkedIn Logo](icons/social/linkedin.svg) | [LinkedIn](https://www.linkedin.com/) | [Brand Guidelines](https://brand.linkedin.com/)
