@@ -36,7 +36,7 @@
         "posthtml-include": "^1.7.4"
     },
     "dependencies": {
-        "marked": "^5.1.1",
+        "marked": "^5.1.2",
         "zod": "^3.21.4"
     }
 }
