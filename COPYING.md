@@ -15,8 +15,8 @@ File | Author | License
 [Docker Logo](icons/tech/docker.svg) | [Terence Eden](https://github.com/edent/SuperTinyIcons) | [MIT](https://github.com/edent/SuperTinyIcons/blob/9384edf56607d09037ad46b3c49d979c27ecad18/LICENSE)
 [Electron Logo](icons/lib/electron.svg) | [OpenJS Foundation] and [Electron Contributors](https://www.electronjs.org/) | [Apache 2.0](https://github.com/electron/website/blob/fd468b519b67488a872060ff7c0b037f73e16de4/LICENSE)
 [Express Logo](icons/lib/express.svg) | [OpenJS Foundation] | [Trademark Policy][OpenJS Foundation Trademark Policy]
-[Fira Code](fonts/Fira-Code/) | [The Fira Code Project Authors](https://github.com/tonsky/FiraCode) | [SIL OFL v1.1](./src/fonts/Fira-Code/OFL.txt)
-[Fira Sans](fonts/Fira-Sans/) | The Mozilla Foundation & Telefonica S.A. | [SIL OFL v1.1](./src/fonts/Fira-Sans/OFL.txt)
+[Fira Code](fonts/Fira-Code/) | [The Fira Code Project Authors](https://github.com/tonsky/FiraCode) | [SIL OFL v1.1](./src/fonts/FiraCode/OFL.txt)
+[Fira Sans](fonts/Fira-Sans/) | The Mozilla Foundation & Telefonica S.A. | [SIL OFL v1.1](./src/fonts/FiraSans/OFL.txt)
 [Flask Logo](icons/lib/flask.svg) | [Pallets](https://palletsprojects.com/p/flask/) | [License](https://github.com/pallets/flask/blob/7ed89d3f9d2207c9a607f5dcdce106c0278e1332/artwork/LICENSE.rst)
 [Git Logo](icons/tech/git.svg) | [Jason Long](https://jasonlong.me/) | [CC BY 3.0]
 [GitHub Logo](icons/social/github.svg) | [GitHub](https://github.com) | [Logos and Usage](https://github.com/logos)
