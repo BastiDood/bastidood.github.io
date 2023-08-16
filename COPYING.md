@@ -31,6 +31,7 @@ File | Author | License
 [Python Logo](icons/lang/python.svg) | [Python Software Foundation](https://www.python.org/psf-landing/) | [Trademark Policy](https://www.python.org/psf/trademarks/)
 [Rust Logo](icons/lang/rust.svg) | [Rust Foundation](https://foundation.rust-lang.org/) | [CC BY 4.0]
 [Svelte Logo](icons/lib/svelte.svg) | [Svelte](https://svelte.dev/) | [Branding Guidelines](https://github.com/sveltejs/branding/blob/c4dfca6743572087a6aef0e109ffe3d95596e86a/README.md)
+[Tailwind Logo](icons/lib/tailwind.svg) | [Tailwind Labs, Inc.](https://tailwindcss.com/) | [Branding Guidelines](https://tailwindcss.com/brand)
 [Tokio Logo](icons/lib/tokio.svg) | [Carl Lerche] & Tokio Website Contributors | [MIT][MIT Tokio]
 [Twitter Logo](icons/social/twitter.svg) | [Twitter](https://twitter.com/) | [Brand Guidelines](https://about.twitter.com/en/who-we-are/brand-toolkit)
 [TypeScript Logo](icons/lang/ts.svg) | [Microsoft](https://www.typescriptlang.org/) | [Public Domain](https://www.typescriptlang.org/branding/)
