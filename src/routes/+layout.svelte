@@ -3,7 +3,7 @@
     import profile from '$lib/images/profile.webp';
 </script>
 
-<header class="sticky top-0 bg-brand text-white shadow-md">
+<header class="sticky top-0 w-full bg-brand text-white shadow-md">
     <nav>
         <ul class="flex">
             <li>
@@ -28,7 +28,7 @@
         </ul>
     </nav>
 </header>
-<main class="bg-gradient-to-b from-sky to-white space-y-8 p-4 sm:p-12 md:p-16">
+<main class="bg-gradient-to-b from-sky to-white space-y-8">
     <slot />
 </main>
 <footer class="flex bg-brand text-white text-xs justify-around p-4">

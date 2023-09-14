@@ -44,7 +44,7 @@
     import ts from '$lib/icons/lang/ts.svg';
 </script>
 
-<div class="prose prose-headings:mt-0 max-w-none space-y-8">
+<div class="p-4 sm:p-12 md:p-16 prose prose-headings:mt-0 max-w-none space-y-8">
     <div class="rounded-xl bg-card p-8 shadow-xl max-w-none">
         <Proficiencies />
     </div>
@@ -86,9 +86,9 @@
                 the need arise. Thus, the IoT system reactively guards against wastage due to leaks
                 and overconsumption.
             </p>
-            <div>
-                <img src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" />
-                <img src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" />
+            <div class="flex gap-4 justify-around">
+                <div><img src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" /></div>
+                <div><img src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" /></div>
             </div>
             <p>
                 The <a href="https://www.espressif.com/en/products/socs/esp32">ESP32</a> firmware is
@@ -109,22 +109,28 @@
                 runtime. Finally, the dashboard is a web application written in
                 <a href="https://svelte.dev/">Svelte</a>.
             </p>
-            <div>
-                <img
-                    src="{drippySchematic}"
-                    alt="schematic diagram for Drippy circuitry"
-                    loading="lazy"
-                />
-                <img
-                    src="{drippyBox}"
-                    alt="enclosed circuitry for Drippy and its ESP32 chip"
-                    loading="lazy"
-                />
-                <img
-                    src="{drippyTestbench}"
-                    alt="Drippy testbench on actual hardware"
-                    loading="lazy"
-                />
+            <div class="flex gap-4">
+                <div>
+                    <img
+                        src="{drippySchematic}"
+                        alt="schematic diagram for Drippy circuitry"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img
+                        src="{drippyBox}"
+                        alt="enclosed circuitry for Drippy and its ESP32 chip"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img
+                        src="{drippyTestbench}"
+                        alt="Drippy testbench on actual hardware"
+                        loading="lazy"
+                    />
+                </div>
             </div>
         </section>
         <section id="doctrack" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -328,13 +334,17 @@
                 empowers users to send timezone-adaptive announcements. No need to convert the
                 timezones yourself! Let Chrozone do the work.
             </p>
-            <div>
-                <img
-                    src="{chrozoneAutocomplete}"
-                    alt="Chrozone Autocompletion Menu"
-                    loading="lazy"
-                />
-                <img src="{chrozoneResult}" alt="Chrozone Preview Result" loading="lazy" />
+            <div class="flex gap-4 justify-around">
+                <div>
+                    <img
+                        src="{chrozoneAutocomplete}"
+                        alt="Chrozone Autocompletion Menu"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img src="{chrozoneResult}" alt="Chrozone Preview Result" loading="lazy" />
+                </div>
             </div>
         </section>
         <section id="quizzo" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -367,7 +377,7 @@
                 use clunky reaction-based polling mechanisms.
             </p>
             <div>
-                <img src="{quizzoResult}" alt="Quizzo Chat Output" loading="lazy" />
+                <img src="{quizzoResult}" alt="Quizzo Chat Output" loading="lazy" class="m-auto" />
             </div>
         </section>
         <section id="multicast" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -390,7 +400,7 @@
                 network to communicate with each other via a common UDP multicast channel.
             </p>
             <div>
-                <img src="{multicastScreenshot}" alt="UDP Multicast Chat Preview" loading="lazy" />
+                <img src="{multicastScreenshot}" alt="UDP Multicast Chat Preview" loading="lazy" class="m-auto" />
             </div>
         </section>
         <section id="snake" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -418,10 +428,10 @@
                 > as its cross-platform build system generator. Assuming the necessary system dependencies
                 have been set up, the project may be built and run on any platform.
             </p>
-            <div>
-                <img src="{snakeScore1}" alt="Snake Score 1" loading="lazy" />
-                <img src="{snakeScore6}" alt="Snake Score 6" loading="lazy" />
-                <img src="{snakeScore16}" alt="Snake Score 16" loading="lazy" />
+            <div class="flex gap-4 justify-around">
+                <div><img src="{snakeScore1}" alt="Snake Score 1" loading="lazy" /></div>
+                <div><img src="{snakeScore6}" alt="Snake Score 6" loading="lazy" /></div>
+                <div><img src="{snakeScore16}" alt="Snake Score 16" loading="lazy" /></div>
             </div>
         </section>
         <section id="option-block" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
