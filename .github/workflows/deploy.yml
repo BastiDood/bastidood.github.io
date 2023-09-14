@@ -23,8 +23,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install `pnpm`
-        run: npm install --global pnpm
+      - name: Install `pnpm` via Corepack
+        run: corepack enable
       - name: Install Dependencies
         run: pnpm install
       - name: Build Website
@@ -34,7 +34,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: dist
+          path: build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
