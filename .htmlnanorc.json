@@ -1,6 +1,0 @@
-{
-    "preset": "max",
-    "collapseWhitespace": "aggressive",
-    "minifyJs": false,
-    "minifyCss": false
-}
