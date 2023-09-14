@@ -6,5 +6,5 @@ import tailwind from 'tailwindcss';
 
 export default defineConfig({
     plugins: [sveltekit(), purgeCss()],
-    css: { postcss: { plugins: [ tailwind, autoprefixer ] } },
+    css: { postcss: { plugins: [tailwind, autoprefixer] } },
 });
