@@ -1,5 +1,5 @@
 import { arrayAsync, parseAsync } from 'valibot';
-import { Article } from './model.js';
+import { Article } from './model';
 
 export async function fetchArticles() {
     try {
