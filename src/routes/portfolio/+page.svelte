@@ -87,7 +87,9 @@
                 and overconsumption.
             </p>
             <div class="flex gap-4 justify-around">
-                <div><img src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" /></div>
+                <div>
+                    <img src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" />
+                </div>
                 <div><img src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" /></div>
             </div>
             <p>
@@ -400,7 +402,12 @@
                 network to communicate with each other via a common UDP multicast channel.
             </p>
             <div>
-                <img src="{multicastScreenshot}" alt="UDP Multicast Chat Preview" loading="lazy" class="m-auto" />
+                <img
+                    src="{multicastScreenshot}"
+                    alt="UDP Multicast Chat Preview"
+                    loading="lazy"
+                    class="m-auto"
+                />
             </div>
         </section>
         <section id="snake" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
