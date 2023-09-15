@@ -7,23 +7,13 @@
     <nav>
         <ul class="flex">
             <li>
-                <a class="block p-4 transition-colors hover:bg-hover" target="_self" href="/"
-                    >Home</a
-                >
+                <a class="block p-4 transition-colors hover:bg-hover" href="/">Home</a>
             </li>
             <li>
-                <a
-                    class="block p-4 transition-colors hover:bg-hover"
-                    target="_self"
-                    href="/portfolio">Portfolio</a
-                >
+                <a class="block p-4 transition-colors hover:bg-hover" href="/portfolio">Portfolio</a>
             </li>
             <li>
-                <a
-                    class="block p-4 transition-colors hover:bg-hover"
-                    target="_self"
-                    href="/articles">Articles</a
-                >
+                <a class="block p-4 transition-colors hover:bg-hover" href="/articles">Articles</a>
             </li>
         </ul>
     </nav>
@@ -42,9 +32,7 @@
             <li><a href="https://github.com/BastiDood">GitHub (@BastiDood)</a></li>
             <li><a href="https://dev.to/somedood">dev.to (@somedood)</a></li>
             <li>
-                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn"
-                    >LinkedIn (in/basti-ortiz)</a
-                >
+                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn">LinkedIn (in/basti-ortiz)</a>
             </li>
             <li>
                 <a href="https://twitter.com/BastiDood" title="Twitter">Twitter (@BastiDood)</a>
@@ -56,9 +44,7 @@
         <ul>
             <li><a href="https://github.com/BastiDood/bastidood.github.io">Repository</a></li>
             <li>
-                <a href="https://github.com/BastiDood/bastidood.github.io/blob/main/COPYING.md"
-                    >External Assets</a
-                >
+                <a href="https://github.com/BastiDood/bastidood.github.io/blob/main/COPYING.md">External Assets</a>
             </li>
         </ul>
     </section>
