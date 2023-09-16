@@ -65,6 +65,10 @@
                 <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
                 <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
             </div>
+            <div class="flex gap-4 justify-around float-right">
+                <img class="m-0" src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" />
+                <img class="m-0" src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" />
+            </div>
             <p>
                 <a href="https://github.com/drippy-iot">Drippy</a> is an open-source Internet-of-Things (IoT) system
                 that records the water flow rate of an outlet in a household over time. Periodic reports are aggregated
@@ -83,12 +87,6 @@
                 they may also remotely close the valve (under normal operation) should the need arise. Thus, the IoT
                 system reactively guards against wastage due to leaks and overconsumption.
             </p>
-            <div class="flex gap-4 justify-around">
-                <div>
-                    <img src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" />
-                </div>
-                <div><img src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" /></div>
-            </div>
             <p>
                 The <a href="https://www.espressif.com/en/products/socs/esp32">ESP32</a> firmware is
                 <a href="https://github.com/drippy-iot/metro-tap">open-source</a>
@@ -107,13 +105,28 @@
             </p>
             <div class="flex gap-4">
                 <div>
-                    <img src="{drippySchematic}" alt="schematic diagram for Drippy circuitry" loading="lazy" />
+                    <img
+                        class="m-0 object-contain max-h-[543px]"
+                        src="{drippySchematic}"
+                        alt="schematic diagram for Drippy circuitry"
+                        loading="lazy"
+                    />
                 </div>
                 <div>
-                    <img src="{drippyBox}" alt="enclosed circuitry for Drippy and its ESP32 chip" loading="lazy" />
+                    <img
+                        class="m-0 object-contain max-h-[543px]"
+                        src="{drippyTestbench}"
+                        alt="Drippy testbench on actual hardware"
+                        loading="lazy"
+                    />
                 </div>
                 <div>
-                    <img src="{drippyTestbench}" alt="Drippy testbench on actual hardware" loading="lazy" />
+                    <img
+                        class="m-0 object-contain max-h-[543px]"
+                        src="{drippyBox}"
+                        alt="enclosed circuitry for Drippy and its ESP32 chip"
+                        loading="lazy"
+                    />
                 </div>
             </div>
         </section>
