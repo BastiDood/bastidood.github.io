@@ -53,7 +53,7 @@
         <!-- TODO: UP CSI Website -->
         <section id="drippy" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>Drippy</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{drippy}" alt="Drippy" />
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
@@ -64,10 +64,6 @@
                 <img class="m-0 w-8 h-8" src="{svelte}" alt="Svelte" />
                 <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
                 <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
-            </div>
-            <div class="flex gap-4 justify-around float-right">
-                <img class="m-0" src="{drippyLogin}" alt="login page for Drippy dashboard" loading="lazy" />
-                <img class="m-0" src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" />
             </div>
             <p>
                 <a href="https://github.com/drippy-iot">Drippy</a> is an open-source Internet-of-Things (IoT) system
@@ -87,6 +83,17 @@
                 they may also remotely close the valve (under normal operation) should the need arise. Thus, the IoT
                 system reactively guards against wastage due to leaks and overconsumption.
             </p>
+            <div class="flex gap-4 justify-around">
+                <div>
+                    <img
+                        class="m-0 max-h-96"
+                        src="{drippyLogin}"
+                        alt="login page for Drippy dashboard"
+                        loading="lazy"
+                    />
+                </div>
+                <div><img class="m-0 max-h-96" src="{drippyDashboard}" alt="Drippy dashboard" loading="lazy" /></div>
+            </div>
             <p>
                 The <a href="https://www.espressif.com/en/products/socs/esp32">ESP32</a> firmware is
                 <a href="https://github.com/drippy-iot/metro-tap">open-source</a>
@@ -132,7 +139,7 @@
         </section>
         <section id="doctrack" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>DocTrack</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{doctrack}" alt="DocTrack" />
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
@@ -188,7 +195,7 @@
         </section>
         <section id="palai" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>pal.ai</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{palai}" alt="pal.ai" />
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
@@ -259,7 +266,7 @@
         </section>
         <section id="soundrave" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>SoundRave</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{node}" alt="Node.js" />
                 <img class="m-0 w-8 h-8" src="{express}" alt="Express.js" />
@@ -289,7 +296,7 @@
         </section>
         <section id="chrozone" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>Chrozone</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{chrozone}" alt="Chrozone" />
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
@@ -326,7 +333,7 @@
         </section>
         <section id="quizzo" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>Quizzo</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{quizzo}" alt="Quizzo" />
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
@@ -357,7 +364,7 @@
         </section>
         <section id="multicast" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>UDP Multicast Chat</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
                 <img class="m-0 w-8 h-8" src="{tokio}" alt="Tokio" />
@@ -380,7 +387,7 @@
         </section>
         <section id="snake" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>Snake Clone with SDL2</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{cpp}" alt="C++" />
                 <img class="m-0 w-8 h-8" src="{cmake}" alt="CMake" />
@@ -409,7 +416,7 @@
         </section>
         <section id="option-block" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>A Block of Optionals!</h2>
-            <div class="flex gap-2">
+            <div class="flex flex-wrap gap-2">
                 <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
                 <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
             </div>
