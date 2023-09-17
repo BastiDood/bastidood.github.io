@@ -11,6 +11,7 @@
     import electron from '$lib/icons/lib/electron.svg';
     import espressif from '$lib/icons/lib/espressif.svg';
     import express from '$lib/icons/lib/express.svg';
+    import fastapi from '$lib/icons/lib/fastapi.svg';
     import flask from '$lib/icons/lib/flask.svg';
     import git from '$lib/icons/tech/git.svg';
     import go from '$lib/icons/lang/go.svg';
@@ -78,7 +79,7 @@
         <div>
             <Logo src="{flask}" lang="Flask" />
             <Logo src="{django}" lang="Django" />
-            <!-- TODO: FastAPI -->
+            <Logo src="{fastapi}" lang="FastAPI" />
             <Logo src="{huggingface}" lang="Huggingface" />
         </div>
     </section>
