@@ -20,6 +20,7 @@
     import java from '$lib/icons/lang/java.svg';
     import js from '$lib/icons/lang/js.svg';
     import mongo from '$lib/icons/tech/mongo.svg';
+    import mysql from '$lib/icons/tech/mysql.svg';
     import node from '$lib/icons/tech/node.svg';
     import php from '$lib/icons/lang/php.svg';
     import postgres from '$lib/icons/tech/postgres.svg';
@@ -93,8 +94,8 @@
         </div>
         <div>
             <Logo src="{postgres}" lang="PostgreSQL" />
+            <Logo src="{mysql}" lang="MySQL" />
             <Logo src="{mongo}" lang="MongoDB" />
-            <!-- TODO: MySQL -->
         </div>
     </section>
 </article>
