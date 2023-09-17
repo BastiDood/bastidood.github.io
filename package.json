@@ -36,7 +36,7 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-svelte": "^2.33.1",
         "htmlnano": "^2.0.4",
-        "marked": "^9.0.0",
+        "marked": "^9.0.2",
         "prettier": "^3.0.3",
         "prettier-plugin-svelte": "^3.0.3",
         "prettier-plugin-tailwindcss": "^0.5.4",
@@ -48,7 +48,7 @@
         "tailwindcss": "^3.3.3",
         "terser": "^5.19.4",
         "typescript": "^5.2.2",
-        "valibot": "^0.15.0",
+        "valibot": "^0.17.0",
         "vite": "^4.4.9",
         "vite-plugin-tailwind-purgecss": "^0.1.3"
     }
