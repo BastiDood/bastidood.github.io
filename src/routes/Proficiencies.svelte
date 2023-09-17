@@ -17,6 +17,7 @@
     import html from '$lib/icons/lang/html.svg';
     import huggingface from '$lib/icons/lib/huggingface.svg';
     import hyper from '$lib/icons/lib/hyper.svg';
+    import java from '$lib/icons/lang/java.svg';
     import js from '$lib/icons/lang/js.svg';
     import mongo from '$lib/icons/tech/mongo.svg';
     import node from '$lib/icons/tech/node.svg';
@@ -48,8 +49,8 @@
             <Logo src="{python}" lang="Python" />
         </div>
         <div>
-            <!-- TODO: Java -->
-            <Logo src="{php}" lang="PHP" />
+            <Logo src="{java}" lang="Java" />
+            <Logo src="{php}" lang="PHP" width="w-auto" />
             <Logo src="{cpp}" lang="C++" />
             <Logo src="{c}" lang="C" />
         </div>
