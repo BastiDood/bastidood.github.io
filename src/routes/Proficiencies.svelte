@@ -64,7 +64,7 @@
             <Logo src="{svelte}" lang="Svelte" />
             <Logo src="{solid}" lang="SolidJS" />
             <Logo src="{react}" lang="React" />
-            <Logo src="{tailwind}" lang="TailwindCSS" />
+            <Logo src="{tailwind}" lang="Tailwind" />
         </div>
         <div>
             <Logo src="{tokio}" lang="Tokio" />
