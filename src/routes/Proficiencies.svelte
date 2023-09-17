@@ -25,6 +25,7 @@
     import php from '$lib/icons/lang/php.svg';
     import postgres from '$lib/icons/tech/postgres.svg';
     import python from '$lib/icons/lang/python.svg';
+    import react from '$lib/icons/lib/react.svg';
     import rust from '$lib/icons/lang/rust.svg';
     import solid from '$lib/icons/lib/solid.svg';
     import svelte from '$lib/icons/lib/svelte.svg';
@@ -60,8 +61,8 @@
         <h2>Libraries &amp; Frameworks</h2>
         <div>
             <Logo src="{svelte}" lang="Svelte" />
-            <!-- TODO: React -->
             <Logo src="{solid}" lang="SolidJS" />
+            <Logo src="{react}" lang="React" />
             <Logo src="{tailwind}" lang="TailwindCSS" />
         </div>
         <div>
