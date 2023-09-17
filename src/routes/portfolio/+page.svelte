@@ -121,7 +121,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[543px]"
+                        class="m-0 object-contain max-h-full"
                         src="{drippyTestbench}"
                         alt="Drippy testbench on actual hardware"
                         loading="lazy"
@@ -188,9 +188,23 @@
                 request handlers for the
                 <dfn><abbr title="Representational State Transfer">REST</abbr></dfn> API.
             </p>
-            <div>
-                <img src="{doctrackMobile}" alt="DocTrack Mobile" loading="lazy" />
-                <img src="{doctrackDesktop}" alt="DocTrack Desktop" loading="lazy" />
+            <div class="flex gap-4">
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-[1080px]"
+                        src="{doctrackMobile}"
+                        alt="DocTrack Mobile"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-full"
+                        src="{doctrackDesktop}"
+                        alt="DocTrack Desktop"
+                        loading="lazy"
+                    />
+                </div>
             </div>
         </section>
         <section id="palai" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -255,13 +269,23 @@
                 <a href="https://parceljs.org/">Parcel</a> build tool for asset bundling, packaging, and optimization. The
                 PWA allows users to upload their own images of rice plants for classification.
             </p>
-            <div>
-                <img src="{palaiHome}" alt="pal.ai home page with file upload and camera controls" loading="lazy" />
-                <img
-                    src="{palaiMobile}"
-                    alt="pal.ai results page showing 79.28% confidence in Healthy classification"
-                    loading="lazy"
-                />
+            <div class="flex gap-4">
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-full"
+                        src="{palaiHome}"
+                        alt="pal.ai home page with file upload and camera controls"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-[1080px]"
+                        src="{palaiMobile}"
+                        alt="pal.ai results page showing 79.28% confidence in Healthy classification"
+                        loading="lazy"
+                    />
+                </div>
             </div>
         </section>
         <section id="soundrave" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -289,9 +313,23 @@
                 is used as the database and cache for Spotify
                 <dfn><abbr title="Application Program Interface">API</abbr></dfn> calls.
             </p>
-            <div>
-                <img src="{soundraveMobile}" alt="SoundRave Mobile" loading="lazy" />
-                <img src="{soundraveDesktop}" alt="SoundRave Desktop" loading="lazy" />
+            <div class="flex gap-4">
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-[768px]"
+                        src="{soundraveMobile}"
+                        alt="SoundRave Mobile"
+                        loading="lazy"
+                    />
+                </div>
+                <div>
+                    <img
+                        class="m-0 object-contain max-h-full"
+                        src="{soundraveDesktop}"
+                        alt="SoundRave Desktop"
+                        loading="lazy"
+                    />
+                </div>
             </div>
         </section>
         <section id="chrozone" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
@@ -324,10 +362,20 @@
             </p>
             <div class="flex gap-4 justify-around">
                 <div>
-                    <img src="{chrozoneAutocomplete}" alt="Chrozone Autocompletion Menu" loading="lazy" />
+                    <img
+                        class="m-0 object-contain max-h-[596px]"
+                        src="{chrozoneAutocomplete}"
+                        alt="Chrozone Autocompletion Menu"
+                        loading="lazy"
+                    />
                 </div>
                 <div>
-                    <img src="{chrozoneResult}" alt="Chrozone Preview Result" loading="lazy" />
+                    <img
+                        class="m-0 object-contain max-h-full"
+                        src="{chrozoneResult}"
+                        alt="Chrozone Preview Result"
+                        loading="lazy"
+                    />
                 </div>
             </div>
         </section>
@@ -358,9 +406,7 @@
                 answered the quiz correctly. The pioneer use of message components differentiates Chrozone from the
                 other bots in the market which use clunky reaction-based polling mechanisms.
             </p>
-            <div>
-                <img src="{quizzoResult}" alt="Quizzo Chat Output" loading="lazy" class="m-auto" />
-            </div>
+            <img src="{quizzoResult}" alt="Quizzo Chat Output" loading="lazy" class="m-auto" />
         </section>
         <section id="multicast" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
             <h2>UDP Multicast Chat</h2>
