@@ -13,6 +13,7 @@
     import express from '$lib/icons/lib/express.svg';
     import flask from '$lib/icons/lib/flask.svg';
     import git from '$lib/icons/tech/git.svg';
+    import go from '$lib/icons/lang/go.svg';
     import html from '$lib/icons/lang/html.svg';
     import huggingface from '$lib/icons/lib/huggingface.svg';
     import hyper from '$lib/icons/lib/hyper.svg';
@@ -36,7 +37,7 @@
         <h2>Languages</h2>
         <div>
             <Logo src="{rust}" lang="Rust" />
-            <!-- TODO: Go -->
+            <Logo src="{go}" lang="Go" />
             <Logo src="{ts}" lang="TypeScript" />
             <Logo src="{js}" lang="JavaScript" />
         </div>
