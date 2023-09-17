@@ -20,6 +20,7 @@
     import js from '$lib/icons/lang/js.svg';
     import mongo from '$lib/icons/tech/mongo.svg';
     import node from '$lib/icons/tech/node.svg';
+    import php from '$lib/icons/lang/php.svg';
     import postgres from '$lib/icons/tech/postgres.svg';
     import python from '$lib/icons/lang/python.svg';
     import rust from '$lib/icons/lang/rust.svg';
@@ -47,10 +48,10 @@
             <Logo src="{python}" lang="Python" />
         </div>
         <div>
+            <!-- TODO: Java -->
+            <Logo src="{php}" lang="PHP" />
             <Logo src="{cpp}" lang="C++" />
             <Logo src="{c}" lang="C" />
-            <!-- TODO: PHP -->
-            <!-- TODO: Java -->
         </div>
     </section>
     <section class="flex-1">

@@ -28,6 +28,7 @@ The following assets below have been retrieved from external sources. As such, t
 | [LinkedIn Logo](src/lib/icons/social/linkedin.svg)     | [LinkedIn](https://www.linkedin.com/)                                                                          | [Brand Guidelines](https://brand.linkedin.com/)                                                                                 |
 | [MongoDB Logo](src/lib/icons/tech/mongo.svg)           | [MongoDB, Inc.](https://www.mongodb.com/)                                                                      | [Trademark Standards for Use](https://www.mongodb.com/legal/trademark-usage-guidelines)                                         |
 | [Node.js Logo](src/lib/icons/tech/node.svg)            | [OpenJS Foundation]                                                                                            | [Trademark Policy][OpenJS Foundation Trademark Policy]                                                                          |
+| [PHP Logo](src/lib/icons/lang/php.svg)                 | [Colin Viebrock](https://viebrock.ca/)                                                                         | [CC BY-SA 4.0]                                                                                                                  |
 | [PostgreSQL Logo](src/lib/icons/tech/postgres.svg)     | [PostgreSQL Community Association of Canada](https://www.postgres.ca/)                                         | [Trademark Policy](https://www.postgresql.org/about/policies/trademarks/)                                                       |
 | [Python Logo](src/lib/icons/lang/python.svg)           | [Python Software Foundation](https://www.python.org/psf-landing/)                                              | [Trademark Policy](https://www.python.org/psf/trademarks/)                                                                      |
 | [Rust Logo](src/lib/icons/lang/rust.svg)               | [Rust Foundation](https://foundation.rust-lang.org/)                                                           | [CC BY 4.0]                                                                                                                     |
@@ -44,3 +45,4 @@ The following assets below have been retrieved from external sources. As such, t
 [CC BY 2.0]: https://creativecommons.org/licenses/by/2.0/
 [CC BY 3.0]: https://creativecommons.org/licenses/by/3.0/
 [CC BY 4.0]: https://creativecommons.org/licenses/by/4.0/
+[CC BY-SA 4.0]: https://creativecommons.org/licenses/by-sa/4.0/
