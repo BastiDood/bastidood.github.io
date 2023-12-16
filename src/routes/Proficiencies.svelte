@@ -36,7 +36,7 @@
 </script>
 
 <article
-    class="flex flex-wrap gap-4 text-center prose prose-headings:mt-0 prose-figcaption:text-black prose-figcaption:text-base prose-figcaption:m-0 max-w-none"
+    class="prose flex max-w-none flex-wrap gap-4 text-center prose-headings:mt-0 prose-figcaption:m-0 prose-figcaption:text-base prose-figcaption:text-black"
 >
     <section class="flex-1">
         <h2>Languages</h2>

@@ -44,26 +44,26 @@
     import ts from '$lib/icons/lang/ts.svg';
 </script>
 
-<div class="p-4 sm:p-12 md:p-16 prose prose-headings:mt-0 max-w-none space-y-8">
-    <div class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+<div class="prose max-w-none space-y-8 p-4 prose-headings:mt-0 sm:p-12 md:p-16">
+    <div class="max-w-none rounded-xl bg-card p-8 shadow-xl">
         <Proficiencies />
     </div>
     <article id="projects" class="space-y-12">
         <!-- TODO: HATiD -->
         <!-- TODO: UP CSI Website -->
-        <section id="drippy" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="drippy" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>Drippy</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{drippy}" alt="Drippy" />
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
-                <img class="m-0 w-8 h-8" src="{tokio}" alt="Tokio" />
-                <img class="m-0 w-8 h-8" src="{hyper}" alt="Hyper" />
-                <img class="m-0 w-8 h-8" src="{espressif}" alt="Espressif" />
-                <img class="m-0 w-8 h-8" src="{ts}" alt="TypeScript" />
-                <img class="m-0 w-8 h-8" src="{svelte}" alt="Svelte" />
-                <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
-                <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
+                <img class="m-0 h-8 w-8" src="{drippy}" alt="Drippy" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{rust}" alt="Rust" />
+                <img class="m-0 h-8 w-8" src="{tokio}" alt="Tokio" />
+                <img class="m-0 h-8 w-8" src="{hyper}" alt="Hyper" />
+                <img class="m-0 h-8 w-8" src="{espressif}" alt="Espressif" />
+                <img class="m-0 h-8 w-8" src="{ts}" alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src="{svelte}" alt="Svelte" />
+                <img class="m-0 h-8 w-8" src="{html}" alt="HTML" />
+                <img class="m-0 h-8 w-8" src="{css}" alt="CSS" />
             </div>
             <p>
                 <a href="https://github.com/drippy-iot">Drippy</a> is an open-source Internet-of-Things (IoT) system
@@ -83,7 +83,7 @@
                 they may also remotely close the valve (under normal operation) should the need arise. Thus, the IoT
                 system reactively guards against wastage due to leaks and overconsumption.
             </p>
-            <div class="flex gap-4 justify-around">
+            <div class="flex justify-around gap-4">
                 <div>
                     <img
                         class="m-0 max-h-96"
@@ -113,7 +113,7 @@
             <div class="flex gap-4">
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[543px]"
+                        class="m-0 max-h-[543px] object-contain"
                         src="{drippySchematic}"
                         alt="schematic diagram for Drippy circuitry"
                         loading="lazy"
@@ -121,7 +121,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-full"
+                        class="m-0 max-h-full object-contain"
                         src="{drippyTestbench}"
                         alt="Drippy testbench on actual hardware"
                         loading="lazy"
@@ -129,7 +129,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[543px]"
+                        class="m-0 max-h-[543px] object-contain"
                         src="{drippyBox}"
                         alt="enclosed circuitry for Drippy and its ESP32 chip"
                         loading="lazy"
@@ -137,18 +137,18 @@
                 </div>
             </div>
         </section>
-        <section id="doctrack" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="doctrack" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>DocTrack</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{doctrack}" alt="DocTrack" />
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
-                <img class="m-0 w-8 h-8" src="{ts}" alt="TypeScript" />
-                <img class="m-0 w-8 h-8" src="{js}" alt="JavaScript" />
-                <img class="m-0 w-8 h-8" src="{svelte}" alt="Svelte" />
-                <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
-                <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
-                <img class="m-0 w-8 h-8" src="{postgres}" alt="PostgreSQL" />
+                <img class="m-0 h-8 w-8" src="{doctrack}" alt="DocTrack" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{deno}" alt="Deno" />
+                <img class="m-0 h-8 w-8" src="{ts}" alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src="{js}" alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src="{svelte}" alt="Svelte" />
+                <img class="m-0 h-8 w-8" src="{html}" alt="HTML" />
+                <img class="m-0 h-8 w-8" src="{css}" alt="CSS" />
+                <img class="m-0 h-8 w-8" src="{postgres}" alt="PostgreSQL" />
             </div>
             <p>
                 <a href="https://doctrack.deno.dev/">DocTrack</a> is an
@@ -191,7 +191,7 @@
             <div class="flex gap-4">
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[1080px]"
+                        class="m-0 max-h-[1080px] object-contain"
                         src="{doctrackMobile}"
                         alt="DocTrack Mobile"
                         loading="lazy"
@@ -199,7 +199,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-full"
+                        class="m-0 max-h-full object-contain"
                         src="{doctrackDesktop}"
                         alt="DocTrack Desktop"
                         loading="lazy"
@@ -207,18 +207,18 @@
                 </div>
             </div>
         </section>
-        <section id="palai" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="palai" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>pal.ai</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{palai}" alt="pal.ai" />
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
-                <img class="m-0 w-8 h-8" src="{ts}" alt="TypeScript" />
-                <img class="m-0 w-8 h-8" src="{svelte}" alt="Svelte" />
-                <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
-                <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
-                <img class="m-0 w-8 h-8" src="{python}" alt="Python" />
-                <img class="m-0 w-8 h-8" src="{huggingface}" alt="Hugging Face" />
+                <img class="m-0 h-8 w-8" src="{palai}" alt="pal.ai" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{deno}" alt="Deno" />
+                <img class="m-0 h-8 w-8" src="{ts}" alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src="{svelte}" alt="Svelte" />
+                <img class="m-0 h-8 w-8" src="{html}" alt="HTML" />
+                <img class="m-0 h-8 w-8" src="{css}" alt="CSS" />
+                <img class="m-0 h-8 w-8" src="{python}" alt="Python" />
+                <img class="m-0 h-8 w-8" src="{huggingface}" alt="Hugging Face" />
             </div>
             <p>
                 The <a href="https://palai.deno.dev/">pal.ai</a> project is an
@@ -272,7 +272,7 @@
             <div class="flex gap-4">
                 <div>
                     <img
-                        class="m-0 object-contain max-h-full"
+                        class="m-0 max-h-full object-contain"
                         src="{palaiHome}"
                         alt="pal.ai home page with file upload and camera controls"
                         loading="lazy"
@@ -280,7 +280,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[1080px]"
+                        class="m-0 max-h-[1080px] object-contain"
                         src="{palaiMobile}"
                         alt="pal.ai results page showing 79.28% confidence in Healthy classification"
                         loading="lazy"
@@ -288,16 +288,16 @@
                 </div>
             </div>
         </section>
-        <section id="soundrave" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="soundrave" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>SoundRave</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{node}" alt="Node.js" />
-                <img class="m-0 w-8 h-8" src="{express}" alt="Express.js" />
-                <img class="m-0 w-8 h-8" src="{html}" alt="HTML" />
-                <img class="m-0 w-8 h-8" src="{css}" alt="CSS" />
-                <img class="m-0 w-8 h-8" src="{js}" alt="JavaScript" />
-                <img class="m-0 w-8 h-8" src="{mongo}" alt="MongoDB" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{node}" alt="Node.js" />
+                <img class="m-0 h-8 w-8" src="{express}" alt="Express.js" />
+                <img class="m-0 h-8 w-8" src="{html}" alt="HTML" />
+                <img class="m-0 h-8 w-8" src="{css}" alt="CSS" />
+                <img class="m-0 h-8 w-8" src="{js}" alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src="{mongo}" alt="MongoDB" />
             </div>
             <p>
                 <a href="https://github.com/BastiDood/soundrave">SoundRave</a> was an aggregator app for new music released
@@ -316,7 +316,7 @@
             <div class="flex gap-4">
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[768px]"
+                        class="m-0 max-h-[768px] object-contain"
                         src="{soundraveMobile}"
                         alt="SoundRave Mobile"
                         loading="lazy"
@@ -324,7 +324,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-full"
+                        class="m-0 max-h-full object-contain"
                         src="{soundraveDesktop}"
                         alt="SoundRave Desktop"
                         loading="lazy"
@@ -332,15 +332,15 @@
                 </div>
             </div>
         </section>
-        <section id="chrozone" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="chrozone" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>Chrozone</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{chrozone}" alt="Chrozone" />
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
-                <img class="m-0 w-8 h-8" src="{tokio}" alt="Tokio" />
-                <img class="m-0 w-8 h-8" src="{hyper}" alt="Hyper" />
-                <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
+                <img class="m-0 h-8 w-8" src="{chrozone}" alt="Chrozone" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{rust}" alt="Rust" />
+                <img class="m-0 h-8 w-8" src="{tokio}" alt="Tokio" />
+                <img class="m-0 h-8 w-8" src="{hyper}" alt="Hyper" />
+                <img class="m-0 h-8 w-8" src="{deno}" alt="Deno" />
             </div>
             <p>
                 <a href="https://github.com/BastiDood/chrozone">Chrozone</a> is a
@@ -360,10 +360,10 @@
                 send timezone-adaptive announcements. No need to convert the timezones yourself! Let Chrozone do the
                 work.
             </p>
-            <div class="flex gap-4 justify-around">
+            <div class="flex justify-around gap-4">
                 <div>
                     <img
-                        class="m-0 object-contain max-h-[596px]"
+                        class="m-0 max-h-[596px] object-contain"
                         src="{chrozoneAutocomplete}"
                         alt="Chrozone Autocompletion Menu"
                         loading="lazy"
@@ -371,7 +371,7 @@
                 </div>
                 <div>
                     <img
-                        class="m-0 object-contain max-h-full"
+                        class="m-0 max-h-full object-contain"
                         src="{chrozoneResult}"
                         alt="Chrozone Preview Result"
                         loading="lazy"
@@ -379,16 +379,16 @@
                 </div>
             </div>
         </section>
-        <section id="quizzo" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="quizzo" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>Quizzo</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{quizzo}" alt="Quizzo" />
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
-                <img class="m-0 w-8 h-8" src="{tokio}" alt="Tokio" />
-                <img class="m-0 w-8 h-8" src="{hyper}" alt="Hyper" />
-                <img class="m-0 w-8 h-8" src="{deno}" alt="Deno" />
-                <img class="m-0 w-8 h-8" src="{postgres}" alt="PostgreSQL" />
+                <img class="m-0 h-8 w-8" src="{quizzo}" alt="Quizzo" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{rust}" alt="Rust" />
+                <img class="m-0 h-8 w-8" src="{tokio}" alt="Tokio" />
+                <img class="m-0 h-8 w-8" src="{hyper}" alt="Hyper" />
+                <img class="m-0 h-8 w-8" src="{deno}" alt="Deno" />
+                <img class="m-0 h-8 w-8" src="{postgres}" alt="PostgreSQL" />
             </div>
             <p>
                 <a href="https://github.com/BastiDood/quizzo">Quizzo</a> is a
@@ -408,12 +408,12 @@
             </p>
             <img src="{quizzoResult}" alt="Quizzo Chat Output" loading="lazy" class="m-auto" />
         </section>
-        <section id="multicast" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="multicast" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>UDP Multicast Chat</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
-                <img class="m-0 w-8 h-8" src="{tokio}" alt="Tokio" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{rust}" alt="Rust" />
+                <img class="m-0 h-8 w-8" src="{tokio}" alt="Tokio" />
             </div>
             <p>
                 The <a href="https://github.com/BastiDood/udp-multicast-chat"
@@ -431,12 +431,12 @@
                 <img src="{multicastScreenshot}" alt="UDP Multicast Chat Preview" loading="lazy" class="m-auto" />
             </div>
         </section>
-        <section id="snake" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="snake" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>Snake Clone with SDL2</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{cpp}" alt="C++" />
-                <img class="m-0 w-8 h-8" src="{cmake}" alt="CMake" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{cpp}" alt="C++" />
+                <img class="m-0 h-8 w-8" src="{cmake}" alt="CMake" />
             </div>
             <p>
                 Using the popular <a href="https://www.libsdl.org/"
@@ -454,17 +454,17 @@
                 > as its cross-platform build system generator. Assuming the necessary system dependencies have been set
                 up, the project may be built and run on any platform.
             </p>
-            <div class="flex gap-4 justify-around">
+            <div class="flex justify-around gap-4">
                 <div><img src="{snakeScore1}" alt="Snake Score 1" loading="lazy" /></div>
                 <div><img src="{snakeScore6}" alt="Snake Score 6" loading="lazy" /></div>
                 <div><img src="{snakeScore16}" alt="Snake Score 16" loading="lazy" /></div>
             </div>
         </section>
-        <section id="option-block" class="rounded-xl bg-card p-8 shadow-xl max-w-none">
+        <section id="option-block" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>A Block of Optionals!</h2>
             <div class="flex flex-wrap gap-2">
-                <img class="m-0 w-8 h-8" src="{git}" alt="Git" />
-                <img class="m-0 w-8 h-8" src="{rust}" alt="Rust" />
+                <img class="m-0 h-8 w-8" src="{git}" alt="Git" />
+                <img class="m-0 h-8 w-8" src="{rust}" alt="Rust" />
             </div>
             <p>
                 The <a href="https://github.com/BastiDood/option-block"><code>option-block</code></a> crate is an open-source

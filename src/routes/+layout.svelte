@@ -18,10 +18,10 @@
         </ul>
     </nav>
 </header>
-<main class="bg-gradient-to-b from-sky to-white space-y-8">
+<main class="space-y-8 bg-gradient-to-b from-sky to-white">
     <slot />
 </main>
-<footer class="flex bg-brand text-white text-xs justify-around p-4">
+<footer class="flex justify-around bg-brand p-4 text-xs text-white">
     <section>
         <img src="{profile}" alt="BastiDood" width="64" height="64" loading="lazy" />
         <p>&#169; 2023 Basti Ortiz</p>
