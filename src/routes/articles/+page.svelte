@@ -106,19 +106,24 @@
     </section>
     <section class="prose max-w-none rounded-xl bg-card p-8 shadow-xl">
         <h2>Latest Articles</h2>
-        {#if articles === null}
-            <p>Cannot fetch the latest articles.</p>
-        {:else if articles.length === 0}
-            <p>There are no new articles yet.</p>
-        {:else}
-            <div class="gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
-                {#each articles as { title, description, published_at, cover_image, url } (url)}
-                    <Article {title} href="{url}" src="{cover_image}" alt="{description}" datetime="{published_at}">
-                        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                        {@html description}
-                    </Article>
-                {/each}
-            </div>
-        {/if}
+        {#await articles}
+            <p>Loading latest articles...</p>
+        {:then articles}
+            {#if articles.length === 0}
+                <p>There are no new articles yet.</p>
+            {:else}
+                <div class="gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+                    {#each articles as { title, description, published_at, cover_image, url } (url)}
+                        <Article {title} href="{url}" src="{cover_image}" alt="{description}" datetime="{published_at}">
+                            <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+                            {@html description}
+                        </Article>
+                    {/each}
+                </div>
+            {/if}
+        {:catch err}
+            <p>Cannot fetch the latest articles. Please try again.</p>
+            <p><code>{err}</code></p>
+        {/await}
     </section>
 </div>

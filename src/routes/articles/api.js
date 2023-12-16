@@ -10,6 +10,6 @@ export async function fetchArticles() {
         return parseAsync(arrayAsync(Article), await res.json());
     } catch (err) {
         console.error(err);
-        return null;
+        throw err;
     }
 }
