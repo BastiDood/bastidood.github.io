@@ -1,9 +1,8 @@
 <script lang="ts">
     import Article from './Article.svelte';
-    import type { PageData } from './$types.js';
 
     // eslint-disable-next-line init-declarations
-    export let data: PageData;
+    export let data;
     $: ({ articles } = data);
 </script>
 
