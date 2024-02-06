@@ -48,8 +48,8 @@ devDependencies:
     specifier: ^2.1.0
     version: 2.1.0(cssnano@6.0.3)(postcss@8.4.34)(terser@5.27.0)(typescript@5.3.3)
   marked:
-    specifier: ^11.2.0
-    version: 11.2.0
+    specifier: ^12.0.0
+    version: 12.0.0
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -84,8 +84,8 @@ devDependencies:
     specifier: ^5.3.3
     version: 5.3.3
   valibot:
-    specifier: ^0.27.1
-    version: 0.27.1
+    specifier: ^0.28.0
+    version: 0.28.0
   vite:
     specifier: ^5.0.12
     version: 5.0.12(terser@5.27.0)
@@ -2878,8 +2878,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /marked@11.2.0:
-    resolution: {integrity: sha512-HR0m3bvu0jAPYiIvLUUQtdg1g6D247//lvcekpHO1WMvbwDlwSkZAX9Lw4F4YHE1T0HaaNve0tuAWuV1UJ6vtw==}
+  /marked@12.0.0:
+    resolution: {integrity: sha512-Vkwtq9rLqXryZnWaQc86+FHLC6tr/fycMfYAhiOIXkrNmeGAyhSxjqu0Rs1i0bBqw5u0S7+lV9fdH2ZSVaoa0w==}
     engines: {node: '>= 18'}
     hasBin: true
     dev: true
@@ -4844,8 +4844,8 @@ packages:
       inherits: 2.0.3
     dev: true
 
-  /valibot@0.27.1:
-    resolution: {integrity: sha512-k57/5/kMwMjiVP0LUMpa+n4ihSemuXshz1ND4fftKw1bkHZYN/TnHcbjaEie3K7FwAceiOgugLZPjSaNxdygeg==}
+  /valibot@0.28.0:
+    resolution: {integrity: sha512-+ADabFSOGEffVmMYltPVK3K1GpbzXGoNSoP9ZbjTVz7wkjVIj6L2NvOu4TaeU2R9s7tyNKihcAeddmrpT6LDzQ==}
     dev: true
 
   /validate-npm-package-license@3.0.4:
