@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install `pnpm` via Corepack
-        run: corepack enable
+        run: corepack enable pnpm
       - name: Get `pnpm` Store Directory
         shell: bash
         run: |
