@@ -1,6 +1,6 @@
 <script>
     import Hero from './Hero.svelte';
-    import Proficiencies from './Proficiencies.svelte';
+    import Proficiencies from '$lib/components/Proficiencies.svelte';
 </script>
 
 <article class="flex h-screen items-center justify-center">

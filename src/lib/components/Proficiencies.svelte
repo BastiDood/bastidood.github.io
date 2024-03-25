@@ -1,5 +1,7 @@
 <script>
-    import Logo from './Logo.svelte';
+    import Logo from '../../routes/Logo.svelte';
+    import anchor from '$lib/icons/lib/anchor.png';
+    import arbitrum from '$lib/icons/tech/arbitrum.svg';
     import c from '$lib/icons/lang/c.svg';
     import cmake from '$lib/icons/tech/cmake.svg';
     import cpp from '$lib/icons/lang/cpp.svg';
@@ -10,11 +12,13 @@
     import docker from '$lib/icons/tech/docker.svg';
     import electron from '$lib/icons/lib/electron.svg';
     import espressif from '$lib/icons/lib/espressif.svg';
+    import ethereum from '$lib/icons/tech/ethereum.svg';
     import express from '$lib/icons/lib/express.svg';
     import fastapi from '$lib/icons/lib/fastapi.svg';
     import flask from '$lib/icons/lib/flask.svg';
     import git from '$lib/icons/tech/git.svg';
     import go from '$lib/icons/lang/go.svg';
+    import hardhat from '$lib/icons/lib/hardhat.svg';
     import html from '$lib/icons/lang/html.svg';
     import huggingface from '$lib/icons/lib/huggingface.svg';
     import hyper from '$lib/icons/lib/hyper.svg';
@@ -28,6 +32,7 @@
     import python from '$lib/icons/lang/python.svg';
     import react from '$lib/icons/lib/react.svg';
     import rust from '$lib/icons/lang/rust.svg';
+    import solana from '$lib/icons/tech/solana.svg';
     import solid from '$lib/icons/lib/solid.svg';
     import svelte from '$lib/icons/lib/svelte.svg';
     import tailwind from '$lib/icons/lib/tailwind.svg';
@@ -82,6 +87,10 @@
             <Logo src="{fastapi}" lang="FastAPI" />
             <Logo src="{huggingface}" lang="Huggingface" />
         </div>
+        <div>
+            <Logo src="{hardhat}" lang="Hardhat" />
+            <Logo src="{anchor}" lang="Anchor" />
+        </div>
     </section>
     <section class="flex-1">
         <h2>Technologies</h2>
@@ -98,6 +107,11 @@
             <Logo src="{postgres}" lang="PostgreSQL" />
             <Logo src="{mysql}" lang="MySQL" />
             <Logo src="{mongo}" lang="MongoDB" />
+        </div>
+        <div>
+            <Logo src="{solana}" lang="Solana" />
+            <Logo src="{ethereum}" lang="Ethereum" />
+            <Logo src="{arbitrum}" lang="Arbitrum" />
         </div>
     </section>
 </article>

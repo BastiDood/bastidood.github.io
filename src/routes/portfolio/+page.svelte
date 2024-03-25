@@ -1,5 +1,5 @@
 <script>
-    import Proficiencies from '../Proficiencies.svelte';
+    import Proficiencies from '$lib/components/Proficiencies.svelte';
     import chrozone from '$lib/images/chrozone/logo.webp';
     import chrozoneAutocomplete from '$lib/images/chrozone/autocomplete.png';
     import chrozoneResult from '$lib/images/chrozone/result.png';
