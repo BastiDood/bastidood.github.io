@@ -113,7 +113,7 @@
             {:else}
                 <div class="gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
                     {#each articles as { title, description, published_at, cover_image, url } (url)}
-                        <Article {title} href="{url}" src="{cover_image}" alt="{description}" datetime="{published_at}">
+                        <Article {title} href={url} src={cover_image} alt={description} datetime={published_at}>
                             <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                             {@html description}
                         </Article>

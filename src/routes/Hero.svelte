@@ -11,11 +11,11 @@
         <p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
     </div>
     <div class="flex items-center gap-2">
-        <a href="https://github.com/BastiDood" title="GitHub"><img src="{github}" alt="GitHub" class="w-8" /></a>
-        <a href="https://dev.to/somedood" title="dev.to"><img src="{dev}" alt="dev.to" class="w-8" /></a>
+        <a href="https://github.com/BastiDood" title="GitHub"><img src={github} alt="GitHub" class="w-8" /></a>
+        <a href="https://dev.to/somedood" title="dev.to"><img src={dev} alt="dev.to" class="w-8" /></a>
         <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn"
-            ><img src="{linkedIn}" alt="LinkedIn" class="w-8" /></a
+            ><img src={linkedIn} alt="LinkedIn" class="w-8" /></a
         >
-        <a href="https://twitter.com/BastiDood" title="Twitter"><img src="{twitter}" alt="Twitter" class="w-8" /></a>
+        <a href="https://twitter.com/BastiDood" title="Twitter"><img src={twitter} alt="Twitter" class="w-8" /></a>
     </div>
 </div>

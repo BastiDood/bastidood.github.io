@@ -46,72 +46,72 @@
     <section class="flex-1">
         <h2>Languages</h2>
         <div>
-            <Logo src="{rust}" lang="Rust" />
-            <Logo src="{go}" lang="Go" />
-            <Logo src="{ts}" lang="TypeScript" />
-            <Logo src="{js}" lang="JavaScript" />
+            <Logo src={rust} lang="Rust" />
+            <Logo src={go} lang="Go" />
+            <Logo src={ts} lang="TypeScript" />
+            <Logo src={js} lang="JavaScript" />
         </div>
         <div>
-            <Logo src="{html}" lang="HTML" />
-            <Logo src="{css}" lang="CSS" />
-            <Logo src="{python}" lang="Python" />
+            <Logo src={html} lang="HTML" />
+            <Logo src={css} lang="CSS" />
+            <Logo src={python} lang="Python" />
         </div>
         <div>
-            <Logo src="{java}" lang="Java" />
-            <Logo src="{php}" lang="PHP" width="w-auto" />
-            <Logo src="{cpp}" lang="C++" />
-            <Logo src="{c}" lang="C" />
+            <Logo src={java} lang="Java" />
+            <Logo src={php} lang="PHP" width="w-auto" />
+            <Logo src={cpp} lang="C++" />
+            <Logo src={c} lang="C" />
         </div>
     </section>
     <section class="flex-1">
         <h2>Libraries &amp; Frameworks</h2>
         <div>
-            <Logo src="{svelte}" lang="Svelte" />
-            <Logo src="{solid}" lang="SolidJS" />
-            <Logo src="{react}" lang="React" />
-            <Logo src="{tailwind}" lang="Tailwind" />
+            <Logo src={svelte} lang="Svelte" />
+            <Logo src={solid} lang="SolidJS" />
+            <Logo src={react} lang="React" />
+            <Logo src={tailwind} lang="Tailwind" />
         </div>
         <div>
-            <Logo src="{tokio}" lang="Tokio" />
-            <Logo src="{hyper}" lang="Hyper" />
-            <Logo src="{espressif}" lang="Espressif" />
+            <Logo src={tokio} lang="Tokio" />
+            <Logo src={hyper} lang="Hyper" />
+            <Logo src={espressif} lang="Espressif" />
         </div>
         <div>
-            <Logo src="{express}" lang="Express.js" />
-            <Logo src="{electron}" lang="Electron" />
-            <Logo src="{discord}" lang="Discord.js" />
+            <Logo src={express} lang="Express.js" />
+            <Logo src={electron} lang="Electron" />
+            <Logo src={discord} lang="Discord.js" />
         </div>
         <div>
-            <Logo src="{flask}" lang="Flask" />
-            <Logo src="{django}" lang="Django" />
-            <Logo src="{fastapi}" lang="FastAPI" />
-            <Logo src="{huggingface}" lang="Huggingface" />
+            <Logo src={flask} lang="Flask" />
+            <Logo src={django} lang="Django" />
+            <Logo src={fastapi} lang="FastAPI" />
+            <Logo src={huggingface} lang="Huggingface" />
         </div>
         <div>
-            <Logo src="{hardhat}" lang="Hardhat" />
-            <Logo src="{anchor}" lang="Anchor" />
+            <Logo src={hardhat} lang="Hardhat" />
+            <Logo src={anchor} lang="Anchor" />
         </div>
     </section>
     <section class="flex-1">
         <h2>Technologies</h2>
         <div>
-            <Logo src="{git}" lang="Git" />
-            <Logo src="{docker}" lang="Docker" />
-            <Logo src="{cmake}" lang="CMake" />
+            <Logo src={git} lang="Git" />
+            <Logo src={docker} lang="Docker" />
+            <Logo src={cmake} lang="CMake" />
         </div>
         <div>
-            <Logo src="{deno}" lang="Deno" />
-            <Logo src="{node}" lang="Node.js" />
+            <Logo src={deno} lang="Deno" />
+            <Logo src={node} lang="Node.js" />
         </div>
         <div>
-            <Logo src="{postgres}" lang="PostgreSQL" />
-            <Logo src="{mysql}" lang="MySQL" />
-            <Logo src="{mongo}" lang="MongoDB" />
+            <Logo src={postgres} lang="PostgreSQL" />
+            <Logo src={mysql} lang="MySQL" />
+            <Logo src={mongo} lang="MongoDB" />
         </div>
         <div>
-            <Logo src="{solana}" lang="Solana" />
-            <Logo src="{ethereum}" lang="Ethereum" />
-            <Logo src="{arbitrum}" lang="Arbitrum" />
+            <Logo src={solana} lang="Solana" />
+            <Logo src={ethereum} lang="Ethereum" />
+            <Logo src={arbitrum} lang="Arbitrum" />
         </div>
     </section>
 </article>
