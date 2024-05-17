@@ -64,6 +64,7 @@
                 <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
                 <img class="m-0 h-8 w-8" src={html} alt="HTML" />
                 <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
             </div>
             <p>
                 <a href="https://github.com/drippy-iot">Drippy</a> is an open-source Internet-of-Things (IoT) system
