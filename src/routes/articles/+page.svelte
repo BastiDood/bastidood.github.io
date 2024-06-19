@@ -36,7 +36,7 @@
             <Article
                 title="18 Essential Videos That Fundamentally Shaped My Understanding of JavaScript"
                 href="https://dev.to/somedood/18-essential-videos-that-fundamentally-shaped-my-understanding-of-javascript-3ib"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s---ipK7V2d--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/dvi7ktu6s10mqfdb7j7e.png"
+                src="https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2Fdvi7ktu6s10mqfdb7j7e.png"
                 alt="A collection of YouTube thumbnails featuring the 18 essential videos."
                 datetime="2020-07-08T11:29:03Z"
             >
@@ -50,7 +50,7 @@
             <Article
                 title="🦀 Rust Reviewed: Is the hype justified? 🦀"
                 href="https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--Ht2L9e3o--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/5u4cv4vj6f6y0dtv0pd9.png"
+                src="https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2F5u4cv4vj6f6y0dtv0pd9.png"
                 alt="My character featuring multiple instances of Ferris the Crab on a beach."
                 datetime="2020-12-22T17:49:45Z"
             >
@@ -63,7 +63,7 @@
             <Article
                 title="The Proper Way to Write Async Constructors in JavaScript"
                 href="https://dev.to/somedood/the-proper-way-to-write-async-constructors-in-javascript-1o8c"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--TLVfqzI4--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/mgfbm1966l0yesgi9hs3.png"
+                src="https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fmgfbm1966l0yesgi9hs3.png"
                 alt="My character in front of a cartoonish construction site."
                 datetime="2021-08-18T14:08:39Z"
             >
@@ -78,7 +78,7 @@
             <Article
                 title="How Rust helped me power through my C assignments"
                 href="https://dev.to/somedood/how-rust-helped-me-power-through-my-c-assignments-2akk"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--I4gsRjDF--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6qvynqpjla5m7uscvgfy.png"
+                src="https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F6qvynqpjla5m7uscvgfy.png"
                 alt="Ferris the Crab on top of my character's head pointing at figures of common data structures in computer science."
                 datetime="2022-01-29T16:23:43Z"
             >
@@ -90,7 +90,7 @@
             <Article
                 title="JavaScript Concurrency: Avoiding the Sequential Trap"
                 href="https://dev.to/somedood/javascript-concurrency-avoiding-the-sequential-trap-7f0"
-                src="https://res.cloudinary.com/practicaldev/image/fetch/s--3w1yi7Mg--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/i/zio6x6n0m98a8pmzby3f.png"
+                src="https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2Fzio6x6n0m98a8pmzby3f.png"
                 alt="My character slouched over a desk full of papers as if to imitate the workload of JavaScript engine."
                 datetime="2020-06-14T11:26:32Z"
             >
