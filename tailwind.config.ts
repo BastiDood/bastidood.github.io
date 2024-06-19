@@ -3,7 +3,7 @@ import typo from '@tailwindcss/typography';
 
 export default {
     experimental: { optimizeUniversalDefaults: true },
-    content: ['./src/**/*.{css,html,js,svelte,ts}'],
+    content: ['./src/**/*.{html,js,svelte,ts}'],
     theme: {
         extend: {
             colors: {
