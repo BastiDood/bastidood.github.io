@@ -1,11 +1,15 @@
-import { objectAsync, string, transformAsync, url } from 'valibot';
+import { object, pipe, string, transform, url } from 'valibot';
 import { marked } from 'marked';
 
-const UrlSchema = string([url()]);
+const UrlSchema = pipe(string(), url());
 
-export const Article = objectAsync({
+export const Article = object({
     title: string(),
-    description: transformAsync(string(), str => marked(str, { pedantic: true })),
+    description: pipe(
+        string(),
+        transform(str => marked(str, { async: false, pedantic: true })),
+        string(),
+    ),
     published_at: string(),
     cover_image: UrlSchema,
     url: UrlSchema,
