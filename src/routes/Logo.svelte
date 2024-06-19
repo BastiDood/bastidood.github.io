@@ -1,6 +1,5 @@
 <script lang="ts">
     type TailwindDimension = number | 'auto';
-
     // eslint-disable-next-line init-declarations
     export let src: string;
     // eslint-disable-next-line init-declarations

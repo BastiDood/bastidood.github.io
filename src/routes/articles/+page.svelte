@@ -1,6 +1,5 @@
-<script lang="ts">
+<script>
     import Article from './Article.svelte';
-
     // eslint-disable-next-line init-declarations
     export let data;
     $: ({ articles } = data);
