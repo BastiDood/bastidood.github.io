@@ -17,6 +17,12 @@
         }
     ],
     "rules": {
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "argsIgnorePattern": "^_"
+            }
+        ],
         "no-constant-binary-expression": "error",
         "no-constructor-return": "error",
         "no-duplicate-imports": "error",
@@ -28,6 +34,7 @@
         "no-unmodified-loop-condition": "error",
         "no-unreachable-loop": "error",
         "no-unused-private-class-members": "error",
+        "no-unused-vars": "off",
         "no-use-before-define": "error",
         "require-atomic-updates": "error",
         "block-scoped-var": "error",
@@ -97,8 +104,25 @@
         "prefer-template": "error",
         "radix": "error",
         "require-await": "error",
-        "sort-imports": "error",
-        "spaced-comment": ["warn", "always", { "markers": ["/"] }],
-        "yoda": ["warn", "never", { "exceptRange": true }]
+        "sort-imports": [
+            "error",
+            {
+                "allowSeparatedGroups": true
+            }
+        ],
+        "spaced-comment": [
+            "error",
+            "always",
+            {
+                "markers": ["/"]
+            }
+        ],
+        "yoda": [
+            "warn",
+            "never",
+            {
+                "exceptRange": true
+            }
+        ]
     }
 }
