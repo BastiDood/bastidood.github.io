@@ -173,7 +173,38 @@
                 <img class="m-0 h-8 w-8" src={css} alt="CSS" />
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
             </div>
-            <!-- TODO -->
+            <p>
+                <a target="_blank" href="https://dapped-out.pages.dev/">Dapped Out!</a> is an
+                <a target="_blank" href="https://github.com/BastiDood/dapped-out">open-source</a>
+                timing-based casino game built on the <a target="_blank" href="https://solana.com/">Solana</a> blockchain.
+                The objective of the game is simple: try to press a button as close to a targeted marker as possible. The
+                closest contestant to the target wins the greatest share in the contested pot.
+            </p>
+            <p>
+                The application accepts any valid token in the <a target="_blank" href="https://solana.com/">Solana</a>
+                blockchain as a currency for contests. When creating a new contest, simply point it to the mint account of
+                the token being transacted. For instance, the <code>USDC</code>
+                coin may be transacted by pointing the contest to the mint address
+                <code>EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v</code>. For convenience, it is also possible to
+                create (only) one brand new program-derived user-generated token instead. The creator has the privilege
+                of minting new supply as well as transferring tokens to other wallets.
+            </p>
+            <p>
+                Users may now join the existing contest by staking some tokens into the shared pot. They now try their
+                luck in timing the meter as closely as possible. At any point in the future, the contest host may close
+                the contest to finally distribute the winnings in proportion to the accuracy of each contestant. Past
+                contests are archived for future audits.
+            </p>
+            <p>
+                The game is implemented as an installable
+                <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps" target="_blank"
+                    >progressive web application</a
+                >
+                powered by <a target="_blank" href="https://svelte.dev/">Svelte</a> in the front end. In the back end,
+                the game logic runs on <a target="_blank" href="https://solana.com/">Solana</a>
+                programs written in <a target="_blank" href="https://www.rust-lang.org/">Rust</a> with the
+                <a target="_blank" href="https://www.anchor-lang.com/">Anchor</a> framework.
+            </p>
             <div class="md:flex md:gap-4">
                 <div><img loading="lazy" src={dappedMint} alt="Botoken Mint Page" /></div>
                 <div><img loading="lazy" src={dappedContest} alt="Botoken Contest Page" /></div>
@@ -208,7 +239,9 @@
                 enables an interesting exploration into self-balancing cycles of tokenized voting power.
             </p>
             <p>
-                The main user application is a <a target="_blank" href="https://web.dev/explore/progressive-web-apps"
+                The main user application is an installable <a
+                    target="_blank"
+                    href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
                     >progressive web application</a
                 >
                 powered by <a target="_blank" href="https://svelte.dev/">Svelte</a> that interfaces with
@@ -274,19 +307,19 @@
                     ></b
                 >
                 is a component of
-                <a href="https://itslab.ncts.upd.edu.ph/create/" target="_blank" class="anchor"
+                <a href="https://itslab.ncts.upd.edu.ph/create/" target="_blank"
                     >Project <dfn
                         ><abbr title="Collection, Recording, and Analysis of Traffic Incidence Data">CREATE</abbr></dfn
                     ></a
                 >
                 by the
-                <a href="https://itslab.ncts.upd.edu.ph/" target="_blank" class="anchor"
+                <a href="https://itslab.ncts.upd.edu.ph/" target="_blank"
                     >Intelligent Systems Laboratory <dfn
                         ><abbr title="Intelligent Transportation Systems Laboratory">(ITSLab)</abbr></dfn
                     ></a
                 >
                 of the
-                <a href="https://ncts.upd.edu.ph/" target="_blank" class="anchor"
+                <a href="https://ncts.upd.edu.ph/" target="_blank"
                     >National Center for Transportation Studies <dfn
                         ><abbr title="National Center for Transportation Studies">(NCTS)</abbr></dfn
                     ></a
@@ -301,8 +334,10 @@
                 >, to create a compsrehensive view of road safety incidents in the country.
             </p>
             <p>
-                Under the hood, <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is a full-stack
-                <a target="_blank" href="https://web.dev/explore/progressive-web-apps">progressive web application</a>
+                Under the hood, <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is an installable full-stack
+                <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
+                    >progressive web application</a
+                >
                 powered by <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a> with
                 <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a>
                 as the database. To speed up the geospatial queries used in map visualizations and data aggregations, the
@@ -522,7 +557,7 @@
                 <img class="m-0 h-8 w-8" src={huggingface} alt="Hugging Face" />
             </div>
             <p>
-                The <a href="https://palai.deno.dev/">pal.ai</a> project is an
+                The <a href="https://palai.deno.dev/">pal.ai</a> project is an installable
                 <a href="https://github.com/BastiDood/pal.ai">open-source</a>
                 mobile-first
                 <a href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps">progressive web app</a> that
@@ -563,9 +598,11 @@
                 </li>
             </ul>
             <p>
-                In the front end, <a href="https://palai.deno.dev/">pal.ai</a> is an installable progressive web app
-                (PWA) written in
-                <a href="https://www.typescriptlang.org/">TypeScript</a>
+                In the front end, <a href="https://palai.deno.dev/">pal.ai</a> is an installable
+                <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps"
+                    >progressive web app</a
+                >
+                (PWA) written in <a href="https://www.typescriptlang.org/">TypeScript</a>
                 with the <a href="https://svelte.dev/">Svelte</a> framework. It uses the
                 <a href="https://parceljs.org/">Parcel</a> build tool for asset bundling, packaging, and optimization. The
                 PWA allows users to upload their own images of rice plants for classification.
