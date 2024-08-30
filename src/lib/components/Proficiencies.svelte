@@ -1,6 +1,7 @@
 <script>
     import Logo from '../../routes/Logo.svelte';
     import anchor from '$lib/icons/lib/anchor.png';
+    import android from '$lib/icons/tech/android.svg';
     import arbitrum from '$lib/icons/tech/arbitrum.svg';
     import c from '$lib/icons/lang/c.svg';
     import cmake from '$lib/icons/tech/cmake.svg';
@@ -102,6 +103,7 @@
         <div>
             <Logo src={deno} lang="Deno" />
             <Logo src={node} lang="Node.js" />
+            <Logo src={android} lang="Android" />
         </div>
         <div>
             <Logo src={postgres} lang="PostgreSQL" />
