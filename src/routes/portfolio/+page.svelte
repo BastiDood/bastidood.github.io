@@ -100,9 +100,9 @@
             </div>
             <!-- TODO -->
             <div class="md:flex md:gap-4">
-                <div><img src={drapHistory1} alt="DRAP History Timeline" /></div>
-                <div><img src={drapHistory2} alt="DRAP History Timeline" /></div>
-                <div><img src={drapRankings} alt="DRAP Rankings Page" /></div>
+                <div><img loading="lazy" src={drapHistory1} alt="DRAP History Timeline" /></div>
+                <div><img loading="lazy" src={drapHistory2} alt="DRAP History Timeline" /></div>
+                <div><img loading="lazy" src={drapRankings} alt="DRAP Rankings Page" /></div>
             </div>
         </section>
         <section id="hotspotter" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
@@ -124,13 +124,24 @@
             <!-- TODO -->
             <div class="md:flex md:gap-4">
                 <div>
-                    <img class="max-h-[1080px]" src={hotspotterDiliman} alt="Wi-Fi Map of UP Diliman in Hotspotter" />
-                </div>
-                <div>
-                    <img class="max-h-[1080px]" src={hotspotterCached} alt="List of Cached Readings in Hotspotter" />
+                    <img
+                        loading="lazy"
+                        class="max-h-[1080px]"
+                        src={hotspotterDiliman}
+                        alt="Wi-Fi Map of UP Diliman in Hotspotter"
+                    />
                 </div>
                 <div>
                     <img
+                        loading="lazy"
+                        class="max-h-[1080px]"
+                        src={hotspotterCached}
+                        alt="List of Cached Readings in Hotspotter"
+                    />
+                </div>
+                <div>
+                    <img
+                        loading="lazy"
                         class="max-h-[1080px]"
                         src={hotspotterReadings}
                         alt="Data Collected by Readings in Hotspotter"
@@ -138,6 +149,7 @@
                 </div>
                 <div>
                     <img
+                        loading="lazy"
                         class="max-h-[1080px]"
                         src={hotspotterCircle}
                         alt="4G Map of Quezon Memorial Circle in Hotspotter"
@@ -162,8 +174,8 @@
             </div>
             <!-- TODO -->
             <div class="md:flex md:gap-4">
-                <div><img src={dappedMint} alt="Botoken Mint Page" /></div>
-                <div><img src={dappedContest} alt="Botoken Contest Page" /></div>
+                <div><img loading="lazy" src={dappedMint} alt="Botoken Mint Page" /></div>
+                <div><img loading="lazy" src={dappedContest} alt="Botoken Contest Page" /></div>
             </div>
         </section>
         <section id="botoken" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
@@ -183,8 +195,8 @@
             </div>
             <!-- TODO -->
             <div class="md:flex md:gap-4">
-                <div><img src={botokenPoll} alt="Botoken Poll Page" /></div>
-                <div><img src={botokenAdmin} alt="Botoken Admin Page" /></div>
+                <div><img loading="lazy" src={botokenPoll} alt="Botoken Poll Page" /></div>
+                <div><img loading="lazy" src={botokenAdmin} alt="Botoken Admin Page" /></div>
             </div>
         </section>
         <section id="up-csi" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
@@ -202,8 +214,8 @@
             </div>
             <!-- TODO -->
             <div class="md:flex md:gap-4">
-                <div><img src={upcsiHome} alt="UP CSI Home Page" /></div>
-                <div><img src={upcsiEvents} alt="UP CSI Events Page" /></div>
+                <div><img loading="lazy" src={upcsiHome} alt="UP CSI Home Page" /></div>
+                <div><img loading="lazy" src={upcsiEvents} alt="UP CSI Events Page" /></div>
             </div>
         </section>
         <section id="acda" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
@@ -222,9 +234,9 @@
             </div>
             <!-- TODO -->
             <div class="md:flex md:gap-4">
-                <div><img src={acdaGis} alt="ACDA GIS Page" /></div>
-                <div><img src={acdaAnalytics} alt="ACDA Analytics Page" /></div>
-                <div><img src={acdaFilters} alt="ACDA Help Page with Filters" /></div>
+                <div><img loading="lazy" src={acdaGis} alt="ACDA GIS Page" /></div>
+                <div><img loading="lazy" src={acdaAnalytics} alt="ACDA Analytics Page" /></div>
+                <div><img loading="lazy" src={acdaFilters} alt="ACDA Help Page with Filters" /></div>
             </div>
         </section>
         <section id="hatid" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
@@ -241,9 +253,23 @@
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
                 <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
             </div>
+            <p>
+                <dfn><abbr title="Helpdesk and Ticketing Dashboard">HATiD</abbr></dfn> is an
+                <a target="_blank" href="https://github.com/BastiDood/hatid">open-source</a>
+                Helpdesk and Ticketing Dashboard powered by
+                <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a>
+                that aims to modernize ticketing systems such as the popular
+                <a target="_blank" href="https://osticket.com/">osTicket</a>. The project was initially developed as
+                part of the 2023 internship program at the
+                <a target="_blank" href="https://up.edu.ph/">University of the Philippines</a>
+                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>
+                <a target="_blank" href="https://ieor.engg.upd.edu.ph/"
+                    >Department of Industrial Engineering and Operations Research</a
+                >.
+            </p>
             <div class="md:flex md:gap-4">
-                <div><img class="max-h-[419px]" src={hatidChat} alt="HATiD Chat" /></div>
-                <div><img class="max-h-[419px]" src={hatidLabels} alt="HATiD Labels in a Chat" /></div>
+                <div><img loading="lazy" class="max-h-[419px]" src={hatidChat} alt="HATiD Chat" /></div>
+                <div><img loading="lazy" class="max-h-[419px]" src={hatidLabels} alt="HATiD Labels in a Chat" /></div>
             </div>
         </section>
         <section id="drippy" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
