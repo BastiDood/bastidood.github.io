@@ -99,7 +99,36 @@
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
                 <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
             </div>
-            <!-- TODO -->
+            <p>
+                <a target="_blank" href="https://drap.dcs.upd.edu.ph/">DRAP</a> is the
+                <a target="_blank" href="https://github.com/BastiDood/drap">open-source</a>
+                Draft Ranking Automated Processor for the
+                <a href="https://up.edu.ph/" target="_blank">University of the Philippines</a>
+                <a href="https://upd.edu.ph/" target="_blank">Diliman</a>,
+                <a href="https://dcs.upd.edu.ph/">Department of Computer Science</a>'s annual draft of research lab
+                assignments. The system automates the submission of lab preferences by students, the selection of
+                draftees by faculty members, the assignment of lab memberships per draft round, the randomization of
+                draftees during lottery rounds, and the dispatch of email notifications throughout the entire draft
+                process.
+            </p>
+            <p>
+                Previously, this process would have spanned weeks' worth of email exchanges between the department
+                administrators and the faculty members. With the DRAP automation in place, the August 2024 Draft wrapped
+                up within the week. The August 2024 Draft also happened to be the <em>largest draft in DCS history:</em>
+                111 participating students, 9 lab heads, and 3 draft administrators (i.e., 123 total users).
+            </p>
+            <p>
+                The <abbr title="Draft Ranking Automated Processor">DRAP</abbr> automation is implemented as a
+                full-stack <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a>
+                web application with <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a> as the
+                database. To streamline user authentication, the application leverages
+                <a target="_blank" href="https://developers.google.com/identity/openid-connect/openid-connect"
+                    >Google's OpenID Connect</a
+                >
+                provider via <a target="_blank" href="https://oauth.net/2/">OAuth 2.0</a>. Rather conveniently, the
+                OAuth 2.0 integration also enables DRAP to send emails via the
+                <a target="_blank" href="https://developers.google.com/gmail/api/guides">Gmail API</a>.
+            </p>
             <div class="md:flex md:gap-4">
                 <div><img loading="lazy" src={drapHistory1} alt="DRAP History Timeline" /></div>
                 <div><img loading="lazy" src={drapHistory2} alt="DRAP History Timeline" /></div>
