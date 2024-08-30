@@ -1,47 +1,82 @@
 <script>
     import Proficiencies from '$lib/components/Proficiencies.svelte';
+
+    import cpp from '$lib/icons/lang/cpp.svg';
+    import css from '$lib/icons/lang/css.svg';
+    import html from '$lib/icons/lang/html.svg';
+    import js from '$lib/icons/lang/js.svg';
+    import python from '$lib/icons/lang/python.svg';
+    import rust from '$lib/icons/lang/rust.svg';
+    import ts from '$lib/icons/lang/ts.svg';
+
+    import anchor from '$lib/icons/lib/anchor.png';
+    import capacitor from '$lib/icons/lib/capacitor.svg';
+    import espressif from '$lib/icons/lib/espressif.svg';
+    import express from '$lib/icons/lib/express.svg';
+    import hardhat from '$lib/icons/lib/hardhat.svg';
+    import huggingface from '$lib/icons/lib/huggingface.svg';
+    import hyper from '$lib/icons/lib/hyper.svg';
+    import svelte from '$lib/icons/lib/svelte.svg';
+    import tailwind from '$lib/icons/lib/tailwind.svg';
+    import tokio from '$lib/icons/lib/tokio.svg';
+
+    import android from '$lib/icons/tech/android.svg';
+    import arbitrum from '$lib/icons/tech/arbitrum.svg';
+    import cmake from '$lib/icons/tech/cmake.svg';
+    import deno from '$lib/icons/tech/deno.svg';
+    import ethereum from '$lib/icons/tech/ethereum.svg';
+    import git from '$lib/icons/tech/git.svg';
+    import mongo from '$lib/icons/tech/mongo.svg';
+    import node from '$lib/icons/tech/node.svg';
+    import postgres from '$lib/icons/tech/postgres.svg';
+    import solana from '$lib/icons/tech/solana.svg';
+
+    import acda from '$lib/images/acda/logo.svg';
+    import acdaAnalytics from '$lib/images/acda/analytics.png';
+    import acdaFilters from '$lib/images/acda/filters.png';
+    import acdaGis from '$lib/images/acda/gis.png';
+    import botokenAdmin from '$lib/images/botoken/admin.png';
+    import botokenPoll from '$lib/images/botoken/poll.png';
     import chrozone from '$lib/images/chrozone/logo.webp';
     import chrozoneAutocomplete from '$lib/images/chrozone/autocomplete.png';
     import chrozoneResult from '$lib/images/chrozone/result.png';
-    import cmake from '$lib/icons/tech/cmake.svg';
-    import cpp from '$lib/icons/lang/cpp.svg';
-    import css from '$lib/icons/lang/css.svg';
-    import deno from '$lib/icons/tech/deno.svg';
+    import dappedContest from '$lib/images/dapped-out/contest.png';
+    import dappedMint from '$lib/images/dapped-out/mint.png';
     import doctrack from '$lib/images/doctrack/logo.svg';
     import doctrackDesktop from '$lib/images/doctrack/desktop.png';
     import doctrackMobile from '$lib/images/doctrack/mobile.png';
+    import drap from '$lib/images/drap/logo.svg';
+    import drapHistory1 from '$lib/images/drap/history-1.png';
+    import drapHistory2 from '$lib/images/drap/history-2.png';
+    import drapRankings from '$lib/images/drap/rankings.png';
     import drippy from '$lib/images/drippy/logo.svg';
     import drippyBox from '$lib/images/drippy/box.png';
     import drippyDashboard from '$lib/images/drippy/dashboard.png';
     import drippyLogin from '$lib/images/drippy/login.png';
     import drippySchematic from '$lib/images/drippy/schematic.png';
     import drippyTestbench from '$lib/images/drippy/testbench.png';
-    import espressif from '$lib/icons/lib/espressif.svg';
-    import express from '$lib/icons/lib/express.svg';
-    import git from '$lib/icons/tech/git.svg';
-    import html from '$lib/icons/lang/html.svg';
-    import huggingface from '$lib/icons/lib/huggingface.svg';
-    import hyper from '$lib/icons/lib/hyper.svg';
-    import js from '$lib/icons/lang/js.svg';
-    import mongo from '$lib/icons/tech/mongo.svg';
+    import hatid from '$lib/images/hatid/logo.svg';
+    import hatidChat from '$lib/images/hatid/chat.png';
+    import hatidLabels from '$lib/images/hatid/labels.png';
+    import hotspotter from '$lib/images/hotspotter/logo.svg';
+    import hotspotterCached from '$lib/images/hotspotter/cached.png';
+    import hotspotterCircle from '$lib/images/hotspotter/qc-circle.png';
+    import hotspotterDiliman from '$lib/images/hotspotter/diliman.png';
+    import hotspotterReadings from '$lib/images/hotspotter/readings.png';
     import multicastScreenshot from '$lib/images/multicast/screenshot.png';
-    import node from '$lib/icons/tech/node.svg';
     import palai from '$lib/images/pal.ai/logo.svg';
     import palaiHome from '$lib/images/pal.ai/home.png';
     import palaiMobile from '$lib/images/pal.ai/mobile.png';
-    import postgres from '$lib/icons/tech/postgres.svg';
-    import python from '$lib/icons/lang/python.svg';
     import quizzo from '$lib/images/quizzo/logo.webp';
     import quizzoResult from '$lib/images/quizzo/result.png';
-    import rust from '$lib/icons/lang/rust.svg';
     import snakeScore1 from '$lib/images/snake/score-1.webp';
     import snakeScore16 from '$lib/images/snake/score-16.webp';
     import snakeScore6 from '$lib/images/snake/score-6.webp';
     import soundraveDesktop from '$lib/images/soundrave/desktop.webp';
     import soundraveMobile from '$lib/images/soundrave/mobile.webp';
-    import svelte from '$lib/icons/lib/svelte.svg';
-    import tokio from '$lib/icons/lib/tokio.svg';
-    import ts from '$lib/icons/lang/ts.svg';
+    import upcsi from '$lib/images/up-csi/logo.svg';
+    import upcsiEvents from '$lib/images/up-csi/events.png';
+    import upcsiHome from '$lib/images/up-csi/home.png';
 </script>
 
 <div class="prose max-w-none space-y-8 p-4 prose-headings:mt-0 sm:p-12 md:p-16">
@@ -49,8 +84,168 @@
         <Proficiencies />
     </div>
     <article id="projects" class="space-y-12">
-        <!-- TODO: HATiD -->
-        <!-- TODO: UP CSI Website -->
+        <section id="drap" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>DRAP: Draft Ranking Automated Processor</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={drap} alt="DRAP" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+                <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div><img src={drapHistory1} alt="DRAP History Timeline" /></div>
+                <div><img src={drapHistory2} alt="DRAP History Timeline" /></div>
+                <div><img src={drapRankings} alt="DRAP Rankings Page" /></div>
+            </div>
+        </section>
+        <section id="hotspotter" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>Hotspotter</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={hotspotter} alt="Hotspotter" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={android} alt="Android" />
+                <img class="m-0 h-8 w-8" src={capacitor} alt="CapacitorJS" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+                <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div>
+                    <img class="max-h-[1080px]" src={hotspotterDiliman} alt="Wi-Fi Map of UP Diliman in Hotspotter" />
+                </div>
+                <div>
+                    <img class="max-h-[1080px]" src={hotspotterCached} alt="List of Cached Readings in Hotspotter" />
+                </div>
+                <div>
+                    <img
+                        class="max-h-[1080px]"
+                        src={hotspotterReadings}
+                        alt="Data Collected by Readings in Hotspotter"
+                    />
+                </div>
+                <div>
+                    <img
+                        class="max-h-[1080px]"
+                        src={hotspotterCircle}
+                        alt="4G Map of Quezon Memorial Circle in Hotspotter"
+                    />
+                </div>
+            </div>
+        </section>
+        <section id="dapped-out" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>Dapped Out!</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={solana} alt="Solana" />
+                <img class="m-0 h-8 w-8" src={anchor} alt="Anchor" />
+                <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div><img src={dappedMint} alt="Botoken Mint Page" /></div>
+                <div><img src={dappedContest} alt="Botoken Contest Page" /></div>
+            </div>
+        </section>
+        <section id="botoken" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>Botoken</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={ethereum} alt="Ethereum" />
+                <img class="m-0 h-8 w-8" src={arbitrum} alt="Arbitrum" />
+                <img class="m-0 h-8 w-8" src={hardhat} alt="Hardhat" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div><img src={botokenPoll} alt="Botoken Poll Page" /></div>
+                <div><img src={botokenAdmin} alt="Botoken Admin Page" /></div>
+            </div>
+        </section>
+        <section id="up-csi" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>UP CSI Website</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div><img src={upcsiHome} alt="UP CSI Home Page" /></div>
+                <div><img src={upcsiEvents} alt="UP CSI Events Page" /></div>
+            </div>
+        </section>
+        <section id="acda" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>ACDA: Aggregated Crash Data Analytics</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={acda} alt="ACDA" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+                <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+            </div>
+            <!-- TODO -->
+            <div class="md:flex md:gap-4">
+                <div><img src={acdaGis} alt="ACDA GIS Page" /></div>
+                <div><img src={acdaAnalytics} alt="ACDA Analytics Page" /></div>
+                <div><img src={acdaFilters} alt="ACDA Help Page with Filters" /></div>
+            </div>
+        </section>
+        <section id="hatid" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>HATiD: Helpdesk and Ticketing Dashboard</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={hatid} alt="HATiD" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+                <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+            </div>
+            <div class="md:flex md:gap-4">
+                <div><img class="max-h-[419px]" src={hatidChat} alt="HATiD Chat" /></div>
+                <div><img class="max-h-[419px]" src={hatidLabels} alt="HATiD Labels in a Chat" /></div>
+            </div>
+        </section>
         <section id="drippy" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>Drippy</h2>
             <div class="flex flex-wrap gap-2">
