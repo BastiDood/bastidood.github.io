@@ -122,7 +122,56 @@
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
                 <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
             </div>
-            <!-- TODO -->
+            <p>
+                Developed in fulfillment of the final requirements for my Bachelor of Science degree in Computer
+                Science, <strong>Hotspotter</strong> is an
+                <a target="_blank" href="https://github.com/BastiDood/hotspotter">open-source</a> incentivized crowdsensing
+                system that collects, maps, and visualizes Wi-Fi and cellular data to pinpoint hotspots and dead zones. The
+                system is composed of three main subsystems:
+            </p>
+            <ol>
+                <li>
+                    The <em>database subsystem</em> is responsible for (1) the persistence of user data, user-submitted
+                    readings, and leaderboards and (2) data aggregation for map visualization. Hotspotter uses the
+                    <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a>
+                    database management system for all queries and mutations in SQL. To improve the efficiency of geospatial
+                    queries, Hotspotter leverages the
+                    <a target="_blank" href="https://h3geo.org/">H3 hexagonal hierarchical geospatial indexing system</a
+                    > by Uber Engineering for generating, querying, and aggregating data points. The hierarchical index,
+                    which enables Hotspotter to aggregate data at varying resolutions, is especially useful for optimizing
+                    download times by pruning viewport-occluded data points from the map visualization.
+                </li>
+                <li>
+                    The <em>web subsystem</em> interfaces with the <em>database subsystem</em>. It is responsible for
+                    marshaling HTTP requests as SQL queries to the
+                    <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a>
+                    database. The web server is a Representational State Transfer
+                    <dfn><abbr title="Representational State Transfer">(REST)</abbr></dfn>
+                    Application Program Interface <dfn><abbr title="Application Program Interface">(API)</abbr></dfn> that
+                    returns SQL results in JSON format. The API endpoints service the dynamic interactions that the front-end
+                    user interfaces would require (e.g., data uploads).
+                </li>
+                <li>
+                    The <em>mobile subsystem</em> features an Android mobile application that leverages built-in sensors
+                    in modern smartphones to collect and upload data on nearby Wi-Fi access points and cellular network
+                    signal strengths. Under the hood, the mobile application is a front-end
+                    <a target="_blank" href="https://svelte.dev/">Svelte</a>
+                    web application wrapped inside an
+                    <a target="_blank" href="https://developer.android.com/develop/ui/views/layout/webapps/webview"
+                        >Android WebView</a
+                    >
+                    application. Low-level system calls into the Android API are marshaled by customized handwritten Java
+                    plugins for the <a target="_blank" href="https://capacitorjs.com/">CapacitorJS</a> framework.
+                </li>
+            </ol>
+            <p>
+                Field work was then conducted in eight <em>sitios</em> of Barangay San Lorenzo, Norzagaray, Bulacan to
+                validate and stress-test the system under the extreme network conditions of Geographically Isolated and
+                Disadvantaged Areas
+                <dfn><abbr title="Geographically Isolated and Disadvantaged Areas">(GIDAs)</abbr></dfn>. In the end, the
+                mobile application's passive sensing, collecting, and caching of data successfully operated even in the
+                most isolated areas without an internet connection.
+            </p>
             <div class="md:flex md:gap-4">
                 <div>
                     <img
@@ -254,39 +303,6 @@
                 <div><img loading="lazy" src={botokenAdmin} alt="Botoken Admin Page" /></div>
             </div>
         </section>
-        <section id="up-csi" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
-            <h2>UP CSI Website</h2>
-            <div class="flex flex-wrap gap-2">
-                <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
-                <img class="m-0 h-8 w-8" src={git} alt="Git" />
-                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-            </div>
-            <p>
-                The <a target="_blank" href="https://up-csi.org/">UP Center for Student Innovations</a> is a
-                student-oriented organization aimed towards the enhancement of student learning from the
-                <a target="_blank" href="https://up.edu.ph">University of the Philippines</a>
-                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>,
-                <a target="_blank" href="https://dcs.upd.edu.ph/">Department of Computer Science</a> by working with real-world
-                projects. As part of my 2023-2024 term as the Director for Engineering, I was tasked to lead the development
-                and deployment of the organization's official website—a project that had previously been postponed over the
-                years.
-            </p>
-            <p>
-                The website is an <a target="_blank" href="https://github.com/up-csi/up-csi.github.io">open-source</a>
-                static website powered by <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a> and developed in
-                the open by UP CSI's members.
-            </p>
-            <div class="md:flex md:gap-4">
-                <div><img loading="lazy" src={upcsiHome} alt="UP CSI Home Page" /></div>
-                <div><img loading="lazy" src={upcsiEvents} alt="UP CSI Events Page" /></div>
-            </div>
-        </section>
         <section id="acda" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
             <h2>ACDA: Aggregated Crash Data Analytics</h2>
             <div class="flex flex-wrap gap-2">
@@ -356,6 +372,39 @@
                 <div><img loading="lazy" src={acdaGis} alt="ACDA GIS Page" /></div>
                 <div><img loading="lazy" src={acdaAnalytics} alt="ACDA Analytics Page" /></div>
                 <div><img loading="lazy" src={acdaFilters} alt="ACDA Help Page with Filters" /></div>
+            </div>
+        </section>
+        <section id="up-csi" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+            <h2>UP CSI Website</h2>
+            <div class="flex flex-wrap gap-2">
+                <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
+                <img class="m-0 h-8 w-8" src={git} alt="Git" />
+                <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+                <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+                <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+                <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+                <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+                <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+                <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+            </div>
+            <p>
+                The <a target="_blank" href="https://up-csi.org/">UP Center for Student Innovations</a> is a
+                student-oriented organization aimed towards the enhancement of student learning from the
+                <a target="_blank" href="https://up.edu.ph">University of the Philippines</a>
+                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>,
+                <a target="_blank" href="https://dcs.upd.edu.ph/">Department of Computer Science</a> by working with real-world
+                projects. As part of my 2023-2024 term as the Director for Engineering, I was tasked to lead the development
+                and deployment of the organization's official website—a project that had previously been postponed over the
+                years.
+            </p>
+            <p>
+                The website is an <a target="_blank" href="https://github.com/up-csi/up-csi.github.io">open-source</a>
+                static website powered by <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a> and developed in
+                the open by UP CSI's members.
+            </p>
+            <div class="md:flex md:gap-4">
+                <div><img loading="lazy" src={upcsiHome} alt="UP CSI Home Page" /></div>
+                <div><img loading="lazy" src={upcsiEvents} alt="UP CSI Events Page" /></div>
             </div>
         </section>
         <section id="hatid" class="max-w-none rounded-xl bg-card p-8 shadow-xl">
