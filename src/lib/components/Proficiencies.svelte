@@ -35,6 +35,7 @@
     import rust from '$lib/icons/lang/rust.svg';
     import solana from '$lib/icons/tech/solana.svg';
     import solid from '$lib/icons/lib/solid.svg';
+    import solidity from '$lib/icons/lang/solidity.svg';
     import svelte from '$lib/icons/lib/svelte.svg';
     import tailwind from '$lib/icons/lib/tailwind.svg';
     import tokio from '$lib/icons/lib/tokio.svg';
@@ -56,12 +57,13 @@
             <Logo src={html} lang="HTML" />
             <Logo src={css} lang="CSS" />
             <Logo src={python} lang="Python" />
+            <Logo src={java} lang="Java" />
         </div>
         <div>
-            <Logo src={java} lang="Java" />
             <Logo src={php} lang="PHP" width="w-auto" />
             <Logo src={cpp} lang="C++" />
             <Logo src={c} lang="C" />
+            <Logo src={solidity} lang="Solidity" />
         </div>
     </section>
     <section class="flex-1">
