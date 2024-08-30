@@ -208,10 +208,13 @@
                 enables an interesting exploration into self-balancing cycles of tokenized voting power.
             </p>
             <p>
-                The main user application is a <a target="_blank" href="https://svelte.dev/">Svelte</a> web application
-                that interfaces with <a target="_blank" href="https://arbitrum.io/">Arbitrum</a>, a Layer 2 blockchain
-                technology on top of <a target="_blank" href="https://ethereum.org/">Ethereum</a>. The back-end logic is
-                implemented and deployed as a <a target="_blank" href="https://soliditylang.org/">Solidity</a> smart contract.
+                The main user application is a <a target="_blank" href="https://web.dev/explore/progressive-web-apps"
+                    >progressive web application</a
+                >
+                powered by <a target="_blank" href="https://svelte.dev/">Svelte</a> that interfaces with
+                <a target="_blank" href="https://arbitrum.io/">Arbitrum</a>, a Layer 2 blockchain technology on top of
+                <a target="_blank" href="https://ethereum.org/">Ethereum</a>. The back-end logic is implemented and
+                deployed as a <a target="_blank" href="https://soliditylang.org/">Solidity</a> smart contract.
             </p>
             <div class="md:flex md:gap-4">
                 <div><img loading="lazy" src={botokenPoll} alt="Botoken Poll Page" /></div>
@@ -299,10 +302,12 @@
             </p>
             <p>
                 Under the hood, <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is a full-stack
-                <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a>
-                application with <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a> as the database.
-                To speed up the geospatial queries used in map visualizations and data aggregations, the back-end server
-                extensively leveraged the <a target="_blank" href="https://h3geo.org/">H3 geospatial indexing system</a>
+                <a target="_blank" href="https://web.dev/explore/progressive-web-apps">progressive web application</a>
+                powered by <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a> with
+                <a target="_blank" href="https://www.postgresql.org/">PostgreSQL</a>
+                as the database. To speed up the geospatial queries used in map visualizations and data aggregations, the
+                back-end server extensively leveraged the
+                <a target="_blank" href="https://h3geo.org/">H3 geospatial indexing system</a>
                 developed by Uber Engineering. The front end then renders the data in a
                 <a target="_blank" href="https://svelte.dev/">Svelte</a>
                 application via <a target="_blank" href="https://www.chartjs.org/">Chart.js</a>.
