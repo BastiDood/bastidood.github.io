@@ -7,6 +7,7 @@
     import js from '$lib/icons/lang/js.svg';
     import python from '$lib/icons/lang/python.svg';
     import rust from '$lib/icons/lang/rust.svg';
+    import solidity from '$lib/icons/lang/solidity.svg';
     import ts from '$lib/icons/lang/ts.svg';
 
     import anchor from '$lib/icons/lib/anchor.png';
@@ -185,6 +186,7 @@
                 <img class="m-0 h-8 w-8" src={ethereum} alt="Ethereum" />
                 <img class="m-0 h-8 w-8" src={arbitrum} alt="Arbitrum" />
                 <img class="m-0 h-8 w-8" src={hardhat} alt="Hardhat" />
+                <img class="m-0 h-8 w-8" src={solidity} alt="Solidity" />
                 <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
                 <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
                 <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
@@ -193,7 +195,24 @@
                 <img class="m-0 h-8 w-8" src={css} alt="CSS" />
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
             </div>
-            <!-- TODO -->
+            <p>
+                <a target="_blank" href="https://botoken.pages.dev/">Botoken</a> is a simple
+                <a target="_blank" href="https://github.com/BastiDood/botoken">open-source</a>
+                polling system for decentralized autonomous organizations. Polls, proposals, motions, and referendums are
+                published in the
+                <a target="_blank" href="https://ethereum.org/">Ethereum</a> blockchain for permanence and transparency.
+                Voting power is then quantified as fungible tokens that the organization controls and regulates. Members
+                within the organization thus "spend" their voting power (i.e., fungible tokens) on polls to express
+                their consent or dissent on organizational processes. The
+                <a target="_blank" href="https://www.coinbase.com/learn/wallet/tokenomics-101">"tokenomics"</a> of this setup
+                enables an interesting exploration into self-balancing cycles of tokenized voting power.
+            </p>
+            <p>
+                The main user application is a <a target="_blank" href="https://svelte.dev/">Svelte</a> web application
+                that interfaces with <a target="_blank" href="https://arbitrum.io/">Arbitrum</a>, a Layer 2 blockchain
+                technology on top of <a target="_blank" href="https://ethereum.org/">Ethereum</a>. The back-end logic is
+                implemented and deployed as a <a target="_blank" href="https://soliditylang.org/">Solidity</a> smart contract.
+            </p>
             <div class="md:flex md:gap-4">
                 <div><img loading="lazy" src={botokenPoll} alt="Botoken Poll Page" /></div>
                 <div><img loading="lazy" src={botokenAdmin} alt="Botoken Admin Page" /></div>
