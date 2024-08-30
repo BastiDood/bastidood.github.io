@@ -212,7 +212,21 @@
                 <img class="m-0 h-8 w-8" src={css} alt="CSS" />
                 <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
             </div>
-            <!-- TODO -->
+            <p>
+                The <a target="_blank" href="https://up-csi.org/">UP Center for Student Innovations</a> is a
+                student-oriented organization aimed towards the enhancement of student learning from the
+                <a target="_blank" href="https://up.edu.ph">University of the Philippines</a>
+                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>,
+                <a target="_blank" href="https://dcs.upd.edu.ph/">Department of Computer Science</a> by working with real-world
+                projects. As part of my 2023-2024 term as the Director for Engineering, I was tasked to lead the development
+                and deployment of the organization's official website—a project that had previously been postponed over the
+                years.
+            </p>
+            <p>
+                The website is an <a target="_blank" href="https://github.com/up-csi/up-csi.github.io">open-source</a>
+                static website powered by <a target="_blank" href="https://kit.svelte.dev/">SvelteKit</a> and developed in
+                the open by UP CSI's members.
+            </p>
             <div class="md:flex md:gap-4">
                 <div><img loading="lazy" src={upcsiHome} alt="UP CSI Home Page" /></div>
                 <div><img loading="lazy" src={upcsiEvents} alt="UP CSI Events Page" /></div>
@@ -308,7 +322,7 @@
                 <a target="_blank" href="https://osticket.com/">osTicket</a>. The project was initially developed as
                 part of the 2023 internship program at the
                 <a target="_blank" href="https://up.edu.ph/">University of the Philippines</a>
-                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>
+                <a target="_blank" href="https://upd.edu.ph/">Diliman</a>,
                 <a target="_blank" href="https://ieor.engg.upd.edu.ph/"
                     >Department of Industrial Engineering and Operations Research</a
                 >.
