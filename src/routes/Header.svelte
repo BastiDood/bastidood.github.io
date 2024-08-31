@@ -1,4 +1,4 @@
-<header class="sticky top-0 w-full bg-brand text-white shadow-md">
+<header class="sticky top-0 z-10 w-full bg-brand text-white shadow-md">
     <nav>
         <ul class="flex">
             <li>
