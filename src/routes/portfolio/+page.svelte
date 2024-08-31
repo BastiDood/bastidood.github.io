@@ -84,7 +84,7 @@
     <div class="max-w-none rounded-xl bg-card p-8 shadow-xl">
         <Proficiencies />
     </div>
-    <div class="grid grid-cols-[auto_1fr] gap-4">
+    <div class="block grid-cols-[auto_1fr] gap-4 lg:grid">
         <aside class="not-prose">
             <div class="sticky top-20 hidden rounded-xl bg-card p-8 shadow-xl lg:block">
                 <strong class="text-lg text-black">Table of Contents</strong>
