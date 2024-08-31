@@ -308,9 +308,9 @@
                     blockchain as a currency for contests. When creating a new contest, simply point it to the mint account
                     of the token being transacted. For instance, the <code>USDC</code>
                     coin may be transacted by pointing the contest to the mint address
-                    <code>EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v</code>. For convenience, it is also possible to
-                    create (only) one brand new program-derived user-generated token instead. The creator has the
-                    privilege of minting new supply as well as transferring tokens to other wallets.
+                    <code class="break-words">EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v</code>. For convenience, it
+                    is also possible to create (only) one brand new program-derived user-generated token instead. The
+                    creator has the privilege of minting new supply as well as transferring tokens to other wallets.
                 </p>
                 <p>
                     Users may now join the existing contest by staking some tokens into the shared pot. They now try
