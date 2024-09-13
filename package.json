@@ -20,6 +20,8 @@
         "@eslint/js": "^9.10.0",
         "@linthtml/linthtml": "^0.10.1",
         "@linthtml/linthtml-config-recommended": "^0.1.0",
+        "@steeze-ui/simple-icons": "^1.9.0",
+        "@steeze-ui/svelte-icon": "^1.5.0",
         "@sveltejs/adapter-static": "^3.0.4",
         "@sveltejs/kit": "^2.5.27",
         "@sveltejs/vite-plugin-svelte": "^3.1.2",

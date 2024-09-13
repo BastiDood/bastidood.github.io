@@ -1,32 +1,81 @@
 <script>
+    import { Devdotto, Github, Linkedin, X } from '@steeze-ui/simple-icons';
+    import { Icon } from '@steeze-ui/svelte-icon';
     import profile from '$lib/images/profile.webp';
 </script>
 
-<footer class="flex justify-around bg-brand p-4 text-xs text-white">
-    <section>
-        <img src={profile} alt="BastiDood" width="64" height="64" loading="lazy" />
-        <p>&#169; 2024 Basti Ortiz</p>
-    </section>
-    <section>
-        <h6 class="underline">Links</h6>
-        <ul>
-            <li><a href="https://github.com/BastiDood">GitHub (@BastiDood)</a></li>
-            <li><a href="https://dev.to/somedood">dev.to (@somedood)</a></li>
-            <li>
-                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn">LinkedIn (in/basti-ortiz)</a>
-            </li>
-            <li>
-                <a href="https://twitter.com/BastiDood" title="Twitter">Twitter (@BastiDood)</a>
-            </li>
-        </ul>
-    </section>
-    <section>
-        <h6 class="underline">Code</h6>
-        <ul>
-            <li><a href="https://github.com/BastiDood/bastidood.github.io">Repository</a></li>
-            <li>
-                <a href="https://github.com/BastiDood/bastidood.github.io/blob/main/COPYING.md">External Assets</a>
-            </li>
-        </ul>
-    </section>
+<footer class="bg-gray-800 p-4 text-gray-400 sm:p-6">
+    <div class="mx-auto max-w-screen-xl">
+        <div class="md:flex md:justify-between">
+            <div class="mb-6 md:mb-0">
+                <a href="/" class="flex items-center">
+                    <img src={profile} alt="BastiDood" width="500" height="500" loading="lazy" class="mr-3 size-8" />
+                    <span class="self-center whitespace-nowrap text-2xl font-semibold text-white">Basti Ortiz</span>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
+                <div>
+                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Sitemap</h2>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/" class="hover:underline">Home</a></li>
+                        <li><a href="/portfolio/" class="hover:underline">Portfolio</a></li>
+                        <li><a href="/articles/" class="hover:underline">Articles</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Social</h2>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>
+                            <a href="https://dev.to/somedood" target="_blank" class="hover:underline">DEV (dev.to)</a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/basti-ortiz/" target="_blank" class="hover:underline"
+                                >LinkedIn</a
+                            >
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/BastiDood" target="_blank" class="hover:underline">Twitter</a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/BastiDood" target="_blank" class="hover:underline">GitHub</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Code</h2>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>
+                            <a
+                                href="https://github.com/BastiDood/bastidood.github.io"
+                                target="_blank"
+                                class="hover:underline">Repository</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="https://github.com/BastiDood/bastidood.github.io/blob/main/COPYING.md"
+                                target="_blank"
+                                class="hover:underline">External Assets</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr class="my-6 border-gray-700 sm:mx-auto lg:my-8" />
+        <div class="sm:flex sm:items-center sm:justify-between">
+            <span class="text-sm text-gray-400 sm:text-center"
+                >&copy; 2024 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
+            </span>
+            <div class="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
+                <a href="https://dev.to/somedood" title="dev.to" target="_blank"><Icon src={Devdotto} size="20" /></a>
+                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn" target="_blank"
+                    ><Icon src={Linkedin} size="20" /></a
+                >
+                <a href="https://twitter.com/BastiDood" title="Twitter" target="_blank"><Icon src={X} size="20" /></a>
+                <a href="https://github.com/BastiDood" title="GitHub" target="_blank"><Icon src={Github} size="20" /></a
+                >
+            </div>
+        </div>
+    </div>
 </footer>
