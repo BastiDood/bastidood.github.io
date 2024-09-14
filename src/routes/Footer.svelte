@@ -13,7 +13,7 @@
                     <span class="self-center whitespace-nowrap text-2xl font-semibold text-white">Basti Ortiz</span>
                 </a>
             </div>
-            <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
+            <div class="grid grid-cols-3 gap-8 sm:gap-6">
                 <div>
                     <h2 class="mb-4 text-sm font-semibold uppercase text-white">Sitemap</h2>
                     <ul class="space-y-2 text-gray-400">
