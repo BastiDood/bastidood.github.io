@@ -12,13 +12,15 @@
         <p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
     </div>
     <div class="flex items-center gap-2">
-        <img
-            src={profile}
-            width="500"
-            height="500"
-            alt="cartoonish avatar waving hello"
-            class="block size-8 rounded-full"
-        />
+        <a href="/"
+            ><img
+                src={profile}
+                width="500"
+                height="500"
+                alt="cartoonish avatar waving hello"
+                class="block size-8 rounded-full"
+            /></a
+        >
         <a href="https://github.com/BastiDood" title="GitHub"><img src={github} alt="GitHub" class="w-8" /></a>
         <a href="https://dev.to/somedood" title="dev.to"><img src={dev} alt="dev.to" class="w-8" /></a>
         <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn"
