@@ -2,8 +2,18 @@
     import './index.css';
     import Footer from './Footer.svelte';
     import Header from './Header.svelte';
+
     import favicon from '$lib/favicon.png?url';
     import og from '$lib/og.webp?url';
+
+    import { afterNavigate, beforeNavigate } from '$app/navigation';
+    import { browser } from '$app/environment';
+    import { posthog } from 'posthog-js';
+
+    if (browser) {
+        beforeNavigate(() => posthog.capture('$pageleave'));
+        afterNavigate(() => posthog.capture('$pageview'));
+    }
 </script>
 
 <svelte:head>
