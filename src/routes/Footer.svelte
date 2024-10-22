@@ -1,6 +1,10 @@
 <script>
-    import { Devdotto, Github, Linkedin, X } from '@steeze-ui/simple-icons';
-    import { Icon } from '@steeze-ui/svelte-icon';
+    import DevTo from '@iconify/icons-simple-icons/devdotto';
+    import GitHub from '@iconify/icons-simple-icons/github';
+    import LinkedIn from '@iconify/icons-simple-icons/linkedin';
+    import Twitter from '@iconify/icons-simple-icons/twitter';
+
+    import Icon from '@iconify/svelte';
     import profile from '$lib/images/profile.webp';
 </script>
 
@@ -68,12 +72,17 @@
                 >&copy; 2024 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
             </span>
             <div class="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-                <a href="https://dev.to/somedood" title="dev.to" target="_blank"><Icon src={Devdotto} size="20" /></a>
-                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn" target="_blank"
-                    ><Icon src={Linkedin} size="20" /></a
+                <a href="https://dev.to/somedood" title="dev.to" target="_blank"
+                    ><Icon icon={DevTo} width="20" height="20" /></a
                 >
-                <a href="https://twitter.com/BastiDood" title="Twitter" target="_blank"><Icon src={X} size="20" /></a>
-                <a href="https://github.com/BastiDood" title="GitHub" target="_blank"><Icon src={Github} size="20" /></a
+                <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn" target="_blank"
+                    ><Icon icon={LinkedIn} width="20" height="20" /></a
+                >
+                <a href="https://twitter.com/BastiDood" title="Twitter" target="_blank"
+                    ><Icon icon={Twitter} width="20" height="20" /></a
+                >
+                <a href="https://github.com/BastiDood" title="GitHub" target="_blank"
+                    ><Icon icon={GitHub} width="20" height="20" /></a
                 >
             </div>
         </div>
