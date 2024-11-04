@@ -14,6 +14,8 @@
         beforeNavigate(() => posthog.capture('$pageleave'));
         afterNavigate(() => posthog.capture('$pageview'));
     }
+
+    const { children } = $props();
 </script>
 
 <svelte:head>
@@ -23,6 +25,6 @@
 
 <Header />
 <main class="space-y-8 bg-gradient-to-b from-sky to-white">
-    <slot />
+    {@render children()}
 </main>
 <Footer />
