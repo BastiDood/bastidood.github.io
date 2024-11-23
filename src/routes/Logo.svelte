@@ -1,12 +1,15 @@
 <script lang="ts">
     type TailwindDimension = number | 'auto';
-    // eslint-disable-next-line init-declarations
-    export let src: string;
-    // eslint-disable-next-line init-declarations
-    export let lang: string;
-    export let margin: `m-${number}` = 'm-2';
-    export let width: `w-${TailwindDimension}` = 'w-12';
-    export let height: `h-${TailwindDimension}` = 'h-12';
+
+    interface Props {
+        src: string;
+        lang: string;
+        margin?: `m-${number}`; // = 'm-2';
+        width?: `w-${TailwindDimension}`; // = 'w-12';
+        height?: `h-${TailwindDimension}`; // = 'h-12';
+    }
+
+    const { src, lang, margin = 'm-2', width = 'w-12', height = 'h-12' }: Props = $props();
 </script>
 
 <figure class="inline-block {margin}">

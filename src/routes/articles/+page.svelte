@@ -1,8 +1,7 @@
 <script>
     import Article from './Article.svelte';
-    // eslint-disable-next-line init-declarations
-    export let data;
-    $: ({ articles } = data);
+    const { data } = $props();
+    const { articles } = $derived(data);
 </script>
 
 <div class="prose max-w-none space-y-8 p-4 sm:p-12 md:p-16">
