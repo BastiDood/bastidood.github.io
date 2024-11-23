@@ -27,6 +27,7 @@
     import js from '$lib/icons/lang/js.svg';
     import mongo from '$lib/icons/tech/mongo.svg';
     import mysql from '$lib/icons/tech/mysql.svg';
+    import next from '$lib/icons/lib/nextjs.svg';
     import node from '$lib/icons/tech/node.svg';
     import php from '$lib/icons/lang/php.svg';
     import postgres from '$lib/icons/tech/postgres.svg';
@@ -40,6 +41,8 @@
     import tailwind from '$lib/icons/lib/tailwind.svg';
     import tokio from '$lib/icons/lib/tokio.svg';
     import ts from '$lib/icons/lang/ts.svg';
+    import turbo from '$lib/icons/tech/turbo.svg';
+    import vite from '$lib/icons/tech/vite.svg';
 </script>
 
 <article
@@ -70,8 +73,8 @@
         <h2>Libraries &amp; Frameworks</h2>
         <div>
             <Logo src={svelte} lang="Svelte" />
-            <Logo src={solid} lang="SolidJS" />
             <Logo src={react} lang="React" />
+            <Logo src={solid} lang="SolidJS" />
             <Logo src={tailwind} lang="Tailwind" />
         </div>
         <div>
@@ -80,6 +83,7 @@
             <Logo src={espressif} lang="Espressif" />
         </div>
         <div>
+            <Logo src={next} lang="NextJS" />
             <Logo src={express} lang="Express.js" />
             <Logo src={electron} lang="Electron" />
             <Logo src={discord} lang="Discord.js" />
@@ -116,6 +120,10 @@
             <Logo src={solana} lang="Solana" />
             <Logo src={ethereum} lang="Ethereum" />
             <Logo src={arbitrum} lang="Arbitrum" />
+        </div>
+        <div>
+            <Logo src={vite} lang="Vite" />
+            <Logo src={turbo} lang="Turbo" />
         </div>
     </section>
 </article>
