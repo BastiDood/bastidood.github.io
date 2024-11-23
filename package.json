@@ -51,6 +51,6 @@
         "marked": "^15.0.2",
         "posthog-js": "^1.188.0",
         "svelte": "^5.2.7",
-        "valibot": "^0.42.1"
+        "valibot": "1.0.0-beta.8"
     }
 }
