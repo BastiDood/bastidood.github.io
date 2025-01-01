@@ -69,7 +69,7 @@
         <hr class="my-6 border-gray-700 sm:mx-auto lg:my-8" />
         <div class="sm:flex sm:items-center sm:justify-between">
             <span class="text-sm text-gray-400 sm:text-center"
-                >&copy; 2024 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
+                >&copy; 2025 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
             </span>
             <div class="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
                 <a href="https://dev.to/somedood" title="dev.to" target="_blank"
