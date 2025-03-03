@@ -50,19 +50,19 @@
 >
     <section class="flex-1">
         <h2>Languages</h2>
-        <div>
+        <div class="not-prose">
             <Logo src={rust} lang="Rust" />
             <Logo src={go} lang="Go" />
             <Logo src={ts} lang="TypeScript" />
             <Logo src={js} lang="JavaScript" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={html} lang="HTML" />
             <Logo src={css} lang="CSS" />
             <Logo src={python} lang="Python" />
             <Logo src={java} lang="Java" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={php} lang="PHP" width="w-auto" />
             <Logo src={cpp} lang="C++" />
             <Logo src={c} lang="C" />
@@ -71,57 +71,57 @@
     </section>
     <section class="flex-1">
         <h2>Libraries &amp; Frameworks</h2>
-        <div>
+        <div class="not-prose">
             <Logo src={svelte} lang="Svelte" />
             <Logo src={react} lang="React" />
             <Logo src={solid} lang="SolidJS" />
             <Logo src={tailwind} lang="Tailwind" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={tokio} lang="Tokio" />
             <Logo src={hyper} lang="Hyper" />
             <Logo src={espressif} lang="Espressif" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={next} lang="NextJS" />
             <Logo src={express} lang="Express.js" />
             <Logo src={electron} lang="Electron" />
             <Logo src={discord} lang="Discord.js" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={flask} lang="Flask" />
             <Logo src={django} lang="Django" />
             <Logo src={fastapi} lang="FastAPI" />
             <Logo src={huggingface} lang="Huggingface" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={hardhat} lang="Hardhat" />
             <Logo src={anchor} lang="Anchor" />
         </div>
     </section>
     <section class="flex-1">
         <h2>Technologies</h2>
-        <div>
+        <div class="not-prose">
             <Logo src={git} lang="Git" />
             <Logo src={docker} lang="Docker" />
             <Logo src={cmake} lang="CMake" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={deno} lang="Deno" />
             <Logo src={node} lang="Node.js" />
             <Logo src={android} lang="Android" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={postgres} lang="PostgreSQL" />
             <Logo src={mysql} lang="MySQL" />
             <Logo src={mongo} lang="MongoDB" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={solana} lang="Solana" />
             <Logo src={ethereum} lang="Ethereum" />
             <Logo src={arbitrum} lang="Arbitrum" />
         </div>
-        <div>
+        <div class="not-prose">
             <Logo src={vite} lang="Vite" />
             <Logo src={turbo} lang="Turbo" />
         </div>

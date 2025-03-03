@@ -125,7 +125,7 @@
         <article id="projects" class="space-y-8">
             <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>DRAP: Draft Ranking Automated Processor</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={drap} alt="DRAP" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
@@ -177,7 +177,7 @@
             </section>
             <section id="hotspotter" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Hotspotter</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={hotspotter} alt="Hotspotter" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={android} alt="Android" />
@@ -281,7 +281,7 @@
             </section>
             <section id="dapped-out" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Dapped Out!</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={solana} alt="Solana" />
                     <img class="m-0 h-8 w-8" src={anchor} alt="Anchor" />
@@ -335,7 +335,7 @@
             </section>
             <section id="botoken" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Botoken</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={ethereum} alt="Ethereum" />
                     <img class="m-0 h-8 w-8" src={arbitrum} alt="Arbitrum" />
@@ -380,7 +380,7 @@
             </section>
             <section id="acda" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>ACDA: Aggregated Crash Data Analytics</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={acda} alt="ACDA" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
@@ -455,7 +455,7 @@
             </section>
             <section id="up-csi" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>UP CSI Website</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
@@ -490,7 +490,7 @@
             </section>
             <section id="hatid" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>HATiD: Helpdesk and Ticketing Dashboard</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={hatid} alt="HATiD" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
@@ -525,7 +525,7 @@
             </section>
             <section id="drippy" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Drippy IoT</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={drippy} alt="Drippy" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
@@ -613,7 +613,7 @@
             </section>
             <section id="doctrack" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>DocTrack</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={doctrack} alt="DocTrack" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
@@ -683,7 +683,7 @@
             </section>
             <section id="palai" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>pal.ai</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={palai} alt="pal.ai" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
@@ -766,7 +766,7 @@
             </section>
             <section id="soundrave" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>SoundRave</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
                     <img class="m-0 h-8 w-8" src={express} alt="Express.js" />
@@ -810,7 +810,7 @@
             </section>
             <section id="chrozone" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Chrozone</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={chrozone} alt="Chrozone" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
@@ -857,7 +857,7 @@
             </section>
             <section id="quizzo" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Quizzo</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={quizzo} alt="Quizzo" />
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
@@ -886,7 +886,7 @@
             </section>
             <section id="multicast" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>UDP Multicast Chat</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
                     <img class="m-0 h-8 w-8" src={tokio} alt="Tokio" />
@@ -909,7 +909,7 @@
             </section>
             <section id="snake" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Snake Clone with SDL2</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={cpp} alt="C++" />
                     <img class="m-0 h-8 w-8" src={cmake} alt="CMake" />
@@ -938,7 +938,7 @@
             </section>
             <section id="option-block" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>A Block of Optionals!</h2>
-                <div class="flex flex-wrap gap-2">
+                <div class="not-prose flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
                     <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
                 </div>
