@@ -1,4 +1,19 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+    /* Colors */
+    --color-brand: #236ea5;
+    --color-hover: #105587;
+    --color-sky: #0a8ded;
+    --color-card: #edeef5bb;
+    --color-prof: #d8e7e1bb;
+    --color-fade: #ffffff80;
+
+    /* Fonts */
+    --font-sans: 'Fira Sans', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+}
 
 @layer base {
     @font-face {

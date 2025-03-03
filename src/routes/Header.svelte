@@ -2,14 +2,14 @@
     import profile from '$lib/images/profile.webp';
 </script>
 
-<header class="sticky top-0 z-10 w-full bg-brand text-white shadow-md">
+<header class="bg-brand sticky top-0 z-10 w-full text-white shadow-md">
     <nav>
         <ul class="flex justify-center">
             <li>
-                <a class="block p-4 transition-colors hover:bg-hover" href="/portfolio/">Portfolio</a>
+                <a class="hover:bg-hover block p-4 transition-colors" href="/portfolio/">Portfolio</a>
             </li>
             <li>
-                <a class="block px-4 py-2 transition-colors hover:bg-hover" href="/">
+                <a class="hover:bg-hover block px-4 py-2 transition-colors" href="/">
                     <img
                         src={profile}
                         width="500"
@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li>
-                <a class="block p-4 transition-colors hover:bg-hover" href="/articles/">Articles</a>
+                <a class="hover:bg-hover block p-4 transition-colors" href="/articles/">Articles</a>
             </li>
         </ul>
     </nav>

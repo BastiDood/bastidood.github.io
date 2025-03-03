@@ -80,13 +80,13 @@
     import upcsiHome from '$lib/images/up-csi/home.png';
 </script>
 
-<div class="prose max-w-none space-y-8 p-4 prose-headings:mt-0 sm:p-12 md:p-16">
-    <div class="max-w-none rounded-xl bg-card p-8 shadow-xl">
+<div class="prose prose-headings:mt-0 max-w-none space-y-8 p-4 sm:p-12 md:p-16">
+    <div class="bg-card max-w-none rounded-xl p-8 shadow-xl">
         <Proficiencies />
     </div>
     <div class="block grid-cols-[auto_1fr] gap-4 lg:grid">
         <aside class="not-prose">
-            <div class="sticky top-20 hidden rounded-xl bg-card p-8 shadow-xl lg:block">
+            <div class="bg-card sticky top-20 hidden rounded-xl p-8 shadow-xl lg:block">
                 <strong class="text-lg text-black">Table of Contents</strong>
                 <ol class="text-md text-gray-500">
                     <li>
@@ -123,7 +123,7 @@
             </div>
         </aside>
         <article id="projects" class="space-y-8">
-            <section id="drap" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>DRAP: Draft Ranking Automated Processor</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={drap} alt="DRAP" />
@@ -175,7 +175,7 @@
                     <div><img loading="lazy" src={drapRankings} alt="DRAP Rankings Page" /></div>
                 </div>
             </section>
-            <section id="hotspotter" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="hotspotter" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Hotspotter</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={hotspotter} alt="Hotspotter" />
@@ -279,7 +279,7 @@
                     </div>
                 </div>
             </section>
-            <section id="dapped-out" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="dapped-out" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Dapped Out!</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
@@ -333,7 +333,7 @@
                     <div><img loading="lazy" src={dappedContest} alt="Botoken Contest Page" /></div>
                 </div>
             </section>
-            <section id="botoken" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="botoken" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Botoken</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
@@ -378,7 +378,7 @@
                     <div><img loading="lazy" src={botokenAdmin} alt="Botoken Admin Page" /></div>
                 </div>
             </section>
-            <section id="acda" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="acda" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>ACDA: Aggregated Crash Data Analytics</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={acda} alt="ACDA" />
@@ -453,7 +453,7 @@
                     <div><img loading="lazy" src={acdaFilters} alt="ACDA Help Page with Filters" /></div>
                 </div>
             </section>
-            <section id="up-csi" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="up-csi" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>UP CSI Website</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
@@ -488,7 +488,7 @@
                     <div><img loading="lazy" src={upcsiEvents} alt="UP CSI Events Page" /></div>
                 </div>
             </section>
-            <section id="hatid" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="hatid" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>HATiD: Helpdesk and Ticketing Dashboard</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={hatid} alt="HATiD" />
@@ -523,7 +523,7 @@
                     </div>
                 </div>
             </section>
-            <section id="drippy" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="drippy" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Drippy IoT</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={drippy} alt="Drippy" />
@@ -611,7 +611,7 @@
                     </div>
                 </div>
             </section>
-            <section id="doctrack" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="doctrack" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>DocTrack</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={doctrack} alt="DocTrack" />
@@ -681,7 +681,7 @@
                     </div>
                 </div>
             </section>
-            <section id="palai" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="palai" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>pal.ai</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={palai} alt="pal.ai" />
@@ -764,7 +764,7 @@
                     </div>
                 </div>
             </section>
-            <section id="soundrave" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="soundrave" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>SoundRave</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
@@ -808,7 +808,7 @@
                     </div>
                 </div>
             </section>
-            <section id="chrozone" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="chrozone" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Chrozone</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={chrozone} alt="Chrozone" />
@@ -855,7 +855,7 @@
                     </div>
                 </div>
             </section>
-            <section id="quizzo" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="quizzo" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Quizzo</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={quizzo} alt="Quizzo" />
@@ -884,7 +884,7 @@
                 </p>
                 <img src={quizzoResult} alt="Quizzo Chat Output" loading="lazy" class="m-auto" />
             </section>
-            <section id="multicast" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="multicast" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>UDP Multicast Chat</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
@@ -907,7 +907,7 @@
                     <img src={multicastScreenshot} alt="UDP Multicast Chat Preview" loading="lazy" class="m-auto" />
                 </div>
             </section>
-            <section id="snake" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="snake" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>Snake Clone with SDL2</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />
@@ -936,7 +936,7 @@
                     <div><img src={snakeScore16} alt="Snake Score 16" loading="lazy" /></div>
                 </div>
             </section>
-            <section id="option-block" class="max-w-none scroll-mt-20 rounded-xl bg-card p-8 shadow-xl">
+            <section id="option-block" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
                 <h2>A Block of Optionals!</h2>
                 <div class="flex flex-wrap gap-2">
                     <img class="m-0 h-8 w-8" src={git} alt="Git" />

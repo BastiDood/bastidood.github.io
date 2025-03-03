@@ -5,7 +5,7 @@
 </script>
 
 <div class="prose max-w-none space-y-8 p-4 sm:p-12 md:p-16">
-    <section class="rounded-xl bg-card p-8 shadow-xl">
+    <section class="bg-card rounded-xl p-8 shadow-xl">
         <h1>Articles</h1>
         <p>
             In my spare time, I write technical blog posts at <a href="https://dev.to">dev.to</a>
@@ -15,7 +15,7 @@
             systems programming patterns—particularly in the context of Rust, C, and C++.
         </p>
     </section>
-    <section class="prose max-w-none rounded-xl bg-card p-8 shadow-xl">
+    <section class="prose bg-card max-w-none rounded-xl p-8 shadow-xl">
         <h2>Featured Articles</h2>
         <div class="gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
             <Article
@@ -101,7 +101,7 @@
             </Article>
         </div>
     </section>
-    <section class="prose max-w-none rounded-xl bg-card p-8 shadow-xl">
+    <section class="prose bg-card max-w-none rounded-xl p-8 shadow-xl">
         <h2>Latest Articles</h2>
         {#await articles}
             <p>Loading latest articles...</p>

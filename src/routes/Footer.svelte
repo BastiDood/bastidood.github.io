@@ -14,12 +14,12 @@
             <div class="mb-6 md:mb-0">
                 <a href="/" class="flex items-center">
                     <img src={profile} alt="BastiDood" width="500" height="500" loading="lazy" class="mr-3 size-8" />
-                    <span class="self-center whitespace-nowrap text-2xl font-semibold text-white">Basti Ortiz</span>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">Basti Ortiz</span>
                 </a>
             </div>
             <div class="grid grid-cols-3 gap-8 sm:gap-6">
                 <div>
-                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Sitemap</h2>
+                    <h2 class="mb-4 text-sm font-semibold text-white uppercase">Sitemap</h2>
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="/" class="hover:underline">Home</a></li>
                         <li><a href="/portfolio/" class="hover:underline">Portfolio</a></li>
@@ -27,7 +27,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Social</h2>
+                    <h2 class="mb-4 text-sm font-semibold text-white uppercase">Social</h2>
                     <ul class="space-y-2 text-gray-400">
                         <li>
                             <a href="https://dev.to/somedood" target="_blank" class="hover:underline">DEV (dev.to)</a>
@@ -46,7 +46,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h2 class="mb-4 text-sm font-semibold uppercase text-white">Code</h2>
+                    <h2 class="mb-4 text-sm font-semibold text-white uppercase">Code</h2>
                     <ul class="space-y-2 text-gray-400">
                         <li>
                             <a

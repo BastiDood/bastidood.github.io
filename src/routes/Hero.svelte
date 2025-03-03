@@ -6,7 +6,7 @@
     import twitter from '$lib/icons/social/twitter.svg';
 </script>
 
-<div class="m-6 space-y-2 rounded-2xl bg-fade p-6">
+<div class="bg-fade m-6 space-y-2 rounded-2xl p-6">
     <div class="space-y-1">
         <h1>I'm Basti Ortiz.</h1>
         <p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>

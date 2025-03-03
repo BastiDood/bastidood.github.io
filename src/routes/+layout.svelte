@@ -24,7 +24,7 @@
 </svelte:head>
 
 <Header />
-<main class="space-y-8 bg-gradient-to-b from-sky to-white">
+<main class="from-sky space-y-8 bg-linear-to-b to-white">
     {@render children()}
 </main>
 <Footer />
