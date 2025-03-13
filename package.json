@@ -43,8 +43,8 @@
         "vite": "^6.2.1"
     },
     "dependencies": {
-        "@iconify/icons-simple-icons": "^1.2.74",
         "@iconify/svelte": "^4.2.0",
+        "@iconify-icons/simple-icons": "^1.2.74",
         "@sveltejs/kit": "^2.19.0",
         "html-minifier": "^4.0.0",
         "marked": "^15.0.7",

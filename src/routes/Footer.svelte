@@ -1,8 +1,8 @@
 <script>
-    import DevTo from '@iconify/icons-simple-icons/devdotto';
-    import GitHub from '@iconify/icons-simple-icons/github';
-    import LinkedIn from '@iconify/icons-simple-icons/linkedin';
-    import Twitter from '@iconify/icons-simple-icons/twitter';
+    import DevTo from '@iconify-icons/simple-icons/devdotto';
+    import GitHub from '@iconify-icons/simple-icons/github';
+    import LinkedIn from '@iconify-icons/simple-icons/linkedin';
+    import Twitter from '@iconify-icons/simple-icons/twitter';
 
     import Icon from '@iconify/svelte';
     import profile from '$lib/images/profile.webp';
