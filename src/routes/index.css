@@ -1,17 +1,28 @@
 @import 'tailwindcss';
+
+/* eslint-disable-next-line css/no-invalid-at-rules */
 @plugin '@tailwindcss/typography';
 
+/* eslint-disable-next-line css/no-invalid-at-rules */
 @theme {
     /* Colors */
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-brand: #236ea5;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-hover: #105587;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-sky: #0a8ded;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-card: #edeef5bb;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-prof: #d8e7e1bb;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --color-fade: #ffffff80;
 
     /* Fonts */
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --font-sans: 'Fira Sans', sans-serif;
+    /* eslint-disable-next-line css/no-invalid-at-rules */
     --font-mono: 'Fira Code', monospace;
 }
 
