@@ -10,26 +10,26 @@ import { assert } from './lib/assert';
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
 async function addFilesToCache() {
-    const cache = await caches.open(version);
-    await cache.addAll(build.concat(files).concat(prerendered));
-    sw.skipWaiting();
+  const cache = await caches.open(version);
+  await cache.addAll(build.concat(files).concat(prerendered));
+  sw.skipWaiting();
 }
 
 async function deleteOldCache() {
-    const keys = new Set(await caches.keys());
-    if (keys.delete(version)) console.log(`deleting existing at ${version}`);
-    const promises = Array.from(keys, k => caches.delete(k));
-    const results = await Promise.all(promises);
-    assert(
-        results.every(x => x),
-        'cannot delete all of the old caches',
-    );
+  const keys = new Set(await caches.keys());
+  if (keys.delete(version)) console.log(`deleting existing at ${version}`);
+  const promises = Array.from(keys, k => caches.delete(k));
+  const results = await Promise.all(promises);
+  assert(
+    results.every(x => x),
+    'cannot delete all of the old caches',
+  );
 }
 
 async function fetchCacheFirst(req: Request) {
-    const cache = await caches.open(version);
-    const res = await cache.match(req);
-    return res ?? fetch(req);
+  const cache = await caches.open(version);
+  const res = await cache.match(req);
+  return res ?? fetch(req);
 }
 
 sw.addEventListener('install', evt => evt.waitUntil(addFilesToCache()));

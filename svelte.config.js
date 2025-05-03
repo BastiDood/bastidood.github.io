@@ -7,6 +7,6 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {Config} */
 export default {
-    preprocess: vitePreprocess(),
-    kit: minifyAdapter({ adapter: staticAdapter({ fallback: '404.html' }) }),
+  preprocess: vitePreprocess(),
+  kit: minifyAdapter({ adapter: staticAdapter({ fallback: '404.html' }) }),
 };
