@@ -34,7 +34,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       '@eslint/js':
-        specifier: ^9.25.1
+        specifier: ~9.25.1
         version: 9.25.1
       '@sveltejs/adapter-static':
         specifier: ^3.0.8
@@ -49,7 +49,7 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.36.0)(yaml@2.7.0))
       eslint:
-        specifier: ^9.25.1
+        specifier: ~9.25.1
         version: 9.25.1(jiti@2.4.2)
       eslint-config-prettier:
         specifier: ^10.1.2
