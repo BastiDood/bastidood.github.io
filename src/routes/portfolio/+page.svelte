@@ -70,13 +70,13 @@
   import palaiMobile from '$lib/images/pal.ai/mobile.png';
   import quizzo from '$lib/images/quizzo/logo.webp';
   import quizzoResult from '$lib/images/quizzo/result.png';
-  import spectro from '$lib/images/spectro/logo.svg';
-  import spectroBanner from '$lib/images/spectro/banner.png';
   import snakeScore1 from '$lib/images/snake/score-1.webp';
   import snakeScore16 from '$lib/images/snake/score-16.webp';
   import snakeScore6 from '$lib/images/snake/score-6.webp';
   import soundraveDesktop from '$lib/images/soundrave/desktop.webp';
   import soundraveMobile from '$lib/images/soundrave/mobile.webp';
+  import spectro from '$lib/images/spectro/logo.svg';
+  import spectroBanner from '$lib/images/spectro/banner.png';
   import upcsi from '$lib/images/up-csi/logo.svg';
   import upcsiEvents from '$lib/images/up-csi/events.png';
   import upcsiHome from '$lib/images/up-csi/home.png';
