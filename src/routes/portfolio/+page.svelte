@@ -70,6 +70,8 @@
   import palaiMobile from '$lib/images/pal.ai/mobile.png';
   import quizzo from '$lib/images/quizzo/logo.webp';
   import quizzoResult from '$lib/images/quizzo/result.png';
+  import spectro from '$lib/images/spectro/logo.svg';
+  import spectroBanner from '$lib/images/spectro/banner.png';
   import snakeScore1 from '$lib/images/snake/score-1.webp';
   import snakeScore16 from '$lib/images/snake/score-16.webp';
   import snakeScore6 from '$lib/images/snake/score-6.webp';
@@ -89,6 +91,11 @@
       <div class="bg-card sticky top-20 hidden rounded-xl p-8 shadow-xl lg:block">
         <strong class="text-lg text-black">Table of Contents</strong>
         <ol class="text-md text-gray-500">
+          <li>
+            <a class="transition-colors hover:text-gray-700" href="#drap"
+              >Spectro: Anonymous Confession Bot for Discord</a
+            >
+          </li>
           <li>
             <a class="transition-colors hover:text-gray-700" href="#drap"
               >DRAP: Draft Ranking Automated Processor</a
@@ -150,6 +157,31 @@
       </div>
     </aside>
     <article id="projects" class="space-y-8">
+      <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
+        <h2>Spectro: Anonymous Confession Bot for Discord</h2>
+        <div class="not-prose flex flex-wrap gap-2">
+          <img class="m-0 h-8 w-8" src={spectro} alt="Spectro" />
+          <img class="m-0 h-8 w-8" src={git} alt="Git" />
+          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
+          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
+          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
+          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
+          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
+          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
+          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        </div>
+        <p>
+          <a target="_blank" href="https://spectro.fly.dev/">Spectro</a> is a free and
+          <a target="_blank" href="https://github.com/BastiDood/spectro">open-source</a>
+          anonymous confession bot for Discord. It handles hundreds of anonymous confessions per day
+          for a thousand users across various community servers&mdash;most popularly used by the community
+          server for the University of the Philippines Diliman, Department of Computer Science students.
+        </p>
+        <div class="mx-auto max-w-xl">
+          <img loading="lazy" src={spectroBanner} alt="Hero banner for the Spectro link preview" />
+        </div>
+      </section>
       <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>DRAP: Draft Ranking Automated Processor</h2>
         <div class="not-prose flex flex-wrap gap-2">
