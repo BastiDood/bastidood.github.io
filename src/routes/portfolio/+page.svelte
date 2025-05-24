@@ -1,36 +1,36 @@
 <script>
   import Proficiencies from '$lib/components/Proficiencies.svelte';
 
-  import cpp from '$lib/icons/lang/cpp.svg';
-  import css from '$lib/icons/lang/css.svg';
-  import html from '$lib/icons/lang/html.svg';
-  import js from '$lib/icons/lang/js.svg';
-  import python from '$lib/icons/lang/python.svg';
-  import rust from '$lib/icons/lang/rust.svg';
-  import solidity from '$lib/icons/lang/solidity.svg';
-  import ts from '$lib/icons/lang/ts.svg';
+  import { CPlusPlus } from '$lib/icons/lang/cpp';
+  import { CSS } from '$lib/icons/lang/css';
+  import { HTML } from '$lib/icons/lang/html';
+  import { JavaScript } from '$lib/icons/lang/js';
+  import { Python } from '$lib/icons/lang/python';
+  import { Rust } from '$lib/icons/lang/rust';
+  import { Solidity } from '$lib/icons/lang/solidity';
+  import { TypeScript } from '$lib/icons/lang/ts';
 
-  import anchor from '$lib/icons/lib/anchor.png';
-  import capacitor from '$lib/icons/lib/capacitor.svg';
-  import espressif from '$lib/icons/lib/espressif.svg';
-  import express from '$lib/icons/lib/express.svg';
-  import hardhat from '$lib/icons/lib/hardhat.svg';
-  import huggingface from '$lib/icons/lib/huggingface.svg';
-  import hyper from '$lib/icons/lib/hyper.svg';
-  import svelte from '$lib/icons/lib/svelte.svg';
-  import tailwind from '$lib/icons/lib/tailwind.svg';
-  import tokio from '$lib/icons/lib/tokio.svg';
+  import { Anchor } from '$lib/icons/lib/anchor';
+  import { Capacitor } from '$lib/icons/lib/capacitor';
+  import { Espressif } from '$lib/icons/lib/espressif';
+  import { Express } from '$lib/icons/lib/express';
+  import { Hardhat } from '$lib/icons/lib/hardhat';
+  import { HuggingFace } from '$lib/icons/lib/huggingface';
+  import { Hyper } from '$lib/icons/lib/hyper';
+  import { Svelte } from '$lib/icons/lib/svelte';
+  import { Tailwind } from '$lib/icons/lib/tailwind';
+  import { Tokio } from '$lib/icons/lib/tokio';
 
-  import android from '$lib/icons/tech/android.svg';
-  import arbitrum from '$lib/icons/tech/arbitrum.svg';
-  import cmake from '$lib/icons/tech/cmake.svg';
-  import deno from '$lib/icons/tech/deno.svg';
-  import ethereum from '$lib/icons/tech/ethereum.svg';
-  import git from '$lib/icons/tech/git.svg';
-  import mongo from '$lib/icons/tech/mongo.svg';
-  import node from '$lib/icons/tech/node.svg';
-  import postgres from '$lib/icons/tech/postgres.svg';
-  import solana from '$lib/icons/tech/solana.svg';
+  import { Android } from '$lib/icons/tech/android';
+  import { Arbitrum } from '$lib/icons/tech/arbitrum';
+  import { CMake } from '$lib/icons/tech/cmake';
+  import { Deno } from '$lib/icons/tech/deno';
+  import { Ethereum } from '$lib/icons/tech/ethereum';
+  import { Git } from '$lib/icons/tech/git';
+  import { MongoDB } from '$lib/icons/tech/mongo';
+  import { NodeJS } from '$lib/icons/tech/node';
+  import { PostgreSQL } from '$lib/icons/tech/postgres';
+  import { Solana } from '$lib/icons/tech/solana';
 
   import acda from '$lib/images/acda/logo.svg';
   import acdaAnalytics from '$lib/images/acda/analytics.png';
@@ -83,9 +83,7 @@
 </script>
 
 <div class="prose prose-headings:mt-0 max-w-none space-y-8 p-4 sm:p-12 md:p-16">
-  <div class="bg-card max-w-none rounded-xl p-8 shadow-xl">
-    <Proficiencies />
-  </div>
+  <Proficiencies />
   <div class="block grid-cols-[auto_1fr] gap-4 lg:grid">
     <aside class="not-prose">
       <div class="bg-card sticky top-20 hidden rounded-xl p-8 shadow-xl lg:block">
@@ -159,17 +157,17 @@
     <article id="projects" class="space-y-8">
       <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Spectro: Anonymous Confession Bot for Discord</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={spectro} alt="Spectro" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={spectro} alt="Spectro" />
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <a target="_blank" href="https://spectro.fly.dev/">Spectro</a> is a free and
@@ -184,17 +182,17 @@
       </section>
       <section id="drap" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>DRAP: Draft Ranking Automated Processor</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={drap} alt="DRAP" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={drap} alt="DRAP" />
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <a target="_blank" href="https://drap.dcs.upd.edu.ph/">DRAP</a> is the
@@ -239,19 +237,19 @@
       </section>
       <section id="hotspotter" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Hotspotter</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={hotspotter} alt="Hotspotter" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={android} alt="Android" />
-          <img class="m-0 h-8 w-8" src={capacitor} alt="CapacitorJS" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={hotspotter} alt="Hotspotter" />
+          <Git class="h-10 max-w-16" />
+          <Android class="h-10 max-w-16" />
+          <Capacitor class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           Developed in fulfillment of the final requirements for my Bachelor of Science degree in
@@ -347,18 +345,18 @@
       </section>
       <section id="dapped-out" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Dapped Out!</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={solana} alt="Solana" />
-          <img class="m-0 h-8 w-8" src={anchor} alt="Anchor" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <Solana class="h-10 max-w-16" />
+          <Anchor class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
         </div>
         <p>
           <a target="_blank" href="https://dapped-out.pages.dev/">Dapped Out!</a> is an
@@ -409,19 +407,19 @@
       </section>
       <section id="botoken" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Botoken</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={ethereum} alt="Ethereum" />
-          <img class="m-0 h-8 w-8" src={arbitrum} alt="Arbitrum" />
-          <img class="m-0 h-8 w-8" src={hardhat} alt="Hardhat" />
-          <img class="m-0 h-8 w-8" src={solidity} alt="Solidity" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <Ethereum class="h-10 max-w-16" />
+          <Arbitrum class="h-10 max-w-16" />
+          <Hardhat class="h-10 max-w-16" />
+          <Solidity class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
         </div>
         <p>
           <a target="_blank" href="https://botoken.pages.dev/">Botoken</a> is a simple
@@ -458,17 +456,17 @@
       </section>
       <section id="acda" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>ACDA: Aggregated Crash Data Analytics</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={acda} alt="ACDA" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={acda} alt="ACDA" />
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           The <b
@@ -538,16 +536,16 @@
       </section>
       <section id="up-csi" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>UP CSI Website</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={upcsi} alt="UP CSI" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={upcsi} alt="UP CSI" />
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
         </div>
         <p>
           The <a target="_blank" href="https://up-csi.org/">UP Center for Student Innovations</a>
@@ -574,17 +572,17 @@
       </section>
       <section id="hatid" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>HATiD: Helpdesk and Ticketing Dashboard</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={hatid} alt="HATiD" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={tailwind} alt="TailwindCSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={hatid} alt="HATiD" />
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Tailwind class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <dfn><abbr title="Helpdesk and Ticketing Dashboard">HATiD</abbr></dfn> is an
@@ -616,18 +614,18 @@
       </section>
       <section id="drippy" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Drippy IoT</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={drippy} alt="Drippy" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
-          <img class="m-0 h-8 w-8" src={tokio} alt="Tokio" />
-          <img class="m-0 h-8 w-8" src={hyper} alt="Hyper" />
-          <img class="m-0 h-8 w-8" src={espressif} alt="Espressif" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={drippy} alt="Drippy" />
+          <Git class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
+          <Tokio class="h-10 max-w-16" />
+          <Hyper class="h-10 max-w-16" />
+          <Espressif class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <a href="https://github.com/drippy-iot">Drippy</a> is an open-source Internet-of-Things
@@ -641,7 +639,7 @@
           <a href="https://dcs.upd.edu.ph/">Department of Computer Science</a>.
         </p>
         <p>
-          Aside from data analytics, Drippy’s marquee feature is its ability to detect leaky pipes.
+          Aside from data analytics, Drippy's marquee feature is its ability to detect leaky pipes.
           As soon as the IoT device detects sufficient conditions for leakage, it automatically
           closes a master valve in the same pipe to stop the wasted flow of water. A prominently
           positioned LED lights up to indicate the actuation of said valve. Through the web
@@ -711,16 +709,16 @@
       </section>
       <section id="doctrack" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>DocTrack</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={doctrack} alt="DocTrack" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={doctrack} alt="DocTrack" />
+          <Git class="h-10 max-w-16" />
+          <Deno class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <a href="https://doctrack.deno.dev/">DocTrack</a> is an
@@ -788,16 +786,16 @@
       </section>
       <section id="palai" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>pal.ai</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={palai} alt="pal.ai" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
-          <img class="m-0 h-8 w-8" src={ts} alt="TypeScript" />
-          <img class="m-0 h-8 w-8" src={svelte} alt="Svelte" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={python} alt="Python" />
-          <img class="m-0 h-8 w-8" src={huggingface} alt="Hugging Face" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={palai} alt="pal.ai" />
+          <Git class="h-10 max-w-16" />
+          <Deno class="h-10 max-w-16" />
+          <TypeScript class="h-10 max-w-16" />
+          <Svelte class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <Python class="h-10 max-w-16" />
+          <HuggingFace class="h-10 max-w-16" />
         </div>
         <p>
           The <a href="https://palai.deno.dev/">pal.ai</a> project is an installable
@@ -876,14 +874,14 @@
       </section>
       <section id="soundrave" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>SoundRave</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={node} alt="Node.js" />
-          <img class="m-0 h-8 w-8" src={express} alt="Express.js" />
-          <img class="m-0 h-8 w-8" src={html} alt="HTML" />
-          <img class="m-0 h-8 w-8" src={css} alt="CSS" />
-          <img class="m-0 h-8 w-8" src={js} alt="JavaScript" />
-          <img class="m-0 h-8 w-8" src={mongo} alt="MongoDB" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <NodeJS class="h-10 max-w-16" />
+          <Express class="h-10 max-w-16" />
+          <HTML class="h-10 max-w-16" />
+          <CSS class="h-10 max-w-16" />
+          <JavaScript class="h-10 max-w-16" />
+          <MongoDB class="h-10 max-w-16" />
         </div>
         <p>
           <a href="https://github.com/BastiDood/soundrave">SoundRave</a> was an aggregator app for new
@@ -921,13 +919,13 @@
       </section>
       <section id="chrozone" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Chrozone</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={chrozone} alt="Chrozone" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
-          <img class="m-0 h-8 w-8" src={tokio} alt="Tokio" />
-          <img class="m-0 h-8 w-8" src={hyper} alt="Hyper" />
-          <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={chrozone} alt="Chrozone" />
+          <Git class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
+          <Tokio class="h-10 max-w-16" />
+          <Hyper class="h-10 max-w-16" />
+          <Deno class="h-10 max-w-16" />
         </div>
         <p>
           <a href="https://github.com/BastiDood/chrozone">Chrozone</a> is a
@@ -970,14 +968,14 @@
       </section>
       <section id="quizzo" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Quizzo</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={quizzo} alt="Quizzo" />
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
-          <img class="m-0 h-8 w-8" src={tokio} alt="Tokio" />
-          <img class="m-0 h-8 w-8" src={hyper} alt="Hyper" />
-          <img class="m-0 h-8 w-8" src={deno} alt="Deno" />
-          <img class="m-0 h-8 w-8" src={postgres} alt="PostgreSQL" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <img class="h-10 max-w-16" src={quizzo} alt="Quizzo" />
+          <Git class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
+          <Tokio class="h-10 max-w-16" />
+          <Hyper class="h-10 max-w-16" />
+          <Deno class="h-10 max-w-16" />
+          <PostgreSQL class="h-10 max-w-16" />
         </div>
         <p>
           <a href="https://github.com/BastiDood/quizzo">Quizzo</a> is a
@@ -1001,10 +999,10 @@
       </section>
       <section id="multicast" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>UDP Multicast Chat</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
-          <img class="m-0 h-8 w-8" src={tokio} alt="Tokio" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
+          <Tokio class="h-10 max-w-16" />
         </div>
         <p>
           The <a href="https://github.com/BastiDood/udp-multicast-chat"
@@ -1029,10 +1027,10 @@
       </section>
       <section id="snake" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>Snake Clone with SDL2</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={cpp} alt="C++" />
-          <img class="m-0 h-8 w-8" src={cmake} alt="CMake" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <CPlusPlus class="h-10 max-w-16" />
+          <CMake class="h-10 max-w-16" />
         </div>
         <p>
           Using the popular <a href="https://www.libsdl.org/"
@@ -1058,9 +1056,9 @@
       </section>
       <section id="option-block" class="bg-card max-w-none scroll-mt-20 rounded-xl p-8 shadow-xl">
         <h2>A Block of Optionals!</h2>
-        <div class="not-prose flex flex-wrap gap-2">
-          <img class="m-0 h-8 w-8" src={git} alt="Git" />
-          <img class="m-0 h-8 w-8" src={rust} alt="Rust" />
+        <div class="not-prose flex flex-wrap items-center gap-2">
+          <Git class="h-10 max-w-16" />
+          <Rust class="h-10 max-w-16" />
         </div>
         <p>
           The <a href="https://github.com/BastiDood/option-block"><code>option-block</code></a> crate
