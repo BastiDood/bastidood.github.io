@@ -1,14 +1,16 @@
 <script>
   import './index.css';
-  import Footer from './footer.svelte';
-  import Header from './header.svelte';
+
+  import { posthog } from 'posthog-js';
+
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import { browser } from '$app/environment';
 
   import favicon from '$lib/favicon.png?url';
   import og from '$lib/og.webp?url';
 
-  import { afterNavigate, beforeNavigate } from '$app/navigation';
-  import { browser } from '$app/environment';
-  import { posthog } from 'posthog-js';
+  import Footer from './footer.svelte';
+  import Header from './header.svelte';
 
   if (browser) {
     beforeNavigate(() => posthog.capture('$pageleave'));

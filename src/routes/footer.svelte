@@ -5,6 +5,7 @@
   import Twitter from '@iconify-icons/simple-icons/twitter';
 
   import Icon from '@iconify/svelte';
+
   import profile from '$lib/images/profile.webp';
 </script>
 
