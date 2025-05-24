@@ -1,4 +1,6 @@
 <script>
+  import Card from '$lib/ui/card.svelte';
+
   import dev from '$lib/icons/social/dev.svg';
   import github from '$lib/icons/social/github.svg';
   import linkedIn from '$lib/icons/social/linkedin.svg';
@@ -6,7 +8,7 @@
   import twitter from '$lib/icons/social/twitter.svg';
 </script>
 
-<div class="bg-fade m-6 space-y-2 rounded-2xl p-6">
+<Card color="fade" size="md" class="m-6 space-y-2 p-6">
   <div class="space-y-1">
     <h1>I'm Basti Ortiz.</h1>
     <p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
@@ -32,4 +34,4 @@
       ><img src={twitter} alt="Twitter" class="w-8" /></a
     >
   </div>
-</div>
+</Card>
