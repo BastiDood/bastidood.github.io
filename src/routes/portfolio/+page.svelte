@@ -1,7 +1,7 @@
 <script>
   import Card from '$lib/ui/card.svelte';
 
-  import Proficiencies from '$lib/components/Proficiencies.svelte';
+  import Proficiencies from '$lib/components/proficiencies.svelte';
 
   import { CPlusPlus } from '$lib/icons/lang/cpp';
   import { CSS } from '$lib/icons/lang/css';

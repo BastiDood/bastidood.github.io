@@ -1,7 +1,7 @@
 <script>
   import Card from '$lib/ui/card.svelte';
 
-  import Article from './Article.svelte';
+  import Article from './article.svelte';
 
   const { data } = $props();
   const { articles } = $derived(data);

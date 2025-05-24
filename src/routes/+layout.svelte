@@ -1,7 +1,7 @@
 <script>
   import './index.css';
-  import Footer from './Footer.svelte';
-  import Header from './Header.svelte';
+  import Footer from './footer.svelte';
+  import Header from './header.svelte';
 
   import favicon from '$lib/favicon.png?url';
   import og from '$lib/og.webp?url';
