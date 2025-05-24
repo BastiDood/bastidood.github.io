@@ -1,1 +1,1 @@
-export { default as twitter } from './logo.svelte';
+export { default as Twitter } from './logo.svelte';

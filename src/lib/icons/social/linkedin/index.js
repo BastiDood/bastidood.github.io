@@ -1,1 +1,1 @@
-export { default as linkedin } from './logo.svelte';
+export { default as LinkedIn } from './logo.svelte';

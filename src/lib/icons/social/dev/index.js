@@ -1,1 +1,1 @@
-export { default as dev } from './logo.svelte';
+export { default as DevTo } from './logo.svelte';

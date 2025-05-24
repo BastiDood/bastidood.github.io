@@ -1,1 +1,1 @@
-export { default as github } from './logo.svelte';
+export { default as GitHub } from './logo.svelte';
