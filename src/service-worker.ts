@@ -17,7 +17,9 @@ async function addFilesToCache() {
 
 async function deleteOldCache() {
   const keys = new Set(await caches.keys());
+  // eslint-disable-next-line no-console
   if (keys.delete(version)) console.log(`deleting existing at ${version}`);
+
   const promises = Array.from(keys, k => caches.delete(k));
   const results = await Promise.all(promises);
   assert(

@@ -1,5 +1,8 @@
 <script>
   import Card from '$lib/ui/card.svelte';
+  import Icon from '@iconify/svelte';
+
+  import MailOutline from '@iconify-icons/material-symbols/mail-outline';
 
   import { DevTo } from '$lib/icons/social/dev';
   import { GitHub } from '$lib/icons/social/github';
@@ -24,17 +27,20 @@
         class="block size-8 rounded-full"
       />
     </a>
-    <a href="https://github.com/BastiDood" title="GitHub">
+    <a href="https://github.com/BastiDood" rel="external" title="GitHub">
       <GitHub class="w-8" />
     </a>
-    <a href="https://dev.to/somedood" title="dev.to">
+    <a href="https://dev.to/somedood" rel="external" title="dev.to">
       <DevTo class="w-8" />
     </a>
-    <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn">
+    <a href="https://www.linkedin.com/in/basti-ortiz/" rel="external" title="LinkedIn">
       <LinkedIn class="w-8" />
     </a>
-    <a href="https://twitter.com/BastiDood" title="Twitter">
+    <a href="https://twitter.com/BastiDood" rel="external" title="Twitter">
       <Twitter class="w-8" />
+    </a>
+    <a href="mailto:ortiz@bastidood.dev" rel="external" title="Email">
+      <Icon icon={MailOutline} width="40" />
     </a>
   </div>
 </Card>
