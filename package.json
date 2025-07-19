@@ -41,7 +41,7 @@
     "@iconify/svelte": "^5.0.0",
     "@sveltejs/kit": "^2.25.1",
     "class-variance-authority": "^0.7.1",
-    "marked": "^15.0.12",
+    "marked": "^16.1.1",
     "posthog-js": "^1.257.0",
     "svelte": "^5.36.8",
     "tailwind-merge": "^3.3.1",
