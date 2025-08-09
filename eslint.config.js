@@ -1,18 +1,59 @@
-import globals from 'globals';
-
 import css from '@eslint/css';
+import globals from 'globals';
+import html from '@html-eslint/eslint-plugin';
+import imsort from '@bastidood/eslint-plugin-imsort';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import svelte from 'eslint-plugin-svelte';
 import ts from 'typescript-eslint';
-
+import { defineConfig } from 'eslint/config';
 import { tailwindSyntax } from '@eslint/css/syntax';
 
 import svelteConfig from './svelte.config.js';
 
-export default ts.config(
+export default defineConfig(
   { ignores: ['.svelte-kit/**/*', 'build/**/*', 'node_modules/**/*'] },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
+  {
+    ...html.configs['flat/recommended'],
+    files: ['**/*.html'],
+    rules: {
+      ...html.configs['flat/recommended'].rules,
+      '@html-eslint/indent': 'off',
+      '@html-eslint/no-duplicate-class': 'error',
+      '@html-eslint/no-extra-spacing-attrs': [
+        'error',
+        {
+          enforceBeforeSelfClose: true,
+          disallowMissing: true,
+          disallowTabs: true,
+          disallowInAssignment: true,
+        },
+      ],
+      '@html-eslint/no-extra-spacing-text': 'error',
+      '@html-eslint/no-inline-styles': 'error',
+      '@html-eslint/no-nested-interactive': 'error',
+      '@html-eslint/no-script-style-type': 'error',
+      '@html-eslint/no-target-blank': 'error',
+      '@html-eslint/prefer-https': 'error',
+      '@html-eslint/require-button-type': 'error',
+      '@html-eslint/require-closing-tags': 'off',
+      '@html-eslint/require-explicit-size': 'error',
+      '@html-eslint/require-meta-charset': 'error',
+      '@html-eslint/no-abstract-roles': 'error',
+      '@html-eslint/no-accesskey-attrs': 'error',
+      '@html-eslint/no-aria-hidden-body': 'error',
+      '@html-eslint/no-heading-inside-button': 'error',
+      '@html-eslint/no-invalid-role': 'error',
+      '@html-eslint/no-non-scalable-viewport': 'error',
+      '@html-eslint/no-positive-tabindex': 'error',
+      '@html-eslint/no-skip-heading-levels': 'error',
+      '@html-eslint/require-form-method': 'error',
+      '@html-eslint/require-frame-title': 'error',
+      '@html-eslint/require-input-label': 'error',
+      '@html-eslint/require-meta-viewport': 'error',
+    },
+  },
   {
     files: ['**/*.css'],
     plugins: { css },
@@ -26,8 +67,16 @@ export default ts.config(
   },
   {
     files: ['**/*.js', '**/*.ts', '**/*.svelte'],
-    extends: [js.configs.recommended, ...ts.configs.recommended, ...ts.configs.stylistic, prettier],
+    extends: [
+      js.configs.recommended,
+      ...ts.configs.recommended,
+      ...ts.configs.stylistic,
+      imsort.configs.all,
+      prettier,
+    ],
+    plugins: { '@bastidood/imsort': imsort },
     rules: {
+      '@bastidood/imsort/sort-imports': 'error',
       '@typescript-eslint/class-methods-use-this': 'error',
       '@typescript-eslint/default-param-last': 'error',
       '@typescript-eslint/init-declarations': 'error',
@@ -35,7 +84,10 @@ export default ts.config(
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/no-loop-func': 'error',
       '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-use-before-define': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
       '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
@@ -71,9 +123,6 @@ export default ts.config(
       'no-extra-label': 'error',
       'no-extend-native': 'error',
       'no-implicit-coercion': 'error',
-      'no-implicit-globals': 'error',
-      'no-implied-eval': 'error',
-      'no-invalid-this': 'off',
       'no-iterator': 'error',
       'no-label-var': 'error',
       'no-lone-blocks': 'error',
