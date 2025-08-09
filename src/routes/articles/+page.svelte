@@ -52,7 +52,7 @@
       <Article
         title="🦀 Rust Reviewed: Is the hype justified? 🦀"
         href="https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1"
-        src="https://media.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fi%2F5u4cv4vj6f6y0dtv0pd9.png"
+        src="https://media.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fy8nzxd3othxeuqkiwpf3.png"
         alt="My character featuring multiple instances of Ferris the Crab on a beach."
         datetime="2020-12-22T17:49:45Z"
       >
