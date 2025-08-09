@@ -10,7 +10,7 @@ export function load() {
     posthog.init('phc_f0e5e0c7IsAgDbqtkDfHGlBPQmW2Sn5KIaTQ7hMSEzF', {
       api_host: 'https://us.i.posthog.com',
       person_profiles: 'never',
-      capture_pageview: false,
-      capture_pageleave: false,
+      capture_pageview: true,
+      capture_pageleave: 'if_capture_pageview',
     });
 }
