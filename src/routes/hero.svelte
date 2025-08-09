@@ -1,15 +1,13 @@
 <script>
-  import Card from '$lib/ui/card.svelte';
   import Icon from '@iconify/svelte';
-
   import MailOutline from '@iconify-icons/material-symbols/mail-outline';
 
+  import Card from '$lib/ui/card.svelte';
+  import profile from '$lib/images/profile.webp';
   import { DevTo } from '$lib/icons/social/dev';
   import { GitHub } from '$lib/icons/social/github';
   import { LinkedIn } from '$lib/icons/social/linkedin';
   import { Twitter } from '$lib/icons/social/twitter';
-
-  import profile from '$lib/images/profile.webp';
 </script>
 
 <Card color="fade" size="md" class="m-6 space-y-2 p-6">

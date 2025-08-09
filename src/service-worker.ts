@@ -4,6 +4,7 @@
 /// <reference lib="webworker" />
 
 import { build, files, prerendered, version } from '$service-worker';
+
 import { assert } from './lib/assert';
 
 /** @see https://kit.svelte.dev/docs/service-workers */

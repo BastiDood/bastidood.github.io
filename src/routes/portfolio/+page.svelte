@@ -1,45 +1,11 @@
 <script>
-  import Card from '$lib/ui/card.svelte';
-
-  import Proficiencies from '$lib/components/proficiencies.svelte';
-
-  import { CPlusPlus } from '$lib/icons/lang/cpp';
-  import { CSS } from '$lib/icons/lang/css';
-  import { HTML } from '$lib/icons/lang/html';
-  import { JavaScript } from '$lib/icons/lang/js';
-  import { Python } from '$lib/icons/lang/python';
-  import { Rust } from '$lib/icons/lang/rust';
-  import { Solidity } from '$lib/icons/lang/solidity';
-  import { TypeScript } from '$lib/icons/lang/ts';
-
-  import { Anchor } from '$lib/icons/lib/anchor';
-  import { Capacitor } from '$lib/icons/lib/capacitor';
-  import { Espressif } from '$lib/icons/lib/espressif';
-  import { Express } from '$lib/icons/lib/express';
-  import { Hardhat } from '$lib/icons/lib/hardhat';
-  import { HuggingFace } from '$lib/icons/lib/huggingface';
-  import { Hyper } from '$lib/icons/lib/hyper';
-  import { Svelte } from '$lib/icons/lib/svelte';
-  import { Tailwind } from '$lib/icons/lib/tailwind';
-  import { Tokio } from '$lib/icons/lib/tokio';
-
-  import { Android } from '$lib/icons/tech/android';
-  import { Arbitrum } from '$lib/icons/tech/arbitrum';
-  import { CMake } from '$lib/icons/tech/cmake';
-  import { Deno } from '$lib/icons/tech/deno';
-  import { Ethereum } from '$lib/icons/tech/ethereum';
-  import { Git } from '$lib/icons/tech/git';
-  import { MongoDB } from '$lib/icons/tech/mongo';
-  import { NodeJS } from '$lib/icons/tech/node';
-  import { PostgreSQL } from '$lib/icons/tech/postgres';
-  import { Solana } from '$lib/icons/tech/solana';
-
   import acda from '$lib/images/acda/logo.svg';
   import acdaAnalytics from '$lib/images/acda/analytics.png';
   import acdaFilters from '$lib/images/acda/filters.png';
   import acdaGis from '$lib/images/acda/gis.png';
   import botokenAdmin from '$lib/images/botoken/admin.png';
   import botokenPoll from '$lib/images/botoken/poll.png';
+  import Card from '$lib/ui/card.svelte';
   import chrozone from '$lib/images/chrozone/logo.webp';
   import chrozoneAutocomplete from '$lib/images/chrozone/autocomplete.png';
   import chrozoneResult from '$lib/images/chrozone/result.png';
@@ -70,11 +36,12 @@
   import palai from '$lib/images/pal.ai/logo.svg';
   import palaiHome from '$lib/images/pal.ai/home.png';
   import palaiMobile from '$lib/images/pal.ai/mobile.png';
+  import Proficiencies from '$lib/components/proficiencies.svelte';
   import quizzo from '$lib/images/quizzo/logo.webp';
   import quizzoResult from '$lib/images/quizzo/result.png';
   import snakeScore1 from '$lib/images/snake/score-1.webp';
-  import snakeScore16 from '$lib/images/snake/score-16.webp';
   import snakeScore6 from '$lib/images/snake/score-6.webp';
+  import snakeScore16 from '$lib/images/snake/score-16.webp';
   import soundraveDesktop from '$lib/images/soundrave/desktop.webp';
   import soundraveMobile from '$lib/images/soundrave/mobile.webp';
   import spectro from '$lib/images/spectro/logo.svg';
@@ -82,6 +49,34 @@
   import upcsi from '$lib/images/up-csi/logo.svg';
   import upcsiEvents from '$lib/images/up-csi/events.png';
   import upcsiHome from '$lib/images/up-csi/home.png';
+  import { Anchor } from '$lib/icons/lib/anchor';
+  import { Android } from '$lib/icons/tech/android';
+  import { Arbitrum } from '$lib/icons/tech/arbitrum';
+  import { Capacitor } from '$lib/icons/lib/capacitor';
+  import { CMake } from '$lib/icons/tech/cmake';
+  import { CPlusPlus } from '$lib/icons/lang/cpp';
+  import { CSS } from '$lib/icons/lang/css';
+  import { Deno } from '$lib/icons/tech/deno';
+  import { Espressif } from '$lib/icons/lib/espressif';
+  import { Ethereum } from '$lib/icons/tech/ethereum';
+  import { Express } from '$lib/icons/lib/express';
+  import { Git } from '$lib/icons/tech/git';
+  import { Hardhat } from '$lib/icons/lib/hardhat';
+  import { HTML } from '$lib/icons/lang/html';
+  import { HuggingFace } from '$lib/icons/lib/huggingface';
+  import { Hyper } from '$lib/icons/lib/hyper';
+  import { JavaScript } from '$lib/icons/lang/js';
+  import { MongoDB } from '$lib/icons/tech/mongo';
+  import { NodeJS } from '$lib/icons/tech/node';
+  import { PostgreSQL } from '$lib/icons/tech/postgres';
+  import { Python } from '$lib/icons/lang/python';
+  import { Rust } from '$lib/icons/lang/rust';
+  import { Solana } from '$lib/icons/tech/solana';
+  import { Solidity } from '$lib/icons/lang/solidity';
+  import { Svelte } from '$lib/icons/lib/svelte';
+  import { Tailwind } from '$lib/icons/lib/tailwind';
+  import { Tokio } from '$lib/icons/lib/tokio';
+  import { TypeScript } from '$lib/icons/lang/ts';
 </script>
 
 <div class="prose prose-headings:mt-0 max-w-none space-y-8 p-4 sm:p-12 md:p-16">
