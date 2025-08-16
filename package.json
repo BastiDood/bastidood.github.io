@@ -36,9 +36,6 @@
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "@iconify-icons/material-symbols": "^1.2.58",
-    "@iconify-icons/simple-icons": "^1.2.74",
-    "@iconify/svelte": "^5.0.1",
     "@sveltejs/kit": "^2.31.1",
     "class-variance-authority": "^0.7.1",
     "marked": "^16.1.2",

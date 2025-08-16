@@ -1,10 +1,4 @@
 <script>
-  import DevTo from '@iconify-icons/simple-icons/devdotto';
-  import GitHub from '@iconify-icons/simple-icons/github';
-  import Icon from '@iconify/svelte';
-  import LinkedIn from '@iconify-icons/simple-icons/linkedin';
-  import Twitter from '@iconify-icons/simple-icons/twitter';
-
   import profile from '$lib/images/profile.webp';
 </script>
 
@@ -56,6 +50,13 @@
               >
             </li>
             <li>
+              <a
+                href="https://bsky.app/profile/bastidood.dev"
+                target="_blank"
+                class="hover:underline">Bluesky</a
+              >
+            </li>
+            <li>
               <a href="https://github.com/BastiDood" target="_blank" class="hover:underline"
                 >GitHub</a
               >
@@ -88,20 +89,6 @@
       <span class="text-sm text-gray-400 sm:text-center"
         >&copy; 2025 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
       </span>
-      <div class="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
-        <a href="https://dev.to/somedood" title="dev.to" target="_blank"
-          ><Icon icon={DevTo} width="20" height="20" /></a
-        >
-        <a href="https://www.linkedin.com/in/basti-ortiz/" title="LinkedIn" target="_blank"
-          ><Icon icon={LinkedIn} width="20" height="20" /></a
-        >
-        <a href="https://twitter.com/BastiDood" title="Twitter" target="_blank"
-          ><Icon icon={Twitter} width="20" height="20" /></a
-        >
-        <a href="https://github.com/BastiDood" title="GitHub" target="_blank"
-          ><Icon icon={GitHub} width="20" height="20" /></a
-        >
-      </div>
     </div>
   </div>
 </footer>
