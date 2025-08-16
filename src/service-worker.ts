@@ -21,12 +21,18 @@ async function onActivate() {
   // eslint-disable-next-line no-console
   if (keys.delete(version)) console.log(`deleting existing at ${version}`);
 
-  const promises = Array.from(keys, k => caches.delete(k));
-  const results = await Promise.all(promises);
+  const deletionPromises = Array.from(keys, async k => await caches.delete(k));
+  const deletions = await Promise.all(deletionPromises);
   assert(
-    results.every(x => x),
+    deletions.every(x => x),
     'cannot delete all of the old caches',
   );
+
+  // Perform a hard-refresh on new content
+  const clients = await sw.clients.matchAll({ type: 'window' });
+  const navigationPromises = clients.map(async client => await client.navigate(client.url));
+  const navigations = await Promise.all(navigationPromises);
+  console.log(`reloaded ${navigations.length} clients`);
 }
 
 async function onFetch(req: Request) {
