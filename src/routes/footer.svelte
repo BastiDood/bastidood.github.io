@@ -1,12 +1,13 @@
 <script>
   import profile from '$lib/images/profile.webp';
+  import { resolve } from '$app/paths';
 </script>
 
 <footer class="bg-gray-800 p-4 text-gray-400 sm:p-6">
   <div class="mx-auto max-w-screen-xl">
     <div class="md:flex md:justify-between">
       <div class="mb-6 md:mb-0">
-        <a href="/" class="flex items-center">
+        <a href={resolve('/')} class="flex items-center">
           <img
             src={profile}
             alt="BastiDood"
@@ -24,9 +25,9 @@
         <div>
           <h2 class="mb-4 text-sm font-semibold text-white uppercase">Sitemap</h2>
           <ul class="space-y-2 text-gray-400">
-            <li><a href="/" class="hover:underline">Home</a></li>
-            <li><a href="/portfolio/" class="hover:underline">Portfolio</a></li>
-            <li><a href="/articles/" class="hover:underline">Articles</a></li>
+            <li><a href={resolve('/')} class="hover:underline">Home</a></li>
+            <li><a href={resolve('/portfolio/')} class="hover:underline">Portfolio</a></li>
+            <li><a href={resolve('/articles/')} class="hover:underline">Articles</a></li>
           </ul>
         </div>
         <div>
@@ -87,7 +88,8 @@
     <hr class="my-6 border-gray-700 sm:mx-auto lg:my-8" />
     <div class="sm:flex sm:items-center sm:justify-between">
       <span class="text-sm text-gray-400 sm:text-center"
-        >&copy; 2025 <a href="/" class="hover:underline">Basti Ortiz</a>. All rights reserved.
+        >&copy; 2025 <a href={resolve('/')} class="hover:underline">Basti Ortiz</a>. All rights
+        reserved.
       </span>
     </div>
   </div>

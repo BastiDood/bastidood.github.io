@@ -5,6 +5,7 @@
   import { DevTo } from '$lib/icons/social/dev';
   import { GitHub } from '$lib/icons/social/github';
   import { LinkedIn } from '$lib/icons/social/linkedin';
+  import { resolve } from '$app/paths';
   import { Twitter } from '$lib/icons/social/twitter';
 </script>
 
@@ -14,7 +15,7 @@
     <p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
   </div>
   <div class="flex items-center gap-2">
-    <a href="/"
+    <a href={resolve('/')}
       ><img
         src={profile}
         width="500"
