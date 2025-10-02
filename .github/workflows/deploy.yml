@@ -18,6 +18,8 @@ jobs:
   build:
     name: Build SvelteKit
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_POSTHOG_API_KEY: ${{ secrets.PUBLIC_POSTHOG_API_KEY }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
