@@ -3,4 +3,6 @@
 /.vscode
 /build
 
+.env
+.env.*
 node_modules
