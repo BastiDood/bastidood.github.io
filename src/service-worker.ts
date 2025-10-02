@@ -45,7 +45,7 @@ async function onFetch(req: Request) {
 sw.addEventListener('install', evt => evt.waitUntil(onInstall()));
 sw.addEventListener('activate', evt => evt.waitUntil(onActivate()));
 sw.addEventListener('fetch', evt => {
+  // Only intercept first-party requests!
   const url = new URL(evt.request.url);
-  if (url.hostname.endsWith('.i.posthog.com')) return;
-  evt.respondWith(onFetch(evt.request));
+  if (url.origin === sw.location.origin) evt.respondWith(onFetch(evt.request));
 });
