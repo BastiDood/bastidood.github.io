@@ -44,4 +44,8 @@ async function onFetch(req: Request) {
 
 sw.addEventListener('install', evt => evt.waitUntil(onInstall()));
 sw.addEventListener('activate', evt => evt.waitUntil(onActivate()));
-sw.addEventListener('fetch', evt => evt.respondWith(onFetch(evt.request)));
+sw.addEventListener('fetch', evt => {
+  const url = new URL(evt.request.url);
+  if (url.hostname.endsWith('.i.posthog.com')) return;
+  evt.respondWith(onFetch(evt.request));
+});
