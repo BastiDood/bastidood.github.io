@@ -5,8 +5,6 @@
 
 import { build, files, prerendered, version } from '$service-worker';
 
-import { assert } from './lib/assert';
-
 /** @see https://kit.svelte.dev/docs/service-workers */
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -21,12 +19,15 @@ async function onActivate() {
   // eslint-disable-next-line no-console
   if (keys.delete(version)) console.log(`deleting existing at ${version}`);
 
-  const deletionPromises = Array.from(keys, async k => await caches.delete(k));
+  const deletionPromises = Array.from(keys, async key => ({
+    key,
+    deleted: await caches.delete(key),
+  }));
+
   const deletions = await Promise.all(deletionPromises);
-  assert(
-    deletions.every(x => x),
-    'cannot delete all of the old caches',
-  );
+  for (const { key, deleted } of deletions)
+    if (deleted) console.debug(`deleted cache ${key}`);
+    else console.warn(`failed to delete cache ${key}`);
 
   // Perform a hard-refresh on new content
   const clients = await sw.clients.matchAll({ type: 'window' });
