@@ -3,6 +3,6 @@ import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
-  plugins: [tailwind(), sveltekit()],
-  build: { assetsInlineLimit: 0 },
+	plugins: [tailwind(), sveltekit()],
+	build: { assetsInlineLimit: 0 },
 });

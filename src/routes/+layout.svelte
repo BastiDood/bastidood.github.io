@@ -1,21 +1,21 @@
 <script>
-  import favicon from '$lib/favicon.png?url';
-  import og from '$lib/og.webp?url';
+	import favicon from '$lib/favicon.png?url';
+	import og from '$lib/og.webp?url';
 
-  import './index.css';
-  import Footer from './footer.svelte';
-  import Header from './header.svelte';
+	import './index.css';
+	import Footer from './footer.svelte';
+	import Header from './header.svelte';
 
-  const { children } = $props();
+	const { children } = $props();
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
-  <meta property="og:image" content="https://bastidood.github.io{og}" />
+	<link rel="icon" href={favicon} />
+	<meta property="og:image" content="https://bastidood.github.io{og}" />
 </svelte:head>
 
 <Header />
 <main class="from-sky space-y-8 bg-linear-to-b to-white">
-  {@render children()}
+	{@render children()}
 </main>
 <Footer />

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { HTMLImgAttributes } from 'svelte/elements';
+	import type { HTMLImgAttributes } from 'svelte/elements';
 
-  import src from './logo.svg?url';
+	import src from './logo.svg?url';
 
-  type Props = Omit<HTMLImgAttributes, 'src' | 'alt'>;
-  const props: Props = $props();
+	type Props = Omit<HTMLImgAttributes, 'src' | 'alt'>;
+	const props: Props = $props();
 </script>
 
 <img {src} alt="PostgreSQL" {...props} />
