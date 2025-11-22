@@ -26,7 +26,7 @@
 	</div>
 	<!-- Content -->
 	<div class="ml-12 w-[calc(100%-4rem)] md:ml-0 md:w-[calc(50%-2.5rem)]">
-		<Card size="sm" class=" bg-white/90 backdrop-blur-sm transition-colors hover:bg-white">
+		<Card size="sm" class="bg-white/90 backdrop-blur-sm transition-colors hover:bg-white">
 			<time class="mb-1 block text-xs text-slate-500">{date}</time>
 			<h3 class="text-2xl font-bold text-slate-800">{title}</h3>
 			<div class="mb-2 text-sm font-medium text-sky-600">

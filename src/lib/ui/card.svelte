@@ -8,9 +8,9 @@
 				fade: 'bg-fade',
 			},
 			size: {
-				sm: 'rounded-lg p-4 shadow-md',
-				md: 'rounded-xl p-8 shadow-xl',
-				lg: 'rounded-2xl p-12 shadow-2xl',
+				sm: 'rounded-lg p-4 border border-slate-200/60 shadow-sm',
+				md: 'rounded-xl p-8 border border-slate-200/60 shadow-sm',
+				lg: 'rounded-2xl p-12 border border-slate-200/60 shadow-sm',
 			},
 		},
 		defaultVariants: {
