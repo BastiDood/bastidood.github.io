@@ -42,6 +42,9 @@ importers:
       '@html-eslint/eslint-plugin':
         specifier: ^0.49.0
         version: 0.49.0(eslint@9.39.1(jiti@2.6.1))(jiti@2.6.1)
+      '@minify-html/node':
+        specifier: ^0.18.1
+        version: 0.18.1
       '@sveltejs/adapter-static':
         specifier: ^3.0.10
         version: 3.0.10(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.1.0(svelte@5.43.14)(vite@7.2.4(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.36.0)(yaml@2.7.0)))(svelte@5.43.14)(vite@7.2.4(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.36.0)(yaml@2.7.0)))
@@ -350,6 +353,36 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@minify-html/node-darwin-arm64@0.18.1':
+    resolution: {integrity: sha512-sc/VJHRcHtEk0IQP2hRA/TWkAQntaYH3RCw8n750NbfzliQqkyrDqNAGiKBOli7UlhFtG/H2aWqGjtOjIM/dZA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@minify-html/node-darwin-x64@0.18.1':
+    resolution: {integrity: sha512-0bff2ng4Vgp3+kdC8zgjd5dMN04zkM4nGuYEVP4dLR7J5NCD/Ka4XD4CKNSDZ9goLYQ8BjtKD6AeDTfJ8KBjrA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@minify-html/node-linux-arm64@0.18.1':
+    resolution: {integrity: sha512-CVGu5XVmmDrGFuA9/b/695rJBFvfTZFwKJJYA1ZXAsBZrqlKVO4bfXPq9DVNmhQ76ky3LFtVZ/+UsU7xpyK5Qw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@minify-html/node-linux-x64@0.18.1':
+    resolution: {integrity: sha512-qmIv4kRyhZTKO3nXDXHlFrhnmwIKTM57ZRomlYRYdZTWiFW3CbJ4Ggg57qIgx7D/t4dgyS7/O8OTetrWvmEg9w==}
+    cpu: [x64]
+    os: [linux]
+
+  '@minify-html/node-win32-x64@0.18.1':
+    resolution: {integrity: sha512-SNRE/NvcKXvh4UwXTRrujNSWaCj/3E+FFN+FLOBaN4FY+dZG83h6nWxGHJ5+LAoJxVTU7Al1e8toi4JjHpzv2w==}
+    cpu: [x64]
+    os: [win32]
+
+  '@minify-html/node@0.18.1':
+    resolution: {integrity: sha512-pNOv6z9zUDrjTU1+VcPOnDzGeaaqd6m9kbyHU+sg9O35450uzfke8ahx8gKlFdp/kQFrRn2rFIGAoANUZ62nSw==}
+    engines: {node: '>= 8.6.0'}
+    hasBin: true
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1761,6 +1794,29 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@minify-html/node-darwin-arm64@0.18.1':
+    optional: true
+
+  '@minify-html/node-darwin-x64@0.18.1':
+    optional: true
+
+  '@minify-html/node-linux-arm64@0.18.1':
+    optional: true
+
+  '@minify-html/node-linux-x64@0.18.1':
+    optional: true
+
+  '@minify-html/node-win32-x64@0.18.1':
+    optional: true
+
+  '@minify-html/node@0.18.1':
+    optionalDependencies:
+      '@minify-html/node-darwin-arm64': 0.18.1
+      '@minify-html/node-darwin-x64': 0.18.1
+      '@minify-html/node-linux-arm64': 0.18.1
+      '@minify-html/node-linux-x64': 0.18.1
+      '@minify-html/node-win32-x64': 0.18.1
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
