@@ -2,6 +2,7 @@
 	import type { Snippet } from 'svelte';
 
 	import Card from '$lib/ui/card.svelte';
+	import ExternalLink from '$lib/ui/link/external.svelte';
 
 	interface Props {
 		date: string;
@@ -15,7 +16,7 @@
 </script>
 
 <div
-	class="group relative flex max-w-6xl items-center justify-between md:justify-normal md:odd:flex-row-reverse"
+	class="group relative flex max-w-7xl items-center justify-between md:justify-normal md:odd:flex-row-reverse"
 >
 	<!-- Dot -->
 	<div
@@ -29,9 +30,7 @@
 			<time class="mb-1 block text-xs text-slate-500">{date}</time>
 			<h3 class="text-2xl font-bold text-slate-800">{title}</h3>
 			<div class="mb-2 text-sm font-medium text-sky-600">
-				<a href={companyUrl} target="_blank" rel="external" class="hover:underline"
-					>{companyName} ↗</a
-				>
+				<ExternalLink href={companyUrl}>{companyName}</ExternalLink>
 			</div>
 			{#if children}
 				<div class="text-sm text-slate-600">
