@@ -16,6 +16,7 @@
 </script>
 
 <article>
+  <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
   <a {href}><img width="1000" height="420" {src} {alt} /></a>
   <h3>{title}</h3>
   <p>Published <time {datetime}>{formatted}</time></p>
