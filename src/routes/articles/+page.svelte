@@ -7,18 +7,7 @@
 	const { articles } = $derived(data);
 </script>
 
-<div class="prose max-w-none space-y-8 p-4 sm:p-12 md:p-16">
-	<Card size="md">
-		<h1>Articles</h1>
-		<p>
-			In my spare time, I write technical blog posts at <a href="https://dev.to">dev.to</a>
-			(<a href="https://dev.to/somedood">@somedood</a>) about various topics in web
-			development, systems programming, and computer science. As such, many of my articles
-			discuss JavaScript best practices, design patterns, performance techniques, and
-			limitations. In other times, I focus on the low-level implications of systems
-			programming patterns—particularly in the context of Rust, C, and C++.
-		</p>
-	</Card>
+<div class="prose max-w-none space-y-8">
 	<Card size="md" class="prose max-w-none">
 		<h2>Featured Articles</h2>
 		<div class="gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">

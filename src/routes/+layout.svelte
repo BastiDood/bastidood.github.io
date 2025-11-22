@@ -4,7 +4,6 @@
 
 	import './index.css';
 	import Footer from './footer.svelte';
-	import Header from './header.svelte';
 
 	const { children } = $props();
 </script>
@@ -14,8 +13,5 @@
 	<meta property="og:image" content="https://bastidood.github.io{og}" />
 </svelte:head>
 
-<Header />
-<main class="from-sky space-y-8 bg-linear-to-b to-white">
-	{@render children()}
-</main>
+{@render children()}
 <Footer />

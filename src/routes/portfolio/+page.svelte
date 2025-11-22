@@ -36,7 +36,6 @@
 	import palai from '$lib/images/pal.ai/logo.svg';
 	import palaiHome from '$lib/images/pal.ai/home.png';
 	import palaiMobile from '$lib/images/pal.ai/mobile.png';
-	import Proficiencies from '$lib/components/proficiencies.svelte';
 	import quizzo from '$lib/images/quizzo/logo.webp';
 	import quizzoResult from '$lib/images/quizzo/result.png';
 	import snakeScore1 from '$lib/images/snake/score-1.webp';
@@ -79,8 +78,7 @@
 	import { TypeScript } from '$lib/icons/lang/ts';
 </script>
 
-<div class="prose prose-headings:mt-0 max-w-none space-y-8 p-4 sm:p-12 md:p-16">
-	<Proficiencies />
+<div class="prose prose-headings:mt-0 max-w-none space-y-8">
 	<div class="block grid-cols-[auto_1fr] gap-4 lg:grid">
 		<aside class="not-prose">
 			<Card size="md" class="sticky top-20 hidden lg:block">
@@ -432,7 +430,8 @@
 						it to the mint account of the token being transacted. For instance, the
 						<code>USDC</code>
 						coin may be transacted by pointing the contest to the mint address
-						<code class="break-words">EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v</code
+						<code class="wrap-break-word"
+							>EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v</code
 						>. For convenience, it is also possible to create (only) one brand new
 						program-derived user-generated token instead. The creator has the privilege
 						of minting new supply as well as transferring tokens to other wallets.
