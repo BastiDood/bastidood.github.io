@@ -6,7 +6,7 @@
 import { build, files, prerendered, version } from '$service-worker';
 
 /** @see https://kit.svelte.dev/docs/service-workers */
-const sw = self as unknown as ServiceWorkerGlobalScope;
+const sw = globalThis.self as unknown as ServiceWorkerGlobalScope;
 
 async function onInstall() {
 	const cache = await caches.open(version);
@@ -31,15 +31,15 @@ async function onActivate() {
 
 	// Perform a hard-refresh on new content
 	const clients = await sw.clients.matchAll({ type: 'window' });
-	const navigationPromises = clients.map(async client => await client.navigate(client.url));
-	const navigations = await Promise.all(navigationPromises);
+	const navigations = await Promise.all(clients.map(client => client.navigate(client.url)));
 	console.log(`reloaded ${navigations.length} clients`);
 }
 
 async function onFetch(req: Request) {
 	const cache = await caches.open(version);
-	const res = await cache.match(req);
-	return res ?? fetch(req);
+	let res = await cache.match(req);
+	if (typeof res === 'undefined') res = await fetch(req);
+	return res;
 }
 
 sw.addEventListener('install', evt => evt.waitUntil(onInstall()));
