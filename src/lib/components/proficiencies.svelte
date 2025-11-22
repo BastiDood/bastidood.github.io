@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+	import { twMerge } from 'tailwind-merge';
+
 	import Card from '$lib/ui/card.svelte';
 	import { Anchor } from '$lib/icons/lib/anchor';
 	import { Android } from '$lib/icons/tech/android';
@@ -44,9 +46,18 @@
 	import { Turbo } from '$lib/icons/tech/turbo';
 	import { TypeScript } from '$lib/icons/lang/ts';
 	import { Vite } from '$lib/icons/tech/vite';
+
+	interface Props {
+		class?: string;
+	}
+
+	const { class: className }: Props = $props();
+	const classes = $derived(
+		twMerge('grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3', className),
+	);
 </script>
 
-<article class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+<article class={classes}>
 	<Card size="md" class="prose">
 		<h2>Languages</h2>
 		<div class="not-prose flex flex-wrap items-center justify-center gap-3">

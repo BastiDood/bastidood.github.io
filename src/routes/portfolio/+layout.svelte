@@ -6,9 +6,7 @@
 </script>
 
 <HeroLayout>
-	<div class="m-4 sm:m-12 md:m-16">
-		<Proficiencies />
-	</div>
+	<Proficiencies class="m-4 sm:m-12 md:m-16" />
 </HeroLayout>
 <div class="m-4 mt-0! sm:m-12 md:m-16">
 	{@render children()}

@@ -3,15 +3,19 @@
 	import { resolve } from '$app/paths';
 </script>
 
-<nav class="bg-brand sticky top-0 z-10 w-full text-white shadow-md">
-	<ul class="flex justify-center">
+<nav class="bg-brand sticky top-0 z-10 text-white shadow-md">
+	<ul class="flex h-16 justify-center">
 		<li>
-			<a class="hover:bg-hover block p-4 transition-colors" href={resolve('/portfolio/')}
-				>Portfolio</a
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 transition-colors"
+				href={resolve('/portfolio/')}>Portfolio</a
 			>
 		</li>
 		<li>
-			<a class="hover:bg-hover block px-4 py-2 transition-colors" href={resolve('/')}>
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 transition-colors"
+				href={resolve('/')}
+			>
 				<img
 					src={profile}
 					width="500"
@@ -22,8 +26,9 @@
 			</a>
 		</li>
 		<li>
-			<a class="hover:bg-hover block p-4 transition-colors" href={resolve('/articles/')}
-				>Articles</a
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 transition-colors"
+				href={resolve('/articles/')}>Articles</a
 			>
 		</li>
 	</ul>

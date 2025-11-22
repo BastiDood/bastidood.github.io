@@ -27,8 +27,8 @@
 	import { twMerge } from 'tailwind-merge';
 
 	type Props = CardProps & HTMLAttributes<HTMLDivElement>;
-	const { color, size, class: className, children }: Props = $props();
+	const { color, size, class: className, children, ...props }: Props = $props();
 	const classes = $derived(twMerge(card({ color, size, className })));
 </script>
 
-<div class={classes}>{@render children?.()}</div>
+<div class={classes} {...props}>{@render children?.()}</div>

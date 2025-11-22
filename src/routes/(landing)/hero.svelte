@@ -1,4 +1,7 @@
-<script>
+<script lang="ts">
+	import type { HTMLAttributes } from 'svelte/elements';
+	import { twMerge } from 'tailwind-merge';
+
 	import Card from '$lib/ui/card.svelte';
 	import profile from '$lib/images/profile.webp';
 	import { Bluesky } from '$lib/icons/social/bluesky';
@@ -7,9 +10,16 @@
 	import { LinkedIn } from '$lib/icons/social/linkedin';
 	import { resolve } from '$app/paths';
 	import { Twitter } from '$lib/icons/social/twitter';
+
+	interface Props {
+		class?: string;
+	}
+
+	const { class: className }: Props = $props();
+	const classes = $derived(twMerge('m-6 space-y-2 p-6', className));
 </script>
 
-<Card color="fade" size="md" class="m-6 space-y-2 p-6">
+<Card color="fade" size="md" class={classes}>
 	<div class="space-y-1">
 		<h1>I'm Basti Ortiz.</h1>
 		<p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>

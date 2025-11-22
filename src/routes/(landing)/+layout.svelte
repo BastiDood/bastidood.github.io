@@ -6,7 +6,7 @@
 	const { children } = $props();
 </script>
 
-<HeroLayout class="h-dvh">
+<HeroLayout class="h-[60dvh]">
 	<Hero />
 </HeroLayout>
 <div class="m-4 mt-0! flex flex-col gap-12 sm:m-12 md:m-16">
