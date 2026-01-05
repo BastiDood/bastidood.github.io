@@ -8,11 +8,11 @@
 		"build": "vite build",
 		"prepare": "svelte-kit sync",
 		"preview": "vite preview",
-		"fmt": "prettier --experimental-cli . --check",
-		"fmt:fix": "prettier --experimental-cli . --write",
-		"lint": "pnpm --parallel /^lint:/",
+		"fmt": "prettier . --experimental-cli --check",
+		"fmt:fix": "prettier . --experimental-cli --write",
+		"lint": "pnpm run --workspace-root --parallel /^lint:/",
 		"lint:eslint": "eslint --cache --concurrency auto",
-		"lint:svelte": "svelte-check --tsconfig ./tsconfig.json"
+		"lint:svelte": "svelte-check"
 	},
 	"devDependencies": {
 		"@bastidood/eslint-plugin-imsort": "^0.10.1",
@@ -45,12 +45,5 @@
 		"svelte": "^5.46.1",
 		"tailwind-merge": "^3.4.0",
 		"valibot": "1.2.0"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@tailwindcss/oxide",
-			"core-js",
-			"esbuild"
-		]
 	}
 }

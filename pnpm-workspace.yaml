@@ -1,0 +1,19 @@
+blockExoticSubdeps: true
+
+cleanupUnusedCatalogs: true
+
+engineStrict: true
+
+minimumReleaseAge: 1440 # 1 Day
+
+onlyBuiltDependencies:
+    - '@tailwindcss/oxide'
+    - core-js
+    - esbuild
+
+strictDepBuilds: true
+
+trustPolicy: no-downgrade
+
+trustPolicyExclude:
+    - chokidar@4.0.3
