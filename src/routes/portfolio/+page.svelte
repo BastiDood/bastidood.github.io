@@ -295,9 +295,9 @@
 						Science degree in Computer Science, <strong>Hotspotter</strong> is an
 						<a target="_blank" href="https://github.com/BastiDood/hotspotter"
 							>open-source</a
-						> incentivized crowdsensing system that collects, maps, and visualizes Wi-Fi
-						and cellular data to pinpoint hotspots and dead zones. The system is composed
-						of three main subsystems:
+						> incentivized crowdsensing system that collects, maps, and visualizes Wi-Fi and
+						cellular data to pinpoint hotspots and dead zones. The system is composed of three
+						main subsystems:
 					</p>
 					<ol>
 						<li>
@@ -322,10 +322,9 @@
 							database. The web server is a Representational State Transfer
 							<dfn><abbr title="Representational State Transfer">(REST)</abbr></dfn>
 							Application Program Interface
-							<dfn><abbr title="Application Program Interface">(API)</abbr></dfn> that
-							returns SQL results in JSON format. The API endpoints service the dynamic
-							interactions that the front-end user interfaces would require (e.g., data
-							uploads).
+							<dfn><abbr title="Application Program Interface">(API)</abbr></dfn> that returns
+							SQL results in JSON format. The API endpoints service the dynamic interactions
+							that the front-end user interfaces would require (e.g., data uploads).
 						</li>
 						<li>
 							The <em>mobile subsystem</em> features an Android mobile application
@@ -487,8 +486,8 @@
 						<a target="_blank" href="https://github.com/BastiDood/botoken"
 							>open-source</a
 						>
-						polling system for decentralized autonomous organizations. Polls, proposals,
-						motions, and referendums are published in the
+						polling system for decentralized autonomous organizations. Polls, proposals, motions,
+						and referendums are published in the
 						<a target="_blank" href="https://ethereum.org/">Ethereum</a> blockchain for
 						permanence and transparency. Voting power is then quantified as fungible
 						tokens that the organization controls and regulates. Members within the
@@ -880,8 +879,8 @@
 						Wherever possible, the project utilizes a <a
 							href="https://www.typescriptlang.org/">TypeScript</a
 						>-centric application stack. With <a href="https://svelte.dev/">Svelte</a>
-						in the front end, TypeScript ensures that events, messages, and interactions
-						between UI components remain consistent. In the back end,
+						in the front end, TypeScript ensures that events, messages, and interactions between
+						UI components remain consistent. In the back end,
 						<a href="https://deno.land/">Deno</a>
 						facilitates the development of robust type-safe
 						<dfn><abbr title="Hypertext Transfer Protocol">HTTP</abbr></dfn>
