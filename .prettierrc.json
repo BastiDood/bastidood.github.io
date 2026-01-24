@@ -8,7 +8,7 @@
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
 	"overrides": [
 		{ "files": "{j,t}sconfig.json", "options": { "parser": "jsonc" } },
-		{ "files": "**/*.yml", "options": { "useTabs": false, "tabWidth": 2 } },
+		{ "files": "**/*.yaml", "options": { "useTabs": false, "tabWidth": 2 } },
 		{ "files": "**/*.svelte", "options": { "parser": "svelte", "svelteStrictMode": false } }
 	]
 }
