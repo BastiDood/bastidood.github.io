@@ -10,7 +10,7 @@ cleanupUnusedCatalogs: true
 
 engineStrict: true
 
-minimumReleaseAge: 1440 # 1 Day
+minimumReleaseAge: 720 # 1 Day
 
 strictDepBuilds: true
 
