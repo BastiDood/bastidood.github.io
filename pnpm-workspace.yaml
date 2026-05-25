@@ -4,15 +4,11 @@ allowBuilds:
   esbuild: false
   protobufjs: false
 
-blockExoticSubdeps: true
-
 cleanupUnusedCatalogs: true
 
 engineStrict: true
 
-minimumReleaseAge: 720 # 1 Day
-
-strictDepBuilds: true
+minimumReleaseAgeStrict: true
 
 trustPolicy: no-downgrade
 
