@@ -11,9 +11,11 @@ export function load() {
 	// These values will be inlined at build-time.
 	if (browser && !building && !dev)
 		if (PUBLIC_POSTHOG_API_KEY) {
+			// eslint-disable-next-line no-console
 			console.log('PUBLIC_POSTHOG_API_KEY is present... initializing PostHog');
 			posthog.init(PUBLIC_POSTHOG_API_KEY, { person_profiles: 'never' });
 		} else {
+			// eslint-disable-next-line no-console
 			console.warn('PUBLIC_POSTHOG_API_KEY is absent... skipping PostHog initialization');
 		}
 }

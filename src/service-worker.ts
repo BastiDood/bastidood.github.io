@@ -26,12 +26,16 @@ async function onActivate() {
 
 	const deletions = await Promise.all(deletionPromises);
 	for (const { key, deleted } of deletions)
+		/* eslint-disable no-console */
 		if (deleted) console.debug(`deleted cache ${key}`);
 		else console.warn(`failed to delete cache ${key}`);
+	/* eslint-enable no-console */
 
 	// Perform a hard-refresh on new content
 	const clients = await sw.clients.matchAll({ type: 'window' });
 	const navigations = await Promise.all(clients.map(client => client.navigate(client.url)));
+
+	// eslint-disable-next-line no-console
 	console.log(`reloaded ${navigations.length} clients`);
 }
 

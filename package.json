@@ -12,7 +12,7 @@
 		"fmt:fix": "prettier . --experimental-cli --write",
 		"lint": "pnpm run --workspace-root --parallel /^lint:/",
 		"lint:eslint": "eslint --cache --concurrency auto",
-		"lint:svelte": "svelte-check"
+		"lint:svelte": "svelte-check --fail-on-warnings"
 	},
 	"devDependencies": {
 		"@bastidood/eslint-plugin-imsort": "^0.12.0",
