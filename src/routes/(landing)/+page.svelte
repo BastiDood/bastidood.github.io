@@ -14,6 +14,14 @@
 		>
 			<ul class="ms-4 list-outside list-disc">
 				<li>
+					Specialized in AI applications, agentic workflows, <ExternalLink
+						href="https://agentskills.io/home">agent skills</ExternalLink
+					>, <ExternalLink href="https://claude.com/product/cowork"
+						>Claude Cowork</ExternalLink
+					>, <ExternalLink href="https://modelcontextprotocol.io/">MCP</ExternalLink>,
+					RAG, etc.
+				</li>
+				<li>
 					Lead engineer behind speeding up by 600x the <ExternalLink
 						href="https://dev.to/somedood/simulating-course-schedules-600x-faster-with-web-workers-in-coursecast-41ma"
 						>CourseCast</ExternalLink
@@ -23,12 +31,24 @@
 					> for the Wharton School of the University of Pennsylvania
 				</li>
 				<li>
-					Built the internal LLM-powered automation for hedge fund analysts that processes
-					and summarizes 5,000+ emails every day within 5 minutes
+					Built the core internal long-running + high-context workflows for our
+					multi-billion dollar hedge fund clients
+				</li>
+				<li>
+					Pioneered best practices in Codex, Claude Code, and Cursor throughout the
+					organization by championing engineering methodologies such as <ExternalLink
+						href="https://dev.to/somedood/coding-agents-as-a-first-class-consideration-in-project-structures-2a6b"
+						>"Coding Agents as a First-Class Consideration in Project Structures"</ExternalLink
+					>
+				</li>
+				<li>
+					Speaker at the inaugural Claude Code Manila meetup (March 2026) on <ExternalLink
+						href="https://dev.to/somedood/the-mental-framework-for-unlocking-agentic-workflows-cg1"
+						>"The Mental Framework for Unlocking Agentic Workflows"</ExternalLink
+					>
 				</li>
 			</ul>
 		</CareerTimeline.Card>
-
 		<CareerTimeline.Card
 			date="October 2024 – May 2025"
 			title="Full-Stack Engineer"
