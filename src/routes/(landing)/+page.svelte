@@ -16,10 +16,10 @@
 				<li>
 					Specialized in AI applications, agentic workflows, <ExternalLink
 						href="https://agentskills.io/home">agent skills</ExternalLink
-					>, <ExternalLink href="https://claude.com/product/cowork"
+					> governance, <ExternalLink href="https://claude.com/product/cowork"
 						>Claude Cowork</ExternalLink
-					>, <ExternalLink href="https://modelcontextprotocol.io/">MCP</ExternalLink>,
-					RAG, etc.
+					>, <ExternalLink href="https://modelcontextprotocol.io/">MCP</ExternalLink>, and
+					bespoke agentic RAG systems for private equity firms in the enterprise.
 				</li>
 				<li>
 					Lead engineer behind speeding up by 600x the <ExternalLink
