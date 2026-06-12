@@ -14,7 +14,7 @@
 		>
 			<ul class="ms-4 list-outside list-disc">
 				<li>
-					Specialized in AI applications, agentic workflows, <ExternalLink
+					Specialized in AI applications, agentic workflows, multi-agent orchestration, <ExternalLink
 						href="https://agentskills.io/home">agent skills</ExternalLink
 					> governance, <ExternalLink href="https://claude.com/product/cowork"
 						>Claude Cowork</ExternalLink
