@@ -1,14 +1,12 @@
 ---
-import { getEntries } from 'astro:content';
-
 import BaseLayout from '#layout/index.astro';
 import Card from '#components/card.astro';
 import Hero from '#components/hero.astro';
-import Proficiencies from '#technology-catalog/proficiencies.astro';
+import Proficiencies from '#features/portfolio/technologies/proficiencies.astro';
 import ProjectCard from '#features/portfolio/project-card.astro';
-import { projectOrder } from '#features/portfolio/project-order.ts';
+import { getProjects } from '#features/portfolio/get-projects.ts';
 
-const projects = await getEntries(projectOrder);
+const projects = await getProjects();
 ---
 
 <BaseLayout

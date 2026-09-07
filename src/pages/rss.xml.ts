@@ -1,10 +1,8 @@
-import { getEntries } from 'astro:content';
-
 import rss from '@astrojs/rss';
-import { milestoneOrder } from '#features/home/milestone-order.ts';
+import { getMilestones } from '#features/milestones/get-milestones.ts';
 
 export async function GET(context: { site: URL }) {
-	const milestones = await getEntries(milestoneOrder);
+	const milestones = await getMilestones();
 	return rss({
 		title: "Basti Ortiz's Milestones",
 		description: "Basti Ortiz's career, education, talks, and other professional milestones.",

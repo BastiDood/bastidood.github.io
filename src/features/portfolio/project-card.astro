@@ -2,17 +2,15 @@
 import { type CollectionEntry, render } from 'astro:content';
 
 import Card from '#components/card.astro';
-import { projectTechnologyLogos } from '#technology-catalog/technology-catalog.ts';
 
 import ProjectImage from './project-image.astro';
+
+import ProjectTechnologies from './technologies/project-list.astro';
 
 type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props;
 const { Content } = await render(project);
-const technologies = project.data.technologies.map(
-	technology => projectTechnologyLogos[technology],
-);
 ---
 
 <section id={project.id} class="scroll-mt-20">
@@ -28,17 +26,7 @@ const technologies = project.data.technologies.map(
 					/>
 				)
 			}
-			{
-				technologies.map(technology => (
-					<img
-						src={technology.source.src}
-						alt={technology.label}
-						title={technology.label}
-						class="h-10 max-w-16"
-						loading="lazy"
-					/>
-				))
-			}
+			<ProjectTechnologies technologies={project.data.technologies} />
 		</div>
 		<div class="contents"><Content /></div>
 	</Card>

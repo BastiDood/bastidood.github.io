@@ -1,19 +1,13 @@
 ---
-import { getEntries } from 'astro:content';
-
 import BaseLayout from '#layout/index.astro';
-import bluesky from '#features/home/assets/bluesky.svg';
 import Card from '#components/card.astro';
-import dev from '#features/home/assets/dev.svg';
-import github from '#features/home/assets/github.svg';
 import Hero from '#components/hero.astro';
-import linkedin from '#features/home/assets/linkedin.svg';
-import MilestoneCard from '#features/home/milestone-card.astro';
+import MilestoneCard from '#features/milestones/milestone-card.astro';
 import profile from '#branding/profile.svg';
-import twitter from '#features/home/assets/twitter.svg';
-import { milestoneOrder } from '#features/home/milestone-order.ts';
+import { getMilestones } from '#features/milestones/get-milestones.ts';
+import { Icon } from 'astro-icon/components';
 
-const milestones = await getEntries(milestoneOrder);
+const milestones = await getMilestones();
 ---
 
 <BaseLayout>
@@ -40,10 +34,14 @@ const milestones = await getEntries(milestoneOrder);
 					target="_blank"
 					rel="external"
 				>
-					<img src={github.src} alt="" class="size-8" loading="lazy" />
+					<Icon name="devicon:github" class="size-8" aria-hidden="true" />
 				</a>
 				<a href="https://dev.to/somedood" aria-label="DEV" target="_blank" rel="external">
-					<img src={dev.src} alt="" class="size-8" loading="lazy" />
+					<Icon
+						name="simple-icons:devdotto"
+						class="size-8 text-black"
+						aria-hidden="true"
+					/>
 				</a>
 				<a
 					href="https://www.linkedin.com/in/basti-ortiz/"
@@ -51,7 +49,7 @@ const milestones = await getEntries(milestoneOrder);
 					target="_blank"
 					rel="external"
 				>
-					<img src={linkedin.src} alt="" class="size-8" loading="lazy" />
+					<Icon name="devicon:linkedin" class="size-8" aria-hidden="true" />
 				</a>
 				<a
 					href="https://twitter.com/BastiDood"
@@ -59,7 +57,7 @@ const milestones = await getEntries(milestoneOrder);
 					target="_blank"
 					rel="external"
 				>
-					<img src={twitter.src} alt="" class="size-8" loading="lazy" />
+					<Icon name="devicon:twitter" class="size-8" aria-hidden="true" />
 				</a>
 				<a
 					href="https://bsky.app/profile/bastidood.dev"
@@ -67,7 +65,11 @@ const milestones = await getEntries(milestoneOrder);
 					target="_blank"
 					rel="external"
 				>
-					<img src={bluesky.src} alt="" class="size-8" loading="lazy" />
+					<Icon
+						name="simple-icons:bluesky"
+						class="size-8 text-[#0285ff]"
+						aria-hidden="true"
+					/>
 				</a>
 				<a
 					href="mailto:ortiz@bastidood.dev"

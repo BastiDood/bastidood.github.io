@@ -1,10 +1,8 @@
-import { getEntries } from 'astro:content';
-
 import rss from '@astrojs/rss';
-import { projectOrder } from '#features/portfolio/project-order.ts';
+import { getProjects } from '#features/portfolio/get-projects.ts';
 
 export async function GET(context: { site: URL }) {
-	const projects = await getEntries(projectOrder);
+	const projects = await getProjects();
 
 	return rss({
 		title: "Basti Ortiz's Portfolio",

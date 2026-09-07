@@ -2,7 +2,6 @@ import { defineCollection, reference } from 'astro:content';
 
 import { glob } from 'astro/loaders';
 import { parseISO } from 'date-fns';
-import { projectTechnologyIds } from '#technology-catalog/project-technologies.ts';
 import { z } from 'astro/zod';
 
 const yearMonthSchema = z
@@ -78,7 +77,38 @@ const projects = defineCollection({
 					alt: z.string().optional(),
 				})
 				.optional(),
-			technologies: z.array(z.enum(projectTechnologyIds)),
+			technologies: z.array(
+				z.enum([
+					'anchor',
+					'android',
+					'arbitrum',
+					'capacitor',
+					'cmake',
+					'cpp',
+					'css',
+					'deno',
+					'espressif',
+					'ethereum',
+					'express',
+					'git',
+					'hardhat',
+					'html',
+					'hugging-face',
+					'hyper',
+					'javascript',
+					'mongodb',
+					'nodejs',
+					'postgresql',
+					'python',
+					'rust',
+					'solana',
+					'solidity',
+					'svelte',
+					'tailwind',
+					'tokio',
+					'typescript',
+				]),
+			),
 		}),
 });
 

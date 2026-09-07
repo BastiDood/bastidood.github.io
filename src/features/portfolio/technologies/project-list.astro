@@ -1,0 +1,14 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+import TechnologyLogo from './internal/logo.astro';
+import { projectTechnologyLogos } from './internal/catalog.ts';
+
+interface Props {
+	technologies: CollectionEntry<'projects'>['data']['technologies'];
+}
+
+const { technologies } = Astro.props;
+---
+
+{technologies.map(technology => <TechnologyLogo logo={projectTechnologyLogos[technology]} />)}

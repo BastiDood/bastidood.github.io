@@ -1,0 +1,34 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { TechnologyLogo } from './catalog.ts';
+
+interface Props {
+	logo: TechnologyLogo;
+}
+
+const { logo } = Astro.props;
+---
+
+{
+	logo.kind === 'icon' ? (
+		<Icon
+			name={logo.icon}
+			title={logo.label}
+			role="img"
+			class="h-10 w-auto max-w-16"
+			style={typeof logo.color === 'undefined' ? null : `color: ${logo.color}`}
+		/>
+	) : (
+		<img
+			src={logo.source.src}
+			width={logo.source.width}
+			height={logo.source.height}
+			alt={logo.label}
+			title={logo.label}
+			class="h-10 w-auto max-w-16"
+			loading="lazy"
+			decoding="async"
+		/>
+	)
+}
