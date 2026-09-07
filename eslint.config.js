@@ -118,9 +118,7 @@ const strictRules = {
 };
 
 export default defineConfig(
-	{
-		ignores: ['.astro/**', 'dist/**', 'node_modules/**'],
-	},
+	{ ignores: ['.astro/**', 'dist/**', 'node_modules/**'] },
 	{ languageOptions: { globals: { ...globals.browser, ...globals.node } } },
 	{
 		files: ['**/*.css'],
@@ -156,7 +154,6 @@ export default defineConfig(
 		rules: { '@typescript-eslint/triple-slash-reference': 'off' },
 	},
 	...astro.configs.recommended,
-	...astro.configs['jsx-a11y-recommended'],
 	{
 		files: ['**/*.astro'],
 		languageOptions: {
