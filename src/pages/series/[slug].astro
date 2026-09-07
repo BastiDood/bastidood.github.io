@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 
 import ArticleCard from '#features/articles/article-card.astro';
 import BaseLayout from '#layout/index.astro';
@@ -12,23 +12,20 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'series'>;
 
 const series = Astro.props;
+const { Content } = await render(series);
 const articles = await getCollection('articles', article => article.data.series?.id === series.id);
 articles.sort((left, right) => right.data.publishedAt.localeCompare(left.data.publishedAt));
 ---
 
 <BaseLayout
 	title={`${series.data.title} · Basti Ortiz`}
-	description={series.data.description ?? `Articles in the ${series.data.title} series.`}
+	description={`Articles in the ${series.data.title} series.`}
 >
 	<div class="mx-auto max-w-7xl space-y-8 p-4 sm:p-6">
 		<header class="space-y-2">
 			<p><a href="/series/">All Series</a></p><h1>
 				{series.data.title}
-			</h1>{
-				typeof series.data.description === 'undefined' ? null : (
-					<p class="text-lg text-gray-700">{series.data.description}</p>
-				)
-			}
+			</h1><div class="prose text-lg text-gray-700"><Content /></div>
 		</header>
 		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 			{articles.map(article => <ArticleCard {...article} />)}

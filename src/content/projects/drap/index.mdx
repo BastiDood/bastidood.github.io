@@ -19,14 +19,8 @@ Previously, this process would have spanned weeks' worth of email exchanges betw
 
 The <abbr title="Draft Ranking Automated Processor">DRAP</abbr> automation is implemented as a full-stack [SvelteKit](https://kit.svelte.dev/) web application with [PostgreSQL](https://www.postgresql.org/) as the database. To streamline user authentication, the application leverages [Google's OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) provider via [OAuth 2.0](https://oauth.net/2/). Rather conveniently, the OAuth 2.0 integration also enables DRAP to send emails via the [Gmail API](https://developers.google.com/gmail/api/guides).
 
-<div class="md:flex md:gap-4">
-	<div>
-		<ProjectImage source={history1} alt="DRAP History Timeline" />
-	</div>
-	<div>
-		<ProjectImage source={history2} alt="DRAP History Timeline" />
-	</div>
-	<div>
-		<ProjectImage source={rankings} alt="DRAP Rankings Page" />
-	</div>
+<div class="grid items-start gap-4 md:grid-cols-3">
+	<ProjectImage class="m-0 w-full" source={history1} alt="DRAP History Timeline" />
+	<ProjectImage class="m-0 w-full" source={history2} alt="DRAP History Timeline" />
+	<ProjectImage class="m-0 w-full" source={rankings} alt="DRAP Rankings Page" />
 </div>

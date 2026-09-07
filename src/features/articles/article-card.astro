@@ -9,7 +9,7 @@ type Props = CollectionEntry<'articles'>;
 const { id, data } = Astro.props;
 ---
 
-<article class="bg-card overflow-hidden rounded-xl border border-slate-200/60 shadow-sm">
+<article class="bg-card overflow-hidden rounded-xl shadow-sm">
 	<a class="group block h-full text-inherit hover:no-underline" href={`/articles/${id}/`}>
 		{
 			typeof data.cover === 'undefined' ? null : (

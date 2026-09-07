@@ -30,13 +30,9 @@ import box from './assets/box.png';
 
 Aside from data analytics, Drippy's marquee feature is its ability to detect leaky pipes. As soon as the IoT device detects sufficient conditions for leakage, it automatically closes a master valve in the same pipe to stop the wasted flow of water. A prominently positioned LED lights up to indicate the actuation of said valve. Through the web dashboard, a customer/user may remotely release the valve. Inversely, they may also remotely close the valve (under normal operation) should the need arise. Thus, the IoT system reactively guards against wastage due to leaks and overconsumption.
 
-<div class="flex justify-around gap-4">
-	<div>
-		<ProjectImage class="m-0 max-h-96" source={login} alt="login page for Drippy dashboard" />
-	</div>
-	<div>
-		<ProjectImage class="m-0 max-h-96" source={dashboard} alt="Drippy dashboard" />
-	</div>
+<div class="mx-auto grid max-w-3xl items-start gap-4 sm:grid-cols-2">
+	<ProjectImage class="m-0 w-full" source={login} alt="login page for Drippy dashboard" />
+	<ProjectImage class="m-0 w-full" source={dashboard} alt="Drippy dashboard" />
 </div>
 The [ESP32](https://www.espressif.com/en/products/socs/esp32) firmware is
 [open-source](https://github.com/drippy-iot/metro-tap) and written in
@@ -49,26 +45,16 @@ Framework](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/), which 
 [Tokio](https://tokio.rs/) asynchronous runtime. Finally, the dashboard is a web application written
 in [Svelte](https://svelte.dev/).
 
-<div class="flex gap-4">
-	<div>
-		<ProjectImage
-			class="m-0 max-h-[543px] object-contain"
-			source={schematic}
-			alt="schematic diagram for Drippy circuitry"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="m-0 max-h-full object-contain"
-			source={testbench}
-			alt="Drippy testbench on actual hardware"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="m-0 max-h-[543px] object-contain"
-			source={box}
-			alt="enclosed circuitry for Drippy and its ESP32 chip"
-		/>
-	</div>
+<div class="grid items-start gap-4 md:grid-cols-3">
+	<ProjectImage
+		class="m-0 w-full"
+		source={schematic}
+		alt="schematic diagram for Drippy circuitry"
+	/>
+	<ProjectImage class="m-0 w-full" source={testbench} alt="Drippy testbench on actual hardware" />
+	<ProjectImage
+		class="m-0 w-full"
+		source={box}
+		alt="enclosed circuitry for Drippy and its ESP32 chip"
+	/>
 </div>

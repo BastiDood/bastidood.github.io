@@ -55,11 +55,7 @@ const gitLogo = new IconTechnologyLogo('Git', 'devicon:git');
 const goLogo = new IconTechnologyLogo('Go', 'devicon:go');
 const hardhatLogo = new IconTechnologyLogo('Hardhat', 'devicon:hardhat');
 const htmlLogo = new IconTechnologyLogo('HTML', 'devicon:html5');
-const huggingFaceLogo = new IconTechnologyLogo(
-	'Hugging Face',
-	'simple-icons:huggingface',
-	'#ffd21e',
-);
+const huggingFaceLogo = new IconTechnologyLogo('Hugging Face', 'devicon:huggingface');
 const hyperLogo = new IconTechnologyLogo('Hyper', 'simple-icons:hyper', '#000000');
 const javaLogo = new IconTechnologyLogo('Java', 'devicon:java');
 const javascriptLogo = new IconTechnologyLogo('JavaScript', 'devicon:javascript');

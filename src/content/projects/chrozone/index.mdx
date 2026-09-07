@@ -15,19 +15,7 @@ import result from './assets/result.png';
 
 For global Discord communities that have special timezone considerations, Chrozone empowers users to send timezone-adaptive announcements. No need to convert the timezones yourself! Let Chrozone do the work.
 
-<div class="flex justify-around gap-4">
-	<div>
-		<ProjectImage
-			class="m-0 max-h-[596px] object-contain"
-			source={autocomplete}
-			alt="Chrozone Autocompletion Menu"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="m-0 max-h-full object-contain"
-			source={result}
-			alt="Chrozone Preview Result"
-		/>
-	</div>
+<div class="mx-auto grid max-w-3xl items-start gap-4 sm:grid-cols-2">
+	<ProjectImage class="m-0 w-full" source={autocomplete} alt="Chrozone Autocompletion Menu" />
+	<ProjectImage class="m-0 w-full" source={result} alt="Chrozone Preview Result" />
 </div>

@@ -1,0 +1,20 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+interface Props {
+	articleCount: number;
+	series: CollectionEntry<'series'>;
+}
+
+const { articleCount, series } = Astro.props;
+const { Content } = await render(series);
+---
+
+<article class="bg-card rounded-lg p-6 shadow-md transition-transform hover:-translate-y-1">
+	<h2><a href={`/series/${series.id}/`}>{series.data.title}</a></h2>
+	<div class="prose mt-3 text-gray-700"><Content /></div>
+	<p class="mt-3 text-sm text-gray-600">
+		{articleCount}
+		{articleCount === 1 ? 'article' : 'articles'}
+	</p>
+</article>

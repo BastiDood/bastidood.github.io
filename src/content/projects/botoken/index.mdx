@@ -26,11 +26,7 @@ import admin from './assets/admin.png';
 
 The main user application is an installable [progressive web application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) powered by [Svelte](https://svelte.dev/) that interfaces with [Arbitrum](https://arbitrum.io/), a Layer 2 blockchain technology on top of [Ethereum](https://ethereum.org/). The back-end logic is implemented and deployed as a [Solidity](https://soliditylang.org/) smart contract.
 
-<div class="md:flex md:gap-4">
-	<div>
-		<ProjectImage source={poll} alt="Botoken Poll Page" />
-	</div>
-	<div>
-		<ProjectImage source={admin} alt="Botoken Admin Page" />
-	</div>
+<div class="grid items-start gap-4 md:grid-cols-2">
+	<ProjectImage class="m-0 w-full" source={poll} alt="Botoken Poll Page" />
+	<ProjectImage class="m-0 w-full" source={admin} alt="Botoken Admin Page" />
 </div>

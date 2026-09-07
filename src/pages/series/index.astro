@@ -2,6 +2,9 @@
 import { getCollection } from 'astro:content';
 
 import BaseLayout from '#layout/index.astro';
+import Card from '#components/card.astro';
+import Hero from '#components/hero.astro';
+import SeriesCard from '#features/series/series-card.astro';
 
 const seriesEntries = await getCollection('series');
 const articles = await getCollection('articles');
@@ -9,29 +12,23 @@ seriesEntries.sort((left, right) => left.data.title.localeCompare(right.data.tit
 ---
 
 <BaseLayout title="Article Series · Basti Ortiz" description="Browse Basti Ortiz's article series.">
-	<div class="mx-auto max-w-7xl space-y-8 p-4 sm:p-6">
-		<header class="space-y-2">
-			<h1>Article Series</h1><p class="text-lg text-gray-700">
-				Collections of articles that build on one another.
+	<Hero>
+		<Card size="md" class="prose m-4 sm:m-12 md:m-16">
+			<p>
+				Some ideas need more than one article. These series organize related essays into
+				focused paths through asynchronous JavaScript, software practices, cryptography, web
+				fundamentals, learning resources, and hands-on technology reviews.
 			</p>
-		</header>
+		</Card>
+	</Hero>
+	<div class="mx-auto max-w-7xl p-4 sm:p-6">
 		<div class="grid gap-6 md:grid-cols-2">
 			{
 				seriesEntries.map(entry => {
 					const articleCount = articles.filter(
 						article => article.data.series?.id === entry.id,
 					).length;
-					return (
-						<a
-							class="bg-card group rounded-lg p-6 text-inherit shadow-md transition-transform hover:-translate-y-1 hover:no-underline"
-							href={`/series/${entry.id}/`}
-						>
-							<h2 class="text-sky-600 group-hover:underline">{entry.data.title}</h2>
-							<p class="mt-2 text-gray-700">
-								{articleCount} {articleCount === 1 ? 'article' : 'articles'}
-							</p>
-						</a>
-					);
+					return <SeriesCard series={entry} articleCount={articleCount} />;
 				})
 			}
 		</div>

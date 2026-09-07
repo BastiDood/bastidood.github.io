@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection, getEntry, render } from 'astro:con
 import { getImage } from 'astro:assets';
 
 import BaseLayout from '#layout/index.astro';
+import Hero from '#components/hero.astro';
 import LocalTime from '#features/articles/local-time.astro';
 import PresetImage from '#features/articles/preset-image.astro';
 import { imagePresets } from '#features/articles/image-presets.ts';
@@ -79,51 +80,57 @@ const seriesArticleLink = tv({
 	{...typeof article.data.updatedAt === 'undefined' ? {} : { updatedAt: article.data.updatedAt }}
 	tags={article.data.tags}
 >
-	<div class="mx-auto max-w-7xl p-4 sm:p-6">
-		<article
-			class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm"
-		>
-			{
-				typeof article.data.cover === 'undefined' ? null : (
-					<PresetImage
-						source={article.data.cover.src}
-						preset="article-cover"
-						alt={article.data.cover.alt}
-						class="aspect-[1000/420] w-full object-cover"
-					/>
-				)
-			}
-			<header class="border-b border-gray-200 p-6 sm:p-10">
-				<div class="mx-auto max-w-prose space-y-4">
-					<h1>{article.data.title}</h1>
-					<p class="text-lg text-gray-700">{article.data.description}</p>
-					<p class="text-sm text-gray-600">
-						Published <LocalTime date={new Date(article.data.publishedAt)} />{
-							typeof article.data.updatedAt === 'undefined' ? null : (
-								<>
-									{' '}
-									| Updated <LocalTime date={new Date(article.data.updatedAt)} />
-								</>
+	<article>
+		<Hero>
+			<div
+				class="bg-card m-4 w-full max-w-4xl overflow-hidden rounded-xl shadow-sm sm:m-12 md:m-16"
+			>
+				{
+					typeof article.data.cover === 'undefined' ? null : (
+						<PresetImage
+							source={article.data.cover.src}
+							preset="article-cover"
+							alt={article.data.cover.alt}
+							class="aspect-[1000/420] w-full object-cover"
+						/>
+					)
+				}
+				<header class="p-6 sm:p-10">
+					<div class="mx-auto max-w-prose space-y-4">
+						<h1>{article.data.title}</h1>
+						<p class="text-lg text-gray-700">{article.data.description}</p>
+						<p class="text-sm text-gray-600">
+							Published <LocalTime date={new Date(article.data.publishedAt)} />{
+								typeof article.data.updatedAt === 'undefined' ? null : (
+									<>
+										{' '}
+										| Updated{' '}
+										<LocalTime date={new Date(article.data.updatedAt)} />
+									</>
+								)
+							}
+						</p>
+						{
+							series === null ? null : (
+								<p>
+									Part of{' '}
+									<a href={`/series/${series.id}/`}>{series.data.title}</a>
+								</p>
 							)
 						}
-					</p>
-					{
-						series === null ? null : (
-							<p>
-								Part of <a href={`/series/${series.id}/`}>{series.data.title}</a>
-							</p>
-						)
-					}
-				</div>
-			</header>
-			<div class="p-6 sm:p-10">
-				<div
-					class="prose prose-lg prose-a:text-sky-600 prose-a:hover:underline prose-headings:scroll-mt-20 mx-auto max-w-prose"
-				>
-					<Content />
-				</div>
+					</div>
+				</header>
 			</div>
-		</article>
+		</Hero>
+		<div class="mx-auto max-w-4xl p-6 sm:p-10">
+			<div
+				class="prose prose-lg prose-a:text-sky-600 prose-a:hover:underline prose-headings:scroll-mt-20 mx-auto max-w-prose"
+			>
+				<Content />
+			</div>
+		</div>
+	</article>
+	<div class="mx-auto max-w-7xl px-4 pb-4 sm:px-6 sm:pb-6">
 		{
 			series === null ? null : (
 				<nav

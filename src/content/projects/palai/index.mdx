@@ -21,19 +21,15 @@ In the back end, we use a minimal [Deno Deploy](https://deno.com/deploy) server 
 
 In the front end, [pal.ai](https://palai.deno.dev/) is an installable [progressive web app](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) (PWA) written in [TypeScript](https://www.typescriptlang.org/) with the [Svelte](https://svelte.dev/) framework. It uses the [Parcel](https://parceljs.org/) build tool for asset bundling, packaging, and optimization. The PWA allows users to upload their own images of rice plants for classification.
 
-<div class="flex gap-4">
-	<div>
-		<ProjectImage
-			class="m-0 max-h-full object-contain"
-			source={home}
-			alt="pal.ai home page with file upload and camera controls"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="m-0 max-h-[1080px] object-contain"
-			source={mobile}
-			alt="pal.ai results page showing 79.28% confidence in Healthy classification"
-		/>
-	</div>
+<div class="grid items-start gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
+	<ProjectImage
+		class="m-0 w-full"
+		source={home}
+		alt="pal.ai home page with file upload and camera controls"
+	/>
+	<ProjectImage
+		class="m-0 w-full"
+		source={mobile}
+		alt="pal.ai results page showing 79.28% confidence in Healthy classification"
+	/>
 </div>

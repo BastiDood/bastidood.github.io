@@ -12,12 +12,9 @@ const yearMonthSchema = z
 const series = defineCollection({
 	loader: glob({
 		base: './src/content/series',
-		pattern: '*/index.yaml',
+		pattern: '*/index.mdx',
 	}),
-	schema: z.object({
-		title: z.string(),
-		description: z.string().optional(),
-	}),
+	schema: z.object({ title: z.string() }),
 });
 
 const articles = defineCollection({
@@ -38,7 +35,6 @@ const articles = defineCollection({
 					alt: z.string(),
 				})
 				.optional(),
-			featured: z.boolean().optional(),
 			tags: z.array(z.string()),
 			series: reference('series').optional(),
 		}),

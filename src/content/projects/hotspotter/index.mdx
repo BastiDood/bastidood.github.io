@@ -34,33 +34,17 @@ Developed in fulfillment of the final requirements for my Bachelor of Science de
 
 Field work was then conducted in eight _sitios_ of Barangay San Lorenzo, Norzagaray, Bulacan to validate and stress-test the system under the extreme network conditions of Geographically Isolated and Disadvantaged Areas <dfn><abbr title="Geographically Isolated and Disadvantaged Areas">(GIDAs)</abbr></dfn>. In the end, the mobile application's passive sensing, collecting, and caching of data successfully operated even in the most isolated areas without an internet connection.
 
-<div class="md:flex md:gap-4">
-	<div>
-		<ProjectImage
-			class="max-h-[1080px]"
-			source={diliman}
-			alt="Wi-Fi Map of UP Diliman in Hotspotter"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="max-h-[1080px]"
-			source={cached}
-			alt="List of Cached Readings in Hotspotter"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="max-h-[1080px]"
-			source={readings}
-			alt="Data Collected by Readings in Hotspotter"
-		/>
-	</div>
-	<div>
-		<ProjectImage
-			class="max-h-[1080px]"
-			source={qcCircle}
-			alt="4G Map of Quezon Memorial Circle in Hotspotter"
-		/>
-	</div>
+<div class="grid items-start gap-4 md:grid-cols-[minmax(0,3.6fr)_repeat(3,minmax(0,1fr))]">
+	<ProjectImage class="m-0 w-full" source={diliman} alt="Wi-Fi Map of UP Diliman in Hotspotter" />
+	<ProjectImage class="m-0 w-full" source={cached} alt="List of Cached Readings in Hotspotter" />
+	<ProjectImage
+		class="m-0 w-full"
+		source={readings}
+		alt="Data Collected by Readings in Hotspotter"
+	/>
+	<ProjectImage
+		class="m-0 w-full"
+		source={qcCircle}
+		alt="4G Map of Quezon Memorial Circle in Hotspotter"
+	/>
 </div>
