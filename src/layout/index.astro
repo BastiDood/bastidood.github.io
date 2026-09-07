@@ -1,0 +1,107 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+import favicon from '#branding/profile.png';
+
+import './global.css';
+import Footer from './footer.astro';
+import Navbar from './navbar.astro';
+
+import defaultOpenGraphImage from './assets/open-graph.webp';
+
+interface Props {
+	title?: string;
+	description?: string;
+	canonical?: URL;
+	openGraphImage?: URL;
+	openGraphType?: 'website' | 'article';
+	publishedAt?: string;
+	updatedAt?: string;
+	tags?: string[];
+}
+
+const {
+	title = 'Basti Ortiz',
+	description = 'Web developer, open-source contributor, learner, writer, mentor, and leader.',
+	canonical = new URL(Astro.url.pathname, Astro.site),
+	openGraphImage = new URL(defaultOpenGraphImage.src, Astro.site),
+	openGraphType = 'website',
+	publishedAt,
+	updatedAt,
+	tags = [],
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<link rel="icon" href={favicon.src} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" type="application/rss+xml" title="Milestones" href="/rss.xml" />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Articles"
+			href="/articles/rss.xml"
+		/>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Article Series"
+			href="/series/rss.xml"
+		/>
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title="Portfolio"
+			href="/portfolio/rss.xml"
+		/>
+		<title>{title}</title>
+		<meta property="og:site_name" content="Basti Ortiz" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content={openGraphType} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={openGraphImage} />
+		<meta name="twitter:card" content="summary_large_image" />
+		{
+			typeof publishedAt === 'undefined' ? null : (
+				<meta property="article:published_time" content={publishedAt} />
+			)
+		}
+		{
+			typeof updatedAt === 'undefined' ? null : (
+				<meta property="article:modified_time" content={updatedAt} />
+			)
+		}
+		{tags.map(tag => <meta property="article:tag" content={tag} />)}
+		<ClientRouter />
+	</head>
+	<body>
+		<a href="#main-content" class="sr-only focus:not-sr-only">Skip to Content</a>
+		<Navbar />
+		<main id="main-content" class="min-h-[calc(100vh-4rem)]">
+			<slot />
+		</main>
+		<Footer />
+		<script>
+			import { PUBLIC_POSTHOG_API_KEY } from 'astro:env/client';
+			import posthog from 'posthog-js';
+
+			if (
+				import.meta.env.PROD &&
+				typeof PUBLIC_POSTHOG_API_KEY !== 'undefined' &&
+				PUBLIC_POSTHOG_API_KEY !== ''
+			)
+				posthog.init(PUBLIC_POSTHOG_API_KEY, {
+					api_host: 'https://us.i.posthog.com',
+					defaults: '2026-05-30',
+					capture_pageview: 'history_change',
+					person_profiles: 'never',
+				});
+		</script>
+	</body>
+</html>

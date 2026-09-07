@@ -1,0 +1,42 @@
+---
+import profile from '#branding/profile.svg';
+---
+
+<nav aria-label="Primary" class="bg-brand sticky top-0 z-10 text-white shadow-md">
+	<ul class="flex h-16">
+		<li>
+			<a
+				aria-label="Home"
+				class="hover:bg-hover flex h-full items-center px-4 text-white transition-colors hover:no-underline"
+				href="/"
+			>
+				<img
+					src={profile.src}
+					width="40"
+					height="40"
+					alt=""
+					loading="lazy"
+					class="block size-10 rounded-full shadow-xl"
+				/>
+			</a>
+		</li>
+		<li>
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 text-white transition-colors hover:no-underline"
+				href="/portfolio/">Portfolio</a
+			>
+		</li>
+		<li>
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 text-white transition-colors hover:no-underline"
+				href="/articles/">Articles</a
+			>
+		</li>
+		<li>
+			<a
+				class="hover:bg-hover flex h-full items-center px-4 text-white transition-colors hover:no-underline"
+				href="/series/">Series</a
+			>
+		</li>
+	</ul>
+</nav>
