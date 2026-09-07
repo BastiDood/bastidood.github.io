@@ -1,0 +1,391 @@
+---
+title: 'How Rust helped me power through my C assignments'
+description: 'After an entire semester of C assignments, I share how Rust patterns and idioms helped me power through it all.'
+createdAt: '2022-01-28T08:17:20Z'
+publishedAt: '2022-01-29T16:23:43Z'
+updatedAt: '2022-02-18T15:05:39Z'
+cover:
+    src: './cover.png'
+    alt: "Ferris the Crab on top of my character's head pointing at figures of common data structures in computer science."
+featured: true
+tags: ['rust', 'c', 'computerscience', 'devjournal']
+---
+
+The fundamental study of data structures and algorithms is a staple of any computer science course. In tandem, data structures and algorithms enable us to _efficiently_ access, query, and modify the data and inputs that arise from a problem or use case.
+
+In my experience, one of the several requirements for passing was an implementation of the various data structures and algorithms discussed throughout the semester. Just to cite some examples, most activities required implementations of dynamic arrays, linked lists, and hash tables (given some particular probing scheme).
+
+Admittedly, these would have been trivial coding assignments in the previous semesters when Python was the medium of instruction. After all, the primary objective of the early semesters was to develop what my professor calls _"algorithmic thinking"_. Without a doubt, Python's extensive standard library and data structures were instrumental here.
+
+Now, the rug was finally pulled beneath my feet. Gone were the days of the [`import` keyword](https://docs.python.org/3/reference/import.html) ~~which we take for granted every now and then~~. This time, instead of studying _what_ the data structures are used for, we now looked into _how_ the data structures are implemented in the first place. To accommodate for the low-level details of the course material, the medium of instruction was the C programming language.
+
+### An Object-Oriented Mental Framework for C
+
+Having prior experience with Rust, JavaScript, Python, and C++, I can say for certain that C is not an easy language. However, this is not because of the language syntax and mechanics; rather, it is mostly due to the implicit rules and patterns that go into writing "idiomatic C". Most notably, coming from object-oriented languages, the absence of classes was more off-putting than I would like to admit.
+
+Eventually, it was not so difficult to adjust. Despite C's procedural roots, it is still possible _emulate_ object-oriented programming by explicitly passing in the `self`/`this` argument to a function. By convention, the target object happens to be the first argument, while the rest are the natural arguments to the "class method".
+
+To my surprise, I was actually already familiar with this mental framework prior to learning C. Like C, Python and Rust don't exactly consider themselves to be a strongly object-oriented language—unlike their Java and C++ counterparts. Thus, to emulate object-oriented programming, the language applies syntactic tricks to hide the fact that "class methods" are actually just regular functions with a `self` argument in the beginning.
+
+```python
+# In Python, classes are kinda like namespaces
+# for functions that take `self` as their first argument.
+class Dog:
+    def __init__(self, name: str):
+        self.name = name
+
+    # Here, `bark` is actually just a plain function
+    # that happens to take instances of `Dog` as its
+    # first argument.
+    def bark(self):
+        print(self.name)
+
+# Thus, the following invocations for `bark`
+# are practically equivalent.
+dog = Dog('Presto')
+dog.bark()
+Dog.bark(dog)
+```
+
+```rust
+struct Dog { name: &'static str }
+
+impl Dog {
+    // Like in Python, Rust "class methods" are regular functions
+    // with the `self` argument in the first slot.
+    fn bark(&self) { println!("{}", self.name) }
+}
+
+// Thus, we obtain equivalent invocations.
+let dog = Dog { name: "Presto" };
+dog.bark();
+Dog::bark(&dog);
+```
+
+```c
+// In C, the only difference is that there are no namespaces.
+// The language is just explicit about the fact that
+// "class methods" are just regular functions.
+struct Dog { char const * name; };
+
+// To work around the absence of namespaces, we follow
+// the naming convention of prefixing method names.
+void dog_bark(struct Dog const * const self) {
+    printf("%s", self->name);
+}
+
+// Hence emulating object-oriented programming in C...
+struct Dog dog = { "Presto" };
+dog_bark(&dog);
+```
+
+### Building everything from scratch!
+
+Now equipped with a familiar mental framework, I was finally ready to implement data structures in C with object-oriented design principles in mind. However, there was just one (big) problem: everything must literally be built from scratch.
+
+Although the C standard library is extensive, it is nowhere near as comprehensive as that of other languages. The standard library is quite literally just enough to build anything—**nothing more, nothing less**. This is not actually a bad thing, especially from an instructional point of view. After all, what point is there in learning about hash tables if Python makes the [`dict` type](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) available by default?
+
+Overall, writing in C entails extra work. In fact, I have realized in hindsight that an overwhelmingly significant portion of my time (roughly 80%) was spent on code infrastructure alone. The rest of the time was spent on the actual implementation of the solution using the infrastructure I built.
+
+#### Dynamic Arrays
+
+A common abstraction I found myself writing was the dynamic array—also known as [`Vec`](https://doc.rust-lang.org/stable/std/vec/struct.Vec.html) in Rust, [`list`](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) in Python, [`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) in JavaScript, and [`std::vector`](https://en.cppreference.com/w/cpp/container/vector) in C++. Now, I specifically mentioned these languages because I sought inspiration from their internals. In particular, I was already familiar with Rust's `Vec` and C++'s `std::vector`. In fact, I have even discussed immutable string optimizations in [a Rust article I wrote a while back](https://dev.to/somedood/optimizing-immutable-strings-in-rust-2ahj).
+
+In short, dynamic arrays are typically implemented using two pieces of metadata (i.e. the "length" and "capacity") and a reference/pointer to the underlying byte buffer (i.e. the array itself). The capacity determines the maximum number of elements that may be pushed into the buffer (before resizing), whereas the length keeps track of how much of the underlying buffer is actually _"in use"_.
+
+To put it concretely, it is possible to have a dynamic array with a capacity of 8 and a length of 5. Thus, we may push 3 more elements into the buffer before it must resize.[^1] The resizing operation typically involves memory reallocation. If we're lucky, the original memory block simply expands as required. Otherwise, we must copy everything into an entirely new (but larger) allocation, which is a relatively expensive endeavor to say the least.
+
+[^1]: It is important to note that the length must never surpass the capacity.
+
+With that in mind, it became easier to implement the abstraction in terms of C's interface for dynamic memory management: [`malloc`](https://en.cppreference.com/w/c/memory/malloc), [`realloc`](https://en.cppreference.com/w/c/memory/realloc), and [`free`](https://en.cppreference.com/w/c/memory/free). Moreover, now that I had a foundation for dynamic arrays, it became trivial to implement derivative data structures such as the string, which is essentially an array of `char` values. It was just a matter of translating the behavior from Rust and C++.
+
+The code below is an excerpt interface for such an abstraction for ASCII strings. It is worth noting that even in naming convention, my interface likened that of Rust. This is no accident so that I may minimize the cognitive load from context switching between Rust and C.
+
+```c
+/**
+ * This string abstraction is essentially
+ * a dynamic array of `char` values.
+ */
+struct String {
+    /** Number of elements "in use". */
+    size_t len;
+    /** Maximum number of elements before resizing. */
+    size_t cap;
+    /** Pointer to the first element of the array. */
+    char * data;
+};
+
+/** Push a `char` at the end. Resize if necessary. */
+void string_push(struct String * const self, const char ch);
+
+/**
+ * Perform a soft clear. Sets the length to 0,
+ * hence ignoring previously stored values.
+ */
+void string_clear(struct String * const self);
+```
+
+#### Emulating Pattern-Matching
+
+Although I used the dynamic array as my primary example, it must be noted that the process of emulating Rust's behavior and semantics became the predominant theme of my semester. Wherever I can, I did my best to faithfully translate Rust patterns and implementations to their C equivalent. In the end, pattern-matching was one feature I missed the most from Rust. Rust's `match` expressions are frankly easier to read than C's `switch` statements.[^2]
+
+[^2]: The fallthrough behavior of `switch` statements would have been particularly jarring if I hadn't been aware of it beforehand. I remember years ago when I first started out with JavaScript how I could not understand why `break` statements were necessary for certain usage of `switch` statements. I must admit that the fallthrough behavior does look nice when used correctly, but it did take some time before I finally realized the beauty in the madness. When it came to Rust, however, the `match` expression immediately clicked for me. It's just like `switch`—but less surprising and more intuitive!
+
+Unfortunately, it is impossible to fully emulate the expressiveness of a `match` expression using only `switch` statements. Instead, I opted to using wrapper functions for what would have otherwise been `match` expressions in Rust. This pattern was particularly prevalent with enums when I required different return values based on the current variant. The following code is a contrived example that illustrates my solution:
+
+```rust
+#[derive(Clone, Copy)]
+enum Animal { Dog, Cat, Fish, Bird }
+
+impl Animal {
+    fn is_mammal(self) -> bool {
+        // In Rust, pattern-matching on an enum requires
+        // the `match` expression. Here, the `matches` macro
+        // is simply a shortcut that expands to the same syntax.
+        matches!(self, Self::Dog | Self::Cat)
+    }
+}
+```
+
+```c
+enum Animal { DOG, CAT, FISH, BIRD };
+
+_Bool animal_is_mammal(const enum Animal self) {
+    // In C, note that it is possible (and better) to use a simple
+    // `if`-condition instead. The `switch` statement is just
+    // used for the sake of illustrating the pattern.
+    switch (self) {
+        case DOG:
+        case CAT: return 1;
+        default: return 0;
+    }
+}
+```
+
+#### Data-Carrying Enums and Tagged Unions
+
+A neat feature of enums in Rust (and other Haskellian languages) is the fact that they are not merely _"glorified integers"_. In Rust, it is possible for enums to carry data as well!
+
+```rust
+// Here, `Number` is an enum with five variants.
+// Each of the variants carry a different set of
+// data on which we may perform pattern-matching
+// if we intend to retrieve them.
+enum Number {
+    // The `Small` variant carries a single byte.
+    Small(u8),
+    // The `Big` variant carries one 64-bit unsigned integer.
+    Big(u64),
+    // The `Floating` variant carries a
+    // double-precision floating-point number.
+    Floating(f64),
+    // The `Signed` variant contains two members:
+    Signed {
+        // Boolean flag for determining the sign.
+        positive: bool,
+        // The actual magnitude of the integer.
+        magnitude: u64,
+    },
+    // The `Other` variant contains no members.
+    Other,
+}
+```
+
+Now, although this feature may sound unique to Haskellian languages, it is actually possible to obtain the same behavior in C—albeit without compile-time guarantees.
+
+In C, data-carrying enums are simply _"tagged unions"_. Tagged unions are typically implemented using two pieces of data: the first is a "tag" while the other contains the actual "data" inside the variant, if any. The tag is often an enum that safely informs us which variant the union is currently in. Meanwhile, the data is a `union` of all possible storage configurations. This is best illustrated by example.
+
+```c
+#include <stdint.h>
+
+/** This `enum` encodes the possible variants. */
+enum NumberVariant { SMALL, BIG, FLOATING, SIGNED, OTHER };
+
+/** Inner `struct` representation for the `Signed` variant. */
+struct Signed {
+    _Bool positive;
+    uint64_t magnitude;
+};
+
+/** This is the actual "tagged union". */
+struct Number {
+    /** Indicator for the current variant. */
+    enum NumberVariant tag;
+    /** Union of all possible internal data configurations. */
+    union {
+        uint8_t small;
+        uint64_t big;
+        double floating;
+        struct Signed integer;
+    };
+};
+```
+
+I must admit, however, that the C implementation is rather verbose (to say the least). It also lacks the necessary compile-time guardrails for ensuring that the `union` is never misused. For that, the only practical solution is the use of safe wrapper functions. In Rust parlance, it is `unsafe` to deal with the `struct` data members directly. Data access must be fallible.
+
+> **ASIDE:** Interestingly, this pattern of using tagged unions is apparently commonplace in the C ecosystem. One notable example involves the [event handling patterns](https://wiki.libsdl.org/SDL_Event) used in the [Simple DirectMedia Layer (SDL) library](https://www.libsdl.org/).
+
+With that said, it was extremely helpful to navigate fallible code in terms of [`Option` types](https://doc.rust-lang.org/stable/std/option/enum.Option.html) and [`Result` types](https://doc.rust-lang.org/stable/std/result/enum.Result.html). It forced me to handle edge cases which I (admittedly) would have otherwise ignored. For example, let us consider a fallible wrapper function that _optionally_ returns the data contained in the `Small` variant.
+
+```c
+/**
+ * Since there are no `Option` types in C,
+ * we must implement one ourselves.
+ */
+struct Option_U8 {
+    /** Encodes whether the `Option` contains a value. */
+    _Bool is_some;
+    /** May contain garbage data, depending on `is_some`. */
+    uint8_t data;
+};
+
+/** Fallible data access for the `Small` variant. */
+struct Option_U8 number_get_small(struct Number const * const self) {
+    const _Bool is_some = self->tag == SMALL;
+    return (struct Option_U8) {
+        .is_some = is_some,
+        .data = is_some ? self->small : 0,
+    };
+}
+```
+
+### Lifetimes, Ownership Semantics, and Dynamic Memory
+
+Although the concept of memory ownership is not unique to Rust[^3], I certainly would not have had a solid mental framework for tracking ownership if it were not for the countless (helpful) compiler diagnostics I have encountered over the years.
+
+[^3]: In fact, C and C++ have long since codified ownership semantics as a best practice. The introduction of move semantics in C++11 further cemented these concepts in the mainstream.
+
+Of course, this is not to discredit the contribution of C++ move semantics in my overall understanding. It's just that in C++, move semantics were a dense and complicated subject.[^4] Rust provides a simpler mental model: move values by default unless otherwise specified. This is exactly what I enforced in my C code.
+
+[^4]: For those familiar with C++ move semantics, it is difficult to deny how unapproachable it can be for beginners considering the dense vocabulary required to even introduce the concepts. Namely, before understanding move semantics, one must be introduced to [value categories](https://en.cppreference.com/w/cpp/language/value_category) and [overload resolution](https://en.cppreference.com/w/cpp/language/overload_resolution) (among other "introductory" concepts). I will not contest the argument that this complexity is necessary for the language, but I must say that the complexity makes it difficult to follow the core objectives of an ownership model. Though, I must concede that the ["Resource-Acquisition-Is-Initialization" (RAII)](https://en.cppreference.com/w/cpp/language/raii) principle does remedy the complexity considerably by practically demonstrating the sole responsibility of an owning object to acquire and release some resource (e.g. memory allocations, file handles, etc.) over some lifetime.
+
+```c
+/** Like in Rust, value types imply strong ownership. */
+int add_five(const int num) {
+    // Although an `int` is a trivial data type,
+    // this convention may be extended to `struct`
+    // types as well.
+    return num + 5;
+}
+```
+
+```c
+/** Suppose we have `struct` containing player information. */
+struct Player {
+    // ...
+    char const * name;
+    // ...
+};
+
+/**
+ * Here, we "borrow" the `name` field immutably. Assuming that
+ * we only interact with the `struct Player` via wrapper functions,
+ * this guarantees certain properties of object-oriented design
+ * such as encapsulation.
+ *
+ * It must be repeated that although this is a contrived example,
+ * the pattern may be extended to other data structures with more
+ * complex ownership semantics.
+ */
+char const * player_get_name(struct Player const * const self) {
+    return self->name;
+}
+```
+
+An example of such a data structure with more complex ownership semantics is the linked list. Since dynamic memory is involved, we now have to consider the ["Resource-Acquisition-Is-Initialization" (RAII) principle](https://en.cppreference.com/w/cpp/language/raii). That is, whenever we add to the list, we have to keep in mind that removing a node must `free` the corresponding allocation. Moreover, when we're done using the list entirely, we must `free` all remaining nodes.
+
+Relating to RAII, the linked list is the owner of all node allocations, and thus responsible for `free`-ing them. Any pointer/reference into the data structure must be considered as _"borrowed" data_—that is, the caller is not allowed to `free` the resource since they do not _"own"_ it.
+
+```c
+#include <assert.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+/** @private */
+struct Node {
+    /** Payload of the linked list; assumed to be `uint32_t`. */
+    uint32_t data;
+    /** Next element in the linked list. */
+    struct Node * next;
+};
+
+struct List {
+    // ...
+    struct Node * head;
+    // ...
+};
+
+/** Prepend a node at the beginning of the list. */
+void list_prepend(struct List * const self, const uint32_t data) {
+    // We must keep in mind that we have acquired memory here.
+    // Later on, we must `free` it when it is no longer needed.
+    struct Node * const node = malloc(sizeof(struct Node));
+
+    // Ignore any allocation errors for now...
+    assert(node);
+
+    // Preserve linked list invariants
+    node->data = data;
+    node->next = self->head;
+    self->head = node;
+}
+
+/** Pop off the front of the list. */
+uint32_t list_dequeue(struct List * const self) {
+    // Ignore edge cases for now...
+    assert(self->head);
+
+    // Leave the front node dangling
+    struct Node * const old = self->head;
+    self->head = old->next;
+
+    // Retrieve the data, then `free` the underlying node.
+    // For the attentive, what we've implemented is essentially
+    // the `Box` pointer, except that memory management is manual.
+    const uint32_t data = old->data;
+    free(old);
+    return data;
+}
+
+/**
+ * Immutably borrow a reference to the head. Note that pointer
+ * semantics imply that this is borrowed data, and thus cannot
+ * be freed by the caller.
+ *
+ * ASIDE: Since the underlying data type is a `uint32_t`, it is
+ * actually cheaper to just copy the data rather than obtaining
+ * a reference to it. For the sake of brevity and demonstration,
+ * we shall omit this optimization.
+ */
+uint32_t const * list_peek(struct List const * const self) {
+    return &self->head->data;
+}
+```
+
+As noted in the code snippet, it is worth reiterating that we have essentially implemented a manual [`Box` pointer](https://doc.rust-lang.org/std/boxed/struct.Box.html) for each node. Namely, we obtain the `Box<struct Node>` equivalent in Rust or the `std::unique_ptr<struct Node>` equivalent in C++ (assuming such syntax exists). In either case, I found the RAII principle to be an essential guideline in writing correct code.
+
+### The "Mini-Borrow-Checker" in My Brain
+
+[Listen on Spotify](https://open.spotify.com/episode/4MLeiKW20dSiGYKkGSvP8T)
+
+> _"I was close to giving up back in the days when it was much harder to learn Rust than it is now, but I went through the pain. I keep saying that pain caused the growth of some tumor that is like a **mini-borrow-checker in my brain**. Now, I can finally write code that compiles the first time around... I appreciate the Rust compiler that really makes sure that **if [the code] compiles, it's probably [correct]**."_ — [Sebastian Thiel](https://github.com/Byron) (author of [`gitoxide`](https://github.com/Byron/gitoxide))
+
+In a recent episode of the [Rustacean Station Podcast](https://rustacean-station.org/), Sebastian Thiel shared his initial experience with Rust back in 2015 "when it was much harder to learn that it is now". Although documentation and resources have significantly improved over the years, Rust is still rather infamous for its tough learning curve. Indeed, this is an assertion I can attest to based on my experience.
+
+[Read the referenced article](https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1)
+
+However, this is not to say that I am dissatisfied. [In an article I published last year](https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1), I spoke about how the _"Rustacean Mindset"_ pushes us to view a problem in various perspectives. Whenever we find ourselves fighting the compiler, it is perhaps time to reconsider the overall approach to the problem.
+
+But, when the compiler _does_ agree, it is often a golden sign that we are probably doing something right. This is a neat side effect that Thiel brought up in the aforementioned podcast episode. Assuming the absence of funny business in the code, the Rust compiler _almost_ always guarantees correctness.
+
+Sadly, I cannot say the same for C compilers (even when paired with static analyzers). Mentally, I do not attain the same degree of relief when I compile my C code. I must emphasize that this is not because I am not confident in my abilities as a C programmer; rather, it is more on the fact that there is a palpable absence of compile-time validation in certain (often important) areas of the language.
+
+This is why—like Thiel—I solaced myself with the "mini-borrow-checker" in my brain. In a world where `unsafe` code is frustratingly easy to stumble upon (especially for beginners), I can at least rely on my internal borrow checker to keep my code in check, even without Rust's guardrails. This, to me, is the ultimate gift of Rust.
+
+## Conclusion: Beyond Rust
+
+Now, it is important to note that this methodology is not exclusive to Rust. Throughout this article, I have cited various examples from several languages—namely Rust, C++, JavaScript, and Python. This is mostly derived from my experience, but yours will (certainly) be different in more ways than one.
+
+Regardless of prior experience, we must always look back on them so that we may apply its best teachings to other areas. In my case, best practices in Rust often seamlessly and conveniently carried over to C and C++ as well. Interestingly, it's like having a mental borrow checker and `unsafe` code sanitizer wherever I go. Thus, I have discovered that familiarity is an extremely powerful technique for learning new topics (not just programming languages).
+
+With that said, that is how my insistence on enforcing Rust _restrictions_ to C helped me power through my assignments. My word choice is deliberate here: _"restrictions"_. I know that C is too powerful for my good, especially as a first-time user. In order to understand idioms in C, I had to step back and limit myself to familiar territory. In the end, Rust just helped me stumble upon the widely agreed best practices _straight from the get-go_.

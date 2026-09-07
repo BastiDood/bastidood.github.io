@@ -1,0 +1,36 @@
+---
+title: "Previewing dev.to's Upcoming Night Mode"
+description: 'Night Mode has been a long requested feature of the site. Everyday, we inch closer to making this a reality thanks to the power of open-source collaboration.'
+createdAt: '2018-12-09T18:01:24Z'
+publishedAt: '2018-12-09T18:03:30Z'
+cover:
+    src: './cover.png'
+    alt: "Previewing dev.to's Upcoming Night Mode"
+tags: ['meta']
+---
+
+[View on GitHub](https://github.com/thepracticaldev/dev.to/issues/134)
+
+Night Mode has been a long requested feature of the site. For people like me, dark themes are better than light themes because they put less strain on the eyes, especially in dark environments (thus its name). ~~It also makes me look hip and edgy.~~ The implementation of a Night Mode has been in the backlog for quite some time now until last month when @rkichenama submitted a [pull request](https://github.com/thepracticaldev/dev.to/pull/1104) to finally get the ball rolling. Since then, he has been working closely with the dev.to team to refine the CSS styles of the upcoming Night Mode.
+
+Unfortunately, the CSS styles have not been finalized yet. It is continually being worked on by the contributors. _(Shout out to [@rkichenama](https://dev.to/rkichenama)!)_ At its current state, most of the styles are simply inverted colors of the original styles. Profile pictures are also gray-scaled. But it's a start nonetheless! Something is better than nothing. I am grateful for the efforts being made on this feature. _(Shout out to [@rkichenama](https://dev.to/rkichenama) again!)_
+
+However, that doesn't mean we can't test it right now. Yup, you heard me right. We can test a "beta" version of the Night Mode right here, right now. And it isn't too difficult to activate, too! 🎉
+
+## How do I activate Night Mode?
+
+As of writing this article, there is no way to activate Night Mode through the settings. The only way to test it is by manually altering the class of the `<body>` tag with the [DevTools](https://developers.google.com/web/tools/chrome-devtools/).
+
+There are many ways to do this. You can use the [Elements panel of the DevTools](https://developers.google.com/web/tools/chrome-devtools/css/#classes) to manually add the `night-theme` class to the `<body>` tag.
+
+You can also use the [Console panel of the DevTools](https://developers.google.com/web/tools/chrome-devtools/console/get-started) to programmatically add the `night-theme` class to the `<body>` tag with JavaScript. Personally, I prefer this way because it's literally one line of code you have to enter into the console.
+
+```javascript
+document.body.className = 'night-theme';
+```
+
+To exit Night Mode, simply reload the page.
+
+_Voila!_ It may be startling at first, but at least we can test it now. Don't forget to give suggestions and **constructive** feedback in [this pull request](https://github.com/thepracticaldev/dev.to/pull/1104). _(One last shout out to [@rkichenama](https://dev.to/rkichenama)!)_ Or if you can, review the code for yourself and make your own changes. Any contribution is most welcome.
+
+_Let's help make Night Mode a reality!_

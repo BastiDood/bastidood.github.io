@@ -1,0 +1,243 @@
+---
+title: "Please don't write confusing conditionals"
+description: 'Have you ever spent more than a few seconds staring at the same line of code? How often did you find conditionals that were tricky to parse? In this article, we discuss how confusing conditionals manifest in our code. Along the way, we also explore different refactoring techniques for improving the readability of conditional control flows.'
+createdAt: '2023-07-12T10:44:16Z'
+publishedAt: '2023-07-12T14:41:30Z'
+updatedAt: '2023-07-12T16:46:05Z'
+cover:
+    src: './cover.png'
+    alt: "Please don't write confusing conditionals"
+tags: ['beginners', 'tips', 'programming', 'javascript']
+series: please-dont
+---
+
+Have you ever spent more than a few seconds staring at the same line of code? How often did you find conditionals that were tricky to parse? In this article, we discuss how confusing conditionals manifest in our code. Along the way, we also explore different refactoring techniques for improving the readability of conditional control flows.
+
+### Double Negatives
+
+A double negative arises when we negate a variable whose name is already in a non-affirmative style. Consider the following example.
+
+```javascript
+// Non-affirmative Naming Convention
+const isNotReady = doSomething();
+const isForbidden = doSomething();
+const cannotJoinRoom = doSomething();
+const hasNoPermission = doSomething();
+
+// Negating once results in an awkward double negative situation.
+console.log(!isNotReady);
+console.log(!isForbidden);
+console.log(!cannotJoinRoom);
+console.log(!hasNoPermission);
+```
+
+This is opposed to the <u>**affirmative style**</u>, which requires less cognitive load to parse because one does not need to jump through the hoops of negating the variable name to extract the essence of its logic. In other words, the _intent_ behind an affirmative variable may be read as is—no hoops required! Consider the following modifications to the previous example.
+
+```javascript
+// Affirmative Naming Convention
+const isReady = doSomething();
+const isAllowed = doSomething();
+const canJoinRoom = doSomething();
+const hasPermission = doSomething();
+
+// Negation actually makes sense here!
+console.log(!isReady);
+console.log(!isAllowed);
+console.log(!canJoinRoom);
+console.log(!hasPermission);
+```
+
+Unfortunately, non-affirmative naming conventions are sometimes inevitable due to standards and backwards-compatibility. Take the [`HTMLInputElement#disabled`] property of the [HTML DOM APIs][DOM] for example. The presence of the `disabled` attribute in an `<input>` tag tells the browser to (visually and literally) disable the element's form controls. Otherwise, its absence causes the `<input>` to exhibit its default behavior, which is to accept user input. This is an unfortunate side effect of the ergonomics of HTML.
+
+[DOM]: https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+[`HTMLInputElement#disabled`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/disabled
+
+```html
+<input type="checkbox" />
+
+<input type="checkbox" disabled />
+```
+
+Nevertheless, we should still strive for affirmative naming conventions wherever possible. They are easier to read and parse simply because there is no need to mentally negate the variable name at all times. This rule applies to both variables names and function names alike.
+
+### Non-affirmative Control Flows
+
+The next form of a double negative is a little bit more subtle.
+
+```javascript
+// Suppose that we _do_ follow affirmative naming conventions.
+const isAllowed = checkSomething();
+if (!isAllowed) {
+	// There is something funny about this...
+	doError();
+} else {
+	// Notice how the `else` block is practically a double negation?
+	doSuccess();
+}
+```
+
+As seen above, the non-affirmative style can also pervade conditional control flow. Recall that an `else` block is practically a negation of the corresponding `if` condition. We must therefore extend the affirmative style here. The fix is actually rather simple.
+
+```javascript
+// Just invert the logic!
+const isAllowed = checkSomething();
+if (isAllowed) {
+	doSuccess();
+} else {
+	doError();
+}
+```
+
+The same rule applies to equality and inequality checks.
+
+```javascript
+// ❌ Don't do this!
+if (value !== 0) {
+	doError();
+} else {
+	doSuccess();
+}
+
+// ✅ Prefer this instead.
+if (value === 0) {
+	doSuccess();
+} else {
+	doError();
+}
+```
+
+Some may even go as far as to let a conditional block be blank just to negate a condition in affirmative style. Although I am not advocating for everyone to take it this far, I can see why this may be more readable for some people. Take the [`instanceof`] operator for example, which cannot be easily negated without parentheses.
+
+[`instanceof`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof
+
+```javascript
+if (obj instanceof Animal) {
+	// Intentionally left blank.
+} else {
+	// Do actual work here (in the negation).
+	doSomething();
+}
+```
+
+#### Exceptions for Early Returns
+
+As a quick aside, there are special exceptions for conditional control flows that return early. In such cases, the negation _may_ be necessary.
+
+```javascript
+if (!isAllowed) {
+	// Return early here.
+	doError();
+	return;
+}
+
+// Otherwise, proceed with the success branch.
+doSuccess();
+```
+
+Wherever possible, though, we should still attempt to invert the logic if it results in lesser nesting, fewer levels of indentation, and more readable affirmative styles.
+
+```javascript
+// Prefer affirmative early returns.
+if (isAllowed) {
+	doSuccess();
+	return;
+}
+
+// If we did not invert the logic, this would have been
+// nested inside the `!isAllowed` conditional block.
+if (!hasPermission) {
+	doPermissionError();
+	return;
+}
+
+// When all else fails, do something else.
+doSomethingElse();
+return;
+```
+
+Another way to express the same control flow in an affirmative style (without early returns) is as follows.
+
+```javascript
+// Hooray for the affirmative style!
+if (isAllowed) {
+	doSuccess();
+} else if (hasPermission) {
+	doSomethingElse();
+} else {
+	doPermissionError();
+}
+return;
+```
+
+Of course, there are plenty of other ways to swap, invert, and refactor the code—the merits for each are totally subjective. Preserving the affirmative conventions thus becomes some kind of an art form. In any case, code readability will always improve as long as we uphold the general guidelines of the affirmative style.
+
+### Compound Conditions
+
+The story gets a little bit more complicated with logical operators such as [`AND`] and [`OR`]. For instance, how do we refactor the code below in a more affirmative style?
+
+[`AND`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND
+[`OR`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_OR
+
+```javascript
+// This is fine... but there has to be a better way,
+// right? There are just too many negations here!
+if (!isUser || !isGuest) {
+	doSomething();
+} else {
+	doAnotherThing();
+}
+```
+
+For compound conditionals, we introduce the most underrated law of Boolean algebra: [De Morgan's Laws]!
+
+[De Morgan's Laws]: https://en.wikipedia.org/wiki/De_Morgan%27s_laws
+
+```typescript
+// Suppose that these are **any** two Boolean variables.
+let a: boolean;
+let b: boolean;
+
+// The following assertions will **always** hold for any
+// possible pairing of values for `a` and `b`.
+!(a && b) === !a || !b;
+!(a || b) === !a && !b;
+```
+
+Thanks to De Morgan's Laws, we now have a way to "distribute" the negation inside a condition and then "flip" its operator (from `&&` to `||` and vice-versa).
+
+> Although the following examples only feature binary comparison (i.e., two elements), De Morgan's Laws are generalizable over any number of conditional variables as long as we respect [operator precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence). Namely, the `&&` operator is always evaluated first before the `||` operator.
+
+```javascript
+// By De Morgan's Laws, we can "factor out" the negation as follows.
+if (!(isUser && isGuest)) {
+	doSomething();
+} else {
+	doAnotherThing();
+}
+```
+
+```javascript
+// Then we simply invert the logic as we did in the previous section.
+if (isUser && isGuest) {
+	doAnotherThing();
+} else {
+	doSomething();
+}
+```
+
+Now, isn't that _much_ more readable? Using De Morgan's Laws, we can clean up conditionals that have "too many negations".
+
+### Conclusion
+
+The overall theme should be apparent at this point. Wherever possible, we should avoid writing code that forces the reader to jump through hoops that (needlessly) necessitate extra cognitive overhead. In this article, we discussed the following techniques:
+
+1. Encourage affirmative naming conventions.
+    - Avoid negative terms/prefixes like `no`, `not`, `dis-`, `mal-`, etc.
+    - Prefer the positive equivalents.
+2. Invert conditional control flow (where possible) to accommodate for the affirmative style.
+    - Feel free to play around when swapping, inverting, and refactoring branches.
+    - Early returns _may_ necessitate negations.
+3. Use some tricks from Boolean algebra to invert condtionals.
+    - De Morgan's Laws are especially powerful tools for refactoring!
+
+_Now go forth and bless the world with cleaner conditionals!_

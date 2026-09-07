@@ -1,0 +1,148 @@
+---
+title: '18 Essential Videos That Fundamentally Shaped My Understanding of JavaScript'
+description: 'Learning JavaScript is a wild, tempestuous journey. With so much to learn, it is difficult to keep up with the times. Here are 18 videos I consider to be "essential" in learning JavaScript at a deeper level. Each of these videos once sparked a "eureka moment" within me that ultimately helped in piecing together the JavaScript puzzle.'
+createdAt: '2020-07-06T08:32:14Z'
+publishedAt: '2020-07-08T11:29:03Z'
+cover:
+    src: './cover.png'
+    alt: 'A collection of YouTube thumbnails featuring the 18 essential videos.'
+featured: true
+tags: ['javascript', 'node', 'learning']
+series: some-doods-curated-list-of-essential-learning-materials
+---
+
+Learning JavaScript is a wild, tempestuous journey. When I first studied the language four years ago, I wouldn't have known how long this journey would be. I wouldn't have expected how my first few lines of humble JavaScript would eventually become my crucial stepping stone into the world of web development.
+
+I owe a vast majority of my current knowledge to the pioneers who walked this journey before me. Their ideas and innovations paved the path that allowed me to stand and build on the shoulders of giants.
+
+A few weeks ago, I wrote about [facing the Unknown with an inquisitive sense of "constructive stupidity"](https://dev.to/somedood/the-key-to-effective-learning-is-constructive-stupidity-1a6k), where I advocated for acknowledging and accepting gaps in knowledge as a means of effective learning. With so much to learn about JavaScript—and web development in general—I cannot imagine how intimidating the Unknown would be for those who are new to the language as I once was, hence this article.
+
+Below is a curated list of 18 videos and conference talks that have fundamentally shaped my understanding of JavaScript. Without these brilliant individuals making their knowledge free and available for all, I wouldn't be where I am now in my JavaScript journey.
+
+For each of these videos, I have had a "eureka moment" that helped me piece together the bigger picture when I first watched it. I definitely required further research, but everything started to "click" from that point on. It was the missing piece to the puzzle, so to speak.
+
+Through this list of "essential videos", I hope to nudge JavaScript developers in the right direction as the pioneers have done to me.
+
+> **NOTE:** Not all of the videos below are necessarily targeted towards beginners. This list tackles multiple aspects of the JavaScript ecosystem: language features, Node.js, runtime internals (such as the event loop), performance, optimizations, security, and some ES6 features.
+
+## What the heck is the event loop anyway? [Philip Roberts]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=8aGhZQkoFbQ)
+
+No list of "essential JavaScript videos" can ever be complete without an exploration into the legendary event loop. In this famously approachable talk, Philip Roberts sets up the foundational groundwork required to dive into the rabbit hole that is the event loop.
+
+## Further Adventures of the Event Loop [Erin Zimmer]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=u1kqx6AenYw)
+
+Now that we're equipped with the basic intuition, Erin Zimmer's talk goes deeper into the technical details of the event loop without losing sight of the approachable narrative. Through her excellent visualizations, Zimmer explains the underlying intermediate steps during each iteration of the event loop.
+
+## In The Loop [Jake Archibald]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=cCOL7MC4Pl0)
+
+In this talk, Jake Archibald makes the literal notion of a "loop" as the centerpiece of his event loop visualizations. Setting out to remove UI jank in the browser, he unravels the mysteries of the render loop, the [`globalThis.setInterval`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval) timers, and the [`window.requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) hook.
+
+## Everything You Need to Know About Node.js Event Loop [Bert Belder]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=PNa9OMajw9w)
+
+With all the confusion about the true nature of the event loop, Bert Belder debunks some unfortunately common misconceptions that arise from _not-so-accurate_ diagrams and visualizations.
+
+## The Node.js Event Loop: Not So Single Threaded [Bryan Hughes]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=zphcsoSJMvM)
+
+The term "single-threaded" is often haphazardly thrown around when talking about JavaScript. In this talk, Bryan Hughes demonstrates how the language itself may be single-threaded, but despite that, its overall runtime is certainly not. On a related note, he discusses the implications of Node.js' finite thread pool from a performance standpoint.
+
+## Memory: Don't Forget to Take Out the Garbage [Katie Fenn]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=H_BYkp5sfpM)
+
+> _"Memory is a finite resource. We can't add more memory into our customer's machines. We can only use it, discard it, and then reuse it. We have to be good shepherds of what is given to us because we can't get any more."_
+
+Although the JavaScript engine's internal garbage collector has made memory management a trivial topic, Katie Fenn reminds us that negligence towards memory usage has disastrous consequences when it comes to application performance and user experience. Throughout her various examples during the talk, she demostrates how easy it is to lose track of unused variables, lingering event listeners, and rogue timers.
+
+## Broken Promises [James Snell]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=XV-u_Ow47s0)
+
+> _"In a promise chain, the only place you should have synchronous code is in the final `Promise#then` handler."_
+
+The introduction of [ES6 promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) has revolutionzed the semantics of asynchronous programming in JavaScript. However, with greater power comes a greater surface of misuse. In this talk, James Snell walks through the plethora of ways promises can, will, and have been misused. From mixed callbacks to redundant wrappers, this is a critically essential presentation on mastering promises.
+
+## You Don't Know Node [Samer Buna]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=oPo4EQmkjvY)
+
+> _"Most educational content about Node teaches Node packages... but those Node packages actually wrap the Node runtime. And when you run into problems, you're most likely running into problems in the [Node runtime] stack itself. So if you don't know the Node runtime, you're in trouble."_
+
+With so many NPM packages abstracting away the core of Node.js, Samer Buna takes a step back to invite us to think more carefully about our familiarity with Node fundamentals. In his Q&A-style talk, Buna shares some tidbits of knowledge and trivia about the internals of Node.js.
+
+## Iterators in JavaScript using Quokka.js [Mattias Petter Johansson]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=W4brAobC2Hc)
+
+In this video, Mattias Petter Johansson (or simply "MPJ" of [Fun Fun Function](https://www.youtube.com/channel/UCO1cgjhGzsSYb1rsB4bFe4Q)) explains how a [`for...of` loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) works under the hood, which is basically just a native JavaScript implementation for the [Iterator Design Pattern](https://www.tutorialspoint.com/design_pattern/iterator_pattern.htm).
+
+## Generators in JavaScript [Mattias Petter Johansson]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=QOnUcU8U_XE)
+
+Refactoring the code example from his previous video on iterators, MPJ demonstrates how [ES6 generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*) are just "syntactic sugar" over iterators.
+
+## Stream into the Future [Matteo Collina]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=dEFdt_6fW-0)
+
+Streams form the foundation of Node.js' core libraries: file system interactions, data compression, and networking—all of these use streams in one way or another. After a short crash course on stream fundamentals, Matteo Collina introduces their latest achievement for Node.js: a stream abstraction that makes use of asynchronous iterators. With the [`for await...of` loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of), one can interact with streams without having to worry about the nasty memory leaks and pitfalls that Collina presents in his talk.
+
+## Learning Functional Programming with JavaScript [Anjana Vakil]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=e-5obm1G_FY)
+
+Using bright and clever analogies for terminologies and concepts, Anjana Vakil gives an approachable introduction to functional programming in JavaScript, devoid of all the intense mathematical jargon associated with it.
+
+## javaScript call apply and bind [techsith]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=c0mLRpw-9rI)
+
+The idea of functions being "first-class citizens" in JavaScript often trip up many beginners—myself especially included then. When mixed in with the nuances of the `this` keyword, all of `this` just becomes one blurry mess of JavaScript jargon. In this video, ["techsith"](https://www.youtube.com/user/techSithTube) differentiates between the [`Function#call`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), [`Function#apply`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply), and [`Function#bind`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) methods. In doing so, he provides critical insight into fully understanding `this`.
+
+## Prototypes in JavaScript [Mattias Petter Johansson]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=riDVvXZ_Kb4)
+
+Unlike many traditional object-oriented languages such Java and C++, JavaScript does not implement the classical model of inheritance, where classes directly inherit properties and methods from their parents. Instead, JavaScript uses "prototypal inheritance", where object instances of JavaScript "classes" share and hold references to "prototype" objects.
+
+This is quite a tricky concept to grasp. It took a very long time for everything to "click", but when it finally did, I owed much of my understanding to MPJ's [series of videos on object creation](https://www.youtube.com/playlist?list=PL0zVEGEvSaeHBZFy6Q8731rcwk0Gtuxub). The video above served as a supplement that further solidified the big picture of prototypal inheritance.
+
+## JavaScript Event Capture, Propagation and Bubbling [Wes Bos]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=F1anRyL37lE)
+
+The mechanisms of event dispatching and handling are integral features of the HTML DOM. In this video, Wes Bos explains what it means for events to "propagate" during the "capture phase" and the "bubble phase". Knowing when to take advantage of each phase allows for more powerful event handling techniques such as "event delegation" and default behavior cancellation.
+
+## Fizz buzzkill - Answering tricky JS interview questions [Russell Anderson]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=cMxI8n393ZM)
+
+Similar to [Samer Buna's Q&A-style talk on Node fundamentals](#you-dont-know-node-samer-buna), Russell Anderson tests our general knowledge about some fundamental concepts, techniques, and idioms in the JavaScript language. In a beginner-friendly manner, he presents the answers to questions that will inevitably come up during a JavaScript interview.
+
+## Writing Secure Node Code: Understanding and Avoiding the Most Common Node.js Security Mistakes [Guy Podjarny]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=QSMbk2nLTBk)
+
+Given that the JavaScript ecosystem vastly relies on shared code and deeply nested dependencies, we face a concerning reality that an overwhelming portion of the code we deploy comes from third parties. Although this arguably increases productivity and speeds up development time, it also brings the unfortunate consequence of exposing our applications to greater attack surfaces. In this talk, Guy Podjarny discusses the importance of vigilance and caution when it comes to external code.
+
+## JavaScript Metaprogramming - ES6 Proxy Use and Abuse [Eirik Vullum]
+
+[Watch on YouTube](https://www.youtube.com/watch?v=_5X2aB_mNp4)
+
+[ES6 proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable us to intercept and hook into various aspects of the language. This new age of metaprogramming in JavaScript opens the doors to more powerful polyfills, language extensions, and custom behaviors.
+
+However, given its immense scope over the semantics of the language, Eirik Vullum reminds us to use proxies responsibly. His talk contrasts the wondrous possibilities of proxies and its equally wondrous vectors for potential abuse.
+
+---
+
+_For your convenience, I have compiled these videos into an [unlisted YouTube playlist](https://www.youtube.com/playlist?list=PLdUuF9OvrfuUTmjDNPaUSK9Utyh70l1KR). Although I cannot possibly list down **all** of the videos that contributed to my understanding of JavaScript, I hope you will still find great value in my humble list of videos._

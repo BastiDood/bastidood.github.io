@@ -1,0 +1,282 @@
+---
+title: '🤖 Svelte Reviewed: A Masterclass on Empowerment 🤖'
+description: "Cybernetically enhanced web apps: Svelte is Stack Overflow's most admired JavaScript UI framework in 2023. In this article, we review the merits of the Svelte framework and its wider ecosystem."
+createdAt: '2023-09-09T11:10:57Z'
+publishedAt: '2023-09-11T09:03:34Z'
+updatedAt: '2023-09-20T19:15:45Z'
+cover:
+    src: './cover.png'
+    alt: '🤖 Svelte Reviewed: A Masterclass on Empowerment 🤖'
+tags: ['svelte', 'javascript', 'frontend', 'devjournal']
+series: some-dood-reviews
+---
+
+> _Cybernetically enhanced web apps._
+
+A most interesting tagline for the [Svelte] framework [since version 3](https://svelte.dev/blog/svelte-3-rethinking-reactivity#new-look). The Svelte team prides itself in aggressive compile-time automation and optimization—so much so that their previous tagline was actually "the magical disappearing UI framework" (literally!).
+
+[Svelte]: https://svelte.dev/
+
+This is true enough even today, where the compiler strips away a lot of the inner mechanisms of the framework.[^1] Behind this philosophy, Svelte's creator [Rich Harris] believes that _if the framework can analyze it anyway, then the developer should not worry about it_—which subtly takes a stab at the more mainstream UI frameworks that do the work of state analysis and resolution at runtime instead. Such is the philosophy of _cybernetically enhanced web apps_: let the tooling do the work!
+
+[Rich Harris]: https://github.com/Rich-Harris
+
+[^1]: Aside from the necessities, of course! Namely: hydration code, client-side routing, and effect scheduling. Note that these are actually optional if one decides to fully [prerender](https://kit.svelte.dev/docs/glossary#prerendering) their pages (i.e., static site generation).
+
+But how far does Svelte take this philosophy? Does Svelte go as far as to become a zero-cost abstraction?[^2] Putting aside all of the fancy compile-time machinery, how is the developer experience even like? In this article, we review the merits of the Svelte framework and its wider ecosystem.
+
+[^2]: I mean "zero-cost" in a C++ sense that framework features are compiled and packaged into the final bundle _if and only if_ they are actually used. Furthermore, the features that _are_ compiled and packaged cannot possibly be written by hand any better.
+
+### Stellar Documentation
+
+As with most things in life, first impressions also matter in the tech world. Poor examples, lengthy guides, inconvenient prerequisites, and strange syntax can easily turn off the most enthusiastic learners. As such, the classic Getting Started guide is where frameworks put their best foot forward.
+
+In flying colors, Svelte _really_ did put their best foot forward. The framework provides the following essential resources for onboarding:
+
+| Title                       | Description                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------- |
+| [Svelte][Svelte Docs]       | The official documentation/reference for the Svelte framework proper.                             |
+| [SvelteKit][SvelteKit Docs] | The official documentation/reference for the SvelteKit meta-framework.                            |
+| [Examples]                  | A repository of examples that serves as a tour of Svelte's features.                              |
+| [REPL]                      | A live REPL editor/playground for trying out ideas in Svelte.                                     |
+| [Tutorial]                  | An interactive tutorial that features a comprehensive guide alongside a live editing environment. |
+
+[Svelte Docs]: https://svelte.dev/docs
+[SvelteKit Docs]: https://kit.svelte.dev/docs
+[Examples]: https://svelte.dev/examples
+[REPL]: https://svelte.dev/repl
+[Tutorial]: https://learn.svelte.dev/
+
+Needless to say, Svelte does not lack in documentation. The guides are comprehensive enough to be complete, yet concise and straight to the point. Furthermore, the tone and language are sufficiently technical, but not so much as to come off dry and full of jargon.
+
+The best examples come from the [interactive tutorial][Tutorial], where the guides walk the reader through a motivating example before introducing features. The tutorial thus feels like a _journey_ of discovering the essence of Svelte rather than a _lecture_ on Svelte.
+
+Meanwhile, for quick experimentation, the live examples and the REPL are the easiest ways to test the framework's behaviors. In my experience, I've found the REPL to be an invaluable tool in my belt when prototyping stateful components. The REPL also doubles as my go-to resource for demonstrating Svelte's coolest features to my peers.
+
+### Low Barrier to Entry
+
+Personally, the best part about Svelte is its low barrier to entry. Much like the approach of [TypeScript] and [Vue.js], the Svelte language[^3] strives to be a superset of the familiar trifecta of web development: HTML, CSS, and JavaScript.
+
+[TypeScript]: https://www.typescriptlang.org/
+[Vue.js]: https://vuejs.org/
+
+[^3]: Yes, [Svelte is a language](https://gist.github.com/Rich-Harris/0f910048478c2a6505d1c32185b61934).
+
+As a mentor to many of my peers, it is so natural to transition to Svelte right after a discussion on fundamental web features and APIs. That is to say, Svelte _truly_ feels more like an _extension_ of the web platform than a replacement. All the Web APIs and the DOM APIs are the same. There is no need to learn about replacements for the `<a>` tag and whatnot. Background knowledge just transfers so seamlessly.
+
+The language design of Svelte empowers beginners to prove to themselves that there is little to no magic behind UI frameworks; that everything is just built on top of the core Web APIs; and that everything is just plain old HTML, CSS, and JavaScript at the end of the day. The mental model perfectly bridges the gap between the world of components and the realities of the web platform.
+
+### SvelteKit: The Ultimate SSR, CSR, and SSG Solution
+
+Before we proceed, let's begin by defining some terms:
+
+1. **Server-Side Rendering (SSR)**
+    - The web server dynamically generates new (templated) HTML on-the-fly based on certain variables from the server, the database, the request, etc.
+2. **Client-Side Rendering (CSR)**
+    - The web server sends an empty HTML app shell to the browser.
+    - The browser executes the JavaScript to populate the UI.[^4]
+    - This _usually_ implies extra round-trips to the server to fetch application data (typically in JSON).
+3. **Static Site Generation (SSG)**
+    - The build system precompiles[^5] the HTML ahead of time.
+    - The web server thus only hosts static assets (e.g., HTML, CSS, and JS).
+
+[^4]: In Svelte parlance, this is called [hydration](https://kit.svelte.dev/docs/glossary#hydration).
+
+[^5]: In Svelte parlance, this is called [prerendering](https://kit.svelte.dev/docs/glossary#prerendering).
+
+For many decades, the Web went back and forth between these three strategies—one trend after the next but never settling. To be fair, each has their own merits and trade-offs (as with most things in engineering).
+
+However, what's most impressive about the Svelte ecosystem is its ability to seamlessly mix and match these strategies. This is where [SvelteKit] enters the picture.
+
+Powered by [Vite], SvelteKit is an officially maintained _meta-framework_[^5] that provides a full routing solution (client-side and server-side) on top of the Svelte framework proper. It combines the best of all worlds by empowering the developer to granularly choose which routes to render on the server (SSR), which routes to hydrate only on the client (CSR), and which routes to [prerender](https://kit.svelte.dev/docs/glossary#prerendering) as static HTML (SSG).
+
+[Vite]: https://vitejs.dev/
+[SvelteKit]: https://kit.svelte.dev/
+[React]: https://react.dev/
+[Next.js]: https://nextjs.org/
+[Nuxt]: https://nuxt.com/
+
+[^6]: Svelte is to SvelteKit (the meta-framework) as [React] is to [Next.js] and as [Vue.js] is to [Nuxt].
+
+This seemingly zero-cost[^2] flexibility is a godsend for pedants such as myself who take pride in squeezing every last byte of efficiency in the network.[^7] This is a far cry from the olden days when we were often forced to commit to only one strategy per application—lest we "eject" from prescribed project structures and implement the magic ourselves.
+
+[^7]: Perhaps not exactly _zero-cost_ in the sense that SvelteKit's SSR capabilities require (the overhead of) a Node.js-compatible JavaScript runtime rather than an external web server base layer written in Rust or Go for example. There are ways to work around this, of course, but that is beyond the scope of this article.
+
+For example, consider a [PHP] app or an [Express] app with [EJS] templating just for the sake of SSR. Also consider the trendy React apps from the pre-2016 era just for the sake of CSR. Or pehaps consider a Gatsby setup just for the sake of SSG.
+
+In all cases, we often required that these be separate applications. Back then, we just didn't have a holistic solution/framework that streamlines the notion of hybrid rendering strategies at the granularity level of routes. **Now we do.[^8]**
+
+[PHP]: https://php.net/
+[Express]: https://expressjs.com/
+[EJS]: https://ejs.co/
+
+[^8]: Note that nowadays, SvelteKit is _not_ the only framework that supports this level of flexibility. But then again, that is beyond the scope of this article.
+
+In other words, SvelteKit empowers us to ask _not_ whether we should commit to SSR [exclusive-or] CSR [exclusive-or] SSG, but to instead ask which specific routes we can use SSR [inclusive-or] CSR [inclusive-or] SSG on. It is a truly liberating experience to have everything just work&trade; out of the box.
+
+[exclusive-or]: https://en.wikipedia.org/wiki/Exclusive_or
+[inclusive-or]: https://en.wikipedia.org/wiki/Inclusive_or
+
+### Accessibility as a First-Class Citizen
+
+One feature that is especially admirable about Svelte is its treatment of accessibility as a [first-class citizen](https://svelte.dev/docs/accessibility-warnings). The Svelte compiler goes as far as to enforce accessibility best practices and warn against the anti-patterns.
+
+The interminable yellow squiggly lines may seem cumbersome at first, but one must always keep in mind that disabling them misses the entire point!
+
+Some posit that this is one of Svelte's most annoying features. I personally disagree. As someone who is not so well versed in the intricacies of accessibility, I greatly appreciate the automated reminders to get off my high horse of privilege and immerse myself into the viewpoint of disabled folks.
+
+However, I must admit that [event delegation patterns](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#event_delegation) in Svelte are a little cumbersome. Event delegation usually involves attaching event listeners to non-visible parent containers, which the compiler flags as accessibility warnings.
+
+Indeed, it is rather strange to attach a `click` listener on seemingly arbitrary `<div>` tags—even stranger when they're nested! Typically, these warnings are resolved by applying the correct ARIA roles and attaching the corresponding `keydown` listeners. In these rare false positive cases, however, I am not totally against disabling the _particular_ warning altogether.
+
+### Small Ecosystem
+
+Yes, the Svelte ecosystem is relatively small especially when compared to that of React. At face value, this is a bad look on the ecosystem. One may even dare to say: _"Svelte is dead!"_ But I believe there is a more satisfying reason behind the small ecosystem—there is just no need for a big one!
+
+Recall that the Svelte language aims to be an _extension_ of the web platform. As such, much of the framework internals use and accept (as arguments) the standard objects from Web APIs that are already built into browsers.
+
+Consider for example [`fetch`], [`Request`], [`Response`], [`FormData`], [`Node`], [`CustomEvent`], etc. When most of the essentials are already built into browsers, it is rarely the case that a Svelte developer reaches out for libraries.
+
+[`fetch`]: https://developer.mozilla.org/en-US/docs/Web/API/fetch
+[`Request`]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+[`Response`]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[`FormData`]: https://developer.mozilla.org/en-US/docs/Web/API/FormData
+[`Node`]: https://developer.mozilla.org/en-US/docs/Web/API/Node
+[`CustomEvent`]: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+
+#### Easy Integration with Web-First Libraries
+
+This is especially true when integrating with established third-party libraries (that were built for the Web rather than for a particular framework). One example that I can cite from experience is the [Chart.js] library, which works with plain old [`HTMLCanvasElement`] objects. In Svelte, a simple [`bind:this`] is _sufficient_ to set things in motion without much ceremony.[^9] Of course, one may also opt to use wrapper libraries[^10] for convenience.
+
+[Chart.js]: https://www.chartjs.org/
+[`HTMLCanvasElement`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement
+[`bind:this`]: https://svelte.dev/docs/element-directives#bind-this
+[`useRef`]: https://react.dev/reference/react/useRef#manipulating-the-dom-with-a-ref
+[`svelte-chartjs`]: https://www.npmjs.com/package/svelte-chartjs
+
+[^9]: Yes, I'm aware that this is also possible in React with [`useRef`], but that is not our topic for today.
+
+[^10]: The [`svelte-chartjs`] library seems to be a popular option among Svelte developers.
+
+Nevertheless, the central point is that in the Svelte world, wrapper libraries are mainly for convenience. They are _sufficient_ to get the job done, but not _necessary_ as it is in other frameworks.[^11] It's rare for a third-party library to _require_ some additional `svelte-adapter-*` package just to cleanly interface with Svelte's reactivity.
+
+[^11]: By "necessary", I mean that it is otherwise unwieldly to write the integration ourselves. That is, it is "unwieldly" in the sense that we have to consider so many footguns just to get it right: two-way data bindings, re-renders, caching, performance, etc.
+
+#### No Need for State Management Libraries
+
+Speaking of Svelte's reactivity, one more thing that is also worth mentioning is the fact that state management libraries are unheard of in the Svelte world. This is not because the "Svelte ecosystem is dead". Rather, to reiterate the point, the Svelte ecosystem does not need one!
+
+The built-in stores and reactive variables cover most (if not all) of the use cases. In fact, the reactive primitives and the [logic blocks](https://svelte.dev/docs/logic-blocks) are so powerful together that they can elegantly express component-level state machines—zero third-party libraries required!
+
+On the off chance that these reactive primitives aren't sufficient, then perhaps it is a sign to reconsider the architecture altogether. _There is always a better way to do things..._
+
+### Fine-Grained Reactivity (Sometimes!)
+
+Thanks to the compiler, Svelte boasts a "magical[ly] disappearing UI framework" where reactivity and state dependencies are resolved and bound at compile-time. For most primitive variables (e.g., strings, numbers, Booleans, etc.), fine-grained reactivity is sufficient and works great out of the box. In fact, it is exactly this fine-grained reactivity that enables Svelte to consistently [outperform](https://krausest.github.io/js-framework-benchmark/) all of the UI frameworks except a few. More on this later.
+
+At the component level, the _unit_ of reactivity is the variable while the _catalyst_ for reactivity is reassignment. Svelte will even prevent a DOM re-render if the newly assigned state is strictly equal to its previous value. Note that for objects and arrays, this check is done _recursively_ to reach that extra mile in fine-grained reactivity.
+
+Despite these guard conditions, however, an unfortunately common mistake with non-primitive variables (e.g., objects) introduces a subtle pessimization on reactive side effects (which execute before the re-render guard).
+
+Consider the example below where we have a `data` object with two fields: `count` and `other`. In the example, we will only modify `data.count` whenever we click on a `<button>`. Meanwhile, the `data.other` field will _always_ remain untouched.
+
+```html
+<script>
+	// Recall that _only_ the `count` will be modified.
+	let data = { count: 0, other: null };
+	const increment = () => ++data.count;
+
+	// Intuitively, this side effect should run per increment.
+	$: console.log('updated count', data.count);
+
+	// With that said, will this side effect ever run?
+	$: console.log('updated other', data.other);
+</script>
+
+<button on:click="{increment}">+</button>
+```
+
+Surprisingly, the side effect with `data.other` will actually run! This goes back to the fact that _variables_ are the units of reactivity while _reassignment_ is the catalyst for reactivity. Since `data.count` is inside the `data` variable (as a whole), then all dependents on the `data` object will also be notified of the change! The `data.other` side effect executes simply because it just happens to implicitly reference the `data` variable (as a whole).
+
+The fix is frustratingly simple: **normalize the primitives!**
+
+```html
+<script>
+	// Same old `data` here.
+	let data = { count: 0, other: null };
+
+	// Now we "normalize" the object into its primitives.
+	// Alternatively, we could have just separated the variables
+	// to begin with rather than putting them in an object.
+	$: ({ count, other } = data);
+
+	// Same click handler.
+	const increment = () => ++count;
+
+	// Now only this side effect will run.
+	$: console.log('updated count', count);
+
+	// This is unreachable code because we hold no references
+	// to `data` nor to the normalized `count` variable.
+	$: console.log('updated other', other);
+</script>
+
+<button on:click="{increment}">+</button>
+```
+
+Kevin Bridges (@kevinast) goes into great detail about this behavior in his article on exploring Svelte's reactivity. The main point is that Svelte lets us "fine tune the reactivity"—for better or worse...
+
+[View embedded content](https://dev.to/kevinast/responsive-svelte-exploring-svelte-s-reactivity-5cen)
+
+There are more examples out there where Svelte is not as fine-grained as I first thought. To cite another example, the `{#each}` block [actually diffs](https://svelte.dev/docs/logic-blocks#each) by the provided key expression when the backing array gets modified. This should be an incredibly fast operation, but I was nevertheless disappointed to find out that there was no fancy compile-time machinery happening behind the scenes.
+
+Returning to the framework benchmarks, perhaps it is for this reason why [SolidJS] consistently outperforms Svelte. Simply put, when it comes to non-primitive variables, [SolidJS stores](https://www.solidjs.com/docs/latest/api#stores) (which are essentially just recursive [signals](https://www.solidjs.com/guides/reactivity) with fine-grained mutation helpers) are more fine-grained than that of Svelte.
+
+[SolidJS]: https://www.solidjs.com/
+
+Now if there was somehow a way to integrate (at compile-time!) the fine-grained reactivity of SolidJS signals with the expressiveness of the Svelte language, then that would be the most unstoppable framework ever! But _alas_, we do not live in a perfect world... yet!
+
+> **UPDATE:** On 20 September 2023, the Svelte team announced [runes](https://svelte.dev/blog/runes) for Svelte 5. The signal-based rewrite of the framework internals implements _finer_-grained SolidJS-like reactivity at compile-time! _Perhaps the perfect world is not so far after all..._ 🎉
+
+### The Exotically Magical Dollar
+
+If there is one part of Svelte that is worth nitpicking, it is certainly the bold decision to change the semantics of a seldom-used JavaScript feature: [labels](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label). The [`$` syntax](https://svelte.dev/docs/svelte-components#script-3-$-marks-a-statement-as-reactive) is simultaneously the most elegantly brilliant and also the most exotically magical feature of the Svelte language.
+
+In the beginning of this review, I emphasized that Svelte prides itself in proving that there is no magic behind UI frameworks. **This is the only exception.**
+
+As a JavaScript purist, it initially horrified me to see the `$` everywhere. I could forgive (and even applaud) the `$:` label syntax, but the [store prefix](https://svelte.dev/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values) (i.e., `$store`) was where I drew the line.
+
+In the beginning, I frequently found myself forgetting to prefix my stores with `$` before accessing its inner value. Admittedly, this was a rather frustrating experience, especially considering the fact that it felt too magical for me. I knew that it desugared into the more verbose `subscribe` pattern, but my inner purist self could not help but feel icky about the non-standard semantics. I eventually grew to embrace the syntax, but the journey was nevertheless jarring.
+
+Whenever I teach Svelte to JavaScript beginners, I always made sure to emphasize that the `$` syntax is a non-standard Svelte-specific feature. As a mentor, the obligatory disclaimer that prefaces all of the lectures eventually does get old. But _alas_, the incessant reminders are necessary—lest we fall into the trap of becoming Svelte developers (exclusively) rather than JavaScript developers.[^12]
+
+[^12]: Such is the trap that many beginners fall into when they eagerly jump into [React] before learning the fundamentals of JavaScript first.
+
+### A Masterclass on Empowerment
+
+For all of my major projects, Svelte has become my go-to framework. In all of my years of experience in full-stack development, **no other framework comes this close to perfection** (for now!).
+
+- Onboarding has a low barrier to entry (i.e., HTML, CSS, and JS are the only prerequisites).
+- Outstanding documentation and interactive playgrounds.
+- Minimal framework magic (aside from the aforementioned `$` syntax).
+- Minimal performance overhead (aside from the aforementioned "not-granular-enough" footguns) if any.
+- Beautifully intuitive syntax and semantics behind the template language.
+- Keeps the spirit of zero-cost[^2] abstractions (or otherwise minimal overhead) alive.
+- Maximal route-level flexibility in rendering strategies (with SvelteKit).
+- Streamlined developer workflow and plugin system (thanks to Vite).
+
+All of these reasons are why I _never_ hesitate to advocate for Svelte at my department. I have personally led several successful Svelte projects in the past semester alone. Many of these projects, in fact, involved onboarding complete beginners and experienced developers alike. Regardless of the team composition, Svelte never failed to produce successful projects. The same is true even for other teams that I have offered technical consultation on.[^13]
+
+[^13]: Some teams built CSR Svelte apps on Electron. Others went for the traditional hybrid SSR and CSR route. On some of my projects, SvelteKit has become my go-to solution for SSG.
+
+The astute reader may notice a common theme in this review: **empowerment**. Svelte and its zero-cost[^2] philosophy empower teams to move fast with ease and confidence.
+
+Because Svelte does not require a degree in rocket science to understand, it also empowers individuals to believe that they _are_ capable of building full-stack applications; that front-end development can be intuitive; that back-end development doesn't have to be so scary; and that they are more qualified than they initially thought.[^14]
+
+[^14]: In fact, one of my friends even went from zero full-stack knowledge to AWS-certified cloud practitioner in three months after recommending Svelte to them!
+
+This is why Svelte is a masterclass on empowerment.
+
+---
+
+_Needless to say, I am a **huge** fan of the [Svelte team](https://github.com/sveltejs)'s work. I would like to thank them for empowering developers, keeping the spirit of innovation alive, and pushing the boundaries of full-stack web development._

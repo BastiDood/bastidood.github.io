@@ -1,0 +1,375 @@
+---
+title: 'Dipping Toes into Unsafe Code'
+description: 'In this article, we implement a safe implementation of a direct-address table using unsafe code in Rust. In doing so, we explore the mindset and thought processes involved when upholding safety.'
+createdAt: '2022-07-07T10:34:03Z'
+publishedAt: '2022-07-21T16:52:51Z'
+cover:
+    src: './cover.png'
+    alt: 'Dipping Toes into Unsafe Code'
+tags: ['rust', 'computerscience', 'showdev']
+---
+
+**_Unsafe code:_** the bane of every programmer. For languages like Rust and C#, `unsafe` code is formally quarantined from the rest of the code at the language level. Although inherently "unsafe", they often serve as the foundation of most "safe" abstractions.
+
+Unsurprisingly, unsafe code has a reputation for being tricky to deal with. Edge cases, nasty pitfalls, resource corruption, and invariant violations plague an otherwise omnipotent language feature.
+
+In this article, we dip our toes into implementing our own safe abstraction over unsafe code in Rust. In doing so, we explore the mindset and thought processes involved when upholding safety.
+
+## A Block of Optionals
+
+As our motivating example, we implement a memory-efficient direct-address table (DAT). One can think of DATs as a special case of hash maps where:
+
+- The key is an integer.
+- The value can be any type `T`.
+- The hash function is simply the identity function.[^hash]
+
+[^hash]: In other words, the key to the map is literally an index into the underlying array storage.
+
+### A Simple Representation
+
+We may be tempted to implement a DAT in terms of `[Option<T>; N]`, where `N` is a `usize` representing the number of entries in the DAT. However, for reasons beyond the scope of this article[^nullable], an array of optional values is memory-inefficient. In the worst-case scenario, the `[Option<T>; N]` representation requires twice as much memory as the DAT we will be implementing.
+
+[null]: https://doc.rust-lang.org/nomicon/ffi.html#the-nullable-pointer-optimization
+
+[^nullable]: See the [nullable pointer optimization][null].
+
+> **RECALL:** The `Option` type—like most data-carrying `enum` types in Rust—are essentially tagged unions. It is thus composed of two pieces of data: the **payload** and the **discriminant/tag**.
+
+To make a long story short, most data types (especially those user-defined) require the `enum` discriminant to be stored separately from the inner data when wrapped in an `Option` (thereby increasing the memory footprint). In fact, this is generally true for all data-carrying `enum` types, not just for `Option`.
+
+There are only a few exceptions to this rule. Namely, these include—but are not limited to—references (`&T` and `&mut T`), smart pointers (`Box<T>`, `Rc<T>`, `Arc<T>`, etc.), and the non-zero variants of the integer types ([`NonZeroU8`](https://doc.rust-lang.org/stable/core/num/struct.NonZeroU8.html), [`NonZeroU16`](https://doc.rust-lang.org/stable/core/num/struct.NonZeroU16.html), etc.).[^nonzero]
+
+[^nonzero]: Observe that all of these types have one thing in common: the discriminant is implicitly encoded by the value. References can never be invalid, so the compiler encodes `None::<&T>` as the null pointer. The same reasoning applies to `Box<T>`, which are also never null. Similarly, for non-zero integers, the literal zero is used to encode the `None` variant. Since the discriminant is implicit, the compiler optimizes the memory representation by excluding the discriminant overhead.
+
+```rust
+use core::{mem::size_of, num::NonZeroU32};
+
+// We obtain 8 bytes here: 4 bytes for the actual `u32`
+// plus 4 more bytes for the `enum` discriminant (which
+// has been padded for alignment).
+type Unoptimized = Option<u32>;
+assert_eq!(size_of::<Unoptimized>(), 8);
+
+// We obtain 4 bytes here. There is no need to explicitly
+// store a discriminant because the value itself implicitly
+// encodes it. That is, the "zero" value is treated as the
+// `None` variant. Otherwise, the value is in the `Some` variant.
+type Optimized = Option<NonZeroU32>;
+assert_eq!(size_of::<Optimized>(), 4);
+```
+
+From the example above, it should be apparent that the `[Unoptimized; N]` representation takes up twice as much memory as the `[Optimized; N]` representation for any size `N`. This happens to be the worst-case scenario, where the one-bit discriminant wastes too much space.
+
+### An Alternative Representation
+
+Fortunately, not all hope is lost! Instead of using an array of optional values, we store the (potentially uninitialized) values in an array (as is). Then, we keep track of the initialized values via an integer bit mask. In doing so, we guarantee that all discriminants occupy _at most_ one bit. This is better than the previous representation because we no longer waste bits on explicit discriminants.
+
+```rust
+// A neat wrapper that marks data as "maybe-uninitialized".
+use core::mem::MaybeUninit;
+
+// A block of 32 optional values.
+pub struct Block32<T> {
+    // An array of 32 "maybe-uninitialized" values.
+    data: [MaybeUninit<T>; 32],
+    // Since we have 32 values, we use an
+    // unsigned 32-bit integer as our mask.
+    // The least significant bit keeps track
+    // of the discriminant at index `0`.
+    mask: u32,
+}
+```
+
+Most notably, our new representation uses an array of "maybe-uninitialized" values. A value in the underlying array is initialized if (and only if) it is a valid entry in the DAT. The [`core::mem::MaybeUninit`](https://doc.rust-lang.org/stable/core/mem/union.MaybeUninit.html) wrapper from the standard library facilitates this use case.
+
+## On Maybe-Uninitialized Memory
+
+Before we proceed with the implementation, we must first consult the documentation for `MaybeUninit` regarding any safety invariants we must uphold. The most relevant features and safety measures are listed below:
+
+1. The `MaybeUninit::<T>::assume_init` method casts a `MaybeUninit<T>` to a `T`.
+    - Analogously, the `assume_init_ref` method casts a `&MaybeUninit<T>` to a `&T`.
+    - Meanwhile, the `assume_init_mut` method casts a `&mut MaybeUninit<T>` to a `&mut T`.
+2. The underlying inner type `T` must be properly initialized before invoking any of the `assume_init` methods.
+    - Otherwise, the behavior is undefined due to usage of garbage memory.
+3. By default, `MaybeUninit<T>` (as is) does not drop the inner `T`—even if the inner value is properly initialized!
+    - Since `T` _may_ be uninitialized, we cannot assume that it is safe to call the destructor on potentially "garbage memory".
+    - The standard library takes a conservative approach by _not_ invoking the destructor at all. Thus, it is actually easy to leak memory!
+    - There are two ways to drop the inner value:
+        - Invoke the `assume_init_drop` method, which takes in a `&mut MaybeUninit<T>` and drops the inner `T` in-place.
+        - Invoke the `assume_init` method on an owned `MaybeUninit<T>` and simply drop the resultant `T` (by leaving the current scope).
+
+```rust
+use core::mem::MaybeUninit;
+
+// IMPORTANT: Accessing garbage memory is undefined behavior!
+let uninit = MaybeUninit::<u32>::uninit();
+let _ = unsafe { uninit.assume_init() }; // Garbage Memory!
+
+// IMPORTANT: Improperly initialized values invoke undefined behavior!
+// Recall that references can never be null.
+let null_ref = MaybeUninit::<&u32>::zeroed();
+let _ = unsafe { null_ref.assume_init() }; // Invalid Initialization!
+
+// IMPORTANT: `MaybeUninit` (as is) does not invoke destructors.
+let valid_string = MaybeUninit::new(String::from("Hello!"));
+drop(valid_string); // Memory Leak!
+```
+
+## Implementing Some Basic Operations
+
+We may now implement the DAT. First, we define a default constructor.
+
+```rust
+#![feature(maybe_uninit_uninit_array)]
+
+impl<T> Default for Block32<T> {
+    fn default() -> Self {
+        Self {
+            // As of Rust 1.62, note that the `uninit_array` method
+            // is a nightly-only feature. For the sake of brevity,
+            // we will be using this function.
+            //
+            // Alternatively, for stable toolchains, we may opt to
+            // directly inline the definition for `uninit_array`
+            // instead. Please consult the documentation accordingly.
+            data: MaybeUninit::uninit_array(),
+            // We then start with an empty mask.
+            mask: 0,
+        }
+    }
+}
+```
+
+Then, we proceed to the easy, safe functions. The `is_vacant` method is particularly important because it will be extensively used for upholding safety.
+
+```rust
+impl<T> Block32<T> {
+    // Checks whether the DAT is empty.
+    pub const fn is_empty(&self) -> bool {
+        self.mask == 0
+    }
+
+    // Returns the number of valid entries in the DAT.
+    pub const fn len(&self) -> u32 {
+        self.mask.count_ones()
+    }
+
+    // Checks whether the slot at the `index` contains a
+    // valid entry. Panics if the `index` is out of bounds.
+    pub const fn is_vacant(&self, index: usize) -> bool {
+        assert!(index < 32);
+        let query = 1 << index;
+        self.mask & query == 0
+    }
+}
+```
+
+Next, we implement the `insert` and `remove` methods. Since these methods interact with `MaybeUninit`, we need to be a bit more careful with the inevitable `unsafe` code.
+
+> It is best practice (ideally not just in Rust) to add a "safety comment" for _all_ uses of `unsafe` code. As its name suggests, safety comments should explain _why_ it is safe to invoke an `unsafe` procedure. Typically, it clarifies the (internal and external) invariants that are upheld before and after the procedure.
+
+```rust
+use core::mem::replace;
+
+impl<T> Block32<T> {
+    // Inserts a `value` at `index`. Returns the old value, if any.
+    pub fn insert(&mut self, index: usize, value: T) -> Option<T> {
+        // Extract the old value
+        let wrapped = MaybeUninit::new(value);
+        let old_vacant = self.is_vacant(index);
+        let old_value = replace(&mut self.data[index], wrapped);
+
+        // Ensure that the bit in the mask is set to 1
+        self.mask |= 1 << index;
+
+        // Return the old value
+        if old_vacant {
+            None
+        } else {
+            // SAFETY: Old value has been verified
+            // to be properly initialized.
+            Some(unsafe { old_value.assume_init() })
+        }
+    }
+
+    // Removes a `value` at `index`. Returns the old value, if any.
+    pub fn remove(&mut self, index: usize) -> Option<T> {
+        if self.is_vacant(index) {
+            return None;
+        }
+
+        // Extract the old value
+        let dest = &mut self.data[index];
+        let old_value = replace(dest, MaybeUninit::uninit());
+
+        // Ensure that the bit in the mask is reset to 0
+        self.mask &= !(1 << index);
+
+        // SAFETY: We have verified that the slot is not vacant.
+        Some(unsafe { old_value.assume_init() })
+    }
+}
+```
+
+Finally, we implement the getter methods. These are relatively more straightforward because we do not have to think about mutating the internal bit mask.
+
+```rust
+impl<T> Block32<T> {
+    // Immutably borrow the value at `index`.
+    pub fn get(&self, index: usize) -> Option<&T> {
+        if self.is_vacant(index) {
+            None
+        } else {
+            // SAFETY: Slot is initialized.
+            Some(unsafe { self.data[index].assume_init_ref() })
+        }
+    }
+
+    // Mutably borrow the value at `index`.
+    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
+        if self.is_vacant(index) {
+            None
+        } else {
+            // SAFETY: Slot is initialized.
+            Some(unsafe { self.data[index].assume_init_mut() })
+        }
+    }
+}
+```
+
+## Implementing `Clone`
+
+We must now enable to user to clone the DAT as they please. Unfortunately, we cannot simply `derive(Clone)` in our implementation. Assuming that the inner type `T` implements `Copy`, the `Clone` implementation is surprisingly trivial.
+
+```rust
+//     `T` must implement `Copy`...
+//     👇
+impl<T: Copy> Clone for Block32<T> {
+    fn clone(&self) -> Self {
+        Self {
+            // Recall that `MaybeUninit<T>` implements `Copy` if
+            // (and only if) `T` implements `Copy` as well.
+            // Therefore, a bitwise copy of an array of `T` values
+            // should be trivial.
+            //
+            // There are no extra lifetime considerations here since
+            // `Copy` guarantees that `T` cannot implement a fancy
+            // `Drop` implementation (stated in the documentation).
+            data: self.data,
+            mask: self.mask,
+        }
+    }
+}
+```
+
+However, there is one glaring issue with this approach. It is considerably uncommon for types to implement `Copy`! Ideally, we want to implement `Clone` for our DAT if (and only if) the inner type `T` implements `Clone` as well. Requiring `Copy` is just too restrictive!
+
+Since we are relaxing the `Copy` bound to be just `Clone`, then a bitwise copy of the `data` is no longer correct. We must explicitly clone each `T` in `data` into the new DAT so that we invoke any extra (but necessary) cloning logic. For most types, a bitwise copy is sufficient; for others (such as `String`), extra cleanup and bookkeeping is necessary.
+
+```rust
+//     `T` is only required to implement `Clone` (not `Copy`).
+//     This should be less restrictive and hence applicable to
+//     more types...
+//     👇
+impl<T: Clone> Clone for Block32<T> {
+    fn clone(&self) -> Self {
+        let mut block = Self::default();
+        block.mask = self.mask;
+
+        for i in 0..32 {
+            // Do not clone vacant slots
+            if self.is_vacant(i) {
+                continue;
+            }
+
+            // SAFETY: Slot is not vacant, and hence initialized.
+            let value = unsafe { self.data[i].assume_init_ref() };
+
+            // Manually clone the data
+            block.data[i] = MaybeUninit::new(value.clone());
+        }
+
+        block
+    }
+}
+```
+
+## Oh, no! Potential memory leaks!
+
+Now there is one last important feature we need to implement. But first, we must demonstrate the problem. Consider the following code snippet.
+
+```rust
+let mut block = Block32::default();
+block.insert(0, String::from("Hello"));
+block.insert(1, String::from("World"));
+block.insert(2, String::from("Rusty"));
+block.remove(2);
+drop(block); // Leaks "Hello" and "World"!
+```
+
+This seemingly innocent code snippet actually leaks a lot of memory! Recall that `MaybeUninit` (as is) never invokes the destructor. To properly drop the value, we must first invoke `assume_init` to cast the `MaybeUninit<T>` as a `T`. The conversion to `T` enables the regular drop rules to apply.
+
+Returning to the example, there are no issues with the `insert` and `remove` operations. Since they both invoke `assume_init` internally, each `String` is dropped properly when moved out of the `block`.
+
+The memory leak happens when the `block` itself goes out of scope, _but there are still some initialized elements left in the underlying array_. Since no destructors are run, memory is certainly leaked. The solution, then, is to implement `Drop` for our DAT so that any remaining elements are properly destroyed.
+
+```rust
+impl<T> Drop for Block32<T> {
+    fn drop(&mut self) {
+        for i in 0..32 {
+            // No more memory leaks! An `Option<T>` is dropped
+            // here, which implies dropping the inner `T`, if any.
+            self.remove(i);
+        }
+    }
+}
+```
+
+## Improved Memory Footprint
+
+```rust
+use core::{mem::size_of, num::NonZeroU8};
+
+// 64 Bytes
+type Unoptimized = [Option<u8>; 32];
+assert_eq!(size_of::<Unoptimized>(), 32 * 2);
+
+// 32 Bytes
+type Optimized = [Option<NonZeroU8>; 32];
+assert_eq!(size_of::<Optimized>(), 32);
+
+// 36 Bytes
+assert_eq!(size_of::<Block32<u8>>(), 32 + 4);
+```
+
+In the worst-case scenario, the original "array-of-optional-values" representation requires 64 bytes of memory. Two bytes are allocated for each of the 32 entries: one byte for the actual `u8` payload and another byte for the `enum` discriminant. This takes up twice as many bytes than necessary!
+
+Meanwhile, the best-case scenario (using `NonZeroU8`) requires only 32 bytes of memory. Storing the `enum` discriminant is no longer necessary, which cuts the memory footprint by half! Unfortunately, most types are not eligible for [this optimization][null] anyway.
+
+For such cases, our DAT implementation provides a reasonably close memory footprint to that of the best-case scenario. There is only the (arguably) negligible overhead that comes with the mandatory bit mask, which is nevertheless significantly better than the unoptimized version.
+
+## Conclusion
+
+To be honest, I would love to conclude this article by asserting that `unsafe` code is not as scary as it seems. As we have seen, though, there is a lot to consider—even for our relatively simple example with `MaybeUninit`! By implementing a DAT, we have touched topics like uninitialized memory, destructors, bitwise copies, and explicit clones.
+
+One may be tempted to scrap `unsafe` code altogether considering how unwieldly it is to implement low-level data structures. But... that's actually the point. Writing `unsafe` code is unwieldly because it is inherently tricky to get right! Languages that isolate `unsafe` code implore us to think more carefully.
+
+It may be intimidating to see our code editors highlight the `unsafe` keyword, but as long as there are reasonable safety comments that follow, we may rest assured that careful considerations have taken place beforehand. Of course, this is not to say that all `unsafe` programmers are infallible. If an unsafety bug does occur, we know exactly where to look, which is not an assurance that most languages offer.
+
+The common thread that ties everything together is documentation. Clear documentation of invariants supplement the language-level demarcation between safe abstractions and unsafe low-level operations. Ideally, it gives us a mental checklist of invariants to uphold like some kind of Unsafe [Bingo]. When the checklist is done, we may assert safety with a reasonable degree of confidence.
+
+[Bingo]: https://en.wikipedia.org/wiki/Bingo_(American_version)
+
+As we have seen with Rust's documentation, `unsafe` code _can_ be accessible. The text is certainly not trivial, but _it does not have to be scary_. Although we must prefer safe abstractions in most cases, clear documentation empowers us to get our hands dirty when `unsafe` code becomes necessary.
+
+## Bonus: The `option-block` Crate
+
+[View embedded content](https://github.com/Some-Dood/option-block)
+
+For your convenience, I published the [`option-block` crate](https://crates.io/crates/option-block), which includes the 8-, 16-, 32-, 64-, and 128-element variants of the fixed-size block of optionals we have implemented in this article. These variants are respectively named `Block8`, `Block16`, `Block32`, `Block64`, and `Block128`.
+
+The crate also adds [some extra methods](https://docs.rs/option-block/latest/option_block) that make our DAT's public API more compatible with the [standard collections](https://doc.rust-lang.org/stable/std/collections/index.html). Among these features are iterators[^iter] and convenience getters (`get_or`, `get_or_else`, and `get_or_default`).
+
+[^iter]: As of writing, I have not yet implemented the `iter_mut` method.
+
+With that said, please feel free to raise issues and submit pull requests!

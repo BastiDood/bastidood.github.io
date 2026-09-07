@@ -1,0 +1,227 @@
+---
+title: 'Optimizing Immutable Strings in Rust'
+description: "If there's anything about Rust that Rustaceans have a particular aversion to, it would most certainly be cloning and heap allocations. In this article, we will explore how taking advantage of immutability allows us to optimize memory usage."
+createdAt: '2021-07-11T10:14:36Z'
+publishedAt: '2021-08-22T16:53:06Z'
+updatedAt: '2021-09-02T15:14:06Z'
+cover:
+    src: './cover.png'
+    alt: 'Optimizing Immutable Strings in Rust'
+tags: ['rust', 'performance', 'tips']
+---
+
+### An Aversion to Clones and Heap Allocations
+
+Rust, Go, and C++ programmers alike have a particular aversion to heap allocations and cloned data. As much as possible, variables are allocated locally (in the stack) so that there is no need for _extra_ dynamic memory.[^1] In other words, we often go above and beyond to ensure that we only allocate when _absolutely_ necessary.
+
+[^1]: Dynamic memory is inherently less predictable since its behavior can only be determined at runtime. An example would be user input. There is no way for the compiler to predict and optimize for the plethora of ways a user may input a string. The best a program can do is to allocate memory dynamically (based on the _potential_ size of the input) and to resize accordingly. Such behavior cannot be done and optimized at compile-time. Though, it is possible to allocate a "fixed budget" for the string, which may allow for some optimizations. Generally speaking, however, this is not the most flexible option.
+
+In fact, C++ makes further optimizations by utilizing compile-time language features that allow instructions to be evaluated and inlined beforehand. This results in a program that is no longer required to execute certain instructions during runtime. A notable example is the [small-string optimization](https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring/10319672#10319672), where "small strings" are inlined to avoid dynamic memory allocations altogether.
+
+Similarly, cloning data is often a last resort. Consider an image which can be represented as some arbitrary array of bytes. If one were to clone said image, this would certainly be expensive. This leads us to prefer **reference semantics** over **value semantics**. That is, we often pass objects _by reference_ rather than _by value_ if ownership cannot be transferred. Indeed, copying a pointer/reference is surely cheaper than copying an entire array of bytes.
+
+Thus, there is one function in particular that Rustaceans admittedly hate to see the most:
+
+```rust
+// Suppose we have an image...
+let image: Vec<u8> = get_image_bytes_from_somewhere();
+
+// Every Rustacean's kryptonite...
+let cloned = image.clone();
+```
+
+That one line of code alone sends shivers down the spine. Although there are some cases when cloning is truly necessary, it is nevertheless an unpleasant sight to behold.
+
+In this article, we will discuss certain ways to optimize the way we allocate and clone data in _immutable_ contexts. Throughout this article, we will be using the `String` type as a particular example, but _please do keep in mind that the concepts are generally applicable elsewhere_.
+
+### An Example in Multithreaded Contexts
+
+Suppose we find ourselves in a situation where we have to share an _immutable_ string across multiple threads as part of a runtime configuration. For instance, perhaps this may be a file name, a username, or an argument flag. A ~~painfully~~ naive way to accomplish this is to simply clone the string for each thread.
+
+```rust
+use std::thread::{self, JoinHandle};
+
+// Runtime configuration from somewhere...
+let username: String = get_username();
+
+// Spawn ten threads
+let handles: Vec<_> = (0..10)
+    .map(|id| {
+        // NOTE: `username` is captured by reference here.
+        // That is, `String::clone(&username)`. Observe that
+        // obtaining a reference is sufficient for cloning
+        // the **entire** string.
+        let cloned = username.clone();
+
+        // Here, we move the owned clone of the `username`.
+        thread::spawn(move || {
+            println!("Hello {} from Thread #{}!", cloned, id);
+        })
+    })
+    .collect();
+
+// Join all the threads
+handles.into_iter()
+    .try_for_each(JoinHandle::join)
+    .expect("failed to join all threads");
+```
+
+Though, we can definitely do better than this. Instead of cloning the `String` and its contents, why not just use a [`std::sync::Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html) instead? That way, we're only cloning the _smart pointer_ to the `String` rather than the `String` contents itself. Indeed, a similar solution is given in the [Rust Book's](https://doc.rust-lang.org/book/title-page.html) chapter on ["Fearless Concurrency"](https://doc.rust-lang.org/book/ch16-00-concurrency.html).
+
+```rust
+use std::{
+    sync::Arc,
+    thread::{self, JoinHandle},
+};
+
+// Observe that we now wrap the string in an `Arc`.
+let username: Arc<String> = Arc::new(get_username());
+
+// Spawn ten threads again
+let handles: Vec<_> = (0..10)
+    .map(|id| {
+        // Here, we are explicitly cloning the smart pointer,
+        // not the `String` itself. Note that it is possible to
+        // write `username.clone()` instead, but that may be ambiguous
+        // to readers of this code. It is best to explicitly
+        // invoke the `Clone` implementation for `Arc`.
+        let cloned = Arc::clone(&username);
+
+        // We now move the cloned smart pointer to the thread.
+        thread::spawn(move || {
+            println!("Hello {} from Thread #{}!", cloned, id);
+        })
+    })
+    .collect();
+
+// Join all the threads again
+handles.into_iter()
+    .try_for_each(JoinHandle::join)
+    .expect("failed to join all threads");
+```
+
+#### Some Subtle Inefficiencies
+
+This improvement is much better, but there seems to be something strange about an `Arc<String>`. Since `Arc` is a smart pointer, we know that it implements [`std::ops::Deref`](https://doc.rust-lang.org/std/ops/trait.Deref.html). In this case, the `Deref::Target` is `String`. But, we know that `String` also implements `Deref`, where `Deref::Target` is the primitive type `str`. Therefore, in order to use the underlying `str`, we have to go through two levels of `Deref` indirection!
+
+It must be noted, however, that the compiler _may_ optimize the double indirection, but the same cannot be said about memory usage. Recall that all pointer types that hold [`Sized`](https://doc.rust-lang.org/std/marker/trait.Sized.html) targets have the [same size as a `usize`](https://doc.rust-lang.org/std/mem/fn.size_of.html). In 64-bit targets, that is worth 8 bytes.
+
+> **DISCLAIMER:** From here on out, I will be assuming 64-bit targets when computing pointer sizes.
+
+Since `String` is a `Sized` type, `Arc<String>` is actually just the size of a pointer. Indeed, at least in terms of size, the `Arc` smart pointer is a "zero-cost abstraction" over a regular pointer. But, let us not forget that `Arc` is actually a pointer to some heap allocation. In this case, it points to a `String`.
+
+As of writing ([Rust 1.54](https://blog.rust-lang.org/2021/07/29/Rust-1.54.0.html)), we know that [a `String` is essentially a `Vec<u8>`](https://github.com/rust-lang/rust/blob/1.54.0/library/alloc/src/string.rs#L292-L294), where the bytes just happen to be valid UTF-8. Furthermore, a `Vec<u8>` is composed of [two fields](https://github.com/rust-lang/rust/blob/1.54.0/library/alloc/src/vec/mod.rs#L396-L399): an internal `RawVec` and the `length` of the stored data. A [`RawVec`](https://github.com/rust-lang/rust/blob/1.54.0/library/alloc/src/raw_vec.rs#L52-L56) is just an internal wrapper over the `capacity` and the underlying pointer to the data buffer.
+
+Therefore, a `String` is actually worth three pointers: an integer `length` (`usize`), an integer `capacity` (`usize`), and a data pointer (`usize`). In total, that is worth 24 bytes!
+
+Putting it all together, an `Arc<String>` is an 8-byte smart pointer to a 24-byte heap-allocated `String` (of some `capacity`)—plus 8 bytes for the strong count (`AtomicUsize`) and 8 more bytes for the weak count (`AtomicUsize`)—which dereferences to a heap-allocated `str` (of some `length <= capacity`).
+
+In other words, an `Arc<String>` is actually 8 bytes (on the stack) plus 40 bytes (on the heap) plus the underlying `str` allocation of `capacity` bytes (on another part of the heap). This is at least **48 bytes** in total if we disregard the `str`![^2]
+
+[^2]: Just to be _extra_ sure, I verified this with [Compiler Explorer](https://godbolt.org/) using `rustc 1.54`. The compiler flags were `--edition 2018` and `-O` (for optimization). Without loss of generality, I hard-coded the 11-byte string `"Hello World"`. Indeed, the produced assembly allocates 11 bytes for the `str`, 24 bytes for the `String`, and 8 bytes for the `Arc<String>` smart pointer. @jakubdabek also provided a [Godbolt example](https://rust.godbolt.org/z/arz1M5456) in the comments section.
+
+```rust
+// The total memory used is at least `8 + 24 + 16 + 11 = 59` bytes!
+// Note that I have disregarded alignment to keep the example simple.
+use std::sync::Arc;
+let text = Arc::new(String::from("Hello World"));
+
+// Here, we dereference the variable to verify how much
+// memory is used by each level of indirection.
+use std::mem::size_of_val;
+dbg!(size_of_val::<Arc<String>>(&text)); // 8
+dbg!(size_of_val::<String>(&text));      // 24
+dbg!(size_of_val::<str>(&text));         // 11
+```
+
+#### Taking Advantage of Immutability
+
+Phew! That was a lot to take in, but I hope I have demonstrated that the double indirection and the `Vec` overhead is quite considerable for an immutable string. So... how do we fix this?
+
+First and foremost, we have to address the double indirection. As demonstrated earlier, a pointer to a pointer to a `str` is not exactly the most efficient way to handle our use case.
+
+The first key insight comes from the fact that we assumed that the `str` must be _immutable_. That is, we don't actually need the mutation methods provided by `String`. If we can somehow interact with the underlying `str` of the `String` instead, we can eliminate the double indirection entirely. Luckily, `Arc` allows us to do just that! Recall that [`Arc<str>` implements `From<String>`](https://github.com/rust-lang/rust/blob/1.54.0/library/alloc/src/sync.rs#L2346-L2363).[^3] This conversion is sufficient for our use case.
+
+[^3]: Technically, the `From<String>` implementation just dereferences the string and copies the underlying `str` into the `Arc` allocation. Therefore, the real magic happens at the [`From<&str>` implementation](https://github.com/rust-lang/rust/blob/1.54.0/library/alloc/src/sync.rs#L2327-L2344).
+
+```rust
+use std::sync::Arc;
+
+// Retrieve the string from somwhere...
+let text: String = get_string_from_somwhere();
+
+// Here, we "consume" the `String` wrapper
+// as a smart pointer to a `str`. Alternatively,
+// we may invoke the `Arc::from` syntax.
+let owned_reference: Arc<_> = text.into();
+todo!("spawn threads here");
+```
+
+And that's pretty much it! Now, when we clone the smart pointer across multiple threads, we're simply cloning the direct pointer to the underlying `str`—no more double indirection!
+
+Analyzing the memory usage, we find that `Arc<str>` is worth 16 bytes. But wait... wasn't `Arc<String>` just 8 bytes? Yes, it was! This is because `String` is `Sized`. As mentioned earlier, all pointers to `Sized` types are worth 8 bytes (a single pointer).
+
+Meanwhile, recall that a pointer to a [dynamically sized type](https://doc.rust-lang.org/nomicon/exotic-sizes.html#dynamically-sized-types-dsts) (such as a `str`) is actually a **wide pointer**. That is, they contain much more information than just a plain pointer. In this case, a `&str`, `Box<str>`, `Rc<str>`, `Arc<str>`, or any other pointer-like wrapper to a `str` is worth 16 bytes because they internally contain a direct pointer to the `str` allocation (`usize`) and its length (`usize`).
+
+Yes, this does mean that subsequent clones of the wide pointer is now twice as large as those of a regular pointer, but it does allow us to work around the double indirection issue. Consequently, the wide pointer is all we need to refer to the `str`—no _extra_ heap allocations required! Another neat side effect is that excess capacity is also removed, thus enabling more efficient memory utilization.
+
+In summary, the `Arc<str>` is only worth 16 bytes on the stack. Meanwhile, on the heap, there are 8 bytes for the strong count (`AtomicUsize`) and 8 bytes for the weak count (`AtomicUsize`) in addition to the `length` bytes of the underlying `str` allocation. This brings the total to 32 + `length` bytes. If compared to `Arc<String>` which is worth 48 bytes (alone) plus the `length` of the `str` plus the _excess_ `capacity` (if any), these are significant savings if I do say so myself!
+
+> **NOTE**: It is important to emphasize that `Arc` requires some overhead due to atomics. In particular, if it weren't for the strong count and the weak count, 16 bytes may be shaved in both cases. That is, if we had used a `Box` instead, we would attain the same results minus 16 bytes, regardless of whether it was an `Arc<str>` or an `Arc<String>`.
+
+Therefore, _if mutability is **not** necessary, then perhaps an owned `str` reference may be a worthwhile optimization._ The same also applies for `[u8]`, `Path`, `CStr`, and other slice-like types.
+
+![Double Indirection Illustration](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/11ggfjhfbijl8pvpm5t4.png)
+
+<figcaption>
+	This is not an accurate figure, but it's meant to roughly illustrate the optimization. The
+	overhead due to the strong count and the weak count have been omitted for brevity.
+</figcaption>
+
+### An Applied Example with Hash Maps
+
+Switching gears, let us consider a different example where we maintain a table of usernames and coins (represented by integers). The table is essentially a mapping between an _immutable_ username and the amount of coins in their wallet.
+
+A straightforward implementation makes use of [`std::collections::HashMap`](https://doc.rust-lang.org/std/collections/struct.HashMap.html). Instinctively, we first reach out to `HashMap<String, u16>` as the initial type signature. But, since the usernames are _immutable_, it is possible to remove the `String` abstraction altogether. In code:
+
+```rust
+use std::iter::repeat_with;
+
+fn generate_username() -> (String, u16) {
+    todo!("generate string-coins pairs somehow")
+}
+
+// This results in a `HashMap<Box<str>, u16>`.
+// Observe the the key-type is a `Box<str>` instead
+// of the typical `String` wrapper.
+let table: HashMap<_, _> = repeat_with(generate_username)
+    .map(|(name, coins)| (name.into_boxed_str(), coins))
+    .collect();
+```
+
+In fact, at some point, the Rust compiler [used this optimization](https://users.rust-lang.org/t/use-case-for-box-str-and-string/8295/4) to efficiently keep track of a table of immutable symbols in code. Shown below is a [code snippet](https://github.com/rust-lang/rust/blob/cc74068642d288534df0d6c2a454663920c5e97d/src/libsyntax/symbol.rs#L82-L85) where this occurs:
+
+```rust
+pub struct Interner {
+    names: HashMap<Box<str>, Symbol>,
+    strings: Vec<Box<str>>,
+}
+```
+
+### Conclusion
+
+Immutability is a wonderful thing! It enables a multitude of valuable optimizations and assumptions about the code we write. In the first place, immutability is the only reason why it was possible to "dissolve" the `String` wrapper in the examples above. Really, the `String` wrapper only exists to provide an interface for "resizable" strings—that is, via [`String::push`](https://doc.rust-lang.org/std/string/struct.String.html#method.push).
+
+Otherwise, when mutability is not necessary, the `String` wrapper frankly provides nothing more than accidental overhead. For the _relatively_ cheap cost of a mandatory wide pointer, the immutable `Box<str>` gains access to the following optimizations:
+
+- **Direct** ownership over the `str` primitive.
+- No more double indirection.
+- No more excess capacity.
+- No more _extra_ heap allocations.
+- _Lower memory usage overall._
+
+The same can be said about `Vec<T>` (for some type `T`), which appropriately wraps a slice `[T]`. In fact, there exists a plethora of such wrapper types: namely those for [`Path`](https://doc.rust-lang.org/std/path/struct.Path.html), [`CStr`](https://doc.rust-lang.org/std/ffi/struct.CStr.html), and many other slice-like types.
+
+Perhaps the most valuable lesson to be learned here is to know your types. Sure, Rust claims "zero-cost abstractions", but this does not mean we should keep our guard down from possible ways to further optimize our programs.
+
+As illustrated earlier, a closer look into the abstractions may reveal its unnecessary cost. Thus, it is paramount to keenly recognize and properly assess the constraints of our use cases. In doing so, we may even inadvertently stumble upon aggressive optimizations that let us make the most out of our computer resources.

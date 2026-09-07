@@ -1,0 +1,157 @@
+---
+title: 'Node.js: Breaking JavaScript out of the browser since 2009'
+description: 'This is an introduction to Node.js, the free, open-source software that allows JavaScript to be run outside of the browser.'
+createdAt: '2018-11-02T17:13:09Z'
+publishedAt: '2018-11-03T11:57:04Z'
+updatedAt: '2018-11-04T03:28:43Z'
+cover:
+    src: './cover.png'
+    alt: 'Node.js: Breaking JavaScript out of the browser since 2009'
+tags: ['node', 'javascript', 'webdev', 'beginners']
+---
+
+## A Brief History of JavaScript
+
+JavaScript has always been the programming (or rather scripting) language of the Web. It is a far cry from its humble beginnings when it was first introduced in 1995. In fact, it wasn't even called JavaScript back then. During its early development, it was initially called Mocha, which was a word play on Java, one of the most popular programming languages for web servers at the time. It was then changed to LiveScript when it was first released in the web browser [Netscape Navigator](https://en.wikipedia.org/wiki/Netscape_Navigator). Finally, it was later renamed to JavaScript. It was very limited before. It was merely a scripting language that allowed the common web page maker to `alert('Welcome to my website!')` a visitor.
+
+**NOTE:** There is a [great talk by Ben Ilegbodu](https://www.youtube.com/watch?v=6hyIZlaWVmU&t=29s) that describes how Web Development was during that time.
+
+Thanks to improvements made on the language by the [ECMAScript specification](https://en.wikipedia.org/wiki/ECMAScript), JavaScript became what it is today. It is **the** programming language of the Web. It is **the** programming language of browsers. Due to its ubiquity, it became one of the Three Pillars of the Web, along with HTML and CSS.
+
+## The Birth of Node.js
+
+All was fine until there became a need for JavaScript to run outside of the browser. So in 2009, through the initiative of Ryan Dahl, [Node.js](https://nodejs.org/en/) was born.
+
+Node.js is a free, [open-source](https://github.com/nodejs/node) JavaScript runtime. What does this mean? Well, it means that it allows JavaScript to run _outside of the browser_ and _in any platform_. Any JavaScript code that one writes will run in any system that has Node.js installed. It is essentially making the "cross-platform" aspect of the Web available to everyone.
+
+## Why Node.js?
+
+Node.js exposes APIs that are not available in a browser environment. These APIs have less restrictions to the operating system. For example, one can use the [File System API](https://nodejs.org/api/fs.html) to access and manipulate the file system of an operating system. It gives the developer basic CRUD (Create, Read, Update, and Delete) operations on the file system. For security reasons, that cannot be done in browsers. Basically, JavaScript becomes more powerful (and dangerous) because of Node.js.
+
+There are times when we need to include external code into our own code. For example, if we want to use [jQuery](https://jquery.com/), we insert a `<script>` tag that imports its functionalities. The same goes for normal scripts we write ourselves. We can simply import any JavaScript file with the `<script>` tag. However, this can become cumbersome in a larger scale. Imagine having to manually manage hundreds of dependencies. That will surely drive someone to insanity! That is where Node.js comes to the rescue. Node.js provides a way to manage dependencies, or "packages" as it is called in Node.js jargon. When one [downloads and installs Node.js](https://nodejs.org/en/download/current/), it comes with the [Node.js Package Manager (NPM)](https://www.npmjs.com/). In a nutshell, through the NPM registry, external packages can be imported into one's projects as dependencies. More on that will be discussed later.
+
+All of these features are great and all, but what is Node.js used for?
+
+- Servers
+- Database management
+- Web applications
+- Desktop and mobile applications
+- "Internet of Things" applications
+- Robotics
+
+## Getting Started with Node.js
+
+One can download two versions of Node.js. For now, it doesn't really matter which one to choose. If it helps, I use the Current version myself.
+
+- The [Long-Term Support version](https://nodejs.org/en/download/) is considered to be the most stable. It is updated only when necessary with bug fixes and basic maintenance. This version is preferred in production environments.
+- The [Current version](https://nodejs.org/en/download/current/) is considerably stable. It is frequently updated with new features. Given the quicker update cycle, it has the most modern APIs and technologies for developers to try out.
+
+After going through the installation process, one can test it out by opening the command prompt. If the installation is successful, running `node -v` will output the installed version of Node.js.
+
+Now that we know Node.js has been installed, we can run the `node` command to start the JavaScript interpreter. At this point, Node.js allows you to write JavaScript. It's basically the [Console in the DevTools](https://developers.google.com/web/tools/chrome-devtools/console/) _but in the command prompt_. To exit out of the interpreter, press `Ctrl + C` twice or type in `.exit`.
+
+We can type in all the JavaScript we want in the interpreter, but what if we want to run JavaScript files? Well, Node.js can do that, too. First, we make sure that we are in the directory where the file is located. We can do that by running `cd /path/to/the/file` until we are in the correct directory. Once there, we can type `node <filename>` to run the file. For example, we type `node filename.js` to run `filename.js`. We can even omit the `.js` file extension by typing `node filename` instead. Node.js implies that `filename` is a JavaScript file.
+
+**NOTE:** There is no such thing as a global `window` object in Node.js. Instead, the global object is unsurprisingly called the `global` object.
+
+## Getting Started with NPM
+
+As mentioned earlier, NPM provides an easier way to manage dependencies. Let's say we wanted to use [Lodash](https://lodash.com/) in our code. First, we initialize our new project by running [`npm init`](https://docs.npmjs.com/cli/init) in the project directory. As prompted, we can fill in the necessary information about the project. A [`package.json`](https://docs.npmjs.com/files/package.json) file is created after. It stores all the metadata of the project.
+
+## Importing Modules
+
+Then, we download Lodash. Assuming we're in the correct directory, we can do this by running [`npm install lodash`](https://docs.npmjs.com/cli/install). The dependency is downloaded in a folder called `node_modules`. This folder tends to accumulate a **lot** of files once we introduce more dependencies into the project. Yes, it's normal for it to have a huge file size. After the download, the `package.json` file keeps a record of all the dependencies of the project so you don't have to.
+
+Once Lodash has been installed, we can create a JavaScript file in the current directory that makes use of Lodash. In this file, we can import Lodash by invoking the [`require`](https://nodejs.org/api/modules.html#modules_require) function.
+
+```javascript
+// Imports the functionality of Lodash in a variable named '_'
+const _ = require('lodash');
+
+// We can now use it in the file
+_.join(['Node.js', 'is', 'cool!'], ' '); // 'Node.js is cool!'
+```
+
+As mentioned earlier, Node.js provides a File System API. It is a built-in module that comes with every installation of Node.js. We can import this module by invoking the `require` function as well. Running the JavaScript file will write `'Hello World'` to a text file named `devto.txt`.
+
+```javascript
+// Imports the 'fs' module (File System API) in a variable named 'fs'
+const fs = require('fs');
+
+// Writes to a file named 'devto.txt' in the current directory
+fs.writeFile('devto.txt', 'Hello World', err => console.log(err));
+```
+
+The `fs.writeFile` method is only one of the many features the `fs` module offers. All of the available methods and properties of the API is described in the [documentation](https://nodejs.org/api/fs.html).
+
+## Exporting Modules
+
+Now what if we wanted to import our own code from different JavaScript files? First, we have to export the code of the JavaScript file. Then, using the `require` function, we can import the exported code into another file. It isn't as confusing as it sounds, really. Let's say we have four JavaScript files in the same directory named `index.js`, `add.js`, `username.js`, and `dog.js`.
+
+The job of `add.js` is to provide a function that returns the sum of two inputs. We can export this functionality by assigning the `add` function to the [`module.exports`](https://nodejs.org/api/modules.html#modules_module_exports) property.
+
+```javascript
+// add.js
+function add(a, b) {
+	return a + b;
+}
+
+// Exporting the function
+module.exports = add;
+```
+
+The job of `username.js` is to export the string `'Some Dood'`. That's pretty much it. Nothing more, nothing less. This is just to emphasize the fact that we can export anything. By that, I mean it is possible to assign _any_ value of _any_ type to `module.exports`. Yes, that means we can export strings, numbers, booleans, symbols, functions, classes, arrays, and objects. If we want to go crazier, we can even export `null` and `undefined`. But for now, we are exporting a simple string.
+
+```javascript
+// username.js
+// Exporting the string
+module.exports = 'Some Dood';
+```
+
+The job of `dog.js` is to export an object that represents a dog.
+
+```javascript
+// Exporting the object
+module.exports = {
+	name: 'Presto',
+	breed: 'Siberian Husky',
+	bark: function () {
+		console.log('Bork!');
+	},
+};
+```
+
+Finally, we can import those three files into `index.js` by using the `require` function. We just have to provide the (absolute or relative) paths to the files to explicitly tell Node.js that we are importing from our files, not from the built-in modules nor from the `node_modules` folder of the project. As an added bonus, we can also omit the `.js` file extension.
+
+```javascript
+// index.js
+// Don't forget to provide absolute or relative paths!
+const add = require('./add');
+const myUsername = require('./username');
+const dog = require('./dog');
+
+const someSum = add(3, 7);
+const someOtherSum = add(1, 1);
+
+dog.bark(); // 'Bork!'
+console.log(`${dog.name} is a ${dog.breed}.`); // 'Presto is a Siberian Husky.'
+console.log(someSum); // 10
+console.log(someOtherSum); // 2
+console.log(myUsername); // 'Some Dood'
+```
+
+What the `require` function returns is the actual value that was assigned to the respective `module.exports` of each file. Pretty useful, huh? Under the hood, the same is true for built-in modules and external dependencies.
+
+## Conclusion
+
+Node.js' module system makes it possible to separate code into individual modules. If done correctly, these single-purpose modules can be reused in many areas of the code base, which lessens the need to rewrite code. This encourages a modular design that is easier to maintain and conduct unit tests on.
+
+So what have we learned?
+
+- Node.js allows JavaScript to be run outside of the browser.
+- To help manage external dependencies, the installation comes with NPM. On top of storing the metadata of a project, the `package.json` file also keeps track of these dependencies.
+- Code can be separated into importable and exportable modules.
+
+There is still much to learn. This article is merely an introduction to Node.js. There are many resources scattered around the internet that can help you in your journey towards Node.js enlightenment. Here in dev.to, we have a specific [tag](https://dev.to/t/node) dedicated to all things related to Node.js. [Google](https://www.google.com/), [YouTube](https://www.youtube.com/), [Stack Overflow](https://stackoverflow.com/questions/tagged/node.js.), and the comments section of this article are always there for your questions. Finally, the [official documentation of Node.js](https://nodejs.org/api/index.html) is the ultimate reference for everything about the software. It even has the different versions of Node.js documented.
+
+Before I end the article, I have one final warning about Node.js for all the newcomers: _beware the beast that is the `node_modules` folder_. ~~Happy Noding!~~ Happy coding!

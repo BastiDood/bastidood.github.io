@@ -1,0 +1,87 @@
+---
+title: 'Demystifying the Long Arrow "Operator"'
+description: 'Ever wondered what the "-->" operator means? The "long arrow operator", as it has been called, serves as a testament to the creativity and cleverness of programmers.'
+createdAt: '2018-11-30T14:55:54Z'
+publishedAt: '2018-11-30T16:08:23Z'
+updatedAt: '2018-12-05T14:14:41Z'
+cover:
+    src: './cover.png'
+    alt: 'Demystifying the Long Arrow "Operator"'
+tags: ['javascript', 'programming']
+---
+
+I recently stumbled upon some code that I found to be really interesting. It essentially iterates over a loop _but with a twist_. It uses the mysterious **long arrow "operator"**.
+
+```javascript
+const pets = ['Lucky', 'Sparkles', 'Presto', 'Fluffykins'];
+let i = pets.length;
+
+// A wild LONG ARROW OPERATOR appeared!
+while (i-- > 0) {
+	console.log(pets[i]);
+}
+
+// 'Fluffykins'
+// 'Presto'
+// 'Sparkles'
+// 'Lucky'
+```
+
+What's interesting and unusual about this "operator" is the fact that it iterates over the `pets` array in reverse, as seen in the console output. It seems that writing `i --> 0` is like counting down to `0`. Lo and behold, it actually is counting down under the hood.
+
+## The Magic Behind the "Operator"
+
+In this article so far, the use of quotation marks around the word "operator" has been no coincidence. The long arrow "operator" is not really _an_ operator, so to speak. It's more accurately a _combination_ of two operators.
+
+The long arrow "operator" (`-->`) is just a combination of the [postfix decrement operator (`--`)](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Arithmetic_Operators#Decrement_(--)>) and the [greater than operator (`>`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Greater_than_operator).
+
+Since JavaScript ignores whitespace most of the time, we can cleverly format our code in such a way that glues `--` and `>` together into `-->`. Instead of saying `x-- > 0`, we can write `x --> 0`. Regardless of format, JavaScript will interpret the long arrow "operator" as two separate operators.
+
+> **NOTE:** If it seems strange that `x--` can be used for numerical comparisons, I wrote an article recently about the nuances of the increment and decrement operators. You can read about it [here](https://dev.to/somedood/the-difference-between-x-and-x-44dl).
+
+```javascript
+// All of these _output_ the same thing to the console.
+// EXAMPLE 1: Good ol' `while` loops
+let a = 5;
+while (a > 0) {
+	a--;
+	console.log(a);
+}
+
+// EXAMPLE 2: Good ol' `for` loops
+for (let b = 4; b >= 0; b--) {
+	console.log(b);
+}
+
+// EXAMPLE 3: Combination of two operators
+let c = 5;
+while (c-- > 0) {
+	console.log(c);
+}
+
+// EXAMPLE 4: Long arrow "operator"
+let d = 5;
+while (d-- > 0) {
+	console.log(d);
+}
+```
+
+## Don't ditch the loops
+
+So there you have it. The mysterious long arrow "operator" is just a combination of two operators. I think it's a pretty nice way of reading code because of how analogous it is to the notation of [limits in calculus](<https://en.wikipedia.org/wiki/Limit_(mathematics)>).
+
+With that said, here is a list of the many ways I would read `x --> 0`.
+
+- "as `x` approaches `0`"
+- "`x` goes to `0`"
+- "count down `x` to `0`"
+- "decrement `x` until it reaches `0`"
+- "subtract `1` from `x` until it reaches `0`"
+
+Although the long arrow "operator" looks nice to read, I wouldn't write my code with it. The code formatting is just _too_ clever. At first glance, especially for someone new to the language, it does not seem intuitive at all. One can quickly search Google about some long arrow "operator" in JavaScript, Java, or C++ just to find out that there aren't many resources about it.
+
+It's just not "beginner-friendly" enough, which is why I don't like it. One has to be aware of the [return value of the postfix decrement operator](https://dev.to/somedood/the-difference-between-x-and-x-44dl) to fully grasp why such code is even syntactically correct. Beginners should never bother with the intricacies of a programming language to learn it. _Explicit is better than implicit,_ as they say.
+
+Besides that, the long arrow "operator" acts like a countdown. As a consequence of this, it iterates on arrays in reverse, which may not exactly be a desired behavior in some cases.
+
+To summarize, the long arrow "operator" is a clever way of formatting two different operators. Unless you (and your peers) are fully comfortable with reading long arrow notation ~~or you just want to impress your friends with some strange syntax they have never seen before~~, it is better to stick with `for` loops for general-purpose iteration.

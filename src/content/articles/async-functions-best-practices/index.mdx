@@ -1,0 +1,274 @@
+---
+title: 'Best Practices for ES2017 Asynchronous Functions (`async`/`await`)'
+description: 'In the previous article, I discussed the best practices for ES6 promises. Picking up from where we left off, I extend the discussion to ES2017 asynchronous functions, which happen to just be "syntactic sugar" over promises.'
+createdAt: '2020-07-21T10:25:48Z'
+publishedAt: '2020-07-29T10:42:04Z'
+cover:
+    src: './cover.png'
+    alt: 'Best Practices for ES2017 Asynchronous Functions (`async`/`await`)'
+tags: ['javascript', 'node', 'performance', 'tips']
+series: making-the-most-out-of-asynchronous-javascript
+---
+
+Roughly speaking, `async` functions are "syntactic sugar" over promises. They allow us to deal with promise chains using a much more familiar syntax that emulates synchronous execution.
+
+```javascript
+// Promise Chain
+Promise.resolve('Presto').then(handler1).then(handler2).then(console.log);
+
+// `async`/`await` Syntax
+async function run() {
+	const result1 = await handler1('Presto');
+	const result2 = await handler2(result1);
+	console.log(result2);
+}
+```
+
+However, just like promises, `async` functions are not "free". The `async` keyword implies the initialization of _several_ other promises[^1] in order to eventually accomodate for the `await` keyword in the function body.
+
+[^1]: In old versions of the ECMAScript specification, JavaScript engines were originally required to construct at least three promises for every `async` function. In turn, this meant that at least three more "microticks" in the ["microtask queue"](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/) were needed to resolve an `async` function—not to mention any intermediate promises along the way. This was done to ensure that the `await` keyword properly emulated the behavior of `Promise#then` while still maintaining the semantics of a "paused function". Unsurprisingly, this presented a significant performance overhead compared to plain promises. [In a November 2018 blog post](https://v8.dev/blog/fast-async), the V8 team described the steps they took to optimize `async`/`await`. This ultimately called for a [quick revision of the language specification](https://github.com/tc39/ecma262/pull/1250).
+
+Recalling [the previous article](https://dev.to/somedood/best-practices-for-es6-promises-36da), the presence of multiple promises should already raise some eyebrows because of their relatively hefty memory footprint and computational costs. To misuse promises is bad in and of itself, but to misuse `async` functions entails much worse consequences (considering the extra steps required to enable "pausable functions"):
+
+1. Introducing inefficient code;
+2. Prolonging idle times;
+3. Causing unreachable promise rejections;
+4. Scheduling more ["microtasks"](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/) than what is optimal; and
+5. Constructing more promises than what is necessary.
+
+Asynchronous functions are indeed powerful constructs. But in order to make the most out of asynchronous JavaScript, one must exhibit restraint. When both plain promises and `async` functions are properly integrated, one can easily write powerfully concurrent applications.
+
+In this article, I will extend the discussion of best practices to `async` functions.
+
+## Schedule first, `await` later
+
+One of the most important concepts in asynchronous JavaScript is the notion of "scheduling". When scheduling a task, a program can either (1) block execution until the task finishes or (2) process other tasks while waiting for the previously scheduled one to finish—the latter usually being the more efficient option.
+
+Promises, event listeners, and callbacks facilitate this "non-blocking" concurrency model. In contrast, the `await` keyword semantically implies blocking execution. To nonetheless achieve maximum efficiency, it is important to discern when and where to use the `await` keyword throughout the function body.
+
+The most opportune time to `await` an `async` function isn't always as straightforward as immediately `await`ing a ["thenable"](https://promisesaplus.com/) expression. For some cases, it is more efficient to _schedule_ a task first, then do some synchronous computations, and finally `await`ing it (as late as possible) in the function body.
+
+```javascript
+import { promisify } from 'util';
+const sleep = promisify(setTimeout);
+
+// This is not exactly the most efficient
+// implementation, but at least it works!
+async function sayName() {
+	const name = await sleep(1000, 'Presto');
+	const type = await sleep(2000, 'Dog');
+
+	// Simulate heavy computation...
+	for (let i = 0; i < 1e9; ++i) continue;
+
+	// 'Presto the Dog!'
+	return `${name} the ${type}!`;
+}
+```
+
+In the example above, we immediately `await`ed every "thenable" expression. This had the consequence of repeatedly blocking execution, which in turn accumulated the function's idle time. Discounting the `for` loop, the two consecutive `sleep` invocations collectively blocked execution for at least `3` seconds.
+
+For some implementations, this is necessary if the result of an `await`ed expression depends on a preceding `await`ed expression.[^2] However, in this example, the two `sleep` results are independent from each other. We can use [`Promise.all`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) to concurrently retrieve the results.
+
+[^2]: This behavior is similar to that of promise chains, where the result of one `Promise#then` handler is piped into the next handler.
+
+```javascript
+// ...
+async function sayName() {
+	// Independent promises allow us
+	// to use this optimization.
+	const [name, type] = await Promise.all([sleep(1000, 'Presto'), sleep(2000, 'Dog')]);
+
+	// Simulate heavy computation...
+	for (let i = 0; i < 1e9; ++i) continue;
+
+	// 'Presto the Dog!'
+	return `${name} the ${type}!`;
+}
+```
+
+Using the `Promise.all` optimization, we reduced the idle time from `3` seconds to `2` seconds. We can stop here, but we can still do better!
+
+We don't always have to _immediately_ `await` "thenable" expressions. Instead, we can momentarily store them in a variable as promises. The asynchronous task would still be scheduled, but we would no longer be forced to block execution.
+
+```javascript
+// ...
+async function sayName() {
+	// Schedule first...
+	const pending = Promise.all([sleep(1000, 'Presto'), sleep(2000, 'Dog')]);
+
+	// ... do synchronous work...
+	for (let i = 0; i < 1e9; ++i) continue;
+
+	// ... `await` later.
+	const [name, type] = await pending;
+
+	// 'Presto the Dog!'
+	return `${name} the ${type}!`;
+}
+```
+
+And just like that, we have further reduced the function's idle time by doing synchronous work while waiting for the asynchronous task to finish.
+
+_As a general guiding principle, asynchronous I/O operations must be scheduled as **early** as possible but `await`ed as **late** as possible._
+
+## Avoid mixing callback-based APIs and promise-based APIs
+
+Despite their extremely similar syntax, normal functions and `async` functions operate very differently when used as callback functions. Normal functions take control of program execution until it returns, whereas `async` functions immediately return promises _for the meantime_. If an API fails to consider the promises returned by `async` functions, nasty bugs and crashes will inevitably occur.
+
+Error handling is also particularly nuanced. When normal functions throw exceptions, a `try/catch` block is typically expected to handle the exception. For callback-based APIs, errors are passed in as the first argument in the callback.
+
+Meanwhile, the promise returned by an `async` function transitions to a "rejected" state in which we are expected to handle the error in a `Promise#catch` handler—provided that the error hasn't already been caught by an internal `try/catch` block in the function body. The main issues with this pattern are twofold:
+
+1. We must maintain a reference to the promise in order to catch its rejections. Alternatively, we can attach a `Promise#catch` handler beforehand.
+2. Otherwise, a `try/catch` block must exist in the function body.
+
+If we fail to handle rejections with either of the aforementioned methods, the exception will remain uncaught. By then, the state of the program will be invalid and indeterminable. The corrupted state will give rise to strange, unexpected behavior.
+
+This is exactly what happens when a rejected `async` function is used as a callback for an API that doesn't expect promises.
+
+Before Node.js v12, this was an issue that many developers faced with the [Events API](https://nodejs.org/docs/latest/api/events.html). The API did not expect event handlers to be `async` functions. When these `async` event handlers rejected, the absence of `Promise#catch` handlers and `try`/`catch` blocks often resulted in corrupted application state. To make debugging more difficult, the `error` event did not trigger in response to the unhandled promise rejections.
+
+To address this issue, the Node.js team added the [`captureRejections`](https://nodejs.org/docs/latest/api/events.html#events_capture_rejections_of_promises) option for event emitters. When `async` event handlers rejected, the event emitter would capture the unhandled rejection[^3] and forward it to the `error` event.
+
+[^3]: The API would internally attach a `Promise#catch` handler to the promise returned by the `async` function. When the promise rejected, the `Promise#catch` handler would emit the `error` event with the rejected value.
+
+```javascript
+import { EventEmitter } from 'events';
+
+// Before Node v12
+const uncaught = new EventEmitter();
+uncaught
+	.on('event', async () => {
+		throw new Error('Oops!');
+	})
+	.on('error', console.error) // This will **not** be invoked.
+	.emit('event');
+
+// Node v12+
+const captured = new EventEmitter({ captureRejections: true });
+captured
+	.on('event', async () => {
+		throw new Error('Oops!');
+	})
+	.on('error', console.error) // This will be invoked.
+	.emit('event');
+```
+
+Array iteration methods such as [`Array#map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) may also lead to unexpected results when mixed with `async` mapper functions. In this case, we must be wary of the consequences.
+
+> **NOTE:** The following example uses type annotations to demonstrate the point.
+
+```typescript
+const stuff = [1, 2, 3];
+
+// Using normal functions,
+// `Array#map` works as expected.
+const numbers: number[] = stuff.map(x => x);
+
+// Since `async` functions return promises,
+// `Array#map` will return an array of promises instead.
+const promises: Promise<number>[] = stuff.map(async x => x);
+```
+
+## Refrain from using `return await`
+
+When using `async` functions, we are always told to avoid writing `return await`. In fact, there is an entire [ESLint rule](https://eslint.org/docs/rules/no-return-await) dedicated to enforcing this. This is because `return await` is composed of two semantically independent keywords: `return` and `await`.
+
+The `return` keyword signals the end of a function. It ultimately determines when a function can be "popped off" the current call stack. For `async` functions, this is analogous to wrapping a value inside a resolved promise.[^4]
+
+[^4]: This behavior is similar to [that of `Promise#then` handlers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then#Return_value).
+
+On the other hand, the `await` keyword signals the `async` function to pause execution until a given promise resolves. During this waiting period, a "microtask" is scheduled in order to preserve the paused execution state. Once the promise resolves, the previously scheduled "microtask" is executed to resume the `async` function. By then, the `await` keyword unwraps the resolved promise.
+
+Therefore, combining `return` and `await` has the (usually) unintended consequence of redundantly wrapping and unwrapping an already resolved promise. The `await` keyword first unwraps the resolved value, which in turn will immediately be wrapped again by the `return` keyword.
+
+Furthermore, the `await` keyword prevents the `async` function from being "popped off" the current call stack in an efficient and timely manner. Instead, the `async` function remains paused (at the final statement) until the `await` keyword allows the function to resume. By then, the only statement left is to `return`.
+
+To "pop" the `async` function off the current call stack as early as possible, we simply return the pending promise directly. In doing so, we also work around the issue of redundantly wrapping and unwrapping promises.
+
+_Generally speaking, the final promise inside an `async` function should be returned directly._
+
+> **DISCLAIMER:** Although this optimization avoids the aforementioned issues, it also [makes debugging more difficult](https://eslint.org/docs/rules/no-return-await) since the returned promise no longer appears in the error stack trace if it ever rejects. `try/catch` blocks can also be [particularly tricky](https://jakearchibald.com/2017/await-vs-return-vs-return-await/) to deal with.
+
+```javascript
+import fetch from 'node-fetch';
+import { promises as fs } from 'fs';
+
+/**
+ * This function saves the JSON received from a REST API
+ * to the hard drive.
+ * @param {string} - File name for the destination
+ */
+async function saveJSON(output) {
+	const response = await fetch('https://api.github.com/');
+	const json = await response.json();
+	const text = JSON.stringify(json);
+
+	// The `await` keyword may not be necessary here.
+	return await fs.writeFile(output, text);
+}
+
+async function saveJSON(output) {
+	// ...
+	// This practically commits the same mistake as in
+	// the previous example, only with an added bit
+	// of indirection.
+	const result = await fs.writeFile(output, text);
+	return result;
+}
+
+async function saveJSON(output) {
+	// ...
+	// This is the most optimal way to "forward" promises.
+	return fs.writeFile(output, text);
+}
+```
+
+## Prefer simple promises instead
+
+For most people, the `async`/`await` syntax is arguably more intuitive and elegant than chaining promises. This has led many of us to write `async` functions by default, even when a simple promise (without the `async` wrapper) would suffice. And that is the heart of the issue: in most cases, `async` wrappers introduce more overhead than they are worth.
+
+Every now and then, we may stumble upon an `async` function that only exists to wrap a single promise. This is quite wasteful to say the least because internally, `async` functions already allocate two promises by themselves: [an "implicit" promise and a "throwaway" promise](https://v8.dev/blog/fast-async)—both of which require their own initializations and heap allocations to work.
+
+Case in point, the performance overhead of `async` functions not only include that of promises (inside the function body), but also that of initializing the `async` function (as the outer "root" promise) in the first place. There are promises all the way down!
+
+_If an `async` function only serves to wrap a single promise or two, perhaps it is more optimal to forego the `async` wrapper altogether._
+
+```javascript
+import { promises as fs } from 'fs';
+
+// This is a not-so-efficient wrapper for the native file reader.
+async function readFile(filename) {
+	const contents = await fs.readFile(filename, { encoding: 'utf8' });
+	return contents;
+}
+
+// This optimization avoids the `async` wrapper overhead.
+function readFile(filename) {
+	return fs.readFile(filename, { encoding: 'utf8' });
+}
+```
+
+_But if an `async` function does not need to be "paused" at all, then there is no need for the function to be `async`._
+
+```javascript
+// All of these are semantically equivalent.
+const p1 = async () => 'Presto';
+const p2 = () => Promise.resolve('Presto');
+const p3 = () => new Promise(resolve => resolve('Presto'));
+
+// But since they are all immediately resolved,
+// there is no need for promises.
+const p4 = () => 'Presto';
+```
+
+## Conclusion
+
+Promises and `async` functions have revolutionized asynchronous JavaScript. Gone are the days of error-first callbacks—which at this point we can call "legacy APIs".
+
+But despite the beautiful syntax, we must use them only when necessary. By all means, they are not "free". We cannot use them all over the place.
+
+The improved readability comes with a few trade-offs that might come back to haunt us if we're not careful. Chief among these trade-offs is memory usage if promises are left unchecked.
+
+_Therefore, strangely enough, to make the most out of asynchronous JavaScript, we must use promises and `async` functions as sparingly as possible._

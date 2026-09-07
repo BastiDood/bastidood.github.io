@@ -1,0 +1,125 @@
+---
+title: 'An Introduction to the Server and the Client'
+description: 'In a world that heavily depends on the Internet, we often don''t think about the marvelous engineering that makes the modern lifestyle possible. In the first installment of "The Internet in a Nutshell" series, we will explore how the Internet works from a high-level point of view. Throughout this series, we will explore the incredible technologies, infrastructures, and concepts of the Internet that we may have taken for granted in today''s time.'
+createdAt: '2020-01-10T10:21:57Z'
+publishedAt: '2020-04-27T18:26:55Z'
+updatedAt: '2020-05-01T05:11:04Z'
+cover:
+    src: './cover.png'
+    alt: 'An Introduction to the Server and the Client'
+tags: ['beginners', 'webdev', 'networking']
+series: the-internet-in-a-nutshell
+---
+
+​
+
+## The Internet in a Nutshell
+
+The Internet—with the upper case "I"—works in mysterious ways. By definition, the Internet refers to the global network of physically or remotely connected computers. It is basically one big [graph](<https://en.wikipedia.org/wiki/Graph_(abstract_data_type)>) of connected computers, where each node represents a single computer and each edge represents the (physical or wireless) connection between two computer nodes.
+​
+
+> **NOTE:** This is not to be confused with the World Wide Web. The Web refers to the interactive platform that the Internet enables. The Internet simply facilitates connections between computers all around the world. If a certain computer were to join the "interconnected network" of computers—hence the term "Internet"—only then it would be able to access the Web, the interactive platform on which websites, services, data, and information are _virtually_ located. In other words, the Internet is essentially the highway to the World Wide Web.
+
+The connection between computers is what makes the Internet such a powerful technology. Before the Internet, computers were standalone devices that did not care about anything but its own hardware.
+​
+With the advent of the Internet, computers suddenly had the ability to communicate with each other. They could finally send files and emails without the use of some external storage hardware such as a floppy disk.
+​
+Although computers had to be physically connected via a mess of cumbersome wires, it was nonetheless a revolutionary development in computer technology because it paved the way to the notion of computers working together towards a common goal.
+
+Nowadays, the Internet is more ubiquitous than ever, perhaps even pervasive in some aspects—but that is a discussion for another day. Thanks to the invention of wireless connections through Wi-Fi, the Internet has become more accessible than ever. Its ease of use has cemented itself into daily life to the point that it has become a crucial necessity for the daily functioning of society itself.
+​
+Having such a significant role in daily life, it is important to understand the basics of how the Internet works. That is the objective of this article and the succeeding installments of this series.
+
+As beginners of the web development landscape, it is often the case that the fundamentals are ignored in favor of the "trendy" and "flashy" technologies such as [React](https://reactjs.org/), [Node.js](https://nodejs.org/en/), [ES6 Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and [Flask](https://flask.palletsprojects.com/en/1.1.x/). To fill in the gaps in knowledge, this series will serve as a basic, high-level overview of fundamental concepts in web development across its many "sub-disciplines", ranging from (but not limited to) front-end development, back-end development, networking, security, and workflows. Of course, the pedantic jargon and nitty-gritty details will have to be omitted in order to stay true to the heart of the topic. Analogies may also be employed, albeit rather roughly.
+
+With that said, the first article in this series, _How the Internet Works_, will discuss the two core stakeholders of an Internet connection to the World Wide Web: the **server** and the **client**.
+
+## 🕺 It Takes Two to Tango 💃
+
+![Server Room](https://images.unsplash.com/photo-1558494949-ef010cbdcc31)
+
+> _Photo by [Taylor Vick](https://unsplash.com/@tvick) on [Unsplash](https://unsplash.com/)._
+
+A common misconception about servers is that they are mostly large-scale mainframes stored in large rooms that cost a lot to maintain. Although this is true to some extent, servers are not always large supercomputers, as often portrayed in Hollywood films and popular media. In fact, a server can be any computer as long as it can accept and establish connections with other computers. A server can even be as simple as a smartphone—albeit rather ineffecient but nonetheless feasible.
+
+> **NOTE:** The word "computer" is loosely used here because a "computer" nowadays can arguably refer to a plethora of devices: PCs, laptops, tablets, [Raspberry Pis](https://www.raspberrypi.org/), smartphones, and smart-appliances ("Internet of Things" devices) to name a few.
+
+At its very core, the Internet connects two computers together. One of the two computers "owns" or "hosts" some data while the other "receives" that data (upon "requesting" it). _The server literally serves the client._ Indeed, that is the basic relationship of the server and the client. The server _owns_ some data, resource, or service while the client _requests_ to retrieve it.
+
+To put it more concretely, the client is typically the user of a website, whereas the server serves the files of a website. The two computers essentially communicate with each other. _It takes two to tango._ 🕺💃
+
+![Request and Response Diagram](https://dev-to-uploads.s3.amazonaws.com/i/x7posmti1betifatdvud.png)
+
+## Visiting a Website
+
+Now it is time to discuss what exactly happens when two computers in the Internet seek to communicate with each other. For example, let's say that a person wishes to access [the DEV website](https://dev.to/) using their favorite Internet browser. That person is now considered to be the **client**.[^1] Naturally, the client wishes to request the home page of DEV from one of the servers that host the entire DEV website.
+
+[^1]: Pedantically speaking, the browser is the **client** because it is the one truly performing the network requests. The user is merely using the browser's interface to perform the network request. The real heavy-lifting is done by the browser, therefore the browser is the real **client**.
+
+> **NOTE:** A web page and a website are two different ideas. A _web page_ refers to the document being visually displayed to the user through an Internet browser. On the other hand, a _website_ can refer to a bunch of related web pages, services, and platforms.
+
+When the user tells the browser to visit the DEV website, the browser generates a small text file that contains the instructions for retrieving the home page. Over the Internet, the browser sends this text file to a DEV server. After the server processes the instructions, it sends the home page back to the browser over the Internet.
+
+In a nutshell, that is the high-level overview of how the server _serves_ the client the home page. But... how does the browser even know where to send the text file in the first place? The Internet is such a huge network. How can one possibly know where to correctly send data?
+
+### The Identity: Internet Protocol Address (IP Address)
+
+In the Internet, all computers in the network—regardless of whether it is a client or a server—possess a [presumably unique](https://stackoverflow.com/a/9987442) Internet Protocol (IP) address.[^2] The IP address works in a similar fashion to real home addresses, where the unit numbers, street names, cities, [ZIP codes](https://en.wikipedia.org/wiki/ZIP_Code), and countries indicate the true _physical_ location of a building. Staying true to this analogy, IP addresses indicate the true _virtual_ location of a computer in the Internet.
+
+[^2]: In reality, all computers connected to the same network (usually via the same router) share the same public IP address. It is the router who truly owns the public IP address. For the data to reach the client, the router simply forwards the data to the correct computer in the local network. This will be the discussion for a future installment in the series.
+
+IP addresses come in many forms, but the most common one follows the [IPv4](https://en.wikipedia.org/wiki/IPv4) format. You have probably seen one before. IPv4-compliant addresses usually come in the form of four 8-bit integers delimited by a period (`.`). For example, a valid IP address may look like `192.168.x.y` or `216.x.y.z`, where `x`, `y`, and `z` are placeholders for actual 8-bit integers.
+
+> **NOTE:** For the sake of brevity, I shall save the discussion of the newer [IPv6](https://en.wikipedia.org/wiki/IPv6) format for a future article. For now, let's assume that everyone in the world uses IPv4.
+
+However, despite the existence of an IP address in all computers, it is still impossible for the data packet to reach its intended destination. Why? Well, an IP address indeed indicates the virtual location of a computer in the Internet, but that doesn't mean all computers keep an _updated_ list of _all_ registered IP addresses in the world.
+
+If all computers were to somehow locally store a "phonebook" of IP addresses in storage, it would undoubtedly be an expensive and impractical endeavor. One cannot possibly keep an _updated_ copy of the list of _all_ Internet devices in the _whole_ world.
+
+Besides, such a "phonebook" would definitely occupy a large amount of storage. Needless to say, this would be extremely problematic for lower-end smartphones with limited storage.
+
+This is exactly why the world moved on from phonebooks in the first place. Phonebooks had to be constantly updated. Over the years, each new edition made the phonebook thicker and heavier until it was a hassle to own one.
+
+Thankfully, the **Domain Name System (DNS)** had been designed to specifically tackle the issue of directing data packets to the correct IP addresses.
+
+### The Phonebook: Domain Name System (DNS)
+
+![DNS Diagram](https://dev-to-uploads.s3.amazonaws.com/i/j59lec1zndc65b8drepo.png)
+
+The **Domain Name System (DNS)** is a network of intermediary computer servers that transform the [domain name](https://en.wikipedia.org/wiki/Domain_name) of a website into a valid IP address. A DNS server is basically the Internet's phonebook. Clients rely on a DNS server to transform the domain name `dev.to` into a valid IP address.
+
+> **NOTE:** **Internet Service Providers (ISP)** typically provide the IP address of a reasonable DNS server by default so that you don't have to. Of course, you are always free to [explicitly define a DNS server of your choice](https://www.howtogeek.com/167533/the-ultimate-guide-to-changing-your-dns-server/). Popular options include [Cloudflare's DNS](https://blog.cloudflare.com/announcing-1111/) and [Google's Public DNS](https://developers.google.com/speed/public-dns).
+
+For example, `dev.to` may resolve to `151.101.130.217`. Meanwhile, `www.google.com` may resolve to `172.217.31.132`. Since IP addresses may change every now and then, DNS servers allow us to deterministically refer to servers by domain name instead of having to memorize and keep track of their specific IP addresses ourselves.
+
+> **DISCLAIMER:** As mentioned earlier, since IP addresses may change every now and then, it is **not** recommended to directly access the IP addresses listed above. We can never be certain whether an IP address does indeed point to the correct server. For all we know, a random IP address can lead to a malicious website. This is why the DNS can also be considered a "security feature" of the Internet.
+
+Regardless of domain name, the job of a DNS server is to quickly look up the correct IP address associated with a certain domain name. Given the size of the Internet's "phonebook", it is indeed a marvelous feat of engineering to accomplish this "quickly" and "frequently".
+
+In the case of our example, the user wishes to navigate to `dev.to`. The user's Internet browser then sends a request to the operating system's default DNS server to transform the domain name `dev.to` into a valid IP address it can use. After some fancy registry lookups and domain resolution, the DNS server sends back to the client the requested IP address.
+
+Once the client receives the IP address from the DNS server, the client can finally send the text file (containing the instructions for the home page) to the true virutal location of the `dev.to` server.
+
+## Data Packets Here and There
+
+When sent over the Internet, the text file is broken up into small units of data called **data packets** for the sake of network efficiency. The specific size of these packets depends per software implementation, but it usually occupies a few kilobytes or so.
+
+Through the Internet highway, each packet is delivered one by one—but not necessarily in sequential order—to the IP address of the `dev.to` server.
+
+During this time, the client waits for the packets to arrive and for the server to respond accordingly. If the server is located close to the client, this shouldn't take too much time. However, if the server is located halfway around the world, then that is where **latency**, **data corruption**, and **lost packets** slow things down, in which case the packets cannot arrive at the server in a timely manner—if at all.
+
+Since the client has to ensure that all packets successfully arrive at the server, the server has to acknowledge receipt of all the packets. If the server fails to do so, then the client sends the packets again until a certain period of time called the **timeout** expires. When the timeout is reached, the client assumes that the server is not available. It then terminates any further communication.
+
+In the optimistic case when the packets do arrive at the server, the server accordingly acknowledges receipt and rearranges the broken data in order to reconstruct the original text file. By then, it can finally read the instructions and send the home page to the client.
+
+## Conclusion
+
+![Satellite Image of a City at Night](https://images.unsplash.com/photo-1542382257-80dedb725088)
+
+> _Photo by [Anastasia Dulgier](https://unsplash.com/@dulgier) on [Unsplash](https://unsplash.com/)._
+
+In a (rather large) nutshell, that is how a client communicates with the server over the Internet. From a high-level, this is what happens under our noses when we browse the Web. More impressive than that is the fact that all of this happens as quickly as a few milliseconds. In worse cases, perhaps it takes a few seconds, but it is nonetheless impressive.
+
+The entire world depends on this global virtual infrastructure we call the "Internet". Most of us don't even stop and think about the revolutionary engineering that makes the modern lifestyle possible. In just a matter of a few decades, we—the human species—have figured out how to reliably transmit signals and messages over unfathomable distances in an impeccably timely manner.
+
+_**That** is the story of the Internet: bringing people together, one computer at a time._

@@ -1,0 +1,480 @@
+---
+title: 'Generic `impl` blocks are kinda like macros...'
+description: 'As strange as it may seem, generic `impl` blocks actually have macro-like capabilities. When coupled with the trait system, Rust offers a powerful mental framework for composition-based polymorphism. In this article, we will explore how treating generic `impl` blocks like macros can be an insightful shift in perspective when dealing with generics and trait bounds.'
+createdAt: '2021-02-25T14:26:20Z'
+publishedAt: '2021-02-27T10:56:47Z'
+updatedAt: '2021-02-27T19:25:49Z'
+cover:
+    src: './cover.png'
+    alt: 'Generic `impl` blocks are kinda like macros...'
+tags: ['rust', 'oop']
+---
+
+Similar to most object-oriented programming languages, Rust has language-level features that enable polymorphism.[^1] This is mainly achieved through the [trait system](https://doc.rust-lang.org/book/ch10-02-traits.html), which is basically Rust's take on [Java's interfaces](https://docs.oracle.com/javase/tutorial/java/concepts/interface.html) and [C++'s abstract classes](https://en.cppreference.com/w/cpp/language/abstract_class).
+
+[^1]: As a quick refresher, polymorphism is a neat feature of object-oriented programming that allows us to interact with various objects (not necessarily of the same class) through some shared behavior. For instance, we may find ourselves creating a `Vehicle` class that provides a default `Vehicle::move_somewhere` method. Now, any class that inherits from `Vehicle`—say, `Car` and `Van`—also has access to this method. In fact, `Car` and `Van` may even override the default implementation should the need arise. But in essence, polymorphism allows us to interact with various `Vehicle` objects using the `Vehicle::move_somewhere` method, regardless of whether it is a `Car`, `Van`, `Truck`, `Motorcycle`, etc.
+
+Although they all enable polymorphism, Rust's trait system is arguably more powerful because of its macro-like capabilities. In this article, we will discuss how traits, generic `impl` blocks, and the type system enable us to write expressive polymorphic code in Rust. Along the way, we will explore how treating generic `impl` blocks like macros can be a powerful shift in perspective when dealing with generics and trait bounds.
+
+## What even is an `impl` block?
+
+A core language design feature of Rust is the deliberate separation of _data_ and _behavior_, hence the `struct` and `impl` keywords. In other languages, the data ("fields") and behavior ("methods") coexist under a single class definition.
+
+At first, this separation may seem cumbersome, but the decoupling does come with some neat advantages, namely greater composability. This will be discussed in more detail later in the article.
+
+With that said, a `struct` defines some bundle of related data whereas the associated `impl` blocks define some behavior that makes use of that data. In practice, a `Vehicle` "class" in Rust may be implemented as follows:
+
+```rust
+// Declaration of related data...
+struct Vehicle {
+    name: &'static str,
+    price: u32,
+}
+
+// Definition of associated behavior...
+impl Vehicle {
+    fn beep(&self) { println!("{} goes beep!", self.name); }
+}
+```
+
+The true power of `impl` blocks comes into play when we consider that a `struct` may have multiple `impl` blocks. That is to say, we may have an `impl` block for the `struct` itself _in addition to_ implementations of other traits. For example, we may implement the [`std::default::Default` trait](https://doc.rust-lang.org/std/default/trait.Default.html) in addition to other previously defined `impl` blocks.
+
+```rust
+struct Vehicle {
+    // ...
+}
+
+impl Vehicle {
+    // ...
+}
+
+impl Default for Vehicle {
+    fn default() -> Self {
+        Self { name: "Vehicle", price: 0 }
+    }
+}
+```
+
+It is important to note here that the separation of data and behavior allows us to compose traits and behaviors on top of each other. Since we know that `Vehicle` implements the `Default` trait, then we also know that the `Vehicle::default` function is available to us. A similar argument can be made for other traits and their respective methods.
+
+This is essentially what Java interfaces set out to achieve. It's just that in Rust, the separation of implementation blocks are more explicit. In Java, one would have to indicate in the class definition which interfaces are meant to be implemented via the `implements` keyword.
+
+From a readability standpoint, one major drawback of Java's approach is the fact that we cannot immediately determine whether or not some given method is defined as part of a particular interface. All fields and methods would be mixed up in a single `class` block, even with multiple `interface` implementations.
+
+```java
+interface Movable {
+    public void moveSomewhere();
+}
+
+interface Stoppable {
+    public void stop();
+}
+
+class Vehicle implements Movable, Stoppable {
+    /// Note that the implementation for the
+    /// `Movable` interface is mixed in with
+    /// other methods and fields in this single
+    /// class definition.
+    public void moveSomewhere() { }
+
+    /// The same is true for the `Stoppable`
+    /// interface. The fact that everything must be
+    /// defined in a single class hinders composability
+    /// and extensibility.
+    public void stop() { }
+
+    /// These methods are not from any particular
+    /// interface. These belong to the class by itself,
+    /// yet they are nonetheless mixed in with the others.
+    public void turnLeft() { }
+    public void turnRight() { }
+}
+```
+
+Going back to Rust, this is not the case because we explicitly separate the data from the behavior. Each "interface"—so to speak—gets its own `impl` block.
+
+```rust
+struct Vehicle;
+
+trait Movable { fn move_somewhere(&self); }
+trait Stoppable { fn stop(&self); }
+
+// This `impl` block defines the behavior
+// of the `struct` _by itself_.
+impl Vehicle {
+    pub fn turn_left(&self) { }
+    pub fn turn_right(&self) { }
+}
+
+// Meanwhile, this block defines how the
+// `struct` behaves in accordance with
+// the `Movable` interface.
+impl Movable for Vehicle {
+    fn move_somewhere(&self) { }
+}
+
+// The same is true for `Stoppable`.
+// This allows us to explicitly communicate
+// the logical separation of this `impl` block
+// from the other `impl` blocks.
+impl Stoppable for Vehicle {
+    fn stop(&self) { }
+}
+```
+
+In summary, an `impl` block can be thought of as some logical unit of behavior. In other words, it's practically just a bundle of logically "related" functions that interact with the data defined in the `struct`.
+
+Semantically, this implies that a plain `impl` block defines the behavior of the `struct` _by itself_. Meanwhile, trait `impl` blocks describe which interfaces are _available_ and _applicable_ to that `struct`.
+
+## Generic `impl` Blocks
+
+Now that we know what an `impl` block is, we can apply this knowledge in more generic contexts.
+
+As its name suggests, generic `impl` blocks enable us to write implementations that are generic over a wide spectrum of data types. This is necessary if we intend to implement generic wrapper types.
+
+```rust
+/// Consider this trivial generic tuple `struct`
+/// that wraps some value of type `Type`.
+struct Container<Type>(Type);
+```
+
+Suppose we need to provide some `impl` block for `Container`. It would be extremely cumbersome to manually provide a specialized implementation for _all_ possible data types of `Type`. It just won't scale!
+
+```rust
+impl Container<bool> { }
+impl Container<u8> { }
+impl Container<String> { }
+// And so on and so forth...
+```
+
+For this use case, generic `impl` blocks come to the rescue. Basically, the compiler does all the copying and pasting for us.
+
+```rust
+/// Here, we are saying that for all possible types
+/// of `T`, copy and paste the behaviors defined in
+/// the following `impl` block.
+///
+/// The `impl<T>` part of the syntax declares the generic
+/// parameters. This is analogous to how we would declare
+/// parameters for a function.
+///
+/// Then, the `Container<T>` part of the syntax makes use
+/// of the previously declared parameter `T`. Again, this is
+/// analogous to making use of arguments in a function.
+impl<T> Container<T> {
+    /// The `get` method is now automatically
+    /// implemented for all possible types of `T`.
+    fn get(&self) -> &T { &self.0 }
+}
+```
+
+## Blanket implementations are kinda like macros...
+
+A key observation here is the fact that the compiler essentially copies and pastes the `impl` block on demand. It kinda sounds like a macro, doesn't it? In fact, we can apply this observation to universally implement a given trait.
+
+Suppose we need to implement the [`std::clone::Clone` trait](https://doc.rust-lang.org/std/clone/trait.Clone.html) for `Container`. We can use generic `impl` blocks to automatically generate the `Clone` trait `impl` block for all cloneable types—just like a macro!
+
+```rust
+// This `impl` block instructs the compiler to
+// automatically generate the `get` method for
+// **all** possible values of `T`.
+impl<T> Container<T> {
+    fn get(&self) -> &T { &self.0 }
+}
+
+// The trait bound is necessary here because
+// we need the inner type to be cloneable
+// in order to clone the outer `Container`.
+impl<T: Clone> Clone for Container<T> {
+    fn clone(&self) -> Self {
+        // NOTE: Since we have set a trait bound
+        // on `T`, we know that the `Clone`
+        // interface is available and applicable
+        // to `T`. This is all thanks to the
+        // magic of polymorphism!
+        //
+        // Without the trait bound, the compiler
+        // would complain because it wouldn't be sure
+        // whether `T` will **always** have an
+        // implementation for the `Clone::clone` method.
+        let inner = self.get().clone();
+        Self(inner)
+    }
+}
+```
+
+In Rust parlance, this is what we call a "blanket implementation". The syntax `impl<T: Clone> Clone for Container<T>` instructs the compiler to automatically (but selectively) generate a `Clone` trait `impl` block _for each_ `T` that _also_ implements the `Clone` trait, hence the "blanket" analogy.
+
+We can conveniently visualize this as a `for` loop, where the compiler simply iterates over all types that implement the `Clone` trait. Then, _for each_ compliant type, it automatically generates the appropriate `impl` block—again, just like a macro!
+
+```rust
+// In pseudo-code, it might look something like this...
+let compliant_types = all_possible_types
+    .filter(|t| t.does_implement_clone_trait());
+
+for some_type in compliant_types {
+    impl_clone_for!(Container, {
+        let inner = self.get().clone();
+        Container(inner)
+    });
+}
+```
+
+Now, what if the inner type does not implement `Clone`? Well, in this case, the compiler will simply not generate the trait `impl` block. This implies that the `Container::clone` method is literally undefined.
+
+```rust
+// ...
+
+struct NonCloneable;
+
+fn main() {
+    let container = Container(NonCloneable);
+
+    // Un-commenting the line below will result
+    // in a compiler error saying that there is
+    // no such thing as a `clone` method.
+
+    /* let other = container.clone(); */
+}
+```
+
+## Marker Traits for Selective Macro Expansion
+
+Expanding on the notion of macro-like `impl` blocks, we can use "marker traits"[^2] and trait bounds to selectively generate blanket implementations for certain types. Consider the following traits:
+
+[^2]: Since traits do not always have to mandate some method implementation, a trait with an empty body is called a "marker trait". When used in the context of trait bounds, it quite literally serves as a semantic "marker" of some meta-property.
+
+```rust
+/// This is a regular trait that requires
+/// an implementation for the `shout` method.
+trait CanShout { fn shout(&self); }
+
+/// This is a marker trait for any `struct`
+/// that represents a human being.
+trait Human { }
+```
+
+Now, suppose we have the following `struct`s:
+
+```rust
+struct Dog;
+struct Programmer;
+struct Chef;
+struct Monster;
+
+// Since `Programmer` and `Chef` are the only
+// human `struct`s, we may manually implement
+// the `Human` marker trait for them.
+//
+// The marker trait by itself does not add any methods,
+// but it semantically communicates some meta-property
+// that both `Programmer` and `Chef` possess.
+impl Human for Programmer { }
+impl Human for Chef { }
+```
+
+We can now use generic `impl` blocks to automatically generate a blanket implementation of the `CanShout` trait _for each_ type that implements the `Human` trait.
+
+```rust
+/// The syntax may look strange at first, but if we were to read
+/// it through the perspective of macros, the intent of the `impl`
+/// block suddenly becomes clearer.
+///
+/// We are basically telling the compiler to consider all types
+/// that implement the `Human` marker trait. Then, _for each_ of
+/// those compliant types, generate the provided `CanShout`
+/// trait implementation. This is similar to the `for` loop
+/// analogy from earlier.
+///
+/// Note that the marker trait bound is extremely important
+/// here because it restricts which `struct`s may receive
+/// the blanket implementation. This essentially allows us
+/// to emulate some sort of a selective macro expansion.
+impl<H: Human> CanShout for H {
+    fn shout(&self) { println!("I am a human being!!!"); }
+}
+```
+
+## The "Extension Trait" Pattern
+
+Everything we have discussed thus far also applies to [trait objects](https://doc.rust-lang.org/book/ch17-02-trait-objects.html), Rust's equivalent mechanism for runtime polymorphism.
+
+But before we go further, it is important to note that we can only create trait objects from "object-safe" traits. These are for reasons that are beyond the scope of this article. For the meantime, here is [an excerpt from the Rust Book](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#object-safety-is-required-for-trait-objects) regarding the general rules of object-safety:
+
+> A trait is object-safe if all the methods defined in the trait have the following properties:
+>
+> - The return type isn’t `Self`.
+> - There are no generic type parameters.
+
+This limitation implies that traits such as `Default` and `Clone` (among many others) are considered "non-object-safe". It is therefore impossible to create a `dyn Default` and a `dyn Clone`—as of writing, of course.
+
+For avid fans of polymorphism, this might as well be a deal breaker for the Rust programming language. Luckily, there is a workaround! And that comes in the form of "extension traits". To understand this Rust design pattern, we must first discover the workaround for ourselves through the lens of macro-like `impl` blocks.
+
+### The Problem
+
+Let's say we need to create a `Vec` of objects that return their name as a `str`. As a trait, it may come in the following form:
+
+```rust
+trait HasName { fn name(&self) -> &str; }
+```
+
+Basically, what we want is a `Vec` of trait objects. Specifically, it is a `Vec<Box<dyn HasName>>`. At the moment, there are no issues with this. According to the Rust Book, `HasName` is an object-safe trait.
+
+However, what if we wanted to provide a convenience function that allows us to directly deserialize the name as some different object? We now have to modify the `HasName` trait as follows:
+
+```rust
+use std::str::FromStr;
+
+trait HasName {
+    fn name(&self) -> &str;
+
+    /// Here, we provide a default implementation
+    /// for this convenience method.
+    fn parse_name_as<T: FromStr>(&self) -> Option<T> {
+        self.name()
+            .parse()
+            .ok()
+    }
+}
+```
+
+Now, the Rust compiler will complain that `HasName` is no longer object-safe. Indeed, this is because the `parse_name_as` method contains generic type parameters.
+
+### The Solution
+
+To work around this issue, we must first remove _all_ non-object-safe methods from the main trait. Then, we put those methods into a separate "extension trait". The typical naming convention is to append the _"-Ext"_ suffix to the main trait.
+
+```rust
+use std::str::FromStr;
+
+trait HasName { fn name(&self) -> &str; }
+trait HasNameExt { fn parse_name_as<T: FromStr>(&self) -> Option<T>; }
+```
+
+We can now use trait bounds and generic `impl` blocks to selectively generate blanket implementations for the extension trait.
+
+```rust
+/// We can read this `impl` block like so:
+///
+/// "For each type `N` that implements the
+/// `HasName` trait, copy and paste this
+/// implementation of the `HasNameExt` trait
+/// for `N`."
+///
+/// The `?Sized` trait bound is necessary here
+/// so that we can use the extension trait
+/// with `dyn HasName`, which is a dynamically
+/// sized object. A further explanation is beyond
+/// the scope of this article, but I will explain
+/// it in a separate post in the future.
+impl<N: HasName + ?Sized> HasNameExt for N {
+    fn parse_name_as<T: FromStr>(&self) -> Option<T> {
+        self.name()
+            .parse()
+            .ok()
+    }
+}
+```
+
+Using the extension trait pattern, it is now possible to create a `HasName` trait object while still being able to use its non-object-safe convenience methods. This works because we isolated the non-object-safe methods as a separate extension trait.
+
+```rust
+// Let's assume that the traits we wrote
+// belong to this module.
+mod traits;
+
+// NOTE: We are now required to _always_ bring
+// the `HasNameExt` trait into scope if we intend to
+// use its convenience methods. Although this is
+// quite redundant, it is an inherent cost of
+// polymorphism in Rust.
+use traits::{ HasName, HasNameExt };
+
+struct Person { name: &'static str }
+
+impl HasName for Person {
+    fn name(&self) -> &str { self.name }
+}
+
+fn main() {
+    // Let's also pretend that "100" is a valid name...
+    let person: Box<dyn HasName> = Box::new(Person { name: "100" });
+
+    // For brevity, we will only store a
+    // single object in this `Vec`.
+    let objects: Vec<_> = std::iter::once(person).collect();
+
+    // Thanks to the extension trait, we now have access
+    // to non-object-safe convenience methods.
+    for named_object in &objects {
+        let number: u8 = named_object.parse_name_as()
+            .expect("unable to parse");
+        println!("The number is {}.", number);
+    }
+}
+```
+
+Alternatively, in this specific scenario, we can use [supertraits](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-supertraits-to-require-one-traits-functionality-within-another-trait) to solve the same problem. Since we are using the same function definition for all trait `impl` blocks, it would be more optimal to centralize its definition in a supertrait instead of duplicating it for each compliant type.
+
+```rust
+use std::str::FromStr;
+
+/// This is the main trait.
+trait HasName { fn name(&self) -> &str; }
+
+/// Here, we use supertraits to provide a single
+/// default definition for the convenience method.
+trait HasNameExt: HasName {
+    fn parse_name_as<T: FromStr>(&self) -> Option<T> {
+        // NOTE: It is possible to invoke `HasName::name`
+        // here because we stated in the supertrait
+        // definition that all implementing types should
+        // also implement `HasName`.
+        //
+        // Again, this is all thanks to the magic
+        // of polymorphism!
+        self.name()
+            .parse()
+            .ok()
+    }
+}
+
+// Using generic `impl` blocks, we now implement
+// the extension trait for anyone who implements
+// the main trait.
+//
+// Note that since the supertrait already provides
+// its own default implementation, we can simply
+// leave this `impl` block empty.
+impl<H: HasName + ?Sized> HasNameExt for H { }
+```
+
+## A Quick Note on Binary Sizes and Code Duplication
+
+Sadly, as with all programming languages, none of these polymorphism tricks are completely "cost-free".
+
+For one, the extension trait pattern mandates redundant code. Similarly, generic `impl` blocks inherently imply code duplication due to its macro-like behavior of copying and pasting implementations. All this duplication directly affects the binary size of the compiled executable.
+
+With that said, it is important to determine whether the cost of polymorphism is justified. For most applications, binary size is not a critical aspect of deployment. For others, it may be a matter of fitting the executable into small network packets and low-level embedded systems.
+
+Regardless of the use case, we must always keep in mind that these features are not "cost-free".
+
+## Conclusion
+
+In the Rust Book, we are [first introduced](https://doc.rust-lang.org/book/ch10-01-syntax.html#in-method-definitions) to the `impl<T>` syntax as a tool for generic programming. But if there is one lesson to be learned today, it is the fact that generic `impl` blocks offer so much more than just that. With some clever usage of the trait system, they can also emulate basic macro-like features.
+
+As I write this article, I look back on [this excerpt from the Rust Book](https://doc.rust-lang.org/book/ch10-02-traits.html):
+
+> Traits are similar to a feature often called "interfaces" in other languages, although with some differences.
+
+When I first read this chapter, I could not see what those "differences" were. As a Rust beginner back then (coming from TypeScript and C++), my notion of generic programming was mostly about the parameterization of types—nothing more, nothing less.
+
+But now, I finally understand that the trait system is not just a mechanism for enforcing interfaces. When coupled with generic `impl` blocks, the trait system is a powerful mental framework for writing reusable, expressive, extensible, and composable code.
+
+The deliberate separation of data from its behavior invites us to reason about our code in terms of higher level interfaces and abstractions. It encourages us to write code more declaratively rather than imperatively.
+
+In other languages, we may reason about polymorphism through the lens of inheritance. In Rust, however, traits and generic `impl` blocks value composition instead. Conveniently enough, this composition-based mental framework is exactly what enables us to use the `impl<T>` syntax as if they were macros.
+
+---
+
+_"They're just plain old interfaces", I once thought to myself. If only I knew how wrong I was back then. 🤦‍♂️_

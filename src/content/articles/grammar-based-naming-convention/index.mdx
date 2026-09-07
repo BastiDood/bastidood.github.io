@@ -1,0 +1,211 @@
+---
+title: 'A Grammar-Based Naming Convention'
+description: 'A programming _language_ is called a _language_ for a reason. In this article, I share with you the grammar-based naming convention I follow for all of my projects. It is indeed a common naming convention, but I hope this article serves as a useful reference for those just beginning their programming journey.'
+createdAt: '2019-05-06T15:00:34Z'
+publishedAt: '2019-05-07T15:18:19Z'
+cover:
+    src: './cover.png'
+    alt: 'A Grammar-Based Naming Convention'
+tags: ['beginners', 'programming', 'javascript']
+---
+
+[Read the referenced article](https://dev.to/rachelsoderberg/writing-good-method-variable-names-47il)
+
+I recently read an article from @rachelsoderberg about what it means to write good variable names. In her article, she discusses the many strategies and considerations involved in writing descriptive variable names.
+
+It was definitely a great read, but once I had finished, I suddenly realized how truly difficult it is to accomplish this seemingly mundane task in programming. As programmers, we frequently struggle to name our variables, not because it is inherently difficult per se, but because we have to ensure that the names we choose are clear, descriptive, and maintainable enough for the next person reading our code (which may or may not be ourselves).
+
+To save myself some time and effort, I use a simple naming convention for all my projects. Today, I wish to share it to the community so that we can all spend less time thinking of variable names.
+
+> **NOTE:** The code examples I use in the article are written in JavaScript, but they apply to any programming language since they're just naming conventions after all.
+
+## Basic Rules
+
+All variables, functions, parameters, and identifiers are written in `camelCase` ~~unless you're a [Rustacean](https://www.rustaceans.org/)~~. Constants are written in `SCREAMING_CASE`. It is important to make this distinction so that we can tell which variables are immutable and read-only by nature and design.
+
+In programming languages where immutable variables are strongly encouraged (or even enforced), we have to make the distinction between **immutable variables** and **true constants**.
+
+Any static value that does not depend on runtime variabilities (such as user input and other dynamic values) can be classified as a true constant. For example, the value of [`PI`](https://en.wikipedia.org/wiki/Pi) is considered to be a true constant, therefore it has to be written in `SCREAMING_CASE`. Otherwise, `camelCase` is used to denote mutable and immutable variables that store temporaries, aliases, calculations, and the output of a runtime variability.
+
+```javascript
+// Immutable Variables
+const userInput = document.getElementsByTagName('input')[0].value;
+const hasDevto = /dev\.to/g.test(userInput);
+
+// True Constants
+const WEBSITE_NAME = 'dev.to';
+const TAU = 2 * Math.PI;
+```
+
+It should be noted, though, that context matters. The criteria for the distinction between immutable variables and true constants can change depending on the situation. For example, one may use `SCREAMING_CASE` for `userInput` if they were to treat it as a static value throughout the entire program (even if it may vary per runtime on different devices). At the end of the day, it is up to us as programmers to discern which variables we wish to communicate as immutable variables or true constants.
+
+## Semantic Data Types
+
+Data types communicate what methods and operations can be performed on some variable. It is thus in our best interest to name our variables with a type system in mind, especially for weakly typed languages. Doing so will help us imply what data type a variable may have and its respective methods, properties, and operations. In turn, this leads to more readable code.
+
+#### Numbers, Strings, and Objects
+
+In most cases, numbers, strings, and individual objects are named with the most appropriate _singular_ noun.
+
+```javascript
+const usernameInputField = document.getElementById('username-field');
+const username = nameInputField.value;
+const hypotenuse = Math.sqrt(a ** 2 + b ** 2);
+const profileData = {
+	name: 'Presto',
+	type: 'Dog',
+};
+```
+
+#### Booleans
+
+The names for booleans are usually in the form of a yes-or-no question, as if we are personally asking the boolean variable itself about its state.
+
+```javascript
+// Yes-or-no questions
+const isDog = true;
+const hasJavaScriptEnabled = false;
+const canSupportSafari = false;
+const isAdmin = false;
+const hasPremium = true;
+
+// Functions or methods that return booleans
+// are also named in a similar fashion
+function isOdd(num) {
+	return Boolean(num % 2);
+}
+```
+
+#### Arrays and Collections
+
+Arrays and other collection-like data structures (such as [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) and [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)) are named with the most appropriate _plural_ noun in `camelCase`. If the _plural_ and _singular_ form of the noun seem too similar, we can substitute the _plural_ form for an appropriate _collective_ noun. That way, the corresponding _singular_ form of these nouns can be used as variable names during iteration.
+
+```javascript
+// We use plural or collective nouns for arrays.
+const dogs = ['Presto', 'Lucky', 'Sparkles'];
+
+// We can use the singular form of the
+// variable name of the array
+// in callback functions.
+dogs.forEach(dog => console.log(dog));
+
+// We can also use it in `for...of` loops.
+for (const dog of dogs) console.log(dog);
+
+// Here, we can use collective nouns
+// for better readability.
+const herdOfCows = ['Bessie', 'Bertha', 'Boris'];
+herdOfCows.forEach(cow => console.log(cow));
+for (const cow of herdOfCows) console.log(cow);
+```
+
+#### Functions
+
+Functions are written with the intent to associate them with actions. This is why they are usually named as a combination of two parts: [a **transitive verb** and a **direct object**](http://www.chompchomp.com/terms/transitiveverb.htm). In other words, the names for functions are usually in the form of `verb + noun`. This communicates to us that the name is a command, or rather a function, that we can call whenever we want.
+
+```javascript
+function getSum(a, b) {
+	return a + b;
+}
+function findBanana(str) {
+	return str.indexOf('banana');
+}
+function getAverage(numbers) {
+	const total = numbers.reduce((prev, curr) => prev + curr);
+	return total / numbers.length;
+}
+```
+
+[PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/overview), the Windows-equivalent of [Bash](<https://en.wikipedia.org/wiki/Bash_(Unix_shell)>) in Linux, is a great example of a language that enforces this naming convention for functions (or [`cmdlet`s](https://docs.microsoft.com/en-us/powershell/developer/cmdlet/cmdlet-overview) as one would call it in the language).
+
+The script below calculates the total memory allocated for all currently running Chrome processes. The syntax is not the friendliest, but PowerShell's enforcement of the `verb + noun` convention for its `cmdlet`s is evident. The example below only makes use of the [`Get-Process`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-process), [`Where-Object`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/where-object), and [`Measure-Object`](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/measure-object) `cmdlet`s, but rest assured, the naming convention is followed by the other `cmdlet`s provided by PowerShell. [This site lists them all out for reference.](https://www.pdq.com/powershell/)
+
+```powershell
+# Get all processes currently running
+$processes = Get-Process;
+
+# Filter to retrive all Chrome processes
+$chromeProcesses = $processes | Where-Object { $_.ProcessName -eq 'chrome' }
+
+# Sum up all of the memory collectively
+# allocated for the Chrome processes
+$memoryUsage = $chromeProcesses | Measure-Object WorkingSet64 -Sum;
+
+# Log the result to the console
+"{0:F2} MB used by Chrome processes." -f ($memoryUsage.Sum / 1mb);
+```
+
+#### Classes
+
+Classes are named with an appropriate _proper_ noun in `PascalCase`. This communicates to us that the variable is not just like any other variable in our program that follows the `camelCase` naming convention; rather, it is a special variable that stores a user-defined type with special properties and methods.
+
+```javascript
+class User {}
+class Admin extends User {}
+class Moderator extends Admin {}
+class Player extends User {}
+```
+
+#### Class Fields and Methods
+
+Class fields are named according to the immutability and data type conventions discussed earlier.
+
+On the other hand, class methods are named in a similar fashion to functions. They still use the `verb + noun` convention, but in some cases, they can get away with omitting the **direct object** (noun) part of its name. The performer of the **transitive verb** (action) is thus implied to be the object instance of the class that owns said object method.
+
+```javascript
+// Class
+class Player {
+	constructor(name) {
+		// String
+		this.username = name;
+
+		// Number
+		this.level = 100;
+
+		// Boolean
+		this.isAdmin = false;
+
+		// Array
+		this.weapons = ['bow', 'sword', 'spear'];
+	}
+
+	// Class Method (with noun)
+	initiateBattle() {}
+
+	// Class Method (without noun)
+	attack() {}
+}
+```
+
+## To wrap it all up...
+
+```javascript
+const TRUE_CONSTANT = Math.PI;
+const stringName = '';
+const numberName = 0;
+const isBooleanName = true;
+const objName = {};
+const arrayNames = [].map(name => name);
+function getFunctionName() {}
+class ClassName {}
+```
+
+The code snippet above succinctly summarizes my entire naming convention. It is quite apparent that the grammar rules and semantics of the English language have greatly influenced this convention. Embracing and somehow relating them to programming have made the act of naming variables and implying their data types more intuitive than ever.
+
+If we wanted to, we could simply prefix all of our variables with an abbreviation of its data type—similar to how one would use an adjective to describe a noun—but in doing so, the variable names would become undesirably verbose, as illustrated by the example below. We'd be better off [using TypeScript for explicit type annotations](https://www.typescriptlang.org/docs/handbook/basic-types.html).
+
+```javascript
+// This is... eww. ❌
+const NUM_TAU = 2 * Math.PI;
+const str_Username = 'Some Dood';
+const num_Hypotenuse = Math.sqrt(num_A ** 2 + num_B ** 2);
+const boo_AdminStatus = false;
+const obj_ProfileData = {};
+const arr_Articles = [];
+function fun_GetUser() {}
+class Cls_Class {}
+```
+
+Case in point, naming variables is one of the most frustrating aspects of programming ~~next to debugging~~. Following a grammar-based naming convention will certainly make it less unpleasant. Thanks to the linguistic origins of this naming convention, we will be able to write more intuitive and readable code _by default_, which is always a good thing. Of course, we still have to ensure that the design and architecture of our software is not inherently "bad", but at least we can rest assured that our code is indeed intuitive and readable for whoever may work on it next.
+
+_A programming **language** is called a **language** for a reason..._

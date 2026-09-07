@@ -1,0 +1,309 @@
+---
+title: 'Bitmasks: A very esoteric (and impractical) way of managing booleans'
+description: 'Have you ever asked yourself what bitwise operators are for? Well, ask no more because bitmasking has come to the rescue.'
+createdAt: '2018-10-23T10:31:29Z'
+publishedAt: '2018-10-28T08:57:02Z'
+updatedAt: '2024-07-20T07:09:36Z'
+cover:
+    src: './cover.png'
+    alt: 'Bitmasks: A very esoteric (and impractical) way of managing booleans'
+tags: ['computerscience', 'javascript']
+---
+
+> <mark>
+> 	**2024 July 20:** Six years and one computer science degree later, I have since changed my
+> 	mind on most of the negative sentiments in this article. See the embedded article below for my
+> 	updated thoughts in the form of an appreciation post for bitmasks.
+> </mark>
+
+[View embedded content](https://dev.to/somedood/bitmasks-are-not-so-esoteric-and-impractical-after-all-55o6)
+
+---
+
+Have you ever asked yourself what [bitwise operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators) are for? Why would such a high-level language such as JavaScript ever need such a low-level operator? For one, it actually has its use cases in JavaScript. Most are just not as obvious as others. Actually, most are not even obvious at all unless you really try and squint your eyes at the computer screen. Trust me, I have tried. I'm not even joking. Throughout my relatively short experience with JavaScript (3 years as of writing this article), it has been **so** rare to find instances of bitwise operators appear in average situations. I might not be looking deep enough, but it does seem pretty clear to me why this is so. By the end of this article, you will see why this is the case.
+
+## Bitwise Operators
+
+**NOTE:** I am not requiring an extensive knowledge on the subject, but I will assume that you are already at least somehow familiar with [binary number systems](https://www.mathsisfun.com/binary-number-system.html) and [bitwise operators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators). If not, I highly recommend that you read up a bit _(See what I did there?)_ before continuing with the rest of this article.
+
+Bitwise operators allow us to manipulate the individual bits that make up a number in binary. For a quick review, here is a "table" of what the common bitwise operators do.
+
+```javascript
+// I will use the binary notation prefix ("0b") a lot in this article.
+const num1 = 0b1010; // 10
+const num2 = 0b1111; // 15
+
+// NOT num1
+~num1; // 0b0101 (complement) === -11
+
+// num1 AND num2
+num1 & num2; // 0b1010 === 10
+
+// num1 OR num2
+num1 | num2; // 0b1111 === 15
+
+// num1 XOR num2
+num1 ^ num2; // 0b0101 === 5
+
+// Bit-shift to the left by 1
+num1 << 1; // 0b10100 === 20
+
+// Bit-shift to the right by 1
+num >> 1; // 0b0101 === 5
+```
+
+I mean this is great and all for the sake of learning something new everyday, but when would you ever use this knowledge? Is there a practical application for bitwise operators? Short answer, no. Although it can be useful in code minification, memory optimization, and [some other use cases](https://stackoverflow.com/questions/2096916/real-world-use-cases-of-bitwise-operators), by using bitwise operators, you are opting into less readable code. It is just more cryptic to read because you have to set your "Decimal Mode" brain into "Binary Mode". Nonetheless, that doesn't stop us, right? We're all here to learn. So without further ado, I present **bitmasks**.
+
+## Over-engineering a simple problem
+
+Honestly, I don't have a simple definition for what a "bitmask" is. It's quite a strange monster if you'd ask me. To me, a bitmask can be thought of as a query. Using a bitmask means to query the bits found in some binary number. If you're confused by that definition, I don't blame you. I have to admit that it isn't the best definition. If you can think of a better one, please do leave a comment below. I'd gladly update this article to specifically include your definition.
+
+Anyway, a definition is worthless without its complementary example. Let's say we have an object that stores booleans corresponding to the configurations found in an app.
+
+```javascript
+// Mock app settings
+const config = {
+	isOnline: true,
+	isFullscreen: false,
+	hasAudio: true,
+	hasPremiumAccount: false,
+	canSendTelemetry: true,
+};
+```
+
+Our job is done at this point. We can store that as is in a JSON file. That is the straightforward implementation. However, we can use bitmasks to ["over-engineer"](https://en.wikipedia.org/wiki/Overengineering) this problem. In JavaScript, number types can be explicitly converted (or coerced) into booleans by passing it into the `Boolean` function. Take note that in this case, `Boolean` is not used as a [constructor](https://www.w3schools.com/js/js_object_constructors.asp). It is simply a means to convert the number type (or any type actually) into its equivalent boolean _"truthiness"_. For example:
+
+```javascript
+Boolean(-2); // true
+Boolean(-1); // true
+Boolean(0); // false
+Boolean(1); // true
+Boolean(2); // true
+Boolean(Math.PI); // true
+Boolean(Number.MAX_SAFE_INTEGER); // true
+```
+
+Since `0` is not exactly a "truthy" value per se, it evaluates to `false`. That relationship gives us an idea on how to convert a bunch of booleans into a single number. Instead of storing the app settings as an object, we can store it as a single number. Yup, you heard, or rather read, that right. First, we think of the booleans as `1`s and `0`s, where `1` is `true` and `0` is `false`. These `1`s and `0`s correspond to each property in the `config` object from left to right.
+
+```javascript
+// For reference only
+const config = {
+	isOnline: true,
+	isFullscreen: false,
+	hasAudio: true,
+	hasPremiumAccount: false,
+	canSendTelemetry: true,
+};
+
+// isOnline:          1
+// isFullScreen:      0
+// hasAudio:          1
+// hasPremiumAccount: 0
+// canSendTelemetry:  1
+// Thus, we have the binary number 0b10101.
+let configNumber = 0b10101; // 21
+```
+
+## Bitmasks
+
+**NOTE:** Here comes the weird part of the article. This is where I pull out the black magic. I hope you have stretched those brain muscles enough because you'd be doing a strenuous workout with it from this point on. Feel free to read some parts over and over again. This is a pretty difficult topic to say the least.
+
+Now that we have reduced an entire object into a single number, we can use bitwise operators on it. But why, do you ask? Well, this is the essence of bitmasking.
+
+A bitmask is a way to "select" the bits you're interested in. When selecting a single particular bit, it is always a power of 2 because any power of 2 corresponds to that particular bit that is "turned on". Since bit-shifting to the left is essentially multiplying by 2 (analogous to raising 2 by a power), you can think of bit-shifting to the left as a way to "select" the bit you are interested in.
+
+```javascript
+// Selecting the 1st bit from the right
+// 2 ** 0
+// 1 << 0
+0b00001 === 1;
+
+// Selecting the 2nd bit from the right
+// 2 ** 1
+// 1 << 1
+0b00010 === 2;
+
+// Selecting the 3rd bit from the right
+// 2 ** 2
+// 1 << 2
+0b00100 === 4;
+
+// Selecting the 4th bit from the right
+// 2 ** 3
+// 1 << 3
+0b01000 === 8;
+
+// Selecting the 5th bit from the right
+// 2 ** 4
+// 1 << 4
+0b10000 === 16;
+```
+
+If we want to select more than one bit, we can do that, too.
+
+```javascript
+// Selecting the 1st and 5th bit from the right
+0b10001 === 17;
+
+// Selecting the 3rd and 4th bit from the right
+0b01100 === 12;
+
+// Selecting the 2nd, 4th, and 5th bit from the right
+0b11010 === 26;
+
+// Selecting the 1st, 2nd, and 4th bit from the right
+0b01011 === 11;
+
+// Selecting ALL the bits
+0b11111 === 31;
+```
+
+## Getting Values
+
+Bitmasking allows us to extract the value of a single bit in the `configNumber` number. How do we do this? Let's say we wanted to get the value of `hasAudio`. We know that the `hasAudio` property is located at the third bit from the right of the `configNumber`.
+
+```javascript
+let configNumber = 0b10101; // 21
+
+// Shifting 0b1 to the left 2 times gives the 3rd bit from the right
+const bitMask = 0b1 << 2; // 4
+
+// Since we know that the 3rd bit from the right corresponds to the hasAudio property...
+const query = configNumber & bitMask; // 4
+
+// ...we can test its "truthiness" by using the AND operator.
+const truthiness = Boolean(query); // true
+
+// The truthiness IS the value we want to extract.
+truthiness === config.hasAudio; // true
+```
+
+At this point, you may be asking...
+
+> "So what if it returns `4`?
+> "So what if it's coerced to `true`?"
+> "So what if it's 'truthy'?"
+
+If you are asking that, then you just answered your own question. `4` has been coerced to `true`. That is the exact value of the `hasAudio` property in the original `config` object. We have successfully extracted the value of the `hasAudio` property through bitmasking.
+
+Well, what happens if we try to query a "falsy" property such as `isFullscreen`? Would bitmasking reflect the same value in the original `config` object? As a matter of fact, it does. We know that the `isFullScreen` property is located at the fourth bit from the right in the `configNumber`.
+
+```javascript
+let configNumber = 0b10101; // 21
+
+// Shifting 0b1 to the left 3 times gives the 4th bit from the right
+const bitMask = 0b1 << 3; // 8
+
+// Since we know that the 4th bit from the right corresponds to the isFullscreen property...
+const query = configNumber & bitMask; // 0
+
+// ...we can test its "truthiness" by using the AND operator.
+const truthiness = Boolean(query); // false
+
+// The truthiness IS the value we want to extract.
+truthiness === config.isFullscreen; // true
+```
+
+We can go even crazier by selecting multiple bits in our `bitMask`, but I'll leave that as an exercise for you to ponder on.
+
+You may be noticing a pattern here. The result of the `AND` bitwise operator determines the `truthiness` of a `query`. The `truthiness` is essentially the actual value of the property we are trying to get in the first place. Yes, I know; it's black magic. I had the same reaction. It was too clever for me to fully comprehend at the time.
+
+So now that we know how to extract a boolean out of a specific bit, how do we manipulate a bit?
+
+## Toggling Values
+
+The same logic follows when we want to toggle bits. We still use bitmasks to select the bits we're interested in, but we use the `XOR` bitwise operator (`^`) instead of the `AND` bitwise operator (`&`) for our `query`.
+
+Let's say we wanted to toggle the `canSendTelemetry` property. We know that it is located in the first bit from the right.
+
+```javascript
+let configNumber = 0b10101; // 21
+
+// Shifting 0b1 to the left 0 times gives the 1st bit from the right,
+// which corresponds to the canSendTelemetry property
+const bitMask = 0b1 << 0; // 1
+
+// Toggling the 1st bit from the right
+const query = configNumber ^ bitMask; // 20
+
+// Setting the query as the new configNumber
+configNumber = query;
+```
+
+Now if we tried to extract the `canSendTelemetry` property from the new `configNumber`, we will find that it is no longer set to `true`. We have successfully toggled the bit from `true` to `false` (or rather from `1` to `0`).
+
+## All Together Now
+
+This is definitely tedious to do over and over again. Since we all want to save a few keystrokes, let's create some utility functions that does all this for us. First, we will write two utility functions that extracts the "truthiness" of a bit: one extracts the "truthiness" if it's given a bitmask, while the other extracts the "truthiness" if it's given the zero-indexed position (from the right) of the bit being extracted.
+
+```javascript
+/**
+ * Extracts the "truthiness" of a bit given a mask
+ * @param {number} binaryNum - The number to query from
+ * @param {number} mask - This is the bitmask that selects the bit
+ * @returns {boolean} - "Truthiness" of the bit we're interested in
+ */
+function getBits(binaryNum, mask) {
+	const query = binaryNum & mask;
+	return Boolean(query);
+}
+
+/**
+ * Extracts the "truthiness" of a bit given a position
+ * @param {number} binaryNum - The number to query from
+ * @param {number} position - This is the zero-indexed position of the bit from the right
+ * @returns {boolean} - "Truthiness" of the bit we're interested in
+ */
+function getBitsFrom(binaryNum, position) {
+	// Bit-shifts according to zero-indexed position
+	const mask = 1 << position;
+	const query = binaryNum & mask;
+	return Boolean(query);
+}
+```
+
+Finally, let's write a utility function for toggling one or multiple bits. The function returns the new `binaryNum` that comes as a result of toggling the selected bits.
+
+```javascript
+/**
+ * Returns the new number as a result of toggling the selected bits
+ * @param {number} binaryNum - The number to query from
+ * @param {number} mask - This is the bitmask that selects the bits to be toggled
+ * @returns {number} - New number as a result of toggling the selected bits
+ */
+function toggleBits(binaryNum, mask) {
+	return binaryNum ^ mask;
+}
+```
+
+We can now use these utility functions with the previous examples.
+
+```javascript
+const config = {
+	isOnline: true,
+	isFullscreen: false,
+	hasAudio: true,
+	hasPremiumAccount: false,
+	canSendTelemetry: true,
+};
+let configNumber = 0b10101;
+
+// Extracts hasPremiumAccount
+getBits(configNumber, 1 << 1); // false
+getBitsFrom(configNumber, 1); // false
+
+// Toggles isOnline and isFullscreen
+toggleBits(configNumber, (1 << 4) + (1 << 3)); // 0b01101 === 13
+```
+
+## Conclusion: Why should I even bother with bitmasking?
+
+That's a very good question. Frankly, I wouldn't recommend using this regularly, if at all. As clever as it is, it is just too esoteric for common use. It is impractical and unreadable most of the time. Constant documentation and awareness are required to make sure that the correct bits are being selected and manipulated. Overall, there aren't many applications for this, especially in a high-level language like JavaScript. However, that shouldn't discourage you from using it if the need arises. It is our job as programmers to determine which algorithms are the best for both the user (for usability) and the developer (for maintainability).
+
+If that is so, then what is the point of me writing an entire article about this?
+
+- This is for the hardcore computer scientists out there. They are the ones who will benefit the most from this article, especially those who are just beginning to dive deeper into the weird world of computer science. To put it more generally, one does not need to be a computer scientist to benefit from this article. Whoever is interested in such topics will see the value in all of this bitmasking chaos.
+- For those who are not into computer science, you now have more tools under your belt. You can use bitmasks in the future _if_ the time calls for it. I hope this article encourages you to think creatively. Over-engineering is a curse we all suffer eventually. It isn't entirely a bad thing, though. Over-engineering is just a negative connotation for thinking (too) creatively. Our brains tend to explore ideas even if it's impractical. Of course, we have to avoid it for productivity, but a little exploration now and then is always healthy. Get that brain working, and that brain would work for you.
+- As for me, I wrote this article to test myself. I wanted to know how much I've learned so far. Besides that, I find pleasure in teaching others. One can learn so much by teaching others. This is the primary reason why I write articles for this site. It just has its rewards, you know? If you aren't already, go ahead and try to teach someone something new. It might surprise you to see how much it can help you as well.
+
+Bitmask responsibly.

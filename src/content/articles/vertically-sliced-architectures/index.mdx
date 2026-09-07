@@ -1,0 +1,160 @@
+---
+title: "You're slicing your architecture wrong!"
+description: "For the longest time, the separation of concerns has been the ultimate guiding principle of software engineering. This eventually gave rise to the ubiquitous MVC architecture. But, in this article, we'll explore a better way to structure a codebase using a vertically sliced architecture."
+createdAt: '2025-05-14T21:11:43Z'
+publishedAt: '2025-05-15T13:29:45Z'
+cover:
+    src: './cover.png'
+    alt: "You're slicing your architecture wrong!"
+tags: ['beginners', 'architecture', 'webdev', 'devjournal']
+---
+
+For the longest time, the **"separation of concerns"** has been the ultimate guiding principle of software engineering. We thus structure our codebases accordingly:
+
+- Grouping related files by responsibility;
+- Partitioning logic by technical layers;
+- And sometimes even isolating by programming language.[^1]
+
+[^1]: For example, in web development, it is quite common to have a dedicated `css/` directory for stylesheets and a `js/` directory for scripts.
+
+Popular architectural patterns such as the [Model-View-Controller (MVC)][mvc] have applied and codified this principle to the point of dogma. Universities, bootcamps, and courses _everywhere_ teach and perpetuate the notion that the MVC architecture is the be-all and end-all of architectural patterns.
+
+[mvc]: https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
+
+To be fair, the MVC architecture is indeed often the correct mental model for fathoming any [CRUD][crud]-heavy application (i.e., virtually 99.9% of web applications[^2]) because it formalizes the flow of data from the source (i.e., the "model") to the interface (i.e., the "view") as well as the mutation and actuation on said data (i.e., the "controller"). It is quite literally the essence of CRUD.
+
+[crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+
+[^2]: Citation needed. 😅
+
+_But, is MVC also the correct framework for structuring codebases?_
+
+_Does MVC supposedly[^3] being the correct mental model necessarily mean we should structure our directories as such?_
+
+[^3]: For the sake of this article, we assume this to be generally true: that MVC is _indeed_ the correct mental model for fathoming CRUD-heavy applications.
+
+In this article, we'll explore a _better_ way to structure a codebase using a **vertically sliced architecture** instead of the classic `models/`, `views/`, and `controllers/` layout.
+
+### Horizontally Sliced Architectures
+
+The MVC architecture is an example of a **horizontally sliced architecture**. In a horizontally sliced architecture, the separation of concerns is sliced according to technical layers.
+
+![A diagram of a horizontally sliced three-layer architecture featuring the MVC architecture](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cjo5ook27d2ab2t3vkx1.png)
+
+Note that the layers needn't be exclusively "models", "views", and "controllers". In a full-stack web application, you might find yourself slicing by "components", "endpoints", and "databases" instead.
+
+```
+models/
+├── feature-a.ts
+├── feature-b.ts
+└── feature-c.ts
+controllers/
+├── feature-a.ts
+├── feature-b.ts
+└── feature-c.ts
+views/
+├── feature-a.tsx
+├── feature-b.tsx
+└── feature-c.tsx
+```
+
+_So, what's wrong with this project structure?_
+
+- To add a new feature, you _must_ jump between multiple directories—namely `models/feature/*`, `controllers/feature/*`, and `views/feature/*`. Compounded over time, that's a _lot_ of context-switching, mental overhead, and navigational ceremony!
+- It's often not immediately apparent which modules are used by a particular feature. As everything is horizontally sliced, each module can theoretically import _any_ module from the layer below. This makes it difficult to track and assess the impact of code changes.
+- Consequently, modules across layers within the scope of a single feature tend to exhibit high coupling and low-to-medium cohesion.
+- _"Uh... which files go where again?"_ – Probably you for the past 10 minutes, thinking about where to put new files for a feature.
+
+### Vertically Sliced Architectures
+
+Now let's turn MVC on its side—literally! In a **vertically sliced architecture**, the separation of concerns is sliced according to features. The core idea being: each feature module must encapsulate only its own _end-to-end_ logic and nothing else.
+
+![A diagram of a vertically sliced three-layer architecture where a feature module is superimposed on all layers of the tech stack](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2pscpfruj09x09hwbdz7.png)
+
+In practice, here is what a feature-driven project structure could look like:
+
+```
+features/
+├── feature-a/
+│   ├── model.ts
+│   ├── controller.ts
+│   └── view.tsx
+├── feature-b/
+│   ├── model.ts
+│   ├── controller.ts
+│   └── view.tsx
+└── feature-c/
+    ├── model.ts
+    ├── controller.ts
+    └── view.tsx
+```
+
+Shared logic across multiple features (e.g., database models, common utilities, etc.) may of course be refactored into shared modules elsewhere. What's important is that the feature-specific logic is _self-contained_ and _end-to-end_.
+
+Interestingly, though, the MVC patterns have not totally disappeared even in a vertically sliced architecture—as evidenced by the internal `model.ts`, `controller.ts`, and `view.tsx` files _within_ a particular feature module. The slicing is different, yet the MVC-style separation of concerns remains in spirit.
+
+_So, what makes this better?_
+
+- All the code related to a particular feature can be found within a single directory. No more back-and-forth between distant directories![^5]
+- The collocation of end-to-end logic lessens the cognitive load when developing features or debugging behaviors.[^6]
+- By construction, a feature-driven architecture naturally leads to highly independent feature modules that exhibit low coupling (_between_ vertical slices) and high cohesion (_within_ vertical slices).
+
+[^5]: Admittedly, back-and-forth between sub-directories is nevertheless inevitable. However, the navigation is at least contained within a single core directory now instead of jumping between distant directories, which is a win in my book.
+
+[^6]: I can only back this up with my own personal experience as well as anecdotal evidence from my friends.
+
+### Example: React + Next.js
+
+Nowadays, most full-stack web frameworks provide routing as a first-class feature. In Next.js, the `src/app/` directory contains the entry points for each route. Specifically, the `page.tsx` file exports the component that should be rendered onto the page for that particular route.
+
+Now let's imagine the `page.tsx` file as an orchestrator that only imports feature modules from `src/features/`. A natural conclusion is that a vertically sliced project structure entails partitioning the application logic as self-contained "feature components" that can be imported by any route—or any entry point in general.
+
+```
+src/
+├── app/
+│   ├── dashboard/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   └── page.tsx
+├── features/
+│   ├── create-order/
+│   │   ├── index.tsx
+│   │   ├── context.ts
+│   │   ├── hooks.ts
+│   │   └── actions.ts
+│   └── login-form/
+│       ├── index.tsx
+│       ├── context.ts
+│       ├── hooks.ts
+│       └── actions.ts
+├── database/
+│   ├── index.ts
+│   └── schema.ts
+└── components/
+    ├── card.tsx
+    ├── button.tsx
+    └── input.tsx
+```
+
+Indeed, feature modules like `create-order` and `login-form` may contain feature-specific components, contexts, hooks, and server actions.
+
+- A feature-specific component may, for example, import from the shared `src/components/` directory for common cards, buttons, and inputs.
+- Meanwhile, a feature-specific server action may invoke database queries from the shared `src/database/` directory.
+
+The key is to know when to extract shared logic (e.g., `src/database/` and `src/components/`) and when to keep bespoke feature-specific logic isolated from the rest of the application.
+
+### Conclusion
+
+At its core, the call to action is simple: _simply turn MVC on its side._
+
+Vertically sliced architectures set us up to write highly independent components that exhibit low coupling (_between_ vertical slices) and high cohesion (_within_ vertical slices). The result is a project structure that is considerably easier to read, understand, maintain, and extend.
+
+#### Further Reading
+
+- ["Vertical Slice Architecture"][jimmy-bogard-vsa] by Jimmy Bogard
+- ["Command Query Responsibility Segregation"][wikipedia-cqrs] from Wikipedia
+- ["CQRS Documents"][greg-young-cqrs] by Greg Young
+
+[jimmy-bogard-vsa]: https://www.jimmybogard.com/vertical-slice-architecture/
+[wikipedia-cqrs]: https://en.wikipedia.org/wiki/Command_Query_Responsibility_Segregation
+[greg-young-cqrs]: https://cqrs.wordpress.com/wp-content/uploads/2010/11/cqrs_documents.pdf

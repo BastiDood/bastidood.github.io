@@ -1,0 +1,83 @@
+---
+title: "Please don't forget to write the changelog"
+description: 'Changelogs, release notes, and patch notes all have a common objective: to inform readers of recent changes. However, it is unfortunate to know that some still consider the humble changelog as an "optional" stage in the development cycle. In this article, by citing various software changelogs as examples, I discuss how good, clear, and informative changelogs (1) improve overall user experience and (2) establish brand identity and "hype".'
+createdAt: '2019-06-21T15:45:15Z'
+publishedAt: '2019-08-29T15:46:28Z'
+updatedAt: '2019-08-30T15:31:18Z'
+cover:
+    src: './cover.png'
+    alt: "Please don't forget to write the changelog"
+tags: ['ux', 'writing', 'tips', 'opensource']
+series: please-dont
+---
+
+An often overlooked, underappreciated, and seemingly mundane stage of the development cycle is the process of writing a changelog. For those who are unaware, a changelog is basically a simple list of new features, changes, tweaks, and bug fixes since the last update (or version) of some software. Changelogs can be as lengthy as necessary, but usually exclude the list of bug fixes for the sake of brevity.
+
+Changelogs are great, especially from a user standpoint! As a user, I genuinely look forward to the new releases of the software I use. I get really excited about new features. In the case of video games, nothing is more exciting than the anticipation of new game mechanics, characters, items, and quests (among other features). The promise of optimizations and a plethora of bug fixes simply satisfy my inner perfectionist.
+
+But alas, nothing ruins my excitement more than a lazily written changelog. I'm sure we've all seen at least one of the many variations of a generic changelog (as shown below) at some point in our lives:
+
+> "Bug fixes and improvements."
+> "Fixed some performance issues."
+> "Made the app better."
+> "Make sure to turn auto-updates on to get the latest features."
+> "Information not provided by the developer."
+
+There are many justifications for such _modest_ changelogs. One may point out that time and resources are a luxury to have for changelogs to even be considered into the development cycle. Others, especially open-source maintainers developing early and experimental software, may argue that the commit log of source control (such as Git) serves well enough as a changelog as any.
+
+Either way, none of these provide a great user experience. It requires the user to jump through hoops just to be informed about an update. In the worst case, some users may even feel hesitant to install a new update due to the fear of introducing unexpected and unwelcome app behavior. Providing a proper changelog mitigates this sense of "update paranoia".
+
+In this article, by comparing various examples, I will discuss the many, great ways to write a changelog for better user experience. As an added bonus for one of the examples, I will also discuss how one can use changelogs to take advantage of "hype" in order to establish a brand identity.
+
+> **DISCLAIMER:** I am not affiliated with any of the brands I mention below as examples. This isn't some sort of a #sponsored promotional post or anything close to that. I just feel that we, as developers, can learn a lot from the following examples about writing great changelogs, not for the sake of changelogs alone but for the sake of good user experience.
+
+## Exhibit A: Discord
+
+![Alt Text](https://thepracticaldev.s3.amazonaws.com/i/ineeucasw2zk75eehfm5.png)
+[Discord](https://discordapp.com) is a real-time communications app mainly intended for its gaming audience. It's basically Skype... but for gamers. It enables online messaging, voice calls, video calls, and screen-sharing. Its main strength as a force in the gaming community is its ability to provide a centralized platform for fans (of a certain game) to communicate and share interests with each other.
+
+Though, what I find to be most impressive about Discord is how it appeals to its gamer userbase through the casual and relaxed tone of [its changelogs](https://blog.discordapp.com/change-log-7-24-2019-a0f72d708bc5). For as long as I can remember, the playful prose of their changelogs—that occasionally and wittingly makes pop culture references—is iconic and important to the personality of their brand. The changelog has not only become an informative reference for new features, but also a central aspect of the brand's relationship with the gamer community.
+
+## Exhibit B: Visual Studio Code (VS Code)
+
+![VS Code Logo](https://thepracticaldev.s3.amazonaws.com/i/9kjrhvnkwd0hmuoxfvgy.png)
+Since we're all developers here, I don't think I have to explain what [VS Code](https://code.visualstudio.com) is. The [2019 Stack Overflow Survey](https://insights.stackoverflow.com/survey/2019#development-environments-and-tools) attests to the fact that it is indeed the most popular and most preferred text editor among developers.
+
+Similar to Discord, VS Code also appeals to its userbase of developers through a more professional tone. [Its changelogs](https://code.visualstudio.com/updates) thoroughly explain new features and tweaks—both front-end and back-end—in sufficient detail with accompanying GIFs for added clarity. The extra rigor in the wording of release notes is appropriate for the meticulous audience of developers. In doing so, VS Code has established itself as a serious piece of industry-grade software to be used by casual and professional developers alike.
+
+## Exhibit C: Paint&#46;NET
+
+![Paint.NET Logo](https://thepracticaldev.s3.amazonaws.com/i/w4c9gph2maknjj6gder3.png)
+[Paint&#46;NET](https://www.getpaint.net) is a simple and extensible image manipulation program maintained by [Rick Brewster](https://twitter.com/rickbrewpdn). It was originally meant to be an alternative for [Microsoft Paint](https://en.wikipedia.org/wiki/Microsoft_Paint), but the project grew to be more than _just that_. Besides the usual image manipulation tools such as cropping, resizing, color adjustments, blending, and shape insertion, one of Paint&#46;NET's most notable features is its plugin system, where users can extend standard functionality through distributed [DLLs](https://en.wikipedia.org/wiki/Dynamic-link_library). Personally, I use Paint&#46;NET myself to create the cover images of my articles (among other applications).
+
+On the topic of changelogs, [Paint&#46;NET's changelogs](https://blog.getpaint.net) seem _tamer_ than the previously mentioned ones. Its organized presentation of information is apparent. What sets it apart from other changelogs is its straightforwardness and deliberate readability considerations. Its clear format goes to show that a good changelog does not need to be extravagant. As long as it fulfills its main objective of properly conveying _changes_, a great user experience is ensured.
+
+## Exhibit D: Minecraft
+
+![Minecraft Logo](https://thepracticaldev.s3.amazonaws.com/i/ac3tneikxpv5mjsbciaz.png)
+It goes without saying that [Minecraft](https://www.minecraft.net) is one of the most popular video games in recent times. It was briefly overthroned by [Fortnite](https://www.epicgames.com/fortnite) until it had another resurgence in popularity largely thanks to the endorsement of Swedish YouTuber [PewDiePie](https://www.youtube.com/user/PewDiePie).
+
+[Minecraft's changelogs](https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs) play a truly vital role in its long success. As mentioned earlier in the beginning of the article, a (full or partial) changelog generates "hype", most especially for video games. The "hype" stems from the excitement of anticipating new game features. It is the lifeblood of a game's relevance in pop culture.
+
+By providing changelogs, Minecraft has been able to strongly cement itself in gaming culture through "hype cycles". YouTube videos on the game's latest features have used the officially published changelogs as their primary sources of information for spreading word about upcoming major updates.
+
+To Minecraft, the changelog has become an indispensable tool of dissemination. The user experience while playing the game significantly improves thanks to the "hype" generated from the announced new features. Players can more easily navigate through the game's latest additions. The transition to the next major update becomes seamless and much-awaited-for rather than unexpected and unwelcome. As a positive consequence, players are simply more excited to play the game.
+
+And thus, the "hype cycle" repeats itself after every major update...
+
+## Conclusion
+
+Writing good changelogs is a difficult art worth mastering. A changelog is not only a means of communicating changes (since a previous version); they also serve as a meaningful expression of brand identity and personality in such a way that appeals to a target audience. Furthermore, particularly for video games, changelogs generate "hype" that cements a game's overall influence and relevance.
+
+A good changelog (more or less) includes these qualities:
+
+- It must be **informative** and of value to the user.
+- It must be **organized**.
+- It can be as **straightforward** as needed.
+- If necessary, greater **clarity** can be achieved through GIFs and images.
+- It can express a **brand identity and personality**.
+- It can generate **"hype"**.
+
+Applying this philosophy for changelogs ultimately leads to a greater user experience. Users no longer have to experience "update paranoia" whenever they update their apps. Furthermore, increased user engagement comes as a result of the "hype". Succinctly put, better changelogs lead to a better user experience, in a sense that users are better informed of the software they use.
+
+_Please don't forget to write the changelog. You wouldn't want to be Mr. Bug-Fixes-and-Improvements._

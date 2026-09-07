@@ -1,0 +1,116 @@
+---
+title: 'Coding Agents as a First-Class Consideration in Project Structures'
+description: 'A while back, I wrote about vertically sliced architectures. Today, we revisit the notion of a feature-driven project structure because it also happens to optimize for the way coding agents explore and manipulate codebases.'
+createdAt: '2026-01-05T11:40:26Z'
+publishedAt: '2026-01-05T13:00:34Z'
+updatedAt: '2026-01-05T16:00:46Z'
+cover:
+    src: './cover.png'
+    alt: 'Coding Agents as a First-Class Consideration in Project Structures'
+tags: ['ai', 'agents', 'llm', 'architecture']
+---
+
+Coding agents have arguably been the most revolutionary unlock in software engineering since... ever? (Citation needed!) Post-2023, we have lived in a world where probabilistic machines now write much of the world's software for better _and_ worse.
+
+But, we're not here to argue if it's for the best. The genie is already out of the bottle, and the most productive way forward is figuring out the best way to use these new tools to ship better (correct!) software faster.
+
+## Working with Context Windows as the Bottleneck
+
+LLMs have only a limited number of tokens within its operable context window. As the context window fills up, these models tend to degrade in performance. It is therefore in our best (operational and financial) interests to optimize for token efficiency _and_ effectivity. The last thing we want is to be billed exorbitantly just for sub-par results.
+
+Many developers swear by the **"40% Rule"**, where it's been found (anecdotally) that LLMs tend to considerably degrade in output quality past 40% of its context window. In my experience, it hasn't been so bad with the latest frontier models, but it never hurts to live by this principle regardless of the latest advancements.
+
+_So, how do we structure a codebase in such a way that optimizes for token efficiency?_
+
+## Optimizing for Feature-Localized Context
+
+A while back, I wrote about vertically sliced architectures. Today, we revisit the notion of a feature-driven project structure because it also happens to optimize for the way coding agents explore codebases.
+
+_(For the rest of the article, I'll assume that you've already read this.)_
+
+[View embedded content](https://dev.to/somedood/youre-slicing-your-architecture-wrong-4ob9)
+
+Stepping into the shoes of a coding agent, the typical workflow involves implementing a single feature at a time (i.e., per context window). At least for now, it's strongly discouraged to do too many unrelated things within a single context window.
+
+The ideal codebase must therefore be malleable enough such that features can be added **incrementally** (i.e., a new feature means mostly new code and only a few edits/deletions) and **concurrently** (i.e., multiple agents/humans can work on the code in isolation without much merge conflicts).
+
+When a coding agent examines your prompt, it invokes tools that can semantically query (an index of) the codebase, search for key words, and read file contents—typically in that order, too! The result is an end-to-end codemap of the existing infrastructure that would be affected by the proposed new feature, bug fix, deprecation, etc. This is what we see in the `PLAN.md`.
+
+Visually, the trace of tool calls resemble a search tree that narrows down from entire subsystems to individual files. Cool, right?
+
+![An overview of the tree-like traversal of coding agents in a codebase](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ujx63l7q4957688gpd8a.png)
+
+This exploration doesn't come for free, though! Each tool call dumps intermediate output tokens (e.g., MCP tools, search results, shell invocations, full file reads, etc.) into our already limited context window.
+
+For instance, tools like Claude Code _require_ reading the file before writing to it (for good reason!). Before you know it, you're already past the "40% Rule" with fewer tokens to spare for plan refinement—much less for implementation.
+
+> 🗒️ Some LLMs (namely Claude 4+) exhibit ["context awareness"](https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5#context-awareness). These models adapt their behavior/effort based on the remaining amount of tokens in their context window. In practice, this means more shortcuts, more sloppy work, and more incomplete features without proper context management.
+
+The usual workaround is to `/compact`, `/summarize`, or `/handoff` before implementing the `PLAN.md`; if the `PLAN.md` is so good, we may even get away with `/clear` entirely. Fancier methods utilize sub-agents for context management. Admittedly, these are often good enough thanks to recent advancements in the state of the art.
+
+Nevertheless, in a perfect world, we shouldn't have to spend so many tokens in the planning stage alone. Codebase exploration and manipulation shouldn't be so token-hungry. To optimize the explorability of our codebases for humans and AI agents alike, we want...
+
+- Highly selective semantic queries that prune out several subsystems of the codebase right off the bat.
+- Highly selective keywords _within_ subsystems that further prune out irrelevant context.
+- Highly cohesive and collocated modules for maximum recall within agentic `ls` invocations.
+- To read _only_ the right files and _only_ the absolutely bare minimum context required.
+
+Effectively, we are maximizing the **signal-to-noise ratio** of the exploration stage. The easier it is for coding agents to navigate the codebase, the easier it is to _plan_ and _implement_ features for, and the easier it is for humans to review.
+
+_(Yes, you are still responsible for the code you generate and eventually merge into production!)_
+
+### How Classical Architectures Pessimize Exploration
+
+The opposite of what we want are the classical horizontally-sliced architectures of yester-decade. To reiterate some points from [my previous article](https://dev.to/somedood/youre-slicing-your-architecture-wrong-4ob9):
+
+- Horizontally sliced project structures violate the collocation principle by scattering snippets of features across separate directories of "services", "controllers", "models", etc. In practice, this means _more_ `ls` tool calls by the coding agent and _more_ directory jumping by the human.
+- Monolithic `Service` classes tend to bundle all CRUD operations in one big file even if many of them are unrelated to a particular feature exploration. Invoking the `Read` tool on such files thus dumps more code **noise** than **signal** into the context window.
+- Unless the index of the codebase knows _a priori_ which subset of lines to `Read`, large "service" and "repository" files only pollute the context window with unrelated code—as if the haystack wasn't large enough already.
+
+![Visualization of a horizontally sliced codebase require bloated reads and exploration in the codebase](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f0kx9l597nhvw2p1musn.png)
+
+The situation is exasperated by unit tests and integration tests, where it's easy (and encouraged also for good reason!) to reach thousands of lines. A simple prompt to "write more unit tests" could (very likely!) mean reading the entire test file again.
+
+Unless cleverly broken up into separate test files, monolithic modules imply even more monolithic test files. We're potentially looking at _double_ the amount of reads. Again, that's just poor signal-to-noise ratio...
+
+### How Vertically Sliced Architectures Optimize for Selectivity
+
+What we actually want is a malleable codebase with self-contained feature modules that cohesively implement all of its logic end-to-end. In doing so, files are collocated within a narrow slice of the project structure. Coding agents thus naturally traverse the repository in a few depth-first passes.
+
+![Visualization of how narrow slices in a vertically sliced architecture yield more surgical reads, edits, and incremental changes](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7tovrl9glb3p0qy91vp0.png)
+
+The serendipitous consequence is that codebase exploration becomes highly selective by construction and organization. There's no need to explore `feature-a/` when the entire end-to-end logic of `feature-b/` is already self-contained. File recall almost becomes trivial by virtue of collocation.
+
+But, we don't have to stop there. Feature modules can still turn for the worse if they degrade to monolithic modules. The solution: modularize the logic (and its tests) even more. Taken to the extreme, we're looking at one function per file such that its associated test file only contains the `describe` suites relevant to that specific function only.
+
+```
+feature/
+├── subsystem/
+│   ├── index.ts
+│   ├── index.test.ts
+│   ├── schema.ts
+│   ├── utils.ts
+│   └── utils.test.ts
+└── subfeature/
+    ├── index.ts
+    ├── dates.ts
+    ├── dates.test.ts
+    ├── strings.ts
+    └── strings.test.ts
+```
+
+Of course I'm _not_ advocating for this convention because it _is_ comically harsh, but it's nevertheless illustrative of my overall point about optimizing for narrow end-to-end vertical slices in the name of token-efficient exploration (both for agents and humans alike).
+
+## Conclusion
+
+A coding agent's behavior resembles a deepening and narrowing search tree. To accommodate coding agents as first-class citizens in our projects (alongside humans), we should structure our codebases accordingly.
+
+The horizontally sliced codebases of yester-decade will struggle in the agentic era (compared to its vertically sliced counterpart) due to its monolithic conventions and scattered organization of end-to-end logic. Newer codebases should strive to be more feature-driven.
+
+- Narrow depth-first slices of the codebase encourage highly selective and cohesive exploration.
+- Self-contained modules encourage incremental features (rapid iteration!) and concurrent implementation (no merge conflicts!).
+- Modularized logic and collocated files improve recall by eliminating cross-cutting jumps between directories and subsystems.
+- Tightly scoped unit tests are more important than ever! Keep your LLMs honest with focused test suites.
+- Beware of monolithic `Service`-like classes and `Repository`-like classes! Avoid dumping too much "inter-feature" logic in the same file except for orchestration code.
+
+_And that's how I've been keeping my codebases in check in the agentic era._

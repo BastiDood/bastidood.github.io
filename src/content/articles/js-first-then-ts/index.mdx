@@ -1,0 +1,77 @@
+---
+title: 'JavaScript First, Then TypeScript'
+description: 'A recent trend has shaken up the JavaScript-TypeScript community: the anti-build-step movement. In this article, however, I will not argue whether TypeScript is still relevant today. Instead, I reflect on my own journey of stepping away from TypeScript—but for a completely different reason: consumer semantics!'
+createdAt: '2023-10-14T17:54:07Z'
+publishedAt: '2023-10-15T12:38:52Z'
+updatedAt: '2023-10-15T19:29:55Z'
+cover:
+    src: './cover.png'
+    alt: 'JavaScript First, Then TypeScript'
+tags: ['javascript', 'typescript', 'webdev', 'devjournal']
+---
+
+A recent trend has shaken up the JavaScript-TypeScript community: the **anti-build-step movement**. For over a decade now, a build step[^1] has been widely considered to be a necessary best practice in modern web development. Now more than ever, this seemingly dogmatic reality of the web development experience has been challenged.
+
+[^1]: This includes all sorts of transpiling, compiling, tree-shaking, code-splitting, bundling, etc.
+
+There are many reasons for this sudden change of heart.
+
+- The [Fresh] framework by [Deno] cited an [improved developer experience due to tighter feedback loops][fresh-no-ts].
+- The [Svelte] team followed suit [but motivated by the maintainer's developer experience][svelte-no-ts] as they migrated the project away from TypeScript in favor of plain [JSDoc] comments for type annotations instead.
+- Most controversially, the [Turbo] framework [dropped TypeScript support][turbo-no-ts] altogether after assessing that strong typing was the culprit behind poor developer experience.
+
+[Deno]: https://deno.com/
+[Fresh]: https://fresh.deno.dev/
+[Svelte]: https://svelte.dev/
+[Turbo]: https://turbo.hotwired.dev/
+[JSDoc]: https://jsdoc.app/
+[fresh-no-ts]: https://deno.com/blog/you-dont-need-a-build-step
+[svelte-no-ts]: https://github.com/sveltejs/svelte/pull/8569
+[turbo-no-ts]: https://world.hey.com/dhh/turbo-8-is-dropping-typescript-70165c01
+
+One common thread ties everything together: **developer experience**. In this article, however, I will not argue whether TypeScript is still relevant today.[^2] Instead, I choose to reflect on my own journey of stepping away from TypeScript—but for a completely different reason: **consumer semantics**!
+
+[^2]: In fact, I am a huge fan of the type-safety conveniences and guarantees that TypeScript enables.
+
+### TypeScript Need Not Apply
+
+TypeScript prides itself as a superset of JavaScript. As a matter of fact, TypeScript owes much of its success to this key design decision. The classic migration guide for renaming `.js` to `.ts` considerably lowered the barrier to entry as teams gradually migrated their codebases. But, it is exactly this design decision that also made me realize where TypeScript isn't necessary!
+
+With TypeScript being a superset of JavaScript, there exists a subset of the TypeScript language that's just plain old JavaScript. As it turns out in my experience, this also happens to be the subset of TypeScript that I deal with most often—especially in application code!
+
+Consider the following example that features two TypeScript files: `add.ts` (simple adder library) and `main.ts` (application entry point).
+
+```ts
+// add.ts
+export function add(x: number, y: number): number {
+	return x + y;
+}
+```
+
+```ts
+// main.ts
+import { add } from './add.ts';
+console.log(add(1, 2)); // 3
+```
+
+In `add.ts`, the presence of type annotations makes TypeScript a necessity. On the other hand, a cursory inspection of `main.ts` shows us that its syntax is _purely_ JavaScript! At its current state, `main.ts` need not be TypeScript; `main.js` is sufficient.
+
+This central motivating example led me to re-evaluate my relationship with TypeScript. It gradually became apparent to me that TypeScript is best suited for _library code_ while JavaScript is more appropriate for _application code_.
+
+> **EDIT:** I would like to clarify here that when I say "library code", I do not necessarily mean published NPM packages. "Library code" can refer to internally linked sub-projects in a monorepo/workspace. One may even consider imported files from the same project to be "library code". The point being: "application code" is the consumer of "library code" wherever that may be imported from (e.g., NPM, workspace, files, etc.).
+
+Specifically, consumer code that can solely rely on type inference for type safety (i.e., no type annotations required) may thrive on JavaScript alone. This is not the case for library code which export functions that require type annotations—especially for parameters. One may even take this guideline to the extreme by removing return types from function signatures altogether in favor of return-value type inference. This is generally considered to be poor practice, though.
+
+Nowadays, I isolate library code more aggressively. One may enforce a scheme (for example) where UI components are consumers written in JavaScript while the more complex business logic, data fetching, and data validation are imported from a TypeScript library. Of course, the libraries may be consumers themselves, in which case they may be written in plain old JavaScript as well.
+
+Observe that such a scheme is desirable not only because it is a best practice that encourages more testable architectures, but also because it makes the separation between the JavaScript world and the TypeScript world more intentional. That is to say, I _choose_ to write JavaScript (in consumer code) because type inference is sufficient. But, I also _choose_ to write TypeScript everywhere else when type annotations, type aliases, and interfaces are necessary.
+
+### JavaScript First, Then TypeScript
+
+The `.js` extension is no longer an indicator of antiquity, but a declaration of sufficiency in language semantics. I prefer to write plain old JavaScript because the `.js` extension presents itself as _consumer code_. The `.js` extension is a deliberate communication of the consumer semantics.
+
+For more advanced cases, I _upgrade_ from `.js` to `.ts`, but keep the TypeScript surface as minimal as possible while isolating it from the rest of the application code. Arguably, this is exactly what [`.d.ts` declaration files](https://www.typescriptlang.org/docs/handbook/2/type-declarations.html#dts-files) are for, but I admittedly find that the developer experience for inline implementation files is more ergonomic (and less error-prone!) than duplicating function signatures in `.js` and `.d.ts` files.
+
+Overall, I still strongly believe in TypeScript's value to the JavaScript ecosystem.[^3] Nowadays, I just choose to write JavaScript first wherever possible, then _upgrade_ to TypeScript as a last resort.
+
+[^3]: Even without the TypeScript syntax, the benefits of type safety also extends to JSDoc annotations (which are powered by TypeScript analysis anyway).

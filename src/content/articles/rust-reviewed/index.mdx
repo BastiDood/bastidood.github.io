@@ -1,0 +1,128 @@
+---
+title: '🦀 Rust Reviewed: Is the hype justified? 🦀'
+description: 'The Rust programming language has steadily been on the rise in terms of adoption and popularity. But is all the hype justified? In this article, I reflect on my experience with Rust in the past year, tackling the golden moments as well as the pain points.'
+createdAt: '2020-12-21T06:53:14Z'
+publishedAt: '2020-12-22T17:49:45Z'
+updatedAt: '2025-05-22T08:30:20Z'
+cover:
+    src: './cover.png'
+    alt: 'My character featuring multiple instances of Ferris the Crab on a beach.'
+featured: true
+tags: ['rust', 'devjournal', 'dx', 'reflection']
+series: some-dood-reviews
+---
+
+Needless of a lengthy introduction, [Rust](https://www.rust-lang.org/) is a systems-level programming language that puts "performance", "reliability", and "productivity" at the forefront of its core values. Namely, its most notable language features include memory safety guarantees with the [ownership model](https://doc.rust-lang.org/rust-by-example/scope.html), a standardized package manager with [Cargo](https://doc.rust-lang.org/cargo/), "zero-cost abstractions" with the [standard library](https://doc.rust-lang.org/std/), powerful [multi-threading primitives and idioms](https://doc.rust-lang.org/book/ch16-00-concurrency.html), and low-level interoperability with C/C++.
+
+It comes to no surprise, then, that Rust has steadily been on the rise in terms of [adoption](https://www.rust-lang.org/production) and [popularity](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages-loved). In fact, for the fifth consecutive year, Rust has taken the top spot as the "Most Loved Programming Language" according to the [2020 Stack Overflow Survey](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages-loved).
+
+But is all the hype justified? In this article, I reflect on my experience with Rust in the past year. This includes the golden moments as well as the pain points. Without further ado, let us begin with the golden moments.
+
+## The Golden Moments
+
+### Straightforward Installation Process
+
+Perhaps the most significant barrier to entry for any programming language is the development environment. A convoluted toolchain is sure to deter anyone new to the language. I learned this the hard way a few years ago when I had to mess with the system `PATH` and other environment variables just to compile my first Java program.
+
+Much to my relief, Rust does not suffer from this issue. Thanks to the [rustup](https://rustup.rs/) toolchain utility, the installation process could not be any simpler for a systems-level programming language. Although the Rust compiler depends on platform-specific build systems, this extra step should not be too much of a hassle given that the installation process for these external dependencies are also relatively straightforward. The [Visual Studio Build Tools for Windows](https://visualstudio.microsoft.com/downloads/), for example, provides an automated installer.
+
+### Familiar Development Workflow
+
+When it comes to project development, the Cargo package manager makes dependency management and build system configuration an absolute breeze. Noting that Rust is a systems-level programming language, it surprised me how simple it was to get a project up and running without any boilerplate and prior configuration. Quite literally, _it just works!_
+
+As for dependency management, I felt at home when I pulled in external packages. The [workflow](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html) was strikingly similar to [that in Node.js](https://nodejs.dev/learn/an-introduction-to-the-npm-package-manager): step 1, list down the package name in the [project manifest](https://doc.rust-lang.org/cargo/reference/manifest.html); step 2, indicate the version number (with respect to [semantic versioning](https://semver.org/)); step 3, [`use`](https://doc.rust-lang.org/reference/items/use-declarations.html) the dependency; step 4, compile the project; step 5, profit. Indeed, Rust upholds its promise of "productivity" with this simple workflow.
+
+For comparison, this was totally unlike my initial experience with C++. Before I was able to pull in dependencies, I had to dive deep into the rabbit hole of precompiled headers, static libraries, dynamic libraries, linkers, and Git submodules. Needless to say, it was not the funnest experience, especially when I just wanted to hack around the language.
+
+But to be fair to C++, the language does not come with a standardized package manager out of the box. Personally speaking, this is exactly what makes Rust all the more attractive.
+
+### Excellent Documentation
+
+Perhaps the most praiseworthy aspect of the Rust ecosystem is its commitment to clear and accurate documentation. Nowhere is this more evident than in the official language documentation. Indeed, the Rust team leads by example in this regard.
+
+In order to avoid having a bloated, monolithic website for all things about Rust, the Rust team separated the language documentation across [multiple e-books](https://www.rust-lang.org/learn) that cover specific areas of interest. To name a few in particular:
+
+| Title                                                                       | Area of Interest            | Description                                                                      |
+| --------------------------------------------------------------------------- | --------------------------- | -------------------------------------------------------------------------------- |
+| [The Rust Book](https://doc.rust-lang.org/book/title-page.html)             | First Principles            | Serves as the introduction to Rust.                                              |
+| [Rust by Example](https://doc.rust-lang.org/stable/rust-by-example/)        | Applied First Principles    | Illustrates the practical usage of the language's features.                      |
+| [The Standard Library](https://doc.rust-lang.org/std/index.html)            | Standard Library            | Serves as the official reference to the standard library.                        |
+| [The Cargo Book](https://doc.rust-lang.org/cargo/index.html)                | Cargo                       | Serves as the official reference for all things about the Cargo package manager. |
+| [The Rust Reference](https://doc.rust-lang.org/reference/introduction.html) | Full Language Documentation | Serves as the more "complete" version of the Rust Book.                          |
+| [The Rustonomicon](https://doc.rust-lang.org/nomicon/index.html)            | Unsafe Rust                 | Serves as the official guide to the "dark arts" of unsafe Rust.                  |
+
+Indeed, all of these e-books are a treasure trove of information. They strike the perfect balance between approachability, reasonability, and extensiveness. When a topic deems it necessary, the writing style shifts to a drier, more technical tone. Otherwise, the documentation tends to be a playfully engaging reading experience with colorful examples.
+
+Furthermore, [documentation is itself a core language feature!](https://doc.rust-lang.org/rust-by-example/meta/doc.html) Using the [`doc` subcommand](https://doc.rust-lang.org/cargo/commands/cargo-doc.html), Cargo can extract all [doc-comments](https://doc.rust-lang.org/reference/comments.html#doc-comments) in the codebase. It then uses this information to automatically generate static web pages for documentation. In fact, for every package published to [crates.io](https://crates.io/) (Rust's package registry), [docs.rs](https://docs.rs/) hosts the corresponding static web pages generated by `cargo doc`.
+
+This extremely valuable feature allowed me to confidently explore and navigate the interfaces of the libraries I use for my projects. To me, the best part about it is the fact that `cargo doc` generates the same web page structure for all packages. Eventually, I found myself comfortably accustomed to the familiar documentation format—regardless of the current library. At one point, I even spent almost half a day just scrolling through the documentation for the various methods of each [standard collection type](https://doc.rust-lang.org/std/collections/index.html) in the Standard Library.
+
+Once again, this attests to Rust's promise of "productivity". Although the documentation format may seem boring and repetitive to some, it at least communicates information about interfaces in a standardized manner. Over time, every Rustacean learns how to treat [docs.rs](https://docs.rs/) as their second home.
+
+### Rewiring the Brain to Design Better Software
+
+It is no secret that the Rust ownership model practically makes certain design patterns and data structures difficult to deal with. One of the most notorious examples is the humble linked list. If we were to quickly run a Google search for ["rust linked list"](https://www.google.com/search?q=rust+linked+list), we would find a plethora of resources describing the fundamental nuances of the ownership model.
+
+To some, this is an incredible barrier of the language. Personally, I would argue otherwise: the design patterns and idioms of Rust help us rewire our brains to design better software. This is not to say that data structures like linked lists are inherently evil, but there are valid reasons why it is difficult to deal with in the first place.[^1]
+
+[^1]: To cite one reason, a linked list is considered to be a "last-resort" data structure in Rust primarily due to memory fragmentation and frequent heap allocations. In most cases, [arrays](https://doc.rust-lang.org/std/primitive.array.html) and [vectors](https://doc.rust-lang.org/std/vec/struct.Vec.html) are sufficient.
+
+With that said, over the past year, I have come to accept the reality that if I end up with an architecture that frequently conflicts with the Rust compiler, there is most likely something worth reworking in my current implementation. This is apparently a common mindset among Rustaceans: _don't fight the compiler_.
+
+Sure enough, following this advice yielded great results! In one of my projects, I found myself fighting the compiler because I insisted on implementing a callback-based interface, a design pattern that was innocuous in JavaScript. This was fine in many cases, but most of my troubles came from the fact that I required mutable access to borrowed data. I used all sorts of hacks and workarounds (such as the [interior mutability pattern](https://doc.rust-lang.org/book/ch15-05-interior-mutability.html)), but thankfully in the end, none of them worked.
+
+When I finally conceived of a better architecture for the project[^2], I realized the truth and wisdom behind the Rustacean Mindset. If I had pushed through with my original architecture, I would have surely ended up with an unmaintainable mess of a project with hundreds of lines of "spaghetti code", all coupled and tangled up in more ways than one.
+
+Instead, I allowed the idioms of Rust to rewire my brain. In the end, I arrived at a better architecture for my project. Thinking like a Rustacean opened my eyes to see better software design patterns that are not necessarily exclusive to Rust itself. Indeed, _don't fight the compiler_.
+
+[^2]: Funny story: the "Eureka moment" occurred to me just before I was about to sleep at night. Yes, I was frustratingly restless after that point... 🤦‍♂️
+
+## The Pain Points
+
+### Not the Most Beginner-Friendly Language
+
+I won't sugarcoat anything here: Rust is one **formidable beast** of a programming language. This invites two possible interpretations. The first of which is that Rust is a powerful language. As for the other, Rust is a painfully difficult language to deal with. Sure enough, both of these are true.
+
+The absolute power of Rust comes from the juxtaposition of its relatively high-level syntax and its low-level capabilities. Compared to its peers, Rust is truly a breath of fresh air. Many particularly cite the verbosity of C++ as a case for Rust's superior expressiveness. I mean, have you seen [template metaprogramming code in C++](https://en.wikipedia.org/wiki/Template_metaprogramming)?
+
+Although Rust is indeed more concise and expressive than its peers, it does not mean it is free from shortcomings. The low-level nature of its design makes some design decisions and complexities a necessary trade-off. A prime example is the ownership model and the concept of object lifetimes.
+
+Without going too deep into the weeds, since the beginning, the Rust team envisioned a truly high-level language with performance comparable to that of C/C++. This meant that it was against Rust's core philosophy to impose a language runtime with a garbage collector. Thus, each object in Rust was responsible over their own memory. And hence, the ownership model was born. To put it simply, the ownership model is basically a [memory management contract](https://doc.rust-lang.org/rust-by-example/scope.html) that Rust upholds in order to avoid [memory leaks](https://en.wikipedia.org/wiki/Memory_leak) and [null pointers](https://en.wikipedia.org/wiki/Null_pointer).[^3]
+
+[^3]: This is done through the use of destructors that run when objects go "out of scope". In C++, this is analogous to the [_Resource Acquisition is Initialization (RAII)_ principle](https://doc.rust-lang.org/rust-by-example/scope/raii.html).
+
+![2020 Rust Survey: Topic Difficulty Ratings](https://blog.rust-lang.org/images/2020-12-rust-survey-2020/topic-difficulty-ratings.svg)
+
+This feature alone justifies the low-level power of Rust, yet at the same time, it is also the #1 source of confusion for many Rustaceans according to the recent [2020 Rust Survey](https://blog.rust-lang.org/2020/12/16/rust-survey-2020.html#improved-learnability). The results show that as many as 61.4% of the respondents agreed that object lifetimes were either "tricky" or "very difficult" to learn.
+
+Indeed, from my experience, this was the trickiest concept to grasp, even with prior knowledge of C++ patterns. Though, to be fair to Rust, this is not entirely the language's fault. Any language that deals with low-level operations inevitably has to introduce complexity into its abstractions.
+
+With that said, I cannot advocate Rust as a beginner's first programming language for the same reasons I would not advocate C/C++. Rust is too low-level to be beginner-friendly. Although it is not the worst language to start with, it is nonetheless a "very difficult" language to grasp, much less master. One would be better off learning the fundamentals of programming through Python or JavaScript first before diving deep into the world of systems-level programming.
+
+### Rich Ecosystem of Maturing Packages
+
+Over the years, [crates.io](https://crates.io/) has accumulated over 50,000+ packages. Among the most beloved are [`rand`](https://crates.io/crates/rand) (for random number generation), [`syn`](https://crates.io/crates/syn) and [`quote`](https://crates.io/crates/quote) (for macro-related utilities), [`actix-web`](https://crates.io/crates/actix-web) and [`rocket`](https://crates.io/crates/rocket) (for web server frameworks), [`piston`](https://crates.io/crates/piston) and [`bevy`](https://crates.io/crates/bevy) (for game development), [`clap`](https://crates.io/crates/clap) (for parsing command-line arguments), and [`serde`](https://crates.io/crates/serde) (for data serialization and deserialization).
+
+However, despite the richness of the ecosystem, I am still uncertain whether I can definitively say that it is fully "mature". Indeed, many of the packages are considered to be "production-ready". But, if we were to explore the list of the [most downloaded Rust packages](https://crates.io/crates?sort=downloads) (as of writing), we would observe that many of them have not been stabilized to (at least) `v1.0`.
+
+With respect to semantic versioning, these packages are not yet considered to be "feature-complete" by their authors. One can argue, then, that a significant portion of the entire Rust package registry is not yet "feature-complete". Hence, I assert that Rust enjoys a rich ecosystem of _maturing_ packages.
+
+It is worth noting here that I am careful in choosing the word "maturing" over "mature". In most cases, "production-ready" is sufficient, but if Rust intends to accumulate massive market adoption, achieving maturity and stability is a key milestone. This is exactly what makes C/C++ an "immortal language" of sorts. From [media encoders](https://ffmpeg.org/) to [cryptography tools](https://gnupg.org/), the world quite literally runs on C/C++.
+
+To the community's credit, the 2020 Rust Survey paints a more optimistic picture in regard to [library support](https://blog.rust-lang.org/2020/12/16/rust-survey-2020.html#library-support). According to 65.9% of the respondents, there have been "at least some improvement" in the library ecosystem overall. However, GUI programming appears to be the exception, noting that an overwhelming 73.1% of the respondents opined that the ecosystem lacked enough support in this particular application domain.
+
+## Conclusion
+
+With all things considered, I would say that Rust truly lives up to the hype. Just like for any other language, if one were to invest enough time and patience, they would find that Rust is not so bad. After getting over the initial learning hump, everything else becomes much easier.
+
+The high-level syntax and the zero-cost abstractions are a dynamic duo that makes systems-level programming an absolute breeze. In times where it is otherwise, the excellent language documentation is always there to lift us up. Meanwhile, the Cargo package manager makes dependency management an empowering experience. One only needs to pull in a package to extend low-level functionality.
+
+On another note, adopting the Rustacean Mindset rewires the brain to think more carefully about certain software design patterns. The ownership model invites us to question the validity of our data structures. Although fighting the compiler _will_ be an awfully frustrating experience, let us never forget that this is always done in our best interests. When in doubt, we need to step back, breathe, and think. A well-thought solution is always better than "spaghetti code".
+
+Ironically enough, although a significant portion of the Rust package ecosystem is not yet "feature-complete", this gives me all the more reason to place my bets in the ecosystem. Considering the current capabilities of Rust despite the "limited" ecosystem, the future seems bright for the language.
+
+Perhaps a decade from now, we will finally be able to crown Rust as an "immortal language" alongside the likes of C/C++. Personally, I am looking forward to that day! But until then, I must say that the Rust hype is indeed justified.
+
+---
+
+_Before I conclude this article, I would like to cordially thank the [Rust team](https://www.rust-lang.org/governance) for their excellent work on both the language and the community. Without them, we would have none of the innovations we enjoy today in systems-level programming._

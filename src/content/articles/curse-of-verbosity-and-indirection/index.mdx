@@ -1,0 +1,299 @@
+---
+title: 'The Curse of Verbosity and Indirection'
+description: "I've dealt with a wide spectrum of programming languages over the years. One common theme that I've observed is that object-oriented programming patterns tend to yield the most verbose and indirect abstractions. In this article, we explore how pure object-oriented code necessarily leads to more verbose code and more opaque indirections."
+createdAt: '2025-03-22T15:26:22Z'
+publishedAt: '2025-03-23T17:23:24Z'
+cover:
+    src: './cover.png'
+    alt: 'The Curse of Verbosity and Indirection'
+tags: ['javascript', 'java', 'oop', 'computerscience']
+---
+
+I've dealt with a wide spectrum of programming languages over the years. Some languages are object-oriented (e.g., Java, PHP, C++, and Dart); some are procedural (e.g., C and Zig); some are functional (e.g., Haskell, Coq); some are declarative (e.g., HTML and CSS); some are a mixed bag of everything (e.g., JavaScript, Python, Rust); and some are straight-up machine code (e.g., x86, ARM, MIPS, and RISC-V).
+
+One common theme that I've observed is that object-oriented programming (OOP) patterns tend to yield the most verbose and indirect abstractions versus their non-OOP counterparts. In this article, we'll investigate why this is the case and how it arises out of necessity.
+
+## Free functions as a first-class citizen
+
+```java
+package com.example.hello;
+public class Main {
+    public static void main(String[] _args) {
+        System.out.println("Hello world!");
+    }
+}
+```
+
+```rust
+fn main() {
+    println!("Hello world!");
+}
+```
+
+Let's compare two "hello world" programs: one from Java and another from Rust. It wouldn't be controversial to assert that the Rust version is clearly more concise than the Java version. To be fair, there is a lot more magic abstracted away: the command-line arguments being the most notable omission.
+
+Putting that aside, this example illustrates the key limitation of "pure" OOP that makes it so verbose: _classes are the only first-class citizens at the top level._ Functions, on the other hand, are second-class citizens that must belong to either a class (as a `static` method) or an object (as an instance method).
+
+When classes are imposed as the top-level entity, class declaration boilerplate becomes a _necessary_ syntactic and semantic overhead. Instead of defining the entry point as a free function (as one typically would at the assembly level), a strictly OOP language introduces a class indirection right from the start.
+
+The Zig language—at least [as of writing][zig-import]—brilliantly compromises on that mental model by treating files as implicit `struct`s. Top-level items in a file would be as if everything had been wrapped by an invisible `struct { ... }` declaration.
+
+[zig-import]: https://ziglang.org/documentation/0.14.0/#import
+
+```zig
+// example.zig
+// struct {
+
+// Not exported...
+const std = @import("std");
+
+// Exported as a static method!
+pub fn hello() void {
+    std.debug.print("world");
+}
+
+// }
+```
+
+```zig
+// main.zig
+// struct {
+
+const example = @import("./example.zig");
+
+pub fn main() void {
+    // Static method!
+    example.hello(); // world
+}
+
+// }
+```
+
+Interestingly, this is somewhat equivalent to the Java module system. The only difference is that the `class` boilerplate is implied, which makes things a little bit more bearable (as far as "hello world" examples go).
+
+> 💡 A cute consequence of the Zig module system is that a file can also define `struct` instance fields at the top level!
+
+## Closures as a first-class citizen
+
+Let's talk about "design patterns". In the software engineering world, design patterns—although generic by name—are most colloquially associated with OOP languages. Design patterns impose common terminology and implementation details in an effort to wrangle and make sense of a sea of OOP abstractions.
+
+How did we get here? How did we end up with an entire vocabulary of jargon[^1] just to fathom the levels of indirection? And most importantly, are these _necessary_ and relevant today?
+
+[^1]: Strategies, factories, builders, adapters, singletons, decorators, facades, etc.
+
+Let's first put into context that a lot of these design patterns were popularized and mainstreamed by a computer science zeitgeist constrained by the hardware and compiler capabilities of its time.
+
+The `class` as a language feature was a _necessarily_ limited compiler abstraction. Anything more complex than the core offering of fields, methods, and inheritance was an incredible feat of static analysis.[^2] The `class` being a simple primitive enabled more arbitrarily complex software, but at the same time also necessitated more abstractions.
+
+[^2]: In the case of C++, it was also an incredible feat of bike-shedding over syntax and capture semantics!
+
+One such nicety of modern hardware and compiler theory that we now take for granted are **closures** (a.k.a. **lambda functions**). A closure is any callable (i.e., function-like) object with pre-bound arguments (i.e., doesn't need to be explicitly passed in).
+
+```ts
+const outsideVariable = 100;
+const closure = (a: number) => {
+	// `outsideVariable` is "captured" by the closure.
+	return a + outsideVariable;
+};
+```
+
+```ts
+// No need to pass `outsideVariable` as an argument
+// because the `closure` had already "pre-bound" it.
+console.log(closure(200)); // 300
+```
+
+Let's take a closer look at how all of this works. At its core, a closure simply needs to stash some "outside variables" beforehand and provide some way to invoke it later. Kinda like this...
+
+```ts
+class Closure {
+	#outsideVariable: number;
+
+	constructor(outsideVariable: number) {
+		this.#outsideVariable = outsideVariable;
+	}
+
+	call(a: number) {
+		return a + this.#outsideVariable;
+	}
+}
+```
+
+```ts
+const outsideVariable = 100;
+const closure = new Closure(outsideVariable);
+console.log(closure.call(200));
+```
+
+Poof! 💥 And just like that, we have reinvented the **Strategy Pattern**.
+
+The point is: a lot of the verbosity of OOP design patterns come from the fact that (at the time!) there hadn't been language-level primitives for expressing closures. With limited compiler capabilities, the best way to emulate pre-bound functions was via strategy classes.
+
+> 💡 Fortunately, modern Java has had closures since 2014 when Java 8 first released! The C++ folks also got theirs a few years earlier with C++11.
+
+This is actually a recurring theme among previously "pure" OOP languages: many `class`-based design patterns are obsoleted by the introduction of closures.
+
+- Strategy? Write a lambda function that adheres to the same contract.
+- Factory? Write a lambda function with zero arguments that internally captures the necessary context.
+- Observers? Write a lambda function.
+- Adapters? Write a mapper lambda function.
+- And so on... (I think you get the point!)
+
+So to answer the question more directly: yes, the verbosity of OOP design patterns and the opacity of its abstractions _were_ necessary at the time. Nowadays, not so much. The point is: a lot of the OOP noise and boilerplate can be replaced by the niceties of modern language constructs.
+
+## Import-once modules as a first-class citizen
+
+Speaking of design patterns, let's talk about singletons. Here is a classic textbook example of an eagerly initialized singleton class in Java:
+
+```java
+package com.example.singleton;
+
+public class Singleton {
+    // Some private state that the singleton relies on...
+    private int state = 0;
+
+    private static Singleton instance = new Singleton();
+
+    // Private just to make sure that nobody invokes it
+    private Singleton() { }
+
+    // NOTE: A public field also works, but having an explicit
+    // getter function ensures that callers cannot reassign the
+    // internal instance in any way.
+    public static Singleton getInstance() {
+        return instance;
+    }
+
+    public int getState() {
+        return state;
+    }
+}
+```
+
+Now _that_ is a lot of syntactic ceremony just for a single instance. We can simplify this by a little bit using the `final` keyword.
+
+```java
+package com.example.singleton;
+
+public class Singleton {
+    private int state = 0;
+
+    // This is now a `public` but `final` field.
+    // It's functionally equivalent to the example
+    // above as we only care about ensuring that the
+    // internal instance never gets reassigned.
+    public static final Singleton INSTANCE = new Singleton();
+
+    private Singleton() { }
+
+    public int getState() {
+        return state;
+    }
+}
+```
+
+But even then, it's still a bit too verbose. We can go further by removing the constructor and the instantiation entirely. Instead, let's just inline the instance fields as `static` fields!
+
+```java
+package com.example.singleton;
+
+public class Singleton {
+    // No longer `final` as this can be modified internally.
+    private static int state = 0;
+
+    // Now `static` because an instance is no longer required.
+    public static int getState() {
+        return state;
+    }
+}
+```
+
+Now _this_ is much better! Here, the one true "instance" of the class is no "instance" at all; it is `static`. There's no need to jump through hoops with constructors, getters, and setters. Classic OOP patterns are so engrossed in classes that we sometimes forget that we don't have to over-complicate things.
+
+> ⚠️ Of course, this contrived example doesn't apply if an actual object instance was required by some external library or API. In that case, we can either (1) write a trivial wrapper or (2) revert to the instance-based pattern.
+
+This can be made even simpler if we step out of the "pure" OOP world, where classes are the only first-class top-level language items. If we allow variables and free functions into the top level (i.e., without requiring a `class` container), we get at the heart of what we're trying to express.
+
+```js
+// Not exported to keep it private.
+let state = 0;
+export function getState() {
+	return state;
+}
+```
+
+> 💡 This example works in JavaScript because the ECMAScript module system requires that imported modules are loaded and evaluated only once.
+
+## Unions as a first-class citizen
+
+Another example of a modern language construct is the union or enum.[^3] The lack of first-class unions (e.g., [TypeScript unions][typescript-union-type] and [Rust enums][rust-enum]) force OOP design patterns to resort to inheritance-based polymorphism (e.g., `abstract class`) for expressing disjoint use cases. This often leads to infamously opaque indirections across scattered subclasses.
+
+[^3]: In the functional programming world, a stricter subset of unions is known as a "sum type", which are basically "tagged unions".
+
+```java
+// A base class for all possible "input types".
+abstract class InputType { }
+
+class TextInputType extends InputType {
+    public String data;
+    public TextInputType(final String input) {
+        data = input;
+    }
+}
+
+class IntegerInputType extends InputType {
+    public int data;
+    public IntegerInputType(final int input) {
+        data = input;
+    }
+}
+
+class BooleanInputType extends InputType {
+    public boolean data;
+    public BooleanInputType(final boolean input) {
+        data = input;
+    }
+}
+```
+
+```ts
+// In a language that supports first-class unions
+// (such as TypeScript), we have a much simpler way
+// to express the same idea.
+type InputType = string | number | boolean;
+```
+
+```rust
+// Even relatively low-level languages like Rust get this right!
+enum InputType {
+    Text(String),
+    Integer(i32),
+    Boolean(bool),
+}
+```
+
+The point is: here we see yet another example of "pure" class-first OOP getting in the way of the core idea that's being expressed by the abstraction. The mandatory `class` boilerplate is frankly just overhead—_necessarily_ self-imposed by the purity of class-first language design.
+
+[typescript-union-type]: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types
+[rust-enum]: https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
+
+## Conclusion
+
+Many "pure" OOP patterns of yesteryear have poor **signal-to-noise ratios**. That is to say: there is more syntax and conceptual **noise** than there is engineering **signal** and clarity.
+
+The notoriously verbose and opaque formulation boils down to its insistence on the `class` being the only top-level language item. This is not for no reason, though! Limited hardware and compiler capabilities during the heyday of the OOP trend necessitated the `class` being the building block of everything.
+
+To manage all of this **accidental complexity**, OOP design patterns were codified—many of which are obsoleted by introducing not-so-pure OOP language features such as closures. Nevertheless, the (necessary!) codification of these patterns only justified what would otherwise be undesirable qualities in code.
+
+Of course, this is not to say that OOP has no place in modern software engineering. There are certainly some abstractions where OOP is an appropriate tool in the box.[^4] At the very least, what I _am_ saying is that the "pure" OOP of yesteryear is obsoleted by the modern OOP-functional hybrids of today.
+
+[^4]: Just to cite one common example in my experience, classes are an appropriate abstraction for database drivers, which are often stateful wrappers over live database connections.
+
+In fact, I've always been a fan of the Java community's recent efforts in embracing functional programming patterns. Stream helpers, lambda functions, free functions, pattern matching, and monadic optional types are stellar examples of an evolving OOP language that recognizes cleaner ways of doing things.
+
+_Let's strive to write simpler code devoid of verbose abstractions and opaque indirections.[^5]_
+
+[^5]: To give some personal context and motivation behind this article, I had recently worked on a Flutter codebase that subscribed to the so-called ["Clean Code Architecture"][flutter-clean-code]. It was not, in fact, clean code at all; it was riddled with superfluous OOP abstractions and mishandled `async` state. Files upon files of abstractions made the codebase difficult to navigate and extend—much to the irony of the [SOLID principles][solid-principles] that they swear by. This article summarized the general guidelines on the several opportunities for simplification that I encountered along the way.
+
+[flutter-clean-code]: https://docs.flutter.dev/app-architecture/guide
+[solid-principles]: https://en.wikipedia.org/wiki/SOLID

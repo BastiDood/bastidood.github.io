@@ -1,0 +1,211 @@
+---
+title: "Please don't nest promises"
+description: 'As we accustom ourselves with the magical world of promises and asynchronous functions, JavaScript has truly become more than _just_ a "single-threaded language". But nevertheless, there is a great responsibility that comes with these modern features. In this article, I shed light on an often overlooked code smell of asynchronous operations: nested promises.'
+createdAt: '2020-01-06T11:26:39Z'
+publishedAt: '2020-01-06T16:15:52Z'
+cover:
+    src: './cover.png'
+    alt: "Please don't nest promises"
+tags: ['javascript', 'node', 'programming', 'tips']
+series: please-dont
+---
+
+```javascript
+const fs = require('fs');
+
+// Callback-based Asynchronous Code
+fs.readFile('file.txt', (err, text) => {
+	if (err) throw err;
+	console.log(text);
+});
+
+// ES6 Promises
+fs.promises.readFile('file.txt').then(console.log).catch(console.error);
+```
+
+After many years of using the callback pattern as the de facto design pattern for asynchronous code in JavaScript, ES6 Promises finally came in 2015 with the goal of streamlining asynchronous operations. It consequently eliminated the dreaded **callback hell**, the seemingly infinite regress of nested callback functions. Thanks to ES6 Promises, asynchronous JavaScript suddenly became arguably cleaner and more readable... or did it? 🤔
+
+## Multiple Asynchronous Operations
+
+When concurrently executing multiple asynchronous operations, one can utilize [`Promise.all`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) in order to effectively accomplish this goal without causing ~~too many~~ issues with the event loop.
+
+In the `Promise`-based example below, an array of `Promises` will be passed into the `Promise.all` method. Under the hood, the JavaScript engine cleverly runs the three _concurrent_ `readFile` operations. Once they have all been resolved, the callback for the following `Promise#then` in the chain can finally execute. Otherwise, if at least one of the operations fail, then the `Error` object from that operation will be passed into the nearest `Promise#catch`.
+
+```javascript
+const fs = require('fs');
+const FILES = ['file1.txt', 'file2.txt', 'file3.txt'];
+
+// Callback-based
+function callback(err, text) {
+	if (err) throw err;
+	console.log(text);
+}
+for (const file of FILES) fs.readFile(file, callback);
+
+// `Promise`-based
+const filePromises = FILES.map(file => fs.promises.readFile(file));
+Promise.all(filePromises)
+	.then(texts => console.log(...texts))
+	.catch(console.error);
+```
+
+The issues with promises only begin to appear when multiple asynchronous operations need to be executed one after the other _in a specific order_. This is where **callback hell** reintroduces itself to both callback-based and promise-based asynchronous chains.
+
+```javascript
+const fs = require('fs');
+const fsp = fs.promises;
+
+// The Traditional Callback Hell
+fs.readFile('file1.txt', (err, text1) => {
+  if (err) throw err;
+  console.log(text1);
+  fs.readFile('file2.txt', (err, text2) => {
+    if (err) throw err;
+    console.log(text2);
+    fs.readFile('file3.txt', (err, text3) => {
+      if (err) throw err;
+      console.log(text3);
+      // ...
+    });
+  });
+});
+
+// The Modern "Promise" Hell
+fsp.readFile('file1.txt')
+  .then(text1 => {
+    console.log(text1);
+    fsp.readFile('file2.txt')
+      .then(text2 => {
+        console.log(text2);
+        fsp.readFile('file3.txt')
+          .then(text3 => {
+            console.log(text3));
+            // ...
+          })
+          .catch(console.error);
+      })
+      .catch(console.error);
+  })
+  .catch(console.error);
+```
+
+## The Better Way
+
+One can solve the issue of nested promises by remembering that the return value of the callback function will always be wrapped in a resolved `Promise` that will later be forwarded to the next `Promise#then` in the chain (if it isn't a `Promise` itself already). This allows the next `Promise#then` to use the return value from the previous callback function _and so on and so forth_...
+
+In other words, return values are always wrapped in a resolved `Promise` and forwarded to the next `Promise#then` in the chain. The latter can then retrieve the forwarded return value through the corresponding callback function. The same is true for thrown values (ideally `Error` objects) in that they are forwarded as rejected `Promise`s to the next `Promise#catch` in the chain.
+
+```javascript
+// Wrap the value `42` in
+// a resolved promise
+Promise.resolve(42)
+	// Retrieve the wrapped return value
+	.then(prev => {
+		console.log(prev);
+		// Forward the string 'Ping!'
+		// to the next `Promise#then`
+		// in the chain
+		return 'Ping!';
+	})
+	// Retrieve the string 'Ping!' from
+	// the previously resolved promise
+	.then(prev => {
+		console.log(`Inside \`Promise#then\`: ${prev}`);
+		// Throw a random error
+		throw new Error('Pong!');
+	})
+	// Catch the random error
+	.catch(console.error);
+
+// Output:
+// 42
+// 'Inside `Promise#then`: Ping!'
+// Error: Pong!
+```
+
+With this knowledge, the "Promise Hell" example above can now be refactored into a more "linear" flow without the unnecessary indentation and nesting.
+
+```javascript
+const fsp = require('fs').promises;
+
+fsp.readFile('file1.txt')
+	.then(text1 => {
+		console.log(text1);
+		return fsp.readFile('file2.txt');
+	})
+	.then(text2 => {
+		console.log(text2);
+		return fsp.readFile('file3.txt');
+	})
+	.then(text3 => {
+		console.log(text3);
+		// ...
+	})
+	.catch(console.error);
+```
+
+In fact, this "linear" promise flow is the exact pattern promoted by the basic examples for the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). Consider the following example on a basic interaction with the [GitHub REST API v3](https://developer.github.com/v3/):
+
+```javascript
+// Main endpoint for the GitHub REST API
+const API_ENDPOINT = 'https://api.github.com/';
+
+fetch(API_ENDPOINT, { method: 'GET' })
+	// `Response#json` returns a `Promise`
+	// containing the eventual result of the
+	// parsed JSON from the server response.
+	// Once the JSON has been parsed,
+	// the promise chain will forward the
+	// result to the next `Promise#then`.
+	// If the JSON has been malformed in any
+	// way, then an `Error` object will be
+	// constructed and forwarded to the next
+	// `Promise#catch` in the chain.
+	.then(res => res.json())
+	.then(console.log)
+	.catch(console.error);
+```
+
+## The `async`/`await` Way
+
+With the much beloved [`async`/`await` feature of ES2017 asynchronous functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it is now possible to work around the issue of order-sensitive asynchronous operations. It hides the verbosity of cumbersome callback functions, the endless `Promise#then` chains, and the unnecessary nesting of program logic behind intuitive layers of abstraction. Technically speaking, it gives an asynchronous operation the _illusion_ of a synchronous flow, thereby making it arguably simpler to fathom.
+
+```javascript
+const fsp = require('fs').promises;
+
+async function readFiles() {
+	try {
+		console.log(await fsp.readFile('file1.txt'));
+		console.log(await fsp.readFile('file2.txt'));
+		console.log(await fsp.readFile('file3.txt'));
+	} catch (err) {
+		console.error(err);
+	}
+}
+```
+
+Nevertheless, this feature is still prone to improper usage. Although asynchronous functions necessitate a major rethinking of promises, old habits die hard. The old way of thinking about promises (through nested callbacks) can easily and perniciously mix with the new flow and concepts of ES2017 asynchronous functions. Consider the following example of what I would call the _"Frankenstein Hell"_ because of its confusing mixture of callback patterns, "linear" promise flows, and asynchronous functions:
+
+```javascript
+const fs = require('fs');
+
+// Needless to say... this is **very** bad news!
+// It doesn't even need to be many indentations
+// deep to be a code smell.
+fs.readFile('file1.txt', async (err, text1) => {
+	console.log(text1);
+	const text2 = await fs.promises.readFile('file2.txt').then(console.log).catch(console.error);
+});
+```
+
+To make matters worse, the example above can even cause memory leaks as well. That discussion is beyond the scope of this article, but [James Snell](https://twitter.com/jasnell) explained these issues in detail in his talk ["Broken Promises"](https://www.youtube.com/watch?v=XV-u_Ow47s0) from [Node+JS Interactive 2019](https://events19.linuxfoundation.org/events/nodejs-interactive-2019/).
+
+[Watch on YouTube](https://www.youtube.com/watch?v=XV-u_Ow47s0)
+
+## Conclusion
+
+ES6 Promises and ES2017 Asynchronous Functions—although quite readable and extensively powerful in and of itself—still require some effort to preserve its elegance. Careful planning and designing of asynchronous flows are paramount when it comes to avoiding the issues associated with **callback hell** and its nasty reincarnations.
+
+In particular, nested promises are a code smell that may indicate some improper use of promises throughout the codebase. Since the return value of the callback will always be forwarded to the callback of the next `Promise#then` in the chain, it's always possible to improve them by refactoring in such a way that takes advantage of callback return values and asynchronous functions (if feasible).
+
+_Please don't nest promises. Even promises can introduce the dreaded **callback hell**._

@@ -1,0 +1,155 @@
+---
+title: 'A Compelling Case for the Comma Operator'
+description: 'The comma operator is one of the lesser-known operators in C-like languages such as JavaScript and C++. Essentially, it delimits a sequence of expressions and only returns the result of the final one. So why would this ever be useful? In this article, I present a compelling case—perhaps the only one frankly speaking—for the comma operator.'
+createdAt: '2024-09-06T15:38:42Z'
+publishedAt: '2024-09-06T21:28:36Z'
+cover:
+    src: './cover.png'
+    alt: 'A Compelling Case for the Comma Operator'
+tags: ['beginners', 'javascript', 'rust', 'c']
+---
+
+The **comma operator** is one of the lesser-known operators in C-like languages such as JavaScript and C++. Essentially, it delimits a sequence of expressions and only returns the result of the final one.
+
+```js
+const a = 1;
+const b = 2;
+const c = 3;
+const result = (a, b, c, 4, 5, 6, true);
+console.log(result); // true
+```
+
+```js
+if ((false, true)) console.log('hello'); // hello
+```
+
+It's natural to ask then: _when would it ever be useful to cram multiple expressions in a single line?_ Furthermore, even if it were useful, why would a comma-separated sequence of expressions (in a single line) be more readable and maintainable than a semicolon-separated sequence of statements (across several lines)? When should we prefer one over the other?
+
+These are questions that I have struggled to answer over the years, but now I think I finally have an answer. In this article, I present a compelling case—perhaps the only one frankly speaking—for the comma operator.
+
+## A Motivating Example
+
+Let's first talk about the conditional ternary operator. As seen below, if the `condition` is truthy, it _evaluates_ `value`. Otherwise, it _evaluates_ `another`. There is emphasis in the key word "evaluation" here because the branches only execute when their condition is met.
+
+```js
+const result = condition ? value : another;
+```
+
+For most cases, it's neat and pretty. Where it falls apart, however, is when we need to do more complex logic in between the branches _before_ returning the conditional value. At this point, we resort to this unfortunate perversion:
+
+```js
+let result; // Uninitialized! Yikes!
+if (condition) {
+	// Do some complex stuff in between...
+	doSomething();
+	// ...
+	result = value; // Actual Assignment
+} else {
+	// Do other complex stuff in between...
+	doAnotherThing();
+	// ...
+	result = another; // Actual Assignment
+}
+// Hopefully we didn't forget to initialize `result`!
+```
+
+Now there are many issues with this formulation.
+
+1. The `result` is uninitialized at first. This is not inherently evil, but an easy tried-and-tested way to avoid bugs due to `undefined` is to just always initialize variables.
+1. The initialization of `result` is literally at the bottom of the branch—far detached from its declaration.
+1. By the end of the conditional, we better hope that `result` is surely initialized. If not us, we better hope that our teammates equally enforce that. If not now, we better hope that future developers uphold that, too!
+
+There is a way around this limitation if we insist on using conditional ternary expressions. We just have to refactor the code into functions. That's definitely easier said than done. This gimmick gets old real quick!
+
+```js
+function computeWrappedValue() {
+	// ...
+	return value;
+}
+
+function computeWrappedAnother() {
+	// ...
+	return another;
+}
+
+// How cumbersome!
+const result = condition ? computeWrappedValue() : computeWrappedAnother();
+```
+
+Expression-based programming languages (such as Rust) have a more elegant solution. By reclassifying the `if` **statement** as an `if` **expression**, each branch can be evaluated and thus return values that can later be stored in a variable.
+
+```rust
+// A conditional ternary operator thus looks like this. Each branch
+// returns a value, which is captured by the `result` variable.
+// We thus ensure that `result` is always initialized by construction.
+let result = if condition { value } else { another };
+```
+
+```rust
+// If we wanted to do something more complex, we use the same syntax.
+let result = if condition {
+    do_something();
+    // In Rust, the last expression without a semicolon is the value
+    // that will be "returned" by the overall `if` expression.
+    result
+} else {
+    do_another_thing();
+    another
+};
+```
+
+_Can we emulate this in C-like languages?_ You've likely long foreseen where I'm headed with this, but yes!
+
+## A Compelling Case
+
+What we want is a way to arbitrarily execute statements _before_ returning a value within the ternary branches. Well, lucky for us, this is _exactly_ what the comma operator is for.
+
+```js
+// Parenthesized for clarity.
+const result = condition
+	? (doSomething(), value) // evaluates to `value`
+	: (doAnotherThing(), another); // evaluates to `another`
+```
+
+The neat thing about this formulation is the fact that the branch expressions are only evaluated when necessary. We effectively emulate the behavior of expression-based programming languages. Gone are the days of ad hoc wrapper functions!
+
+_But alas,_ we can only go so far with this technique. You can imagine that for some sufficiently large `n`, cramming `n` statements into a single line already begs to be refactored into its own function. Personally, I would already reconsider by the time `n > 3`. Anything higher than that is dubious construction in terms of readability.
+
+```js
+// Maybe we should reconsider here?
+const result = condition
+	? (x++, (thing = hello()), doSomething(), value)
+	: (++y, (thing = world()), doAnotherThing(), another);
+```
+
+```js
+// Okay, stop. Definitely turn back now!
+const result = condition
+    ? (
+        x++,
+        thing = hello(),
+        doSomething(),
+        doMore(y),
+        doEvenMore(thing),
+        value,
+    ) : (
+        ++y,
+        thing = world(),
+        doAnotherThing(),
+        doMore(y),
+        doEvenMore(thing),
+        another,
+    );
+// Unless, of course, you're fine with this. It kinda does
+// look like a Rust `if` expression if you squint hard enough.
+```
+
+## Conclusion
+
+Wrapping up, we have seen a compelling case for the comma operator: complex conditional ternary operations. The comma operator shines when the branches are short and sweet, but falls out of fashion real quick after three inlined statements. At that point, one is likely better off refactoring the code.
+
+_So should you use comma operators?_ Honestly... yeah! Readable code is mindful of the next reader, so as long as the comma chains are never egregiously long, I would accept—and even encourage—this coding style. If we consider the alternatives (i.e., uninitialized variables and refactored micro-functions), the comma operator is not so bad after all.
+
+In practice, I already sprinkle my own codebases with these funny-looking comma operators. Though in fairness, I rarely have a need for multi-statement ternary conditionals anyway. But when I do, I have a cool tool in my belt that concisely expresses my intent.
+
+_To that end, I rest my compelling case for the comma operator._

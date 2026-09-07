@@ -1,0 +1,349 @@
+---
+title: 'The Proper Way to Write Async Constructors in JavaScript'
+description: "At the moment, there is no standardized way to write asynchronous constructors in JavaScript. However, this does not mean there aren't any workarounds! In this article, we will discuss the various ways to emulate `async` in `constructor`. Most of them are not-so-ideal, but in the end, I will demonstrate the proper way."
+createdAt: '2021-08-17T12:55:19Z'
+publishedAt: '2021-08-18T14:08:39Z'
+updatedAt: '2022-02-03T09:06:55Z'
+cover:
+    src: './cover.png'
+    alt: 'My character in front of a cartoonish construction site.'
+featured: true
+tags: ['javascript', 'typescript', 'tips', 'async']
+series: making-the-most-out-of-asynchronous-javascript
+---
+
+## Async Constructors???
+
+Before anyone rushes into the comments section, I must preface this article by emphasizing that **there is no standardized way to write asynchronous constructors** in JavaScript _yet_. However, for the time being, there are some workarounds. Some of them are good... but most of them are quite unidiomatic (to say the least).
+
+In this article, we will discuss the limitations of the various ways we've attempted to emulate `async` constructors. Once we've established the shortcomings, I will demonstrate what I have found to be the proper **`async` constructor pattern** in JavaScript.
+
+## A Quick Crash Course about `constructor`
+
+Before ES6, there was no concept of classes in the language specification. Instead, JavaScript "constructors" were simply plain old functions with a close relationship with `this` and `prototype`. When classes finally arrived, the `constructor` was (more or less) syntactic sugar over the plain old constructor functions.
+
+However, this does have the consequence that the `constructor` inherits some of the quirky behavior and semantics of the old constructors. Most notably, returning a [_non-primitive_ value](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) from a constructor returns that value [instead of the constructed `this` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#description).
+
+Suppose we have a `Person` class with a private string field `name`:
+
+```typescript
+class Person {
+	#name: string;
+	constructor(name: string) {
+		this.#name = name;
+	}
+}
+```
+
+Since the `constructor` implicitly returns `undefined` (which is a primitive value), then `new Person` returns the newly constructed `this` object. However, if we were to return an object literal, then we would no longer have access to the `this` object unless we somehow include it inside the object literal.
+
+```typescript
+class Person {
+	#name: string;
+	constructor(name: string) {
+		this.#name = name;
+
+		// This discards the `this` object!
+		return { hello: 'world' };
+	}
+}
+
+// This leads to a rather silly effect...
+const maybePerson = new Person('Some Dood');
+console.log(maybePerson instanceof Person); // false
+```
+
+If we intend to preserve the `this` object, we may do so as follows:
+
+```typescript
+class Person {
+	#name: string;
+	constructor(name: string) {
+		this.#name = name;
+
+		// This preserves the `this` object!
+		return { hello: 'world', inner: this };
+	}
+
+	get name() {
+		return this.#name;
+	}
+}
+
+// This leads to another funny effect...
+const maybePerson = new Person('Some Dood');
+console.log(maybePerson instanceof Person); // false
+console.log(maybePerson.inner instanceof Person); // true
+console.log(maybePerson.name); // undefined
+console.log(maybePerson.inner.name); // 'Some Dood'
+```
+
+## Workaround #1: Deferred Initialization
+
+Sooo... if it's possible to override the return type of a `constructor`, then wouldn't it be possible to return a `Promise` from inside the `constructor`?
+
+As a matter of fact, yes! A `Promise` instance is indeed a non-primitive value after all. Therefore, the `constructor` will return that instead of `this`.
+
+```typescript
+class Person {
+	#name: string;
+	constructor() {
+		// Here, we simulate an asynchronous task
+		// that eventually resolves to a name...
+		return Promise.resolve('Some Dood').then(name => {
+			// NOTE: It is crucial that we use arrow
+			// functions here so that we may preserve
+			// the `this` context.
+			this.#name = name;
+			return this;
+		});
+	}
+}
+```
+
+```typescript
+// We overrode the `constructor` to return a `Promise`!
+const pending = new Person();
+console.log(pending instanceof Promise); // true
+console.log(pending instanceof Person); // false
+
+// We then `await` the result...
+const person = await pending;
+console.log(person instanceof Promise); // false
+console.log(person instanceof Person); // true
+
+// Alternatively, we may directly `await`...
+const anotherPerson = await new Person();
+console.log(anotherPerson instanceof Promise); // false
+console.log(anotherPerson instanceof Person); // true
+```
+
+We have essentially implemented **deferred initialization**! Although this workaround emulates an `async constructor`, it does come with **significant** drawbacks:
+
+- Does not support `async`-`await` syntax.
+- Requires manual [chaining of promises](https://dev.to/somedood/best-practices-for-es6-promises-36da).
+- Requires careful preservation of `this` context.[^1]
+- Violates many assumptions made by type inference providers.[^2]
+- Overrides the default behavior of `constructor`, which is _unexpected_ and _unidiomatic_.
+
+[^1]: In the code example, this was done through arrow functions. [Since arrow functions do not have a `this` binding](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), they inherit the `this` binding of its enclosing scope.
+
+[^2]: Namely, the TypeScript language server incorrectly infers `new Person` to be of type `Person` rather than type `Promise<Person>`. This, of course, is not exactly a bug because the `constructor` was never meant to be used as such.
+
+## Workaround #2: Defensive Programming
+
+Since overriding the `constructor` is semantically problematic, perhaps we should employ some "state-machine-esque" wrapper, where the `constructor` is merely an "entry point" into the state machine. We would then require the user to invoke other "lifecycle methods" to fully initialize the class.
+
+```typescript
+class Person {
+    /**
+     * Observe that the field may now be `undefined`.
+     * This encodes the "pending" state at the type-level.
+     */
+    this.#name: string | null;
+
+    /** Here, we cache the ID for later usage. */
+    this.#id: number;
+
+    /**
+     * The `constructor` merely constructs the initial state
+     * of the state machine. The lifecycle methods below will
+     * drive the state transitions forward until the class is
+     * fully initialized.
+     */
+    constructor(id: number) {
+        this.#name = null;
+        this.#id = id;
+    }
+
+    /**
+     * Observe that this extra step allows us to drive the
+     * state machine forward. In doing so, we overwrite the
+     * temporary state.
+     *
+     * Do note, however, that nothing prevents the caller from
+     * violating the lifecycle interface. That is, the caller
+     * may invoke `Person#initialize` as many times as they please.
+     * For this class, the consequences are trivial, but this is not
+     * always true for most cases.
+     */
+    async initialize() {
+        const db = await initializeDatabase();
+        const data = await db.fetchUser(this.#id);
+        const result = await doSomeMoreWork(data);
+        this.#name = await result.text();
+    }
+
+    /**
+     * Also note that since the `name` field may be `undefined`
+     * at certain points of the program, the type system cannot
+     * guarantee its existence. Thus, we must employ some defensive
+     * programming techniques and assertions to uphold invariants.
+     */
+    doSomethingWithName() {
+        if (!this.#name) throw new Error('not yet initialized');
+        // ...
+    }
+
+    /**
+     * Note that the getter may return `undefined` with respect
+     * to pending initialization. Alternatively, we may `throw`
+     * an exception when the `Person` is not yet initialized,
+     * but this is a heavy-handed approach.
+     */
+    get name() { return this.#name; }
+}
+```
+
+```typescript
+// From the caller's perspective, we just have to remember
+// to invoke the `initialize` lifecycle method after construction.
+const person = new Person(1234567890);
+await person.initialize();
+console.assert(person.name);
+```
+
+Just like the previous workaround, this also comes with some notable drawbacks:
+
+- Produces verbose initialization at the call site.
+- Requires the caller to be familiar with the lifecycle semantics and internals of the class.
+- Necessitates extensive documentation on how to properly initialize and use the class.
+- Involves runtime validation of lifecycle invariants.
+- Makes the interface less maintainable, less ergonomic, and more prone to misuse.
+
+## The Solution: Static Async Factory Functions!
+
+Rather amusingly, the best `async` `constructor` is no `constructor` at all!
+
+In the first workaround, I hinted at how the `constructor` may return arbitrary non-primitive objects. This allows us to wrap the `this` object inside a `Promise` to accommodate deferred initialization.
+
+Everything falls apart, however, because in doing so, we violate the typical semantics of a `constructor` (even if it's permissible by the Standard).
+
+_So... why don't we just use a regular function instead?_
+
+Indeed, this is the solution! We simply stick with the functional roots of JavaScript. Instead of delegating `async` work to a `constructor`, we _indirectly_ invoke the `constructor` via some `async` `static` [factory function](https://www.youtube.com/watch?v=ImwrezYhw4w).[^3] In practice:
+
+[^3]: Roughly speaking, a factory function is a function that returns a new object. Before the introduction of classes, factory functions typically returned object literals. Aside from the traditional constructor functions, this was the no-strings-attached way to parameterize object literals.
+
+```typescript
+class Person {
+	#name: string;
+
+	/**
+	 * NOTE: The constructor is now `private`.
+	 * This is totally optional if we intend
+	 * to prevent outsiders from invoking the
+	 * constructor directly.
+	 *
+	 * It must be noted that as of writing, private
+	 * constructors are a TypeScript-exclusive feature.
+	 * For the meantime, the JavaScript-compatible equivalent
+	 * is the @private annotation from JSDoc, which should
+	 * be enforced by most language servers. See the annotation
+	 * below for example:
+	 *
+	 * @private
+	 */
+	private constructor(name: string) {
+		this.#name = name;
+	}
+
+	/**
+	 * This static factory function now serves as
+	 * the user-facing constructor for this class.
+	 * It indirectly invokes the `constructor` in
+	 * the end, which allows us to leverage the
+	 * `async`-`await` syntax before finally passing
+	 * in the "ready" data to the `constructor`.
+	 */
+	static async fetchUser(id: number) {
+		// Perform `async` stuff here...
+		const db = await initializeDatabase();
+		const data = await db.fetchUser(id);
+		const result = await doSomeMoreWork(data);
+		const name = await result.text();
+
+		// Invoke the private constructor...
+		return new Person(name);
+	}
+}
+```
+
+```typescript
+// From the caller's perspective...
+const person = await Person.fetchUser(1234567890);
+console.log(person instanceof Person); // true
+```
+
+Given my contrived example, this pattern may not seem powerful at first. But, when applied to real-world constructs such as database connections, user sessions, API clients, protocol handshakes, and other asynchronous workloads, it quickly becomes apparent how this pattern is much more scalable and idiomatic than the workarounds discussed previously.
+
+## In Practice
+
+Suppose we wanted to write a client for the [Spotify Web API](https://developer.spotify.com/documentation/web-api/reference/), which requires an [access token](https://datatracker.ietf.org/doc/html/rfc8252#section-4.1). In accordance with the [OAuth 2.0 protocol](https://datatracker.ietf.org/doc/html/rfc8252), we must first attain an [authorization code](https://datatracker.ietf.org/doc/html/rfc8252#section-4.1) and exchange it for an access token.
+
+Let us assume we already have the authorization code present. Using factory functions, it is possible to initialize the client using the authorization code as a parameter.
+
+```typescript
+const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token';
+
+class Spotify {
+	#access: string;
+	#refresh: string;
+
+	/**
+	 * Once again, we set the `constructor` to be private.
+	 * This ensures that all consumers of this class will use
+	 * the factory function as the entry point.
+	 */
+	private constructor(accessToken: string, refreshToken: string) {
+		this.#access = accessToken;
+		this.#refresh = refreshToken;
+	}
+
+	/**
+	 * Exchanges the authorization code for an access token.
+	 * @param code - The authorization code from Spotify.
+	 */
+	static async initialize(code: string) {
+		const response = await fetch(TOKEN_ENDPOINT, {
+			method: 'POST',
+			body: new URLSearchParams({
+				code,
+				grant_type: 'authorization_code',
+				client_id: env.SPOTIFY_ID,
+				client_secret: env.SPOTIFY_SECRET,
+				redirect_uri: env.OAUTH_REDIRECT,
+			}),
+		});
+		const { access_token, refresh_token } = await response.json();
+		return new Spotify(access_token, refresh_token);
+	}
+}
+```
+
+```typescript
+// From the caller's perspective...
+const client = await Spotify.initialize('authorization-code-here');
+console.assert(client instanceof Spotify);
+```
+
+Observe that unlike in the second workaround, the existence of the access token is enforced at the type-level. There is no need for state-machine-esque validations and assertions. We may rest assured that when we implement the methods of the `Spotify` class, the access token field is **correct by construction**—no strings attached!
+
+## Conclusion
+
+The `static` `async` factory function pattern allows us to emulate asynchronous constructors in JavaScript. At the core of this pattern is the indirect invocation of `constructor`. The indirection enforces that any parameters passed into the `constructor` are _ready_ and _correct_ at the type-level. It is quite literally deferred initialization plus one level of indirection.
+
+This pattern also addresses all of the flaws of previous workarounds.
+
+- Allows `async`-`await` syntax.
+- Provides an ergonomic entry point into the interface.
+- Enforces correctness by construction (via type inference).
+- Does **NOT** require knowledge of lifecycles and class internals.
+
+Though, this pattern does come with one minor downside. The typical `constructor` provides a standard interface for object initialization. That is, we simply invoke the `new` operator to construct a new object. However, with factory functions, the caller must be familiar with the proper entry point of the class.
+
+Frankly speaking, this is a non-issue. A quick skim of the documentation should be sufficient in nudging the user into the right direction.[^4] Just to be extra careful, invoking a `private` constructor should emit a compiler/runtime error that informs the user to initialize the class using the provided static factory function.
+
+[^4]: In fact, this is how it's done in the Rust ecosystem. In Rust, there is no such thing as a constructor. The de facto way of initializing objects is either directly through [`struct` expressions](https://doc.rust-lang.org/reference/expressions/struct-expr.html) (i.e., object literals) or indirectly through factory functions. Yes, factory functions!
+
+In summary, among all the workarounds, factory functions are the most idiomatic, flexible, and non-intrusive. We should avoid delegating `async` work onto the `constructor` because it was never designed for that use case. Furthermore, we should avoid state machines and intricate lifecycles because they are too cumbersome to deal with. Instead, we should embrace JavaScript's functional roots and use factory functions.

@@ -1,0 +1,252 @@
+---
+title: 'Bitmasks are not so esoteric and impractical after all...'
+description: 'So one of my articles from my naive 2018 self finally bit me in the back side. Six years and one computer science degree later, I have vastly changed my perspective on bitmasks. In this article, we will discuss why bitmasks are not so esoteric and impractical after all.'
+createdAt: '2024-07-19T22:28:59Z'
+publishedAt: '2024-07-20T07:08:16Z'
+updatedAt: '2024-07-21T15:20:27Z'
+cover:
+    src: './cover.png'
+    alt: 'Bitmasks are not so esoteric and impractical after all...'
+tags: ['computerscience', 'javascript', 'c']
+---
+
+So an overly flashy title from one of my articles six years ago finally bit me in the back side... 😅
+
+[View embedded content](https://x.com/tsoding/status/1814166076990558259)
+
+[View embedded content](https://dev.to/somedood/bitmasks-a-very-esoteric-and-impractical-way-of-managing-booleans-1hlf)
+
+In my defense, this was written by my naive 2018 self. Six years and one computer science degree later, I have vastly changed my perspective on this. This is why we are going in the completely opposite direction. In this article, we will discuss why bitmasks are not so esoteric and impractical after all.
+
+## Parallelized Truth-Checking
+
+Let's go back to the example used in the original article.
+
+```js
+const config = {
+	isOnline: true,
+	isFullscreen: false,
+	hasAudio: true,
+	hasPremiumAccount: false,
+	canSendTelemetry: true,
+};
+```
+
+Now suppose that we are tasked to check if all of these flags are `true`. In a world without bitmasks, we may end up with the following solution:
+
+```ts
+function isAllTrue(flags: boolean[]) {
+	for (const flag of flags) if (!flag) return false;
+	return true;
+	// ALTERNATE:
+	// return flags.every(flag => flag);
+}
+```
+
+```js
+isAllTrue(Object.values(config)); // false
+```
+
+This is great and all. Some may even consider its alternate one-line version the epitome of clean JavaScript code. After all, who could say no to the [`Array#every`] method?
+
+[`Array#every`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
+
+But unfortunately, as we increase the number of flags in `config`, our `O(n)` solution eventually shows its cracks. Of course in practice, it is rare for a `config` object to scale up to a million flags. At that point, there are bigger architectural decisions that need to be reconsidered.
+
+Nevertheless, for the sake of argument, we are left asking: _is there a more efficient way to do this?_ Yes, as a matter of fact, there _is_ an `O(1)` solution to this problem: bitmasks!
+
+Bitmasks enable us to simultaneously query all of the bits in an integer in a single CPU instruction. Since we are interested in checking if all the bits are turned on, we simply have to apply a bitwise-`AND` on an all-ones bitmask (i.e., `0b1111...1111`).
+
+```ts
+// ASSUME: We have a way to convert the
+// `config` to its bitwise representation.
+function isAllTrue(flags: number) {
+	// Explicitly convert to an integer just in case.
+	// https://tc39.es/ecma262/#sec-numberbitwiseop
+	const bits = flags | 0;
+
+	// Obtain a bitmask where all bits are ones.
+	const BITMASK = ~0;
+
+	// The bitwise-AND with the `BITMASK` verifies
+	// whether the `bits` are all ones (i.e., all true).
+	return (bits & BITMASK) === BITMASK;
+}
+```
+
+With that optimization, we now have a constant-time checker that can simultaneously check [32 bits][ecma-integer] (a.k.a. 32 Boolean values) in a single CPU instruction. This is **much** better than our original linear-time solution, which went through _each bit one at a time_.
+
+[ecma-integer]: https://tc39.es/ecma262/#sec-toint32
+
+Now you may ask: _what if we have more than 32 Boolean values?_ Fortunately, some languages (such as JavaScript and Python) support arbitrarily-sized integers, which effectively remove the 32-bit limit. That is to say, we can operate on any finite number of flag bits and bit masks. Specifically for JavaScript, we have the [`BigInt`] type.
+
+[`BigInt`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+
+For other lower-level languages that only have fixed-size integers (such as C, C++, Rust, and Zig), there is no magical way to extend this algorithm to more than the maximum number of bits that the language supports. Luckily for us, we can still at least "chunk" the input into 32-bit groups. In fact, this is how arbitrarily-sized integer operations are implemented under the hood.
+
+Note that the algorithm would still be linear-time, but it is at least 32 times faster than iterating one bit at a time! This is not to even mention the removal of the `for`-loop overhead (e.g., branch instructions, jump instructions, etc.).
+
+```ts
+/**
+ * @param {bigint} flags - The bit flags stored as one big integer.
+ * @param {bigint} count - The actual number of bits in {@linkcode flags}.
+ */
+function isAllTrue_Chunked(flags: bigint, count: bigint) {
+	const BITMASK = (1n << 32n) - 1n; // 32 ones
+	while (count > 0) {
+		// Only consider the first 32 bits for this chunk.
+		const bits = flags & BITMASK;
+		if (bits !== BITMASK) return false;
+
+		// Advance the cursor.
+		flags >>= 32n;
+		count -= 32n;
+	}
+	return true;
+}
+```
+
+Analogously, we can also apply this algorithm to the bitwise-`OR` operator, which now checks if _at least one bit_ is turned on rather than checking if _all bits_ are turned on. The point is: bitwise operations enable us to write highly parallelized Boolean queries.
+
+## Struct-Packing for Network Efficiency
+
+Another neat use case for bitmasks is querying the bit flags in a tightly packed `struct`. This is especially relevant in computer networking, where data packets are typically serialized as a literal `struct`. For instance, one may represent the [header of a Transmission Control Protocol (TCP) segment][tcp-header] as a `struct` with the following fields:
+
+[tcp-header]: https://datatracker.ietf.org/doc/html/rfc9293#name-header-format
+
+```c
+#include <stdint.h>
+struct tcp_header {
+    uint16_t src_port;
+    uint16_t dst_port;
+    uint32_t seq_number;
+    uint32_t ack_number;
+    uint8_t data_offset: 4;
+    uint8_t reserved: 4;
+    uint8_t flags;
+    uint16_t window_size;
+    uint16_t checksum;
+    uint16_t urgent_pointer;
+    uint32_t options;
+};
+```
+
+Of particular interest is the `flags` field, which is essentially an array of bits that indicate whether the packet is a `SYN`, `ACK`, `FIN`, or `RST` packet (among other bit flags). The specifics of the protocol is beyond the scope of this article, so we instead explore _why_ a TCP header uses an 8-bit integer for bit flags rather than individual `bool` fields.
+
+It is important to first consider that a `bool` in C is essentially an 8-bit integer that can only be either `0` or `1`. Although a single bit is sufficient (and necessary!) to represent `false` and `true`, the C standard still requires that a `bool` is 8 bits wide (where 7 bits are left unused).
+
+From the perspective of network efficiency, an array of `bool` is therefore terrible packet design! That is to say, an array of `bool` values requires 8 bits _per flag_. With the `tcp_header.flags` field containing 8 flags, we would require 64 bits just to represent them in a `struct`! These bandwidth inefficiencies add up at the unfathomable scale and volume of data transfers in the Internet.
+
+The solution is `struct`-packing. Instead of wasting 7 bits per `bool` field, we should instead "pack" the eight bit flags as a single 8-bit integer. We then use bitmasking to query and extract each field of interest. And just like that, we saved ourselves from 56 unused bits.
+
+```c
+const uint8_t CWR = 0x80; // 1000_0000
+const uint8_t ECE = 0x40; // 0100_0000
+const uint8_t URG = 0x20; // 0010_0000
+const uint8_t ACK = 0x10; // 0001_0000
+const uint8_t PSH = 0x08; // 0000_1000
+const uint8_t RST = 0x04; // 0000_0100
+const uint8_t SYN = 0x02; // 0000_0010
+const uint8_t FIN = 0x01; // 0000_0001
+
+// Is this a SYN packet?
+tcp.flags & SYN == SYN;
+
+// Is this an ACK packet?
+tcp.flags & ACK == ACK;
+
+// Is this a SYN-ACK packet?
+const uint8_t SYN_ACK = SYN | ACK;
+tcp.flags & SYN_ACK == SYN_ACK;
+```
+
+## Caching with Bloom Filters
+
+Following the theme of `struct`-packing, bitmasks once again show up in systems that require efficient caching strategies. Chief among the use cases are content delivery networks (CDNs) and database systems.
+
+But first, let's go back to what a cache is for. When certain operations are too expensive to run frequently, a cache is responsible for intercepting inputs and checking whether a corresponding _previously_ computed output may be returned instead.
+
+Now let's consider a case study on web servers. Nowadays, many web servers dynamically render HTML on the fly depending on the current state of some internal database. Sometimes, this dynamic generation may be expensive. Perhaps the database query is a non-trivial aggregation over millions of rows. Perhaps an external API invocation takes a long time to process the request. Perhaps an upload is taking too long.
+
+In any case, a cache layer may prove to yield significant performance gains on the system. _But what exactly are we caching?_ A simple example for the sake of demonstration is a parameterized web page whose contents depend on a portion of the URL—say `/user/:id`. As much as possible, suppose that we would like to avoid frequently generating user profiles. Hence, the only sensible time to rerender is after the user modifies their profile. Everything is served from a CDN cache otherwise.
+
+A naive in-memory cache in the web server could store the URLs (e.g., `/user/100`) of known cached pages in a set-like data structure. If a URL exists in the cache, then serve from the CDN. Otherwise, we generate the HTML page from scratch. Sadly, this design comes at the cost of higher memory usage. Imagine having to cache `/user/1` all the way up to `/user/1000000`. _Yikes!_
+
+A more memory-efficient way to cache this knowledge in-memory (without blowing up RAM) is through a Bloom filter. Instead of caching _all_ of the known `id` values of cached pages, a Bloom filter caches only a _subset_ of these `id` values.
+
+We thus set up the Bloom filter in such a way that if the _hash_ of a URL gets a cache hit, then we know that the corresponding user _may_ have modified their profile (which should be rare in practice). Otherwise, we know _for certain_ that no such modifications have taken place yet, so it is safe to serve from the CDN cache directly.
+
+In theory, we may implement a Bloom filter as an array of Boolean values. The URLs must then be hashed as a valid index into that array. Alternatively, as it is the theme of this article, we may use bitmasks instead.
+
+```ts
+function bloomFilterHash(url: URL) {
+	// Extract the :id from the URL.
+	const index = url.pathname.lastIndexOf('/');
+	if (index < 0) throw new Error(':id not found!');
+
+	// This is a simple hash where we simply take the ID modulo 32.
+	// This always gives us a valid index into a 32-bit Bloom filter.
+	const id = BigInt(url.pathname.slice(index + 1));
+	return { raw: id, bloom: id % 32n };
+}
+```
+
+```ts
+// Initially zeroed 32-bit Bloom filter.
+let bloomFilter = 0n;
+
+// GET handler for the /user/:id.
+app.get('/user/:id', async req => {
+    // Hash the URL as an index into the Bloom filter.
+    const { raw, bloom } = bloomFilterHash(req.url);
+    const bitmask = 1n << bloom;
+
+    if (bloomFilter & bitmask !== bitmask) {
+        // The bit is turned off. Therefore, no modifications
+        // have been made before. We can use the cached profile.
+        return new Response(null, { status: 302, ... });
+    }
+
+    // The bit is turned on, which means one of the (possibly many)
+    // users that computed this hash has modified their profile.
+    // Time to generate a brand new profile page. Ideally, we should
+    // eventually clear the Bloom filter so that future requests
+    // need not pay this overhead (even though it should be rare).
+    const data = await fetchUserProfile(raw, ...);
+    const html = await generateProfileHtml(data, ...);
+    return new Response(html);
+});
+
+// POST handler for modifying user profiles.
+app.post('/user/:id', async req => {
+    // Hash the URL as an index into the Bloom filter.
+    const { raw, bloom } = bloomFilterHash(req.url);
+    const bitmask = 1n << bloom;
+
+    // Mark the Bloom filter bit as "dirty" (i.e., modified).
+    bloomFilter |= bitmask;
+
+    await modifyUserProfile(raw, ...);
+    return new Response(null, { status: 204, ... });
+});
+```
+
+## Conclusion
+
+In the [original article][original-article] that started this all, I framed bitmasks as an "esoteric" and "impractical" way to "over-engineer" Boolean values that only "hardcore computer scientists" should care about. Much of that negative sentiment and gatekeeping has gone away nowadays as I've grown as a mentor, a software engineer, and a computer scientist myself. In its place is a greater appreciation for the attention to detail involved in such low-level optimizations.
+
+[original-article]: https://dev.to/somedood/bitmasks-a-very-esoteric-and-impractical-way-of-managing-booleans-1hlf
+
+> _"\[Bitmasking\] is impractical and unreadable most of the time. Constant documentation and awareness are required to make sure that the correct bits are being selected and manipulated."_
+
+Though if there's anything worth saving from the original article, I still stand by my concerns on readability and maintainability. Without clear documentation, bitmasks look like magic numbers out of thin air. The runic soup of bitwise operators doesn't make the situation better either given its seemingly arbitrary incantations of tildes and minuses.
+
+Wherever possible (and perhaps until performance bottlenecks arise), it is wiser to keep bitmasks as a last-resort tool in our belt. The cognitive overhead necessary in deciphering bitwise logic is frankly unappealing in many cases.
+
+> _"Frankly, I wouldn't recommend using \[bitmasks\] regularly, if at all. As clever as it is, it is just too esoteric for common use... Overall, there aren't many applications for this, especially in a high-level language like JavaScript."_
+
+Parallelized truth-checking, `struct`-packing, probabilistic caching, bit fields, permission bits, and pattern matching are just a few examples of the more "practical" side of bitmasks in the real world. Even in high-level languages such as JavaScript, bitmasks are in fact _not_ just mere intellectual play among "hardcore computer scientists".
+
+Much like design patterns, data structures, and algorithms, the humble bitmask serves as one of the many tricks that we have up our sleeves. As with most things in our practice, it's just a matter of using the right tool for the job while keeping code quality in check.
+
+_Just like last time... bitmask responsibly._

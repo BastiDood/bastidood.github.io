@@ -1,0 +1,131 @@
+---
+title: 'Ciphers and Hashes Explained'
+description: 'Cryptography is the fundamental lifeblood of computer security. Unfortunately, with all the hardcore theory and mathematics, it has become one of the least approachable topics in computer science. In this article, as part of our exploration into the essence of cryptography, we will look into the difference between ciphers and hashes.'
+createdAt: '2020-06-16T11:17:40Z'
+publishedAt: '2020-06-16T14:19:22Z'
+cover:
+    src: './cover.png'
+    alt: 'Ciphers and Hashes Explained'
+tags: ['beginners', 'security', 'computerscience', 'crypto']
+series: the-essence-of-cryptography
+---
+
+> Cover photo adapted from ["Matrix movie still photo"](https://unsplash.com/photos/iar-afB0QQw) by [Markus Spiske](https://unsplash.com/@markusspiske) on [Unsplash](https://unsplash.com).
+
+## Ciphers
+
+When I was a kid, I remember passing along notes to my friends during long lectures at school. As a group, we passed along many crumpled pieces of paper containing conversations, jokes, and messages. It was basically a [Messenger](https://www.messenger.com/) group chat at its crudest state.
+
+Of course, we were eventually caught. In hindsight, I realize now how naive we were to pass along notes out in the open for everyone else to see. Furthermore, our conversations in those crumpled pieces of paper were written in plaintext. If a random teacher or classmate were to intercept our messages, they could have easily stolen our world-famous knock-knock jokes along the way.
+
+At the most basic level, this is also how the Internet works. With this analogy, the Internet is just one big classroom where each computer passes along notes to each other. To protect our conversations from prying eyes, we can simply speak in a secret code that only the stakeholders of the conversation can understand.
+
+That is where cryptography conveniently comes into play. This "secret code" can come in many forms. For example, one can convert the letters of the message into numbers. Suddenly, prying eyes could no longer understand the message. In the event that a message gets intercepted, the interceptor will no longer be able to understand the message unless they also know the secret code.
+
+This entire process of converting messages using a "secret code" is called **encryption**. Inversely, converting the message back into a readable format is aptly called **decryption**.[^6] Generally speaking, the chosen protocol or algorithm for encrypting and decrypting messages is called a **cipher**.
+
+[^6]: Technically, in this case, they can also be called **enciphering** and **deciphering**.
+
+As a kid, I remember performing many ciphers just for fun. Among my favorites were:
+
+1. The A1Z26 cipher, where `A = 1`, `B = 2`, `C = 3`, and so on and so forth;
+2. [The Atbash cipher](https://en.wikipedia.org/wiki/Atbash), where `A = Z`, `B = Y`, `C = X`, and so on and so forth; and
+3. [The Caesar cipher](https://en.wikipedia.org/wiki/Caesar_cipher), where letters are uniformly shifted by a fixed amount.
+
+Nowadays, the cipher algorithms we use today are much more advanced and sophisticated. One of the most ubiquitous ciphers is the [Advanced Encryption Standard (AES)](https://www.youtube.com/watch?v=O4xNJsjtN6E) family of algorithms.
+
+At the end of the day, whichever cipher we use, the goal has always been to protect from prying eyes the communication between two or more stakeholders.[^2]
+
+[^2]: It is also possible to verify the integrity and authenticity of a message through [asymmetric encryption](https://www.youtube.com/watch?v=GSIDS_lvRv4), but that is beyond the scope of this article.
+
+## Hashes
+
+There are also times when it is not necessary to decrypt a message. In some cases, one-way encryption enhances security, such as in the case of storing passwords in a database.
+
+When saving passwords, it is highly inadvisable to store them as plaintext. If the database gets compromised, a malicious attacker can simply read off the passwords and unleash mayhem.
+
+As a solution, one may propose to encrypt the passwords using a "secret code". However, that only shifts the attacker's attention to the holder of this "secret code". If the attacker were to somehow possess a secret key, then they would still be able to decrypt the passwords.
+
+The solution here is to enforce some form of a one-way encryption process, where neither the user, the website, nor the attacker can decrypt the passwords in the event of a data breach. To achieve this goal, we must make use of a neat trick called **hashing**.
+
+#### Implementing a Hash Function from Scratch
+
+**Hashing** is the process of (somehow) reducing a bunch of data into a single value of fixed length.
+
+For example, let's say we want to "hash" the string `"dev.to"`. Before continuing, we have to figure out what our end-goal is. In this case, let's say we want to convert an arbitrary string (like `"dev.to"`) into a two-letter hexadecimal string.[^3] This sounds like a strange requirement, but it is totally possible!
+
+[^3]: In other words, we want to somehow "reduce" a string into an unsigned 8-bit integer.
+
+Now that we know our end-goal, we can finally implement our hashing algorithm.
+
+1. First, we convert the string into an array of individual characters.
+2. Then, we transform each character based on its respective [ASCII code](http://www.asciitable.com/).
+3. Once we have all the ASCII codes, we simply sum them all up.
+4. Since we want to end up with a two-letter hexadecimal string, we can take the remainder of dividing the sum by `256`.[^4]
+5. Finally, we represent the integer as a hexadecimal string of length `2`.
+
+[^4]: In this example, `256` is not an arbitrary number. It happens to be one greater than the maximum representable number of two hexadecimal digits, which is `255` or `0xFF`. Performing the modulo operation (i.e. "finding the remainder") forces the result to always be within `0` and `255`. In doing so, we can be sure that we can always represent the remainder as a hexadecimal string of length `2` (i.e. from `0x00` to `0xFF`).
+
+> **NOTE:** The code examples below are written in TypeScript, but the concept of hashing can be applied anywhere.
+
+```typescript
+function simpleHash(text: string): string {
+	// Step 1: Convert into an array of individual characters.
+	const characters = Array.from(text);
+
+	// Steps 2-3: Sum up the ASCII codes.
+	const total = characters.reduce((sum, char) => sum + char.charCodeAt(0), 0);
+
+	// Step 4: Find the remainder by performing a modulo operation.
+	const remainder = total % 256;
+
+	// Step 5: Represent as a hexadecimal string of length `2`.
+	return remainder.toString(16).padStart(2, '0');
+}
+
+// Examples
+simpleHash('dev.to'); // '50'
+simpleHash('Hats off to the Class of 2020!'); // '5f'
+simpleHash('Presto'); // '7d'
+simpleHash('Some Dood'); // '3a'
+simpleHash('password123'); // '09'
+```
+
+And just like that, we now have a rudimentary hash function that converts any string into a "unique" hexadecimal string of length `2`. At this point, the fixed-length output of the hash function is called the **digest**.
+
+Sadly, this implementation is far from perfect. Aside from its relatively high predictability, the problem with this overly simple hash function is the fact that it is extremely prone to **hash collisions**. A **hash collision** occurs when two input strings result in the same hash, in which case the hash is no longer "unique". For instance, the strings `"password123"` and `"Hotdogs1"` both result in the digest `"09"`.
+
+Well-designed hash algorithms such as those in the [Secure Hashing Algorithms (SHA)](https://www.youtube.com/watch?v=DMtFhACPnTY) family go to extremely great lengths to _mitigate_ hash collisions. This is why their outputs tend to be quite lengthy.
+
+Unfortunately, it is impossible to completely avoid hash collisions altogether simply due to the fact that digests are meant to have a fixed length. After all, there can only be so many ways to permute anything of fixed length.
+
+The SHA family of algorithms also reduce predictability by optionally accounting for "randomness". By reducing predictability, small changes in the input string will result in an entirely different output. In doing so, the resulting hashes will be less vulnerable to "brute-force attack", in which an attacker tries a bunch of similar input strings to figure out exploitable underlying patterns.
+
+Since hash algorithms are so difficult to perfect, languages often offer a SHA implementation in their standard library. In [Node.js](https://nodejs.org/en/), for example, the [`crypto` module](https://nodejs.org/api/crypto.html) provides [a unified interface](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm_options) for a plethora of hashing algorithms.
+
+```typescript
+import { createHash } from 'crypto';
+
+function nodeHash(text: string): string {
+	return createHash('sha1').update(text).digest('hex');
+}
+
+nodeHash('password123'); // 'cbfdac6008f9cab4083784cbd1874f76618d2a97'
+nodeHash('Hotdogs1'); // '37f40a625ab5ed5ebc42a966c0b59684a4b0c887'
+```
+
+#### Password Verification
+
+The biggest advantage of hashing passwords is the fact that a hashing function is designed to be one-way. Now, to verify a user, the website server only needs to hash the entered password (via an input field) and compare it with that in the database. If the two hashes match, then the user entered the correct password.
+
+Along the way, nobody (except the user) knows the plaintext password. The server only receives input, recomputes hashes, and compares with the database. Meanwhile, the database only stores hashed passwords. A malicious attacker cannot do much with a database full of encrypted data.
+
+## Conclusion
+
+Cryptography is the fundamental lifeblood of computer security. But with all the academic jargon, it has also unfortunately become one of the most _cryptic_[^5] topics in computer science. Hardcore theory and mathematics have made cryptography as robust as it is now, but at its core, the concepts are _relatively_ simple and straightforward.
+
+[^5]: Pun intended.
+
+To neatly summarize, a **cipher** is a two-way operation, whereas **hashing** is a one-way operation—that is to say, hashing a message removes the ability to decrypt it. Although this may seem counter-productive at first, it does present many advantages when it comes to data confidentiality and data integrity.
+
+_The complexity is unfortunately necessary. But every now and then, we can to take a step back and appreciate the essence of cryptography._

@@ -1,0 +1,210 @@
+---
+title: 'An Introduction to Overloading Operators (for Beginners by a Beginner)'
+description: 'I recently started learning C++ and it is by far one of the funnest programming languages I have ever decided to learn. It is challenging enough to keep me craving for more. To help solidify my newfound knowledge, here is a rather "mild" introduction to operator overloading.'
+createdAt: '2019-01-15T17:01:02Z'
+publishedAt: '2019-01-16T15:53:56Z'
+cover:
+    src: './cover.png'
+    alt: 'An Introduction to Overloading Operators (for Beginners by a Beginner)'
+tags: ['beginners', 'cpp', 'oop', 'programming']
+---
+
+Recently, I started learning the beautiful and punishing programming language of C++. I am currently very invested in the arduous journey towards mastery. After all, it will eventually help me in my journey in becoming a game developer.
+
+Coming from the relatively less difficult programming language of JavaScript, there were so many unfamiliar concepts to me such as memory management and header files. Of course, I was initially confused about pointers, as do all beginners. However, as I learned more about the language, I stumbled upon a concept that was so new, so strange, so powerful, and so useful that I just had to explain it _for_ beginners in the point of view of a beginner _himself_.
+
+By the end of this article, I hope to effectively explain the concept of **operator overloading** with simple use cases and examples—away from all the fancy terminology, syntax, technicalities, and formalities that do nothing but confuse beginners (like me). For that reason, I will purposefully leave out topics that do not necessarily relate to the topic at hand ~~because I'm not even qualified to talk about them in the first place~~.
+
+Just a quick note before moving on to the meat of the article, I will assume that, at the very least, you already have a grasp of some important features and concepts of C++ (the type system, namespaces, references, the `const` keyword, `struct`s, `class`es, and [member initialization lists](https://www.learncpp.com/cpp-tutorial/8-5a-constructor-member-initializer-lists/)). Otherwise, you might get confused by the code I write.
+
+## What is overloading?
+
+To oversimplify the wordy technical definition, in strongly-typed programming languages, "overloading a function" allows a function to accept multiple sets of arguments of different types for different situations. In other words, **_the function reacts accordingly to the arguments that were passed in_**. It is best to explain this through an example.
+
+```cpp
+#include <iostream>
+
+// Accepts integers
+int overloaded(const int& num) {
+  return num;
+}
+
+// Accepts three integers
+int overloaded(const int& num1, const int& num2, const int& num3) {
+  return num1 + num2 + num3;
+}
+
+// Accepts booleans
+int overloaded(const bool& someBoolean) {
+  // The argument is not used in the function to prove that it is overloaded.
+  return 100;
+}
+
+int main() {
+  // The `overloaded` function can accept multiple types and arguments.
+  int inputNumber = overloaded(5);
+  int sum = overloaded(3, 6, 1);
+  int inputBool = overloaded(false);
+
+  std::cout << inputNumber << std::endl; // 5
+  std::cout << sum << std::endl; // 10
+  std::cout << inputBool << std::endl; // 100
+
+  return 0;
+}
+```
+
+This is an extremely trivial example, but it hopefully shows how overloading works. With this in mind, you can probably guess what it means to "overload operators."
+
+## Operators are just functions
+
+In C++, operators can be thought of as syntactic sugar for functions. Since operators are essentially functions, that means it is possible to overload some operators.
+
+To demonstrate this, let's say we have a `struct` that represents a [complex number](https://www.mathsisfun.com/numbers/complex-numbers.html). This `struct` has two member properties that each represent the real and imaginary components of a complex number in the form `a + bi`. It also has a method that allows you to add two `ComplexNumber`s.
+
+```cpp
+struct ComplexNumber {
+  const double a, b;
+
+  // Constructor
+  ComplexNumber(const double& a, const double& b) : a(a), b(b) {}
+
+  // Adding method
+  ComplexNumber add(const ComplexNumber& z) const {
+    const double sumA = this->a + z.a;
+    const double sumB = this->b + z.b;
+    return ComplexNumber(sumA, sumB);
+  }
+};
+```
+
+In the `main` function, we can now add two `ComplexNumber`s and print the result to the screen.
+
+```cpp
+int main() {
+  ComplexNumber z1(2, 5); // 2 + 5i
+  ComplexNumber z2(4, 7); // 4 + 7i
+
+  ComplexNumber sum = z1.add(z2);
+
+  printf("%.2f + %.2fi", sum.a, sum.b); // "6.00 + 12.00i"
+
+  return 0;
+}
+```
+
+This is great and all, but having to chain the `ComplexNumber#add` method is too cumbersome. With operator overloading, we can make this code more readable and intuitive.
+
+To do so, we use the `operator` keyword to tell C++ what operator we want to overload. In this case, we will be overloading the `+` operator by naming the overload method as `operator+`. Since we already have an `add` method in the `struct`, we can just use its implementation for the overload, as seen in the example below.
+
+```cpp
+struct ComplexNumber {
+  const double a, b;
+
+  // Constructor
+  ComplexNumber(const double& a, const double& b) : a(a), b(b) {}
+
+  // Adding method
+  ComplexNumber add(const ComplexNumber& z) const {
+    const double sumA = a + z.a;
+    const double sumB = b + z.b;
+    return ComplexNumber(sumA, sumB);
+  }
+
+  // Overload the `+` operator.
+  // This overload returns a `ComplexNumber`.
+  // This method takes in a `ComplexNumber` as an
+  // argument, which comes from the right-hand
+  // side of the `+` operator.
+  ComplexNumber operator+(ComplexNumber& z) const {
+    return add(z);
+  }
+};
+```
+
+This allows us to use the `+` operator instead of having to chain the `ComplexNumber#add` method.
+
+```cpp
+int main() {
+  ComplexNumber z1(2, 5); // 2 + 5i
+  ComplexNumber z2(4, 7); // 4 + 7i
+
+  // Using the `+` operator in this case is
+  // equivalent to saying:
+  // z1.add(z2);
+  // The right-hand side of the operator
+  // is the input to the overload method.
+  ComplexNumber sum = z1 + z2;
+
+  printf("%.2f + %.2fi", sum.a, sum.b); // "6.00 + 12.00i"
+
+  return 0;
+}
+```
+
+As a general rule, the three statements below are logically equivalent _if_ the operator overload is defined as a **member method** of a `struct` or a `class`.
+
+```cpp
+// Chaining methods
+z1.add(z2).add(z3).add(z4).add(z5);
+
+// Overloading the `+` operator
+z1 + z2 + z3 + z4 + z5;
+
+// Adding parentheses to put emphasis on the
+// left- and right-hand side of the `+` operator
+((((z1 + z2) + z3) + z4) + z5);
+```
+
+## Defining operator overloads from outside a `struct` or `class`
+
+We can take operator overloading a step further by overloading the stream insertion operator (`<<`) for the `cout` class in the `<iostream>` library. In a way, our objective is to display a `ComplexNumber` object to the screen as a string. If you're familiar with either Java or JavaScript, this is like overriding the `toString` method of an object.
+
+```cpp
+#include <iostream>
+
+struct ComplexNumber {
+  // ...
+}
+
+// Overload the `<<` operator.
+// The first argument corresponds to the
+// left-hand side of the operator, while
+// the second argument corresponds to the
+// right-hand side of the operator.
+std::ostream& operator<<(std::ostream& stream, const ComplexNumber& z) {
+  return stream << z.a << " + " << z.b << 'i';
+}
+```
+
+In the `main` function, it is now possible to log a `ComplexNumber` object as a string. On top of that, we have the ability to "sum up" multiple `ComplexNumber` objects together since we overloaded its `+` operator. Also, since we implemented the `+` operator overload based on `ComplexNumber#add`, we can choose to "add" a number of `ComplexNumber` objects together by either chaining method calls or using the `+` operator. Either way, the output is the same.
+
+```cpp
+int main() {
+  ComplexNumber z1(2, 5);
+  ComplexNumber z2(4, 7);
+  ComplexNumber z3(1, 9);
+
+  // These statements are logically equivalent
+  ComplexNumber sumChain = z1.add(z2).add(z3);
+  ComplexNumber sumOverload = z1 + z2 + z3;
+
+  std::cout << sumChain << std::endl; // "7 + 21i"
+  std::cout << sumOverload << std::endl; // "7 + 21i"
+
+  return 0;
+}
+```
+
+## Great Power == Great Responsibility
+
+!["Overload all the operators" meme](https://thepracticaldev.s3.amazonaws.com/i/rmslhqnic0fmz36jb1e6.png)
+As tempting as it is to overload every single operator in C++—and yes, it is possible—we must remember that, like most things in life, "great power comes with great responsibility." Operator overloading must be used sparingly and only when _completely_ and _absolutely_ necessary.
+
+In the case of writing Math APIs and data structures, such as my `ComplexNumber` example, it is a necessary tool in making code more readable and intuitive in the long run. It is definitely a justifiable added layer of complexity to the code base (or API).
+
+On the contrary, we can go even crazier with operator overloads by making the `+` operator subtract its operands. Needless to say, this is a very bad idea, but at least you know it's possible.
+
+In conclusion, you wouldn't want to overload every operator out there because, let's face it, that's just a disaster waiting to happen. It also takes up too much of your time. However, if it's an experiment that you want to try, then go ahead and explore the depths of operator overloading. I encourage you to practice your C++ skills.
+
+_Overload responsibly._

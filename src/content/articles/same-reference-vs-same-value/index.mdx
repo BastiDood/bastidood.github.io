@@ -1,0 +1,177 @@
+---
+title: '"Same Reference" vs. "Same Value"'
+description: 'What does it mean to have the "same reference" and to have the "Same value"? Believe it or not, there are subtle differences between the two. Not being aware of them can lead to strange consequences.'
+createdAt: '2018-11-03T15:40:17Z'
+publishedAt: '2018-11-05T13:27:05Z'
+cover:
+    src: './cover.png'
+    alt: '"Same Reference" vs. "Same Value"'
+tags: ['computerscience', 'beginners', 'javascript']
+---
+
+In JavaScript and many other programming languages, variables are **references** to a **value**. By the [Transitive Law of Logic and Mathematics](https://www.britannica.com/topic/transitive-law), it then follows that references and values are one and the same. On the surface, this is true to some extent. Unfortunately, it isn't as simple as that under the hood.
+
+## Primitive and Non-primitive Data Types
+
+[Data types in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures) are classified as either _primitive_ or _non-primitive_.
+
+- **Primitive** data types are the simplest of the two classifications. These include booleans, numbers, strings, `null`, and `undefined`. If two primitives are compared using the [strict equality operator (`===`)](<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Comparison_Operators#Identity_strict_equality_()>), the result is `true` if and only if the two primitives have the same type and the _same value_.
+- On the other hand, **non-primitive** data types have an added layer of complexity due to their data structure. These include objects, functions, and arrays. Comparing two non-primitive data types with the strict equality operator will only result to `true` if and only if the two data types exist as the exact same instance. In other words, they occupy the same place in memory.
+
+**NOTE:** [Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) are also primitive data types, but the rules are sketchy for them. I will not expound on them in this article for the sake of simplicity.
+
+## In the Context of Primitive Data Types
+
+```javascript
+// The variable dev is a reference to the value 'to'.
+const dev = 'to';
+
+// The variable going is a reference to the value 'to'.
+const went = 'to';
+```
+
+The variables `dev` and `went` both have the same value. However, `dev` and `went` are not necessarily the same references. Although they both store the value `'to'`, they do not store the same instance of `'to'`. They occupy two different places in memory. `dev` stores a different string in memory while `went` stores another string in memory. The two variables just happen to store strings that have the same value. The diagram below illustrates this. The arrows represent what values each variable is referencing/pointing to.
+
+![Each variable points to their own instance of the string.](https://thepracticaldev.s3.amazonaws.com/i/k94h9y480jtv53otq1av.png)
+
+Now, you may be wondering how to achieve two variables having the same reference and same value. To do that, we simply assign the reference to another variable.
+
+```javascript
+// The variable dev is a reference to the value 'to'.
+const dev = 'to';
+
+// The variable went is a reference to the variable dev.
+// Therefore, the variable went is also a reference to the value 'to'.
+const went = dev;
+```
+
+In this case, the `dev` and `went` both have the same value _and_ the same reference. The diagram below is updated to reflect what has changed under the hood by doing this.
+
+![Both variables point to the same string.](https://thepracticaldev.s3.amazonaws.com/i/vn8ejmk0rktmrg5bqbqc.png)
+
+The diagram shows that running the code now takes up less memory because both `dev` and `went` now point to the same string. There is no longer a need to store two separate instances of the same string in memory. In a larger scale, this can prove to be useful in memory optimization. Compared to the previous example, memory usage has essentially been cut to half.
+
+## In the Context of Objects and Arrays
+
+The concept of pointers and references is further amplified by non-primitive data types. Consider the code below.
+
+```javascript
+// The variable foo is a reference to an object.
+let foo = {
+  name: 'milk'
+  price: 5000,
+  stock: 10
+};
+
+// The variable bar is a reference to an object.
+let bar = {
+  name: 'milk',
+  price: 5000,
+  stock: 10
+};
+```
+
+As we learned in the previous section, two variables may store the same value but not necessarily point to the same place in memory. We can prove this by altering their properties.
+
+```javascript
+// Mutating the properties
+foo.name = 'cereal';
+bar.name = 'candy';
+
+console.log(foo.name); // 'cereal'
+console.log(bar.name); // 'candy'
+
+// Proof that they are not the same object in memory
+console.log(foo === bar); // false
+```
+
+Now, what happens if we make the two variables point to the same object?
+
+```javascript
+// The variable foo is a reference to an object.
+let foo = {
+  name: 'milk'
+  price: 5000,
+  stock: 10
+};
+
+// The variable bar is a reference to the variable foo.
+// Therefore, the variable bar is also a reference to the same object.
+let bar = foo;
+```
+
+Indeed, the two variables have the same references and the same values. As a consequence of this, mutating the properties of one variable also mutates the other.
+
+```javascript
+// Mutating the properties
+bar.name = 'bread';
+bar.price = 2.5;
+bar.stock = 15;
+
+// Since foo and bar refer to the same object,
+// changes in the properties of one reflect on the other.
+console.log(foo.name); // 'bread'
+console.log(foo.price); // 2.5
+console.log(foo.stock); // 15
+
+// Proof that they are the same object in memory
+console.log(foo === bar); // true
+```
+
+This behavior also applies to arrays. Instead of properties, we are altering the individual elements of the array.
+
+```javascript
+// Two variables with the same values
+let someDogs = ['Lucky', 'Sparkles', 'Presto'];
+let moreDogs = ['Lucky', 'Sparkles', 'Presto'];
+
+// Mutating the corresponding elements
+someDogs[0] = 'Fluffykins';
+moreDogs[0] = 'Mittens';
+
+console.log(someDogs[0]); // 'Fluffykins'
+console.log(moreDogs[0]); // 'Mittens'
+
+// Proof that they are not the same array in memory
+console.log(someDogs === moreDogs); // false
+```
+
+We are now going to assign `moreDogs` a reference to `someDogs`.
+
+```javascript
+// Two variables with the same reference and the same value
+let someDogs = ['Lucky', 'Sparkles', 'Presto'];
+let moreDogs = someDogs;
+
+// Mutating moreDogs
+moreDogs[0] = 'Fluffykins';
+
+// Mutations in moreDogs reflect in someDogs
+console.log(someDogs[0]); // 'Fluffykins'
+console.log(someDogs); // ['Fluffykins', 'Sparkles', 'Presto']
+
+// Proof that they are the same array in memory
+console.log(someDogs === moreDogs); // true
+```
+
+## Conclusion
+
+Variables are simply **references** that _point_ to a **value**. Two references that store the same value do not necessarily mean they point to the same place in memory.
+
+In most cases, we do not have to be concerned about their differences. But in cases where it is absolutely necessary to care about performance and memory optimization (such as server maintenance), it pays to keep these differences in mind. For instance, one can write an implementation of a function by making sure that it returns references rather than brand new instances of the same value.
+
+The "`document.getElement` API" is a great example of such an implementation. Let's take the [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById) method for example. Given a unique `id`, the method returns a _reference_ to the HTML element that has that unique `id`.
+
+```javascript
+// Example ID for HTML element
+const id = 'someId';
+
+// Passing in the same ID as an argument to both methods
+const someElement1 = document.getElementById(id);
+const someElement2 = document.getElementById(id);
+
+// Testing if both variables point to the same place in memory
+console.log(someElement1 === someElement2); // true
+```
+
+So if there comes a time where you need to _point_ out their differences, use this _valuable_ article as a basic _reference_.

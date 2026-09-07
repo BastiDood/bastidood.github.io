@@ -1,0 +1,178 @@
+---
+title: 'Emulating "Private" Variables in JavaScript with Closures and Factory Functions'
+description: "Despite the recent implementation of classes in JavaScript, there has never been a native way of determining the visibility of an object's property. For now, workarounds are our best bets."
+createdAt: '2018-11-16T14:17:02Z'
+publishedAt: '2018-11-16T14:18:46Z'
+updatedAt: '2018-11-16T14:25:20Z'
+cover:
+    src: './cover.png'
+    alt: 'Emulating "Private" Variables in JavaScript with Closures and Factory Functions'
+tags: ['javascript', 'oop', 'functional', 'programming']
+---
+
+Despite the recent implementation of [classes in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes), there has never been a native way of controlling the visibility of an object's property. Specifically, there has never been a way to actually make variables private. For now, workarounds are our best bets. One of the most common workarounds is the _underscore notation_. It is simply the convention of prepending an underscore (`_`) to a variable name. This is done to indicate that a variable is private and should not be toyed with. For example, a "private" variable that stores sensitive information, such as a password, will be named `_password` to explicitly state that it is "private". However, it can still be accessed and mutated by writing `someObj._password`. It is just like any other object property that you can alter. The underscore is merely a symbol prepended to some identifier. Frankly, the prepended underscore is just there by convention as an unenforced deterrent to those who may have ideas to access and mutate the "private" variable.
+
+## What is a private variable?
+
+In many object-oriented programming languages, there is a way to limit the visibility of a variable from outside its scope. In other words, some programming languages allow variables to _only_ be accessible by the object that "owns" it. To be more technical, a private variable is only visible to the current class. It is not accessible in the global scope or to any of its subclasses. For example, we can do this in Java (and most other programming languages) by using the `private` keyword when we declare a variable. Attempting to access the private variable outside of the class that owns it will throw an error.
+
+```java
+// Example Class
+class Example {
+    // hiddenVariable CAN only be accessed here
+    private String hiddenVariable;
+
+    public Example(String websiteName) {
+        hiddenVariable = websiteName;
+    }
+}
+
+// Main Method
+public class Main {
+    public static void main(String[] args) {
+        // Instantiate class
+        Example website = new Example("DEV.to");
+
+        // This will throw an error
+        // error: hiddenVariable has private access in Example
+        System.out.println(website.hiddenVariable);
+    }
+}
+```
+
+Making variables private is done for many reasons ranging from security to [encapsulation](<https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)>). In this case, private variables can only be indirectly accessed and manipulated using good ol' [getter and setter methods](https://en.wikipedia.org/wiki/Mutator_method#JavaScript_example).
+
+## Closures
+
+In JavaScript, when a function finishes executing, any variables declared within its body is "garbage collected". In other words, it is deleted from memory. This is why local variables are possible in JavaScript. This is why variables inside functions cannot be accessed outside.
+
+```javascript
+// dev is NOT accessible here
+function someFunc() {
+	// dev is accessible here
+	const dev = 'to';
+}
+// dev is NOT accessible here
+```
+
+Special exceptions occur when something inside the function depends on the variable being deleted. For example, the function below returns another function that depends on the variables of the parent function.
+
+```javascript
+// Parent function
+function parent() {
+	// Local variable of the parent function
+	const prefix = 'I am a ';
+
+	// Child function
+	return function (noun) {
+		// The child function depends on the variables of the parent function.
+		return prefix + noun;
+	};
+}
+```
+
+**NOTE:** The example above takes advantage of a concept in functional programming called [currying](https://hackernoon.com/currying-in-js-d9ddc64f162e). You can read more about it if you want.
+
+```javascript
+// Store the returned child function
+const getSentence = parent();
+
+// At this point, `parent()` has finished executing.
+// Despite that, the `prefix` variable is still
+// accessible to the child function. More on that later.
+const job = getSentence('programmer');
+
+// What is the value of `job`?
+console.log(job); // 'I am a programmer'
+```
+
+In this case, `prefix` is still usable by the child function even after it has been garbage collected because the child function created its own closure. A **closure** is like a "snapshot" of the environment a function is in when it is executed. Its closure is its own internal copy of the environment.
+
+Technically speaking, any variable in a closure is exclusively accessible to the child function that owns it. Operations can only be performed on these variables if the current execution context has a reference to the closure. In this case, the "snapshot" that the child function owns is the reference to that closure, therefore it has access to its variables.
+
+When the `parent` function finished executing, the `prefix` variable is scheduled to be deleted. However, before that can be done, the child function "takes a snapshot" of its current environment (which includes all of the variables of the `parent` function it depends on). The child function now has its own copy of the `prefix` variable that it can access and manipulate. This is what closures are in its most basic use case. MDN provides a [more technical definition](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+
+## Factory Functions
+
+A factory function is any function that returns an object. Yup, that's pretty much it. This is not to be confused with classes and [constructor functions](https://www.w3schools.com/js/js_object_constructors.asp). **Classes and constructor functions** require the `new` keyword to instantiate objects while **factory functions** return the instantiated object itself.
+
+```javascript
+function factory(name) {
+	return { name };
+}
+
+const obj = factory('Some Dood');
+console.log(obj.name); // 'Some Dood'
+```
+
+## Using Closures for Private Variables
+
+We now have all the knowledge needed to emulate "private" variables in JavaScript. We can begin by writing a factory function that returns an object with getter and setter methods. The factory function takes in two arguments that correspond to the "private" properties of the returned object.
+
+```javascript
+function createAnimal(name, job) {
+	// "Private" variables here
+	let _name = name;
+	let _job = job;
+
+	// Public variables here
+	return {
+		// Getter Methods
+		getName() {
+			return _name;
+		},
+		getJob() {
+			return _job;
+		},
+		// Setter Methods
+		setName(newName) {
+			_name = newName;
+		},
+		setJob(newJob) {
+			_job = newJob;
+		},
+	};
+}
+```
+
+We can then invoke the factory function to create new instances of an animal object. Note that every time we invoke the factory function, a new closure is created. Therefore, each returned object has access to its own closure.
+
+```javascript
+const presto = createAnimal('Presto', 'Digger');
+const fluffykins = createAnimal('Fluffykins', 'Jumper');
+```
+
+So what have we achieved by doing this? Well, with the power of closures, we have essentially emulated "private" variables in JavaScript.
+
+```javascript
+// These properties will be inaccessible
+console.log(presto._name); // undefined
+console.log(presto._job); // undefined
+console.log(fluffykins._name); // undefined
+console.log(fluffykins._job); // undefined
+
+// Getter methods have access to the closure
+console.log(presto.getName()); // 'Presto'
+console.log(presto.getJob()); // 'Digger'
+console.log(fluffykins.getName()); // 'Fluffykins'
+console.log(fluffykins.getJob()); // 'Jumper'
+
+// Setter methods can mutate the variables in the closure
+presto.setName('Quick');
+presto.setJob('Bone Finder');
+fluffykins.setName('Mittens');
+fluffykins.setJob('Fish Eater');
+
+console.log(presto.getName()); // 'Quick'
+console.log(presto.getJob()); // 'Bone Finder'
+console.log(fluffykins.getName()); // 'Mittens'
+console.log(fluffykins.getJob()); // 'Fish Eater'
+```
+
+## A Strange Concoction of Programming Paradigms
+
+This workaround is indeed a strange way to achieve a seemingly simple feature of object-oriented languages. But if one were to analyze this very closely, there is beauty in this workaround. For one, it cohesively glues together two different and rather conflicting programming paradigms: [object-oriented](https://en.wikipedia.org/wiki/Object-oriented_programming) and [functional](https://en.wikipedia.org/wiki/Functional_programming) programming.
+
+The object-oriented nature of this approach involves the use of factory functions, mutability, and encapsulation. On the other hand, the functional approach involves the use of closures. JavaScript truly is a multi-paradigm language that continues to blur the borders between the contrasting paradigms.
+
+One could argue that gluing the two paradigms together is messy and peculiar. In my opinion, I wouldn't say that that's _entirely_ correct. Even if the amalgamation of paradigms does not follow conventions and design patterns, I find it greatly fascinating that to implement an object-oriented feature in JavaScript, one must use the features of functional programming. The two contradicting paradigms work together in harmony, similar to that of the [yin and yang](https://en.wikipedia.org/wiki/Yin_and_yang). Despite their differences, there is always a way to make things work. Perhaps this could be an analogy for life?

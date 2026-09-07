@@ -1,0 +1,71 @@
+---
+title: 'Thank you to byte-sized integers'
+description: 'With the ubiquity of high-level, dynamically-typed languages, we have lost control over the memory allocations of our numbers. In this article, I take the time to give thanks to the unsung heroes of memory optimization: unsigned integer types.'
+createdAt: '2019-04-30T16:29:24Z'
+publishedAt: '2019-05-01T08:49:36Z'
+updatedAt: '2019-05-01T08:55:23Z'
+cover:
+    src: './cover.png'
+    alt: 'Thank you to byte-sized integers'
+tags: ['cpp', 'rust', 'computerscience']
+---
+
+## A very brief history of computing numbers
+
+In the olden days, the early pioneers of modern computing had a seemingly insurmountable obstacle ahead of them. They had to figure out how computers were to effectively and efficiently represent the decimal number system. They eventually agreed upon using ones and zeroes to emulate integers. Although it was strange to use a base-2 number system to emulate a base-10 number system, this design proved to be an ingenious one due to the on-and-off nature of ones and zeroes that practically coincided with the one-and-off behavior of transistors, logic gates, arithmetic units, and processing modules. It was basically a match made in heaven.
+
+Problems arose when they had to consider fractions, precision, and negative numbers. Clever innovations and workarounds, such as the [sign bit](<https://en.wikipedia.org/wiki/Signed_number_representations#Signed_magnitude_representation_(SMR)>) and the [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement), ultimately led to the formation of the [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) standard in 1985. The binary format of numbers was designed to liken [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation) so that it could store and efficiently perform arithmetic operations on a wider range of numbers with greater decimal precision.
+
+Despite its computational flaws and limitations (such as the infamous `0.1 + 0.2 != 0.3`), the standard serves as a viable solution/compromise for many computer manufacturers and language designers. In fact, the standard (and its succeeding revisions) is so well-engineered that we often take it for granted. Most of the computers and programming languages we know today either fully adopt or somehow derive from the IEEE 754 standard. They cannot function as efficiently and precisely without such a standardized method of handling floating-point arithmetic.
+
+## Memory inefficiencies for dynamically-typed languages
+
+The IEEE 754 standard is a great solution until we consider dynamically-typed languages. High-level, dynamically-typed languages—namely [JavaScript](https://www.ecma-international.org/ecma-262/6.0/#sec-terms-and-definitions-number-value) and [Python](https://docs.python.org/3.7/tutorial/floatingpoint.html#representation-error), which are two of the most popular and most widely adopted programming languages in recent years—often opt in to complying with the IEEE 754 standard (2008 revision) for **all** numbers by default. There is no way to customize this behavior because in doing so, the "high-level" and "dynamic" aspect of a "high-level, dynamically-typed" language would be meaningless since one would be required to statically type a number for such a low level of control over memory.
+
+Though beginner-friendly and flexible for many use cases, having **all** numbers as signed 64-bit (double-precision) floating-point numbers presents quite a huge problem from a memory optimization standpoint. Not all use cases require such range and precision over numbers. Allocating 52 bits for the mantissa, 11 bits for the exponent, and 1 for the sign bit is definitely an overkill for the common usage. 8 bytes are simply too much for a small, positive integer—like the `length` property of an array for example—that could easily be represented by 1 or 2 bytes.
+
+## Nerding out over C++ integer types
+
+C++ gives us greater freedom over the size of our numbers with `int`, `float`, and `double` types and their respective modifiers (`signed`, `unsigned`, `short`, and `long`). When I first discovered this, my inner nerd was immediately excited by the amount of control I had. Suddenly, I was released from the shackles of dynamically-typed languages. Suddenly, I had the ability to use as little memory as I deemed safe and necessary.
+
+Since I rarely use fractions and negative numbers in my programs, the `unsigned short int` is my default number type. Unless an API/implementation requires otherwise or I find a _real_ possibility of [integer overflow](https://en.wikipedia.org/wiki/Integer_overflow), I have no particular reason to upgrade to a larger integer type. Call me a pedant for needlessly "optimizing", but my inner nerd just finds a lot of satisfaction in saving as much memory as I can. Although it is quite verbose to type `unsigned short int` everywhere, it is nonetheless a great feeling to know that I have saved 6 bytes of memory for not being forced to use double-precision floating-point numbers.
+
+## Going even crazier with Rust integer types
+
+Just when I thought that 2-byte `unsigned short int` numbers were the ultimate solution to my obsession with memory optimization, Rust comes into my life and slaps me across the face with [unsigned 1-byte integers (type-annotated as `u8`)](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-types).
+
+Sure, one can argue that C++ also has a construct for a "byte-sized" integer, but semantically speaking, a `char` is meant to be used as a character, not an integer. Declaring an integer as an `unsigned char` will surely get the job done for me, but without explicit documentation, it horribly fails to communicate my intent to interpret it as an integer. Simply put, Rust provides a semantically superior construct for "byte-sized" integers compared to C++. As an added bonus, it is also much more convenient to type `u8` than `unsigned char`.
+
+But then you may ask, "What is the point of storing an integer that overflows beyond `255`?" Honestly, unless you are using it—for example—to store the value of a color component (as in the [RGB color model](https://en.wikipedia.org/wiki/RGB_color_model)), there is no clear advantage in using a "byte-sized" integer over an `unsigned short int` (or a `u16` in Rust). You have to be really pedantic (or quite nerdy) like me to even consider using it.
+
+```javascript
+// JavaScript ❌
+// Very concise but very memory-inefficient (8 bytes)
+const num = 1;
+```
+
+```cpp
+// C++ 😐
+// Quite memory-efficient (2 bytes) but very verbose
+const unsigned short int num = 1;
+```
+
+```rust
+// Rust ✅
+// Quite concise and very memory-efficient (1 byte)
+let num: u8 = 1;
+```
+
+## Thank you, "byte-sized" integers
+
+At the end of the day, one can argue that these types of "micro-optimizations" do not have an impact on the overall performance of a program thanks to the greatness of modern CPUs and RAM cards. Yes, I completely agree with that argument, but I did not write this article to assert that "we must always use `u8` integers whenever possible". I wrote this article to express my gratitude towards number types for the freedom it gives me as a programmer over memory allocations.
+
+In today's day and age where high-level, dynamically-typed languages rule the software development scene, this degree of control over memory has become a thing of the past... and rightfully so! Nowadays, it has become unnecessarily tedious ~~and rather unproductive~~ to worry about the nuances of memory management, especially with the recent rise in popularity of the ["agile development" philosophy](https://en.wikipedia.org/wiki/Agile_software_development#Philosophy).
+
+Nevertheless, I do not allow this to come in the way of finding joy in the little things of life. For me, I find a special satisfaction in maximizing the bits, bytes, and nibbles I have at my disposal. It's not because I want to be unproductive or anything like that; some part of me just pats me in the back when I know I did my best to manage the limited resources I have.
+
+Perhaps this obsession for resource optimization comes from the fact that I was surrounded by low-end devices growing up as a child. I vividly remember how I couldn't bare spending another second waiting for a program to finally become responsive. From then on, I have made a promise to myself that I will never write software that would make people experience the excruciatingly long waiting times I have experienced during my childhood.
+
+And for that reason, I say "thank you" to number types—namely the `unsigned short int` of C++ and the `u8` of Rust—for allowing me to fulfill my lifelong devotion to optimization and for being by my side whenever I need my daily dose of memory optimization to cheer me up.
+
+🥂 _Cheers to number types!_ 🥂

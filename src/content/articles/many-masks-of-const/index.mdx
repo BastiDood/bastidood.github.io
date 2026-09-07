@@ -1,0 +1,123 @@
+---
+title: 'The Many Masks of `const`'
+description: 'Immutability is often considered to be a "best practice" in many programming languages. For most of them, it is as simple as declaring a variable `const`. For others, such as C++, it requires a bit more nuance than that.'
+createdAt: '2019-01-27T10:09:27Z'
+publishedAt: '2019-01-27T15:21:03Z'
+cover:
+    src: './cover.png'
+    alt: 'The Many Masks of `const`'
+tags: ['cpp', 'beginners', 'programming']
+---
+
+Immutability is often considered to be a "best practice" in many programming languages. It reduces the likelihood of introducing unwanted side effects to the code base, thus making it less prone to bugs.
+
+As a testament to this "best practice", [variables in Rust are immutable by default](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html). One has to go through the hassle of explicitly using the `mut` keyword to declare a mutable variable.
+
+C++, a language (famously and infamously) known for its reliance on state and mutability, is no exception to this "best practice". Like many other languages, the `const` keyword is used to declare a constant "variable". However, the `const` keyword is not as simple as it is in other languages. In C++, it has a plethora of meanings, each depending on how it is used per situation. In a way, it can be said that—similar to having multiple split personalities—the `const` keyword wears many masks.
+
+## The Straightforward Way
+
+The simplest, most familiar, and most intuitive way of using the `const` keyword is to declare constants. Like in many other programming languages, any variable (or function parameter) declared as `const` cannot be reassigned.
+
+```cpp
+int main() {
+  // Mutable variable
+  int variable = 5;
+  // Immutable constant
+  const int constant = 10;
+
+  // This is legal
+  variable = 1;
+  // Throws an error
+  constant = 25;
+
+  return 0;
+}
+```
+
+## Class Fields
+
+Similar to variables, class fields can also be declared constant. Any object instantiated from this class will have its respective properties immutable.
+
+```cpp
+#include <string>
+
+class Dog {
+  public:
+    std::string name;
+    const std::string breed;
+
+    Dog(const std::string& dogName, const std::string& dogBreed)
+      : name(dogName)
+      , breed(dogBreed)
+    { }
+};
+
+int main() {
+  Dog presto("Presto", "Siberian Husky");
+
+  // This is legal
+  presto.name = "Not Presto";
+  // Throws an error
+  presto.breed = "Not a Husky";
+
+  return 0;
+}
+```
+
+## Class Methods
+
+Class methods can also be declared `const`. By doing so, a class method _promises_ to never mutate any of its class' fields.
+
+```cpp
+#include <string>
+
+class Dog {
+  private:
+    std::string name;
+  public:
+    Dog(const std::string& dogName) : name(dogName) { }
+
+    // This is a `const` method because it does not
+    // mutate any of the fields.
+    std::string getName() const { return name; }
+
+    // On the other hand, this setter method
+    // can **not** be `const` because it
+    // mutates/sets a field to a value.
+    void setName(const std::string& newName) { name = newName; }
+};
+```
+
+## Pointers
+
+The `const` keyword becomes quite confusing with pointers. At first glance, it seems to be a simple idea. However, using the `const` keyword on pointers begs the question of what _exactly_ is being declared `const`. Is it the _actual pointer_ to the memory address or is it the _dereferenced value_ of the memory address? For this dilemma, C++ has a way to specify which is to be declared `const`.
+
+```cpp
+int main() {
+  int foo = 1;
+  int bar = 2;
+  int baz = 3;
+
+  // Constant actual pointer
+  int* const actualPointer = &foo;
+
+  // Constant dereferenced value
+  const int* dereferValue = &bar;
+
+  // Constant pointer **and** dereferenced value
+  const int* const both = &baz;
+
+  return 0;
+}
+```
+
+Reading variable declarations backwards will greatly help in remembering these nuances. [This StackOverflow answer](https://stackoverflow.com/questions/1143262/what-is-the-difference-between-const-int-const-int-const-and-int-const/1143272#1143272) summarizes it _very_ well and provides more advanced examples and exercises. For beginners and veterans alike, this answer is a must-read for anyone working with C++.
+
+## Conclusion
+
+The `const` keyword is more than just a mechanism for enforcing immutability. It is more than just a safety net from unwanted side effects. For developers, it is an annotation that hints intentions. It is an implicit documentation of how a function (or variable) works. For example, a `const` getter method assures a developer that it will not mess up their code in any way because it is impossible to do so under `const` constraints.
+
+One can argue that adding multiple `const` declarations all over the code base is unnecessarily verbose. Yes, that is a valid argument, but the benefits provided by implicit documentation and the safety of immutability simply outweigh the drawbacks of verbosity (at least for me). Besides, it is considered to be a "best practice" for a good reason.
+
+_So go and decorate your code base with as many_ `const` _declarations as necessary!_

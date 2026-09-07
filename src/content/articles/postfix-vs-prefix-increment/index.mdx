@@ -1,0 +1,119 @@
+---
+title: 'The difference between x++ and ++x'
+description: 'There are two types of increment/decrement operators: prefix and postfix. Which one should you use?'
+createdAt: '2018-10-20T04:51:40Z'
+publishedAt: '2018-10-20T08:48:39Z'
+updatedAt: '2018-10-20T11:24:28Z'
+cover:
+    src: './cover.png'
+    alt: 'The difference between x++ and ++x'
+tags: ['beginners', 'javascript']
+---
+
+## The laziness and practicality of a programmer
+
+Let's face it. Programmers are paid to type some magic into a screen that eventually becomes something that works. Since an entire work day mostly consists of reading and typing, it naturally follows that syntax must be shortened to increase productivity and readability... or for the sake of saving a few more keystrokes because typing is tiring.
+
+This is why we have increment/decrement operators.
+
+```javascript
+// Suppose we have a variable that stores a number
+let someNum = 0;
+
+// Practicality Level 1
+someNum = someNum + 1;
+
+// Practicality Level 2
+someNum += 1;
+
+// Practicality Level 9000+
+someNum++;
+
+// Wait... or should I use...?
+++someNum;
+```
+
+Ah, now we have come face to face with the issue at hand: what _is_ the difference between `someNum++` and `++someNum`?
+
+## Prefix vs. Postfix
+
+- **Prefix:** `++someNum`
+- **Postfix:** `someNum++`
+
+At first glance, it may seem like a syntactic preference; similar to that of [generators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator), where you can define one by writing `function* generator() {}` or `function *generator() {}`. Contrary to intuition, there are subtle differences in how each works, specifically in what each returns.
+
+**DISCLAIMER:** For the rest of the article, I shall only use increment operators for the sake of brevity. It should be implied from here on out that what is true for increment operators is also true for decrement operators.
+
+Both operators still do what their syntax implies: to increment. Regardless of prefix or postfix, the variable is sure to be incremented by 1. The difference between the two lies in their return values.
+
+- The **prefix** increment returns the value of a variable **after** it has been incremented.
+- On the other hand, the more commonly used **postfix** increment returns the value of a variable **before** it has been incremented.
+
+```javascript
+// Prefix increment
+let prefix = 1;
+console.log(++prefix); // 2
+console.log(prefix); // 2
+
+// Postfix increment
+let postfix = 1;
+console.log(postfix++); // 1
+console.log(postfix); // 2
+```
+
+To remember this rule, I think about the syntax of the two. When one types in the prefix increment, one says `++x`. The position of the `++` is important here. Saying `++x` means to increment (`++`) first _then_ return the value of `x`, thus we have `++x`. The postfix increment works conversely. Saying `x++` means to return the value of `x` first _then_ increment (`++`) it after, thus `x++`.
+
+## When do I use one over the other?
+
+It really depends on you, the programmer. At the end of the day, all we really want from the increment operator is to increment a variable by 1. If you are still concerned about their differences, there are some cases when one can be used over the other to write simpler code. For example, consider the following situation.
+
+A `button` with an ID of `counter` counts how many times it has been pressed. It changes the `innerHTML` of a `span` with an ID of `displayPressCount` according to the number of times the button has been pressed. The common approach is to attach a click listener that increments some global variable.
+
+```javascript
+// Global variable that counts how many times the button has been pressed
+let numberOfPresses = 0;
+
+// Stores necessary HTML elements
+const button = document.getElementById('counter');
+const span = document.getElementById('displayPressCount');
+
+// Event handler
+function clickHandler() {
+	// Increment counter
+	numberOfPresses++;
+	span.innerHTML = numberOfPresses;
+}
+
+// Attach click listener to button
+button.addEventListener('click', clickHandler);
+```
+
+Now, let's switch our focus to the `clickHandler`. Notice how the increment operator takes up a whole new line of code in the function? Recalling what the prefix increment returns can help us shorten the function.
+
+```javascript
+// Event handler
+function clickHandler() {
+	// Increment counter
+	span.innerHTML = ++numberOfPresses;
+}
+```
+
+_Voila!_ It has been shortened! If we want to go crazier, we can even use arrow functions. The entire script now looks like this.
+
+```javascript
+// Global variable that counts how many times the button has been pressed
+let numberOfPresses = 0;
+
+// Stores necessary HTML elements
+const button = document.getElementById('counter');
+const span = document.getElementById('displayPressCount');
+
+// Attach click listener to button
+button.addEventListener('click', () => (span.innerHTML = ++numberOfPresses));
+```
+
+## Things to Remember
+
+The prefix and postfix increment both increase the value of a number by 1. The only difference between the two is their return value. The former increments (`++`) first, then returns the value of `x`, thus `++x`. The latter returns the value of `x` first, then increments (`++`), thus `x++`.
+
+Now go and spread your newfound knowledge to the world!

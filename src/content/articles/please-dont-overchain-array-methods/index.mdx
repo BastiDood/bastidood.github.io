@@ -1,0 +1,117 @@
+---
+title: 'Please don''t "overchain" array methods'
+description: 'Array methods are godsends to the JavaScript language. They have made iterating over arrays simpler and more concise than ever (compared to their `for` loop counterparts). However, "overchaining" them can impact performance if we''re not careful.'
+createdAt: '2019-02-03T11:31:50Z'
+publishedAt: '2019-02-03T17:48:17Z'
+cover:
+    src: './cover.png'
+    alt: 'Please don''t "overchain" array methods'
+tags: ['javascript', 'functional', 'fp', 'tips']
+series: please-dont
+---
+
+Before modern JavaScript was a thing, the only conceivable way of iterating over arrays was to use the classic C-style `for` loop. It was cumbersome to say the least. It was too verbose and had a lot of boilerplate code. With the rising popularity of concepts in functional programming came the array methods we love and enjoy today. Thanks to [`forEach`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach), [`map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map), [`filter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter), and [`reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight), iterating over arrays has never been easier. Coupled with [ES6 arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions), they have never been more concise.
+
+In addition to its brevity, these array methods—which are essentially just glorified `for` loops—also allow us to chain various array operations as much as we need without sacrificing readability (depending on your code). It's a real work of art to see a beautiful chain of sequential method calls. Seeing how an array is manipulated step-by-step for each method call makes it all the more natural to read. What had to be done with several lines of code back then can now be done with a single one.
+
+Although they have virtually eliminated the need for `for` loops, array methods introduce new problems to the table. As elegant as a chain of method calls can be, we have to remember that for each method we attach to the chain is a whole new iteration of the array. To write performant code, we must keep in mind that these long chains mean more iterations.
+
+## Combine your Math operations
+
+To illustrate the problem of unnecessarily long chains, consider an array of numbers from `-2` to `2`. It is our objective to find the sum of thrice the squares of these numbers. At first glance, we can go about the problem with a chain of `map` and `reduce` calls.
+
+```javascript
+const nums = [-2, -1, 0, 1, 2];
+
+const sum = nums
+	.map(x => x * x)
+	.map(x => x * 3)
+	.reduce((prev, curr) => prev + curr, 0);
+```
+
+This will indeed meet our objective. The only problem with it is the fact that it has three chained methods. Three chained methods mean three whole new array iterations. We can prove that fact by adding an intermediary `console.log` before returning each callback function ~~but I won't do that in this article because you probably get the point by now~~. If that sounds very time-inefficient, especially at scale, then you'd be correct. To make this code more performant, we simply have to find a way to combine the method calls in such a way that minimizes the number of iterations the CPU has to do over the same array of data.
+
+```javascript
+const nums = [-2, -1, 0, 1, 2];
+
+// Level 1: Combine the `map` calls
+const level1Sum = nums.map(x => 3 * x ** 2).reduce((prev, curr) => prev + curr, 0);
+
+// Level 2: Combine _everything_
+const level2Sum = nums.reduce((prev, curr) => prev + 3 * curr ** 2, 0);
+```
+
+## Use compound Boolean expressions
+
+The same rule can be applied to Boolean expressions and the `filter` method. Let's say we have an array of `User` objects. We want to find the `User` objects that currently have premium accounts. Then, from those accounts, we look for administrators whose ages are over `18`.
+
+```javascript
+class User {
+	constructor(isAdmin, hasPremium, age) {
+		this.isAdmin = isAdmin;
+		this.hasPremium = hasPremium;
+		this.age = age;
+	}
+}
+
+// Array of `User` accounts
+const users = [
+	new User(false, false, 9),
+	new User(false, true, 30),
+	new User(true, true, 15),
+	new User(true, true, 19),
+	new User(false, true, 3),
+];
+```
+
+Instead of combining Math operations, we can use compound Boolean expressions to combine each condition. This way, we can minimize the number of array iterations.
+
+```javascript
+// Level 0: Chain _everything_
+const level0 = users
+	.filter(user => user.isAdmin)
+	.filter(user => user.hasPremium)
+	.filter(user => user.age > 18);
+
+// Level 2: Combine _everything_
+const level3 = users.filter(user => user.isAdmin && user.hasPremium && user.age > 18);
+```
+
+## Take advantage of operand omission
+
+It is also worth noting that it is still possible to further optimize similar code. By arranging Boolean conditions in a clever way, the code can run slightly faster. This is because the [ECMAScript specification](https://www.ecma-international.org/ecma-262/9.0/index.html#sec-binary-logical-operators-runtime-semantics-evaluation) states that the logical AND operator (`&&`) must immediately stop evaluating succeeding operands as soon as it encounters an expression that evaluates to `false`.
+
+```javascript
+function willRun() {
+	console.log('I just stopped the `&&` operator from evaluating the next operand.');
+	return false;
+}
+function neverRuns() {
+	console.log('This function will never run.');
+}
+
+// 'I just stopped the `&&` operator from evaluating the next operand.'
+true && willRun() && neverRuns();
+```
+
+To write (slightly) more performant code, Boolean expressions that are more likely to be evaluated to `false` must be placed at the beginning of the compound Boolean condition in order to prevent the unnecessary execution and evaluation of succeeding operands.
+
+```javascript
+// Arranging conditions properly will
+// make your code run slightly faster.
+arr.filter(
+	x =>
+		x.mostLikelyToBeFalse &&
+		x.moreLikelyToBeFalse &&
+		x.likelyToBeFalse &&
+		x.leastLikelyToBeFalse,
+);
+```
+
+## Conclusion
+
+Of course, the examples I presented are trivial. Running these examples won't present a huge performance difference, if at all. The performance impact of an unnecessarily long chain of iterations only becomes apparent at scale with more computationally expensive calculations. For most cases, we don't need to worry about it. Besides, most chains do not even exceed the length of four.
+
+The point of this article is to serve as a reminder to all that just because we _can_ chain methods calls, it doesn't mean we should overdo it. It is our responsibility as developers to make sure that we do not abuse this power. No matter how negligible, there really is a performance impact for each method we attach to a chain. If there is one thing that you should learn from this article, it is the fact that **longer chains mean more iterations**.
+
+_Unless you want to face the wrath of unnecessary iterations, please don't "overchain" array methods._

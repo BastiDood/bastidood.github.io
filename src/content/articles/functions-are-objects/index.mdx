@@ -1,0 +1,129 @@
+---
+title: 'Remembering that "functions are objects" can help in writing more concise code'
+description: 'In JavaScript, never forget that functions are also objects.'
+createdAt: '2018-10-19T11:40:43Z'
+publishedAt: '2018-10-19T16:37:06Z'
+updatedAt: '2018-10-20T07:51:42Z'
+tags: ['javascript']
+---
+
+## Introduction
+
+More often than not, we are obsessed with writing concise code. Who wouldn't, right? Concise code is short code that is easier to take in and usually more readable. It is what separates quick-and-dirty code from _elegant_ code. The key word here is _elegant_. Using shorter and vaguer variable names at the expense of readability just to achieve "concise code" is indeed **not** concise code. Rather, it is minified gibberish more than anything else.
+
+As developers, we strive to write such code whenever possible. This is why JavaScript has received a huge facelift over the years. To put into perspective how much JavaScript has changed, there was a time not so long ago before ES6 (or ES2015 if you're edgy) when it was mandatory to write the word `function` to define a function, may it be anonymous or named. For example, the code below attaches a click listener (anonymous function) to an HTML element with an ID of `veryNiceExample`. For simplicity, the listener then logs the `MouseEvent` object to the console.
+
+```javascript
+// Using "var" for added immersion
+var element = document.getElementById('veryNiceExample');
+
+// Attaches listener
+element.addEventListener('click', function (event) {
+	console.log(event);
+});
+```
+
+With the introduction of ES6, the whole JavaScript community went crazy for [arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). We can now do the same thing in a shorter syntax.
+
+```javascript
+// Using "const" for added immersion
+const element = document.getElementById('veryNiceExample');
+
+// Attaches listener
+element.addEventListener('click', event => {
+	console.log(event);
+});
+```
+
+If it wasn't short enough already, clever folks began utilizing the implicit return feature of arrow functions to push the limits even more. Implicit returns can then be applied in the code example. Although `console.log` returns nothing, an implicitly returned arrow function can still be used in this case since it is just a single-purpose function where its return value is not really used for anything.
+
+```javascript
+// Using "const" for added immersion
+const element = document.getElementById('veryNiceExample');
+
+// Attaches listener
+element.addEventListener('click', event => console.log(event));
+```
+
+## Functions are also objects
+
+In JavaScript, **everything is an object**. Unless an object is created via `Object.create(null)`, everything inherits from `Object` since it is the [last link in the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain). Functions are no exception to this rule. Even primitive data types are objects. To stress this point, all data types (except `Symbol`s) have [object wrappers](https://javascriptrefined.io/the-wrapper-object-400311b29151). By that, I mean it is possible to instantiate a primitive as an object by calling its constructor with the `new` keyword.
+
+**DISCLAIMER:** For performance reasons, it is not recommended to use object wrappers. This is for demonstration purposes only.
+
+```javascript
+const primitiveString = 'This is a string.';
+const wrapperObjectString = new String('This is a string.');
+
+console.log(typeof primitiveString); // 'string'
+console.log(typeof wrapperObjectString); // 'object'
+```
+
+Since JavaScript treats functions like objects, it is possible to store functions as values in variables.
+
+```javascript
+// Using "const" for added immersion
+const element = document.getElementById('veryNiceExample');
+
+// Stores function through declaration
+function handler(event) {
+	console.log(event);
+}
+
+// Attaches listener
+element.addEventListener('click', handler);
+```
+
+It is worth noting that `handler` is different from `handler()`. The variable `handler` returns the value it stores. In this case, the value it stores is the **actual definition** of the function. On the other hand, `handler()` executes the function stored in `handler` and returns the necessary values. In this case, `handler` (the definition) does not explicitly `return` a value. Therefore, if `handler` is executed, `handler()` returns `undefined`.
+
+With that said, the code example can now be shortened using the same concept. Since `console.log` is essentially a function that accepts an argument, its definition can directly be used as the listener for the mouse click event.
+
+```javascript
+// Using "const" for added immersion
+const element = document.getElementById('veryNiceExample');
+
+// Attaches listener
+element.addEventListener('click', console.log);
+```
+
+**EDIT:** As raised by @jburgy in [his comment](https://dev.to/jburgy/comment/696g), one has to be aware of all the parameters of a function. Some parameter conflicts may arise if one is not careful such as the case with the code below. See the [full discussion](https://dev.to/jburgy/comment/696g) to see why this does not work as expected.
+
+```javascript
+['0', '1', '2'].map(parseInt); // [0, NaN, NaN]
+```
+
+## Catching Promises
+
+With the previous example, it may seem pointless to even bother with considering functions as objects. However, this concept can prove to be useful in the context of promises, where callback functions are ubiquitous.
+
+During the prototyping stage of any JavaScript application, it is understandable to write quick-and-dirty code. For fast debugging, rejected promises are often handled by logging the errors. As an example, the code below fetches data from the main endpoint of the [GitHub REST API v3](https://developer.github.com/v3/) and logs the received data as [JSON](https://en.wikipedia.org/wiki/JSON#Example). In case of any errors, the `catch` accepts `console.log` as its argument. That way, it also logs the `Error` object.
+
+```javascript
+fetch('https://api.github.com/')
+	.then(res => res.json())
+	.then(console.log)
+	.catch(console.log);
+```
+
+Despite the code above being syntactically legal, it is still common to see one-line arrow functions (or even normal functions) wrapping other functions. In turn, these one-line wrapper functions are unnecessarily passed in as arguments. For instance, consider the following lines of code.
+
+```javascript
+fetch('https://api.github.com/')
+	.then(res => {
+		return res.json();
+	})
+	.then(function (data) {
+		console.log(data);
+	})
+	.catch(err => console.log(err));
+```
+
+The two examples do the same operations and yield the same results, but the former is simply more _concise_ and _elegant_. In contrast, the latter is outright cumbersome and difficult to read. Although it is unlikely that such terribly written code exists (especially in a professional setting), the exaggeration is meant to prove the point.
+
+As an added bonus, ~~negligibly~~ less memory is taken up by the program since the JavaScript interpreter/engine no longer needs to store unnecessary functions into memory.
+
+## Conclusion
+
+It never hurts to make code more _concise_. To write such code, one must always remember that functions, even the built-in ones, are simply values that can be passed into other functions as arguments. That _is_ the basis of callback functions after all. Of course, it is more important to find the balance between _elegance_ and readability. It really just depends on the situation as do most things in life.
+
+In conclusion, thinking more critically about functions can save a few lines of code... and the sanity of a code reviewer.

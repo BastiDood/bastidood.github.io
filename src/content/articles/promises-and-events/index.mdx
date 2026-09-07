@@ -1,0 +1,310 @@
+---
+title: 'Promises and Events: Some Pitfalls and Workarounds'
+description: 'More often than not, we find that promises and events have fundamental incompatibilities that make them difficult to interleave. Ultimately, can promises and events coexist? In this article, we explore this question and propose a neat solution.'
+createdAt: '2022-08-04T10:47:34Z'
+publishedAt: '2022-08-04T12:42:50Z'
+cover:
+    src: './cover.png'
+    alt: 'Promises and Events: Some Pitfalls and Workarounds'
+tags: ['javascript', 'typescript', 'tips', 'async']
+series: making-the-most-out-of-asynchronous-javascript
+---
+
+## The Shortcomings of an Event-based JavaScript
+
+For most runtimes, the JavaScript language boasts many event-based APIs. This is not the most surprising development in the language given that JavaScript is primarily used to orchestrate dynamic user interfaces (which are inherently event-driven themselves).
+
+### A Plethora of Lifecycle Hooks
+
+The event-based design patterns inevitably leaked into the early asynchronous APIs (i.e. the pre-`Promise` era). A notable commonality between the APIs is the abundance of explicit lifecycle hooks. These events typically come in the form `before`-`during`-`after`. The `before` hook always happens first (for setup), then zero or more invocations of the `during` hook (for progress), and finally the `after` hook (for cleanup).
+
+Consider the [`XMLHttpRequest` API](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) for example. Preceding promises and the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), the `XMLHttpRequest` API relied on lifecycle hooks to asynchronously notify the JavaScript application.
+
+Veteran developers will be familiar with the spaghetti of lifecycle events: `load`, `progress`, `error`, and `timeout` among many others. It is one thing to hook into the events, but it is an entirely separate can of worms to figure out the exact order of execution as inter-connected state grows.
+
+### Unhandled Promise Rejections
+
+When the `Promise` API became generally available, it also became apparent that many event-based APIs were fundamentally incompatible with the modern asynchronous model.
+
+In particular, unhandled promise rejections made a big splash in the Node.js ecosystem. Previously, when synchronous event callbacks threw exceptions, the [`EventEmitter`](https://nodejs.org/api/events.html) class swallowed the exception and re-emitted it via the `error` event (by convention).
+
+The problem arises when an asynchronous callback is used instead. Recall that `async` functions return rejected promises when an exception is thrown in the function body. The exception itself does not actually propagate as it typically would in a synchronous context. The only way to handle the error (properly) is by providing a `Promise#catch` handler. Otherwise, the exception remains unhandled—even inside `try`-`catch` blocks!
+
+```javascript
+async function boom() {
+	throw new Error('Boom!');
+}
+
+try {
+	// Since we do not `await` for `boom`,
+	// the rejected promise remains unhandled.
+	boom();
+} catch (err) {
+	// This `catch` block will never run!
+	process.exit();
+}
+
+console.log('This line will run.');
+```
+
+Since most implementations used `try`-`catch` blocks to re-emit the exception as an `error` event, unhandled promise rejections introduced a loophole in the error-handling ecosystem. That is, throwing exceptions from inside `async` functions never actually cause `error` events to fire.
+
+```javascript
+// Hypothetical Implementation of Event Dispatch
+import { getEventListeners } from 'node:events';
+
+try {
+	// Invoke callback with some data. Notably, we
+	// do not `await` the listener. So, if the handler
+	// happens to be an `async` function, all rejected
+	// promises will not be caught.
+	for (const listener of getEventListeners('something')) listener(data);
+} catch (err) {
+	// In case an error is thrown, we re-emit it.
+	// Note that this is never invoked for `async`
+	// callback functions.
+	emitter.emit('error', err);
+}
+```
+
+```javascript
+import { EventEmitter } from 'node:events';
+
+const emitter = new EventEmitter();
+
+emitter.on('error', () => {
+	// This will never be invoked...
+	process.exit();
+});
+
+emitter.on('something', async () => {
+	// Promise rejection inside `async` context!
+	throw new Error('Oops!');
+});
+
+// Rejected promises do not invoke
+// the `error` handler by default.
+emitter.emit('something');
+```
+
+Nowadays, Node.js patches this unexpected behavior with the [`captureRejections` option](https://nodejs.org/api/events.html#capture-rejections-of-promises). If set, the `events` module will forward the inner exception of the rejected promise to the respective `error` event. The patch essentially installs a `Promise#catch` handler for all `async` callback functions. The automatically installed listener handles the fancy `error` event propagation for the user.
+
+A more permanent solution was [introduced in Node 15](https://nodejs.org/en/blog/release/v15.0.0/#throw-on-unhandled-rejections-33021), where all unhandled promise rejections will now be treated as if they were unhandled exceptions by default. This behavior may be customized, but doing so is generally ill-advised.
+
+### Unergonomic APIs: Callbacks All the Way Down
+
+One of the most notorious event-driven APIs is that of [`IndexedDB`](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API). Modelled after actual database interactions, the `IndexedDB` API provides an asynchronous request-response API for reading and storing arbitrarily structured data (including files and blobs) in the browser.
+
+Unfortunately, since the `IndexedDB` API predated the `Promise` API, the request-response interface extensively relied on `success` and `error` event callbacks. The general idea is that a database invocation returns a request handle to that asynchronous operation. The application then attaches a `success` listener to that request handle, which later gives access to the resulting response.
+
+As dependent queries increase, however, one can imagine that the API inadvertently necessitates callbacks _inside_ callbacks _after_ callbacks _in case a_ callback fails... Indeed, this is **callback hell** knocking on the door again.
+
+```javascript
+// An exagerrated example of callback hell...
+const options = { passive: true, once: true };
+window.indexedDB.open('users', 1).addEventListener(
+	'success',
+	evt0 => {
+		const db = evt0.target.result;
+		const store = db.createObjectStore();
+		store.add({ name: 'World' }, 'Hello').addEventListener(
+			'success',
+			evt1 => {
+				store.add({ name: 'Pong' }, 'Ping').addEventListener(
+					'success',
+					evt2 => {
+						// ...
+					},
+					options,
+				);
+			},
+			options,
+		);
+	},
+	options,
+);
+```
+
+## Awaiting New Promises
+
+Ideally, an available "promisified" wrapper library is the best solution. When we do have to roll our own wrappers, however, there are some tricks and patterns that we can use to make events and promises play nicer with each other.
+
+Our main tool will be the `Promise` constructor itself. Recall that the constructor accepts a single argument: a callback with two arguments (conventionally named `resolve` and `reject`). The callback must invoke either `resolve` or `reject` to fulfill the `Promise` handle.
+
+> **NOTE:** For the sake of brevity, this article assumes that the reader is already familiar with the [`Promise` constructor's usage](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise).
+
+With that said, the key insight is to invoke the `resolve` callback inside an event listener (or as the event listener itself). In doing so, the promise fulfills when the event fires.
+
+Let us consider a practical example. Suppose that we want our script to run after the [`DOMContentLoaded`] event. The script then opens a [`WebSocket`] connection, which runs more code only when the [`open`] event fires. Without promises, the typical code structure necessitates nested callbacks.
+
+```javascript
+const options = { passive: true, once: true };
+document.addEventListener(
+	'DOMContentLoaded',
+	() => {
+		const ws = new WebSocket('wss://example.com');
+		ws.addEventListener(
+			'open',
+			() => {
+				// ...
+				console.log('Ready!');
+			},
+			options,
+		);
+	},
+	options,
+);
+```
+
+With some clever usage of the `Promise` constructor, it is possible to flatten the code so that it becomes a top-to-bottom execution.
+
+```typescript
+/** When awaited, this function blocks until the `event` fires once. */
+function blockUntilEvent(target: EventTarget, event: string) {
+	return new Promise(resolve =>
+		target.addEventListener(event, resolve, {
+			// For simplicity, we will assume passive listeners.
+			// Feel free to expose this as a configuration option.
+			passive: true,
+			// It is important to only trigger this listener once
+			// so that we don't leak too many listeners.
+			once: true,
+		}),
+	);
+}
+```
+
+```typescript
+// Execution is blocked until the listener is invoked.
+await blockUntilEvent(document, 'DOMContentLoaded');
+
+// Blocked again until the connection is open.
+const ws = new WebSocket('wss://example.com');
+await blockUntilEvent(ws, 'open');
+
+// ...
+console.log('Ready!');
+```
+
+## Proof of Concept: Asynchronous Generators with Events
+
+Using our `blockUntilEvent` primitive (which encapsulates the pattern of awaiting new promises), it is also possible to transform stream-like events into asynchronous generators.
+
+```typescript
+/** Waits for multiple message events indefinitely. */
+async function* toStream(target: EventTarget, event: string) {
+	while (true) yield await blockUntilEvent(target, event);
+}
+```
+
+Let us return to our previous example. Recall that the [`WebSocket`] API emits a [`message`] event (after [`open`]) for each new message that the connection receives. The `toStream` utility allows us to listen for [`message`] events as if we were simply iterating over them.
+
+[`message`]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/message_event
+
+```javascript
+for await (const message of toStream(ws, 'message')) {
+	// Stream of `message` events...
+}
+```
+
+Similarly, we may also treat the `click` event for various HTML elements as streams.
+
+```javascript
+for await (const click of toStream(document.body, 'click')) {
+	// Stream of `click` events...
+}
+```
+
+> **DISCLAIMER:** It is important to note that this is not semantically equivalent to using plain old listeners. Recall that the `blockUntilEvent` utility registers a one-time listener. The `toStream` utility is a bit inefficient because it repeatedly invokes `blockUntilEvent` internally, thereby registering many one-time listeners instead of a single listener.
+
+## An Applied Example with WebRTC
+
+We now apply the techniques above to a sample [WebRTC](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API) handshake. Fortunately, WebRTC is a relatively modern API that uses promises wherever it can. When a stream of events is necessary, the API invokes event listeners instead.
+
+To make a long story short, the steps below describe a basic WebRTC handshake. Some details have been omitted for brevity.[^protocol]
+
+[^protocol]: Namely, we leave the [ICE candidate](https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity#ice_candidates) exchange mechanism unimplemented for now.
+
+1. Wait for the DOM to be loaded (i.e. [`DOMContentLoaded`] event).[^video]
+2. [Request a camera device][media] from the user.
+3. Open a [`WebSocket`] connection to a signaling server (i.e. [`open`] event).
+4. [Add](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/addTrack) media tracks from some `<video>` element.
+5. Wait for the [`RTCPeerConnection`] to be ready (i.e. [`negotiationneeded`] event) to [create an offer][offer].
+6. Send the offer to the signaling server (via the [`WebSocket`] connection).
+7. Wait for the signaling server to respond with an [answer].
+8. Finish the handshake.
+    - Set the offer as the [local description][local].
+    - Set the answer as the [remote description][remote].
+
+[`DOMContentLoaded`]: https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+[`defer`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
+[media]: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+[`WebSocket`]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+[`open`]: https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+[`negotiationneeded`]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/negotiationneeded_event
+[`RTCPeerConnection`]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection
+[offer]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createOffer
+[answer]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createAnswer
+[local]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setLocalDescription
+[remote]: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/setRemoteDescription
+
+[^video]: This ensures that a `<video>` element has already been parsed by the browser. Technically, this is not necessary because of the [`defer`] attribute. Nevertheless, we wait on the [`DOMContentLoaded`] event for the sake of demonstration.
+
+Observe that the handshake and signaling protocol can get quite involved with events, promises, and asynchronous execution. It is paramount that the exact order is preserved (lest our back-end gets confused).
+
+Promises make it possible to express the strict requirements we have on the execution order of asynchronous code. No nested callbacks necessary!
+
+```typescript
+// Wait for the page to load before requesting camera access
+await blockUntilEvent(document, 'DOMContentLoaded');
+const video: HTMLVideoElement = document.getElementById('screen');
+const media = await navigator.mediaDevices.getUserMedia({
+	video: true,
+	audio: false,
+});
+
+// Open the WebSocket connection for signalling
+const ws = new WebSocket('wss://example.com');
+await blockUntilEvent(ws, 'open');
+
+// Set up the video stream
+const peer = new RTCPeerConnection();
+for (const track of media.getVideoTracks()) peer.addTrack(track, media);
+
+// Only create an offer once it is ready
+await blockUntilEvent(peer, 'negotiationneeded');
+const offer = await peer.createOffer();
+ws.send(JSON.stringify(offer));
+
+// Now we wait for the WebSocket connection
+// to respond with a WebRTC answer
+const { data } = await blockUntilEvent(ws, 'message');
+const answer = JSON.parse(data);
+
+// TODO: Set up `icecandidate` event listeners for sending
+// new ICE candidates to the remote peer. This is beyond
+// the scope of the article.
+
+// TODO: Set up `message` event listener on the `WebSocket`
+// connection for receiving new ICE candidates from the remote
+// peer. This is also beyond the scope of the article.
+
+// Finish the initial handshake
+await peer.setLocalDescription(offer);
+await peer.setRemoteDescription(answer);
+```
+
+## Conclusion
+
+More often than not, promises and events are incompatible with each other. Fortunately, there are ways to bridge the gap.
+
+Our `blockUntilEvent` primitive allows us to resolve a promise whenever an event is fired (at most once). This alone provides several qualitfy-of-life improvements over raw event callbacks:
+
+- Fewer deeply nested callbacks.
+- Fewer explicit lifecycle hooks (hence less verbose code for state management).
+- Finer control over the execution order of interleaved events and promises.
+- Improved, top-to-bottom readability of asynchronous execution.
+
+It must emphasized, however, that these improvements mostly apply to one-time events (such as [`open`], [`DOMContentLoaded`], etc.). When a stream of events is necessary (such as in [`message`] events), it is still best to prefer plain old event listeners. It is simply trickier (and rather inefficient) to implement streamed events via our `blockUntilEvent` primitive. For small applications, however, the cost may be arguably negligible, anyway.
+
+_In conclusion, promises and events can indeed coexist._

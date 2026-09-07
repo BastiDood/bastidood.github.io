@@ -1,0 +1,126 @@
+---
+title: 'Moving Fast: A Retrospective on Trunk-based Development'
+description: "In this article, I reflect on my experiences with trunk-based development as the project lead for DocTrack, my undergraduate project that rewrites the University of the Philippines' document tracking system as a progressive web app."
+createdAt: '2023-07-05T07:32:13Z'
+publishedAt: '2023-07-05T18:58:09Z'
+updatedAt: '2023-07-06T07:19:31Z'
+cover:
+    src: './cover.png'
+    alt: 'Moving Fast: A Retrospective on Trunk-based Development'
+tags: ['git', 'devjournal', 'productivity', 'softwareengineering']
+---
+
+As the final output for a series of software engineering courses at my university, my team developed [DocTrack]: an installable, mobile-first rewrite of the university's document tracking system. Unlike its PHP-based predecessor, the DocTrack front end is a single-page [Svelte] application that leverages [Progressive Web App][PWA] technologies such as offline caching, web push notifications, and background synchronization. In the back end, we use [PostgreSQL] &#40;as the database&#41; and [Deno] &#40;for the REST API and the static file hosting of the web server&#41;.
+
+[DocTrack]: https://github.com/BastiDood/doc-track
+[PWA]: https://web.dev/progressive-web-apps/
+[Svelte]: https://svelte.dev/
+[PostgreSQL]: https://www.postgresql.org/
+[Deno]: https://deno.land/
+
+[View on GitHub](https://github.com/BastiDood/doc-track)
+
+With all of these moving parts and interconnected features, how were we able to complete the scope of our project within a single semester? In this article, I reflect on my experiences with trunk-based development as the project lead for DocTrack.
+
+### The Git Workflow
+
+Before embarking on the project, we needed to decide on our Git workflow. Having experienced the unnecessary indirection and bureaucracy of [Gitflow], I immediately proposed and implemented a trunk-based strategy instead.
+
+[Gitflow]: https://nvie.com/posts/a-successful-git-branching-model/
+
+#### Why not Gitflow?
+
+In a nutshell, Gitflow is a branching strategy that mainly involves four types of branches:
+
+1. The Trunk (e.g., `main`, `master`, etc.)
+2. Development Branch (e.g., `develop`)
+3. Feature Branches
+4. Hotfix Branches
+
+Here, `develop` first branches from `main`. Developers then branch off of `develop` to work on specific feature branches. As feature branches are merged into `develop`, it is worth noting that `develop` eventually becomes a long-lived branch ahead of `main`. In a perfect world where no merge conflicts exist, the `develop` branch can finally be merged into `main` as a trivial fast-forward operation upon completion of the sprint[^1] requirements.
+
+[^1]: The word _"sprint"_ here is used as a catch-all term to refer to a single development cycle. It is not meant to be taken literally as in agile development frameworks such as Scrum.
+
+But _alas_, we do not live in a perfect world. When hotfix branches step into the picture (which are allowed to directly branch from and merge into `main`), long-lived `develop` branches present themselves as a mine field of merge conflicts, especially when large diffs and refactors are involved.
+
+This may be a non-issue for most experienced industry professionals, but considering that my team consists of undergraduate students (initially) without much experience with Git in a collaborative setting, I wisely decided against subjecting ourselves under the madness of large-scale merge conflict resolution.
+
+#### Trunk-based Development
+
+Instead, we implemented a trunk-based strategy, where there are only two types of branches: the trunk (i.e., `main`) and the feature/hotfix branches. The setup is simple:
+
+1. Pull the latest changes from `main`.
+2. Create a new feature/hotfix branch off of `main`.
+3. Apply relatively small self-contained additions, deletions, and changes.
+4. Submit a pull request.
+5. Have someone review the pull request.
+6. Merge the feature/hotfix branch back into `main`.
+7. Delete the now-merged branch.
+
+Most notably, we have no `develop` branch. There are no levels of indirection. Everything branches from and merges into `main`. One may naturally ask then: what makes this better than Gitflow?
+
+##### Merging Often with Atomic Commits
+
+The primary key to success is the **short lifetime of branches**. By enforcing self-contained units of work, we are able to merge pull requests directly into `main` without worrying about conflicts because small scopes tend to affect fewer files. Another key assumption is that everyone has the latest version of `main` anyway, which further reduces the likelihood of merge conflicts due to unsynchronized histories. In summary, small scopes and frequent merges facilitate conflict-free development.
+
+To more effectively apply the principle of small scopes and self-contained work, we enforce [Conventional Commits] in the repository. In DocTrack, conventional commits encourage the atomicity of progress. The easiest pull requests to review are the ones with commit histories that read like a storybook. With all pull requests being small and self-contained, the velocity at which we integrated new features and bug fixes cannot be overstated.[^2]
+
+[^2]: Considering that we had other coursework to attend to, I must say that our pace was exceptionally impressive.
+
+[Conventional Commits]: https://www.conventionalcommits.org/en/v1.0.0/
+
+##### Getting Used to Merge Conflicts
+
+But _alas_, we do not live in a perfect world. Even with all the aforementioned measures in place, merge conflicts are still an inevitable reality of the Git workflow. In our case, merge conflicts typically occur when two developers branch off of `main` and work on independent features that just happen to touch a common region in one or more files. When attempting to merge these two branches into `main`, one of them succeeds while the other bears the brunt of the conflict.
+
+Fortunately, when this happens, the conflicts are often minimal and easy to reason about due to the enforcement of small scopes and self-contained work. That is to say, they are not as mind-bending as resolving a long-lived `develop` branch into a long-diverged `main` branch as in Gitflow.
+
+To further increase productivity, I often take these moments of conflict as opportunities to teach my team how to handle merge conflicts in the future. The minimal diffs are instructive examples that empower my team to resolve more complex situations. Indeed, merge conflicts became less of an issue in the latter half of the semester.
+
+##### Resolving Conflicts with Git Rebase
+
+At some point, I finally introduced the concept of a Git rebase. In short, a Git rebase allows us to _yank_ a branch off of its base and replay its commits (one by one) on top of another branch (e.g., the latest version of `main`). This one feature alone is our primary weapon against merge conflicts. When conflicts arise, we rebase feature/hotfix branches on top of the latest version of `main` and then resolve from there.
+
+Despite rewriting the Git history, the rebase is often a safe operation because feature/hotfix branches are typically assigned to a single _"owner"_, thereby granting an artifical mutual exclusivity over the branch for the meantime. Until a pull request is published, we refrain from touching the branches of others.[^3]
+
+[^3]: There are times when a rebase actually affects future patches in a pending pull request. When this happens, a simple `git rebase origin/<feature>` resolves the incompatible histories.
+
+> Note that we _never_ rebase `main` itself—only the feature/hotfix branches reserve that right.
+
+Another use case for Git rebase arises when a pull request depends on a preceding (but pending) pull request. Consider a situation when a feature is implemented in PR #1. A developer then branches from PR #1 and works on PR #2. Now, the latter cannot be merged until the former is merged. When this happens, we simply set the latter pull request as a _"draft"_ and wait for the former pull request. Once merged into `main`, rebasing #2 on top of the now-merged `main` should be trivial since the work of #2 derives from that of #1.[^4]
+
+[^4]: I am willing to concede that this may not be the most effective workflow, but it certainly worked for my team. I am aware that we could have just superseded Pull Request 1 with Pull Request 2, but I insisted on preserving the atomicity of the pull requests.
+
+Although the standard Git merge is sufficient for many cases, I insisted on a Git rebase because it results in a cleaner linear commit history, where there are no internal merge commits that pollute an otherwise self-contained pull request. In the long run, this made it easier to review said pull requests. In this setup, merge commits that only performed a fast-forward operation were allowed.[^5]
+
+[^5]: Admittedly, some internal merge commits still managed to slip through, but we honestly could not be bothered to rebase them again. 😅
+
+Eventually, we developed clever merge strategies along the way. We realized that smaller pull requests must be merged first before the larger feature-heavy ones. Should the need arise, it is simply easier to resolve merge conflicts in a large pull request if these were caused by small preceding pull requests. This is less true the other way around.
+
+Following this insight, we prioritize and batch the minor bug fixes first over feature-based pull requests. We then rebase the latter pull requests accordingly. In most cases, the rebase results in a trivial fast-forward anyway. In other times, the merge conflicts are minimal and self-contained.
+
+##### Automating Continuous Integration
+
+Given our pace of development, we require extra safety nets to maintain confidence in the correctness of our codebase. This is why early on, we set up some GitHub Actions workflows that lint the implementation, format the code, build the project, run unit tests, execute end-to-end tests, and deploy to production. The repository blocks a pull request if any of the mandatory workflows fails, thereby enforcing the invariant that `main` must always be in a deployable state.
+
+A neat consequence of this setup is that the `main` branch serves as an anchor from which all debugging begins. When a new feature is introduced with regressions, a cursory inspection of the GitHub Actions logs is often sufficient to find the bug. For larger pull requests, however, `main` becomes a natural endpoint for bisection (by assumption).
+
+Admittedly, the safety nets did come with some trade-offs. In particular, the maintenance of automated tests certainly slowed down the development of features in the back end due to the additional work. If it's any consolation, however, the overhead of test-driven development was alleaviated by implementing the features and their test cases _in lockstep_. Peak productivity was achieved when the test-driven methodology was like hitting two birds with one stone.
+
+With that said, the time _"spent"_ on writing tests is less _"spent"_ but rather _"invested"_ in determinism and debuggability. Although it may not be apparent to me here and now, an alternate universe where we did _not_ invest in an automated testing infrastructure may have resulted in hours of wasted productivity due to aimless debugging.
+
+### Conclusion
+
+Trunk-based development is a perfectly reasonable Git workflow, especially for small teams. The simple workflow, the minimal bureaucracy (beyond the mandatory code reviews), and the necessary automations empowered the DocTrack team to move fast with great confidence. These were the keys to our success with trunk-based development:
+
+- Small, self-contained commits and pull requests.
+    - [Conventional Commits] encourage atomicity of progress.
+    - Branches have short lifetimes.
+- Frequent merges to `main` ensure that everyone has the latest version.
+    - Decreases the likelihood of merge conflicts.
+    - Lessens the severity of merge conflicts (if any).
+- Automation of tests and deployment infrastructure.
+    - Ensures that `main` is always in a deployable state.
+    - Instills confidence in the health of the codebase (even in fast pacing).
+
+Although the mandatory maintenance of test suites slowed down productivity to some extent, I still believe that this was a worthwhile investment that yielded a net positive over time. The assurance and saved time (from aimless debugging) more than made up for what was lost in rapid (but reckless) feature implementation.

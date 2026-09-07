@@ -1,0 +1,150 @@
+---
+title: 'Beware the Global Const'
+description: "It is common wisdom in the programming world to discourage the use of global variables. I've recently come across a bug that humbled and reminded me about these pitfalls. Let me tell you a cautionary tale about global configuration objects."
+createdAt: '2025-04-19T05:53:19Z'
+publishedAt: '2025-04-19T08:33:23Z'
+cover:
+    src: './cover.png'
+    alt: 'Beware the Global Const'
+tags: ['javascript', 'security', 'architecture', 'devjournal']
+---
+
+It is common wisdom in the programming world to discourage the use of global variables.[^1]
+
+[^1]: Not to be confused with "global constants", by the way.
+
+- It is bug-prone due to shared mutability across modules.
+- It introduces implicit dependencies within interfaces that are not syntactically communicated.
+- It may alter the behavior of dependents across invocations—even when provided with the same arguments.
+
+I've recently come across a bug that humbled and reminded me about these pitfalls. Let me tell you a cautionary tale about global configuration objects.
+
+> **DISCLAIMER:** The following story is _based_ on an actual bug in one of the projects that I work on, but several details have been altered and simplified.
+
+### A race condition?
+
+The bug was initially simple. A user reported that generating a profile page in the app with ✨AI✨ in quick succession resulted in some components in the page persisting the old values from the previous ✨AI✨ generation.
+
+"Simple," I naively thought to myself, "It's a classic case of a race condition." I hypothesized that the previous generation completed _after_ the current one, which resulted in the old values overwriting the new ones in the database. The only problem was: I couldn't find the race condition.
+
+Each ✨AI✨ enrichment is persisted as a single row in the database. Even if a race condition were to happen, the generated profile page should swap out the contents on a per-generation basis (i.e., one row as a whole). This was clearly not the case as the generated page interleaved new and old contents.
+
+Sure enough, the database was intact. Each ✨AI✨ enrichment was indeed isolated from each other. No interleaving fields. No missing properties. No bad data. Nothing suspicious at all...
+
+### It's a front-end bug, then?
+
+"Okay, surely the bug is in the front end," I thought to myself. I looked into the root component that renders the profile page starting with the props.
+
+```tsx
+// A vastly simplified recreation of the page.
+
+interface Props {
+	// From the database...
+	config: ProfileDetails;
+}
+
+export function Profile({ config }: Props) {
+	return (
+		<main>
+			<HeroBanner src={config.bannerUrl} />
+			<h1>{config.name}</h1>
+			<p>{config.description}</p>
+		</main>
+	);
+}
+```
+
+Nothing seemed off as the page component was literally just rendering what was given to it. "The bug must be in the data loading," I deduced. After some `console.log` debugging, I confirmed that the rows from the database were still intact. At this point, I was fairly confident that the persisted data was not at fault.
+
+Despite my best efforts, I could not reproduce the bug. The data loaded from an enrichment row exactly matched the details rendered in the page. I mean... that's why race conditions are so difficult to debug, huh? At this point, I could only rely on my detective skills.
+
+### The dangers of default configurations
+
+A couple hours passed when I finally raised my eyebrow at the call site of the `Profile` component.
+
+```js
+// @/profile
+export const DEFAULT_PROFILE_DETAILS = {
+	bannerUrl: '...',
+	name: '...',
+	description: '...',
+	// ...
+};
+```
+
+```jsx
+import merge from 'lodash.merge';
+
+import { DEFAULT_PROFILE_DETAILS } from '@/profile';
+import { getProfileDetails } from '@/db';
+import { getSessionAuth } from '@/auth';
+
+export default async function Page() {
+	const auth = await getSessionAuth();
+	const profileDetails = await getProfileDetails(auth);
+	const config = merge(DEFAULT_PROFILE_DETAILS, profileDetails);
+	return <Profile config={config} />;
+}
+```
+
+Wait a minute. Zoom in... _Enhance!_
+
+```js
+const config = merge(DEFAULT_PROFILE_DETAILS, profileDetails); // 💥
+```
+
+And there it was: the single line of code that cost me several hours of my life.
+
+Let me fill you in with the details. The `merge` utility here is Lodash's [`_.merge`][`lodash.merge`]. As its name suggests, `merge` recursively merges one object with another. The key word is "recursive"; we can't use the [spread syntax][js-spread-syntax] because that will only do a shallow merge.
+
+[`lodash.merge`]: https://lodash.com/docs/4.17.15#merge
+[js-spread-syntax]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
+Now, we want to merge the database-enriched `profileDetails` into the `DEFAULT_PROFILE_DETAILS`. This is because the ✨AI✨ prompt may possibly fail for some fields, so we need fallback values when that happens. Here is where the issue arises:
+
+> From the [Lodash documentation][`lodash.merge`]: _"this method mutates the `object`."_
+
+Because of this, it was totally possible (and documented!) that profile-specific details could _leak_ into the `DEFAULT_PROFILE_DETAILS`—thereby causing subsequent requests to read leaked values. 😱 Suddenly, this innocent bug escalated into a data privacy issue!
+
+### Aside on serverless environments
+
+This still begs the question: _why hasn't the bug come up regularly enough for anyone to notice for a long time?_
+
+One important thing to note is that the app is deployed in a serverless environment. That means function invocations are typically ephemeral. JavaScript objects that are created within a request only exist within the lifetime of that request. By design, subsequent requests spin up new instances (a.k.a. isolates) of the environment.
+
+On paper, the `DEFAULT_PROFILE_DETAILS` should be reconstructed for each request, which sidesteps the entire issue. However, cloud hosting providers can do clever performance optimizations like preserving the isolate across multiple requests to eliminate cold boot times.[^2]
+
+[^2]: This is a good thing, by the way!
+
+This is why the bug only manifests itself in "quick succession". There's a small non-deterministic window of opportunity where rendering a profile leaks details from a previous request.
+
+### Some mitigations and workarounds
+
+The knee-jerk reaction is to axe the `_.merge` utility. But to be fair, there are several mitigations.
+
+```js
+// Merging into a newly constructed object...
+const config = merge({}, DEFAULT_PROFILE_DETAILS, profileDetails);
+```
+
+```js
+// Merging into a newly cloned object...
+const config = merge(structuredClone(DEFAULT_PROFILE_DETAILS), profileDetails);
+```
+
+```js
+// Refactoring to use factory functions...
+const createDefaultProfileDetails = () => ({ ... });
+const config = merge(createDefaultProfileDetails(), profileDetails);
+```
+
+> **ASIDE:** using `Object.freeze` doesn't really solve the issue because it prevents the mutation of the object during the merge process (which is a behavioral regression!). Also, TypeScript would not save us from the bug anyway even if it were annotated as [`Readonly`] due to the way `_.merge` is [typed][merge-type].
+
+[`Readonly`]: https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype
+[merge-type]: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2293665c880f8b59794bca227db53c8a84c4a7f/types/lodash/common/object.d.ts#L1838
+
+The common thread in all of these mitigations is avoiding mutation in global configuration objects. In the end, I committed to replacing all instances of non-primitive global `const` exports throughout the codebase into factory functions. In fact, banning non-primitive exports altogether was a safe bet.
+
+---
+
+_Lesson learned: avoid non-primitive (e.g., objects, classes, maps, sets, regular expressions, functions, etc.) global exports if you can._

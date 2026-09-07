@@ -1,0 +1,147 @@
+---
+title: 'The Semantics of Falsy Values'
+description: 'More often than not, we confuse and interchange the many falsy values in the JavaScript language: `false`, `0`, `null`, and `undefined` among others. In this article, I explain the semantics behind these values so that we can be better informed about their proper usage. By knowing when to use the appropriate falsy value, we can write more readable, maintainable, and semantically correct code.'
+createdAt: '2019-08-30T06:08:59Z'
+publishedAt: '2019-08-31T13:44:33Z'
+cover:
+    src: './cover.png'
+    alt: 'The Semantics of Falsy Values'
+tags: ['javascript', 'semantics', 'programming']
+---
+
+[Read the referenced article](https://dev.to/nunocpnp/differences-between-null-and-undefined-keywords-2e2m)
+
+I recently read this article by @nunocpnp about the technical differences between `null` and `undefined` in JavaScript. After reading, I realized how the semantics of falsy values can be easily dismissed and overlooked. The very fact that these two constructs are often confused, or interchanged in the worst cases, means that there is a need to be more informed about the subtle and nuanced semantics behind falsy values.
+
+In this article, I will discuss just that. I wish to expound on @nunocpnp's article by accompanying the technical differences of falsy values with their the semantic context. By the end, we can all be better informed about the proper usage of the many falsy values in JavaScript.
+
+Of course, this doesn't mean that everything that I will discuss strictly applies to the JavaScript language _only_. Other languages have their own falsy constructs but similar—if not the same—semantics.
+
+Without further ado, let's begin with the simplest and most straightforward falsy value: `false`.
+
+## `false`
+
+The boolean `false` is used to communicate when a boolean condition is not met. Its usage is most appropriate for checks and [guard clauses](https://dev.to/carlillo/refactoring-guard-clauses-4ee6), where a condition can only be _either_ `true` or `false`—nothing more, nothing less.
+
+## Zero (`0`)
+
+The integer `0` must _only_ be used in numerical operations or—in rare, low-level cases—for [bitmasking](https://dev.to/somedood/bitmasks-a-very-esoteric-and-impractical-way-of-managing-booleans-1hlf). The number `0` is _always_ a numerical construct. Therefore, using it as a boolean construct is semantically incorrect and strongly discouraged.
+
+```javascript
+// This is good.
+function square(num) {
+	return num * num;
+}
+
+// This is semantically incorrect because the function
+// is a boolean condition that checks if a number is odd.
+// By interpreting the numerical result of the modulus
+// operator as a boolean value, this violates the
+// semantics of the `isOddNumber` function.
+function isOddNumber(num) {
+	return num % 2;
+}
+
+// This can be improved by explicitly converting
+// the return value to a boolean.
+function isOddNumber(num) {
+	return Boolean(num % 2);
+}
+
+// This also works like the previous example,
+// but it looks pretty "hacky" to be completely
+// honest. The "double negative operator" uses implicit
+// type coercion under the hood, which is not exactly
+// desirable if we want our code to be readable,
+// maintainable, and semantically correct.
+function isOddNumber(num) {
+	return !!(num % 2);
+}
+```
+
+## Not a Number (`NaN`)
+
+The same logic goes for `NaN`. The value `NaN` is strictly used to indicate failed numerical operations. It can be used as a boolean value to check if a numerical operation is valid. However, it cannot be used as a _reckless_ substitute for the boolean primitives `true` and `false`.
+
+```javascript
+// This is good. There is no need to explicitly
+// convert `NaN` to `false` because the function
+// is a numerical operation that works fine except
+// for a few edge cases (when y = 0). Semantics is
+// still preserved by the returned number or `NaN`.
+function divide(x, y) {
+	return x / y;
+}
+
+// This is semantically incorrect because `NaN` is
+// recklessly used where `false` is already sufficient.
+function canVoteInElections(person) {
+	return person.age > 18 && person.isCitizen ? true : NaN;
+}
+```
+
+## Empty Arrays (`[]`) and Empty Strings (`''`)
+
+Although empty arrays are in fact **not** falsy values [as ruled by the language specification](http://www.ecma-international.org/ecma-262/6.0/#sec-toboolean), I still consider them to be _semantically_ falsy, if that makes sense. Furthermore, since strings are technically just arrays of individual characters, then it follows that an empty string is also a falsy value. Strangely enough, an empty string is indeed a falsy value (according to the aforementioned section in the language specification) despite an empty array being otherwise.
+
+Nonetheless, empty arrays and empty strings _as is_ are not to be implicitly interpreted as boolean values. They must only be returned in the context of array and string operations.
+
+For instance, an empty array can be returned if an operation just happens to filter out all of its elements. The [`Array#filter` function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) returns an empty array if all elements of a given array meet a certain filter condition. After applying a filter that happened to eliminate all elements, it simply makes more sense to return an empty array instead of some other falsy value like `false` or `NaN` because the resulting empty array implies that it has been filtered from a previous array.
+
+A full toy box can serve as a relevant analogy. The toy box represents an array. The act of removing all toys from the toy box represents the filtering process. After a filtering process, it makes sense to be left with an empty toy box.
+
+However, if one truly insists to interpret an array as a boolean type based on whether or not it is empty, it is desirable to use the [`Array#length` property](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length). However, since it returns an integer value, a semantically correct—albeit rather pedantic—implementation requires an explicit conversion to a boolean primitive.
+
+```javascript
+// This is semantically correct.
+function isEmptyArray(arr) {
+	return !Boolean(arr.length);
+}
+
+// This is also correct, but without the indication
+// of an explicit conversion, this has lesser semantic
+// meaning than its unabbreviated variation above.
+function isEmptyArray(arr) {
+	return !arr.length;
+}
+
+// This is okay...
+function logEmptyString(str) {
+	if (!str) console.log(str);
+}
+
+// ... but this is better.
+function logEmptyString(str) {
+	if (str === '') console.log(str);
+}
+```
+
+## Empty Objects (`{}`) and `null`
+
+Just like empty arrays, empty objects are considered to be "truthy" by the language specification. For the sake of this article, I will also consider them as _semantically_ falsy.
+
+Empty objects follow the same reasoning as empty arrays. They can only be returned as a result of some object operation. They **cannot** be used as _reckless_ substitutes for boolean primitives.
+
+Fortunately, there exists a falsy boolean construct that literally means _nothing_: `null`. If an object operation results in an empty object, it is sometimes more appropriate to return `null`.
+
+For instance, a function that searches a collection of objects can return `null` if it fails the search. In terms of semantics, it makes more sense to literally return _nothing_ than an empty object. Additionally, since _all_ objects are truthy while `null` alone is falsy, such a search function can circumvent explicit boolean conversions. An example of a semantically correct object search function is [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById).
+
+Concisely put, the semantics of `null` revolves around the fact that it is a deliberate and explicit representation of absolutely _nothing_. One can think of it as an "emptier" _object_ than an empty object. In this light, it suddenly makes more sense why `typeof null` returns `'object'` ~~even though it was a mistake to begin with~~.
+
+## `undefined`
+
+As its name suggests, `undefined` is strictly a placeholder for something that _hasn't been defined_ in the program, whereas `null` is a placeholder for something that _doesn't exist_ whatsoever.
+
+If one was to deliberately return `undefined` from an object search function, it defeats the semantics of `null` which communicates express intent of returning absolutely _nothing_. By returning `undefined`, the search function in question returns something that _hasn't been defined_ rather than something that _doesn't exist_.
+
+To put it more concretely, let's suppose that [`document.getElementById`](https://developer.mozilla.org/en-US/docs/Web/API/Document/getElementById) returns `undefined` if an HTML element with the given ID _doesn't exist_ in the current [`document`](https://developer.mozilla.org/en-US/docs/Web/API/Document). Wouldn't that sound rather strange?
+
+It is for this reason why `null` is more correct and desirable than `undefined` when returning _nothing_. Although the two basically mean the same idea of _nothingness_, subtleties in the language completely change their semantics.
+
+## Conclusion
+
+Semantics is a particularly irking subject in programming because it doesn't significantly affect the behavior of a program, yet it plays a huge role in the readability and maintainability of code.
+
+As illustrated by `null` and `undefined`, two constructs can be semantically different despite representing the same idea. It is for this reason that we must be aware of these nuances in order to write more consistent and maintainable code.
+
+As a general rule of thumb, falsy types must be used and returned in the correct context. Relying on implicit type coercion is discouraged because it does not respect the semantics of data types. When converting types, especially those that are boolean by nature, it is always semantically better to explicitly convert them.

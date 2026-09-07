@@ -1,0 +1,456 @@
+---
+title: "Mastering Python's Iteration Protocol: Iterables, Iterators, and Generators"
+description: 'The difference between iterables, iterators, and generators in Python have always been a tricky topic for beginners to learn—so much so that not everyone can think in terms of iterators even later in the Python journey. This article consolidates into one master reference all of my internal lecture notes, private Notion documents, Discord posts, and direct messages on iterators.'
+createdAt: '2025-10-12T13:59:05Z'
+publishedAt: '2025-10-12T21:44:46Z'
+cover:
+    src: './cover.png'
+    alt: "Mastering Python's Iteration Protocol: Iterables, Iterators, and Generators"
+tags: ['beginners', 'python', 'computerscience', 'programming']
+---
+
+Over the years, I've received innumerable queries from (mostly) undergraduate computer science students on the difference between **iterables**, **iterators**, and **generators** in programming languages like Python and JavaScript.
+
+This article consolidates into one master reference all of the answers that I've given and scattered across various internal lecture notes, private Notion documents, Discord servers, and direct messages.
+
+> This edition has been adapted for Python idioms. The JavaScript edition, which covers the exact same concepts but with JavaScript's primitives instead, will be coming soon.
+
+### The Iterator Contract
+
+Our story begins in the **Iterator Contract**: the very interface that underpins our entire discussion.
+
+#### Iterables and `__iter__`
+
+Mechanically and contractually, an [`Iterable`] is any object that implements the [`__iter__`] dunder method (and can thus be passed as an argument to the builtin [`iter`] function). Semantically, it is any container- or collection-like object (e.g., lists, sets, trees, etc.) that can be "iterated" on.
+
+[`Iterable`]: https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable
+[`__iter__`]: https://docs.python.org/3/reference/datamodel.html#object.__iter__
+[`iter`]: https://docs.python.org/3/library/functions.html#iter
+
+The mechanics of "being iterated on" is quite simple. When we pass an object to the `iter` function, we expect that it returns an object called the **iterator**. The iterator is responsible for maintaining the current iteration state of the collection traversal.
+
+#### Iterators and `__next__`
+
+Mechanically and contractually, an [`Iterator`] is any object that implements the [`__next__`] dunder method (and can thus be passed as an argument to the builtin [`next`] function). Semantically, it is an object that keeps track of the current iteration state. (Pedantically, an `Iterator` should also implement the `Iterable` interface, but this detail is sometimes omitted in practice.)
+
+[`Iterator`]: https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator
+[`__next__`]: https://docs.python.org/3/library/stdtypes.html#iterator.__next__
+[`next`]: https://docs.python.org/3/library/functions.html#next
+
+As you might expect, the `next` function returns the "next" item in the iteration (of all elements in an `Iterable` container). You can visualize the `Iterator` as a "stream" of objects that you can request from the `Iterator` by repeatedly invoking the `next` function. When there are no more items left in the `Iterator`, the underlying `__next__` implementation must raise the [`StopIteration`] exception to signal that it has been exhausted.
+
+[`StopIteration`]: https://docs.python.org/3/library/exceptions.html#StopIteration
+
+```py
+# The `range` object is an `Iterable` container.
+container = range(3)
+
+# We can therefore obtain an `Iterator` over its elements.
+iterator = iter(container)
+
+# We can safely extract the first three items via `next`.
+print(next(iterator)) # 0
+print(next(iterator)) # 1
+print(next(iterator)) # 2
+
+# But the final invocation will raise an exception!
+try:
+	next(iterator) # StopIteration
+except StopIteration:
+	print('Done!')
+```
+
+Under the hood, this is exactly how the `for` loop works. The object being iterated on is first passed to the `iter` function to obtain an `Iterator`. Then, the `for` loop invokes `next` until it hits the `StopIteration` exception.
+
+```py
+# This is fancy syntactic sugar for...
+for i in range(3):
+	print(i)
+```
+
+```py
+# ... a loop that invokes `next` over and over again
+# until there are no more elements left.
+container = range(3)
+iterator = iter(container)
+while True:
+	try:
+		print(next(iterator))
+	except StopIteration:
+		break
+```
+
+#### Aside: The Importance of Brand New Independent Instances
+
+I want to emphasize why `iter` is typically expected to return a brand _new_ iterator object. Naturally, when you create an iterator, you expect that the returned instance is its own self-contained iteration state that is independent from other invocations of `iter`.
+
+```py
+# A `list` of `str` objects is an `Iterable` out of the box.
+items = ['hello', 'world']
+
+# These two invocations of `iter` create independent iterators
+# that each maintain their own state.
+first_iterator = iter(items)
+other_iterator = iter(items)
+assert first_iterator is not other_iterator
+
+# Mutating the iteration state of one iterator should not leak
+# into other iterators. They are their own instances!
+
+print(next(first_iterator)) # 'hello'
+print(next(other_iterator)) # 'hello'
+
+print(next(first_iterator)) # 'world'
+print(next(other_iterator)) # 'world'
+```
+
+There are exceptions to this rule, however, which we'll see in the worked examples of the following section.
+
+#### Worked Examples
+
+To get a feel around how the Iterator Contract is typically implemented, let's go through a few worked examples.
+
+##### Infinite Counter
+
+Let's implement an infinite counter. It takes in a `start` argument which determines where to start counting to infinity from.
+
+```py
+from dataclasses import dataclass
+
+@dataclass
+class InfiniteCounter:
+	''' The starting point of the counter. '''
+	start = 0
+
+	# Implementing the `Iterable` contract
+	def __iter__(self):
+		# Observe that we're returning a newly constructed iterator every time.
+		return _InfiniteCounterIterator(self.start)
+
+@dataclass
+class _InfiniteCounterIterator:
+	'''
+	Tracks where we are now in the iteration.
+	This is our private `Iterator` class.
+	'''
+	current: int
+
+	def __iter__(self):
+		# We should clone ourselves here so that we don't give out
+		# references to our iteration state. Otherwise, it would be
+		# possible for multiple variables to "advance" the iterator
+		# from different variables. We don't want that!
+		#
+		# However, it is totally legal to just return `self` here. In fact,
+		# many iterators from the standard library simply `return self`
+		# (likely to avoid the performance overhead of cloning). As such,
+		# we will do the same. We must keep in mind the footguns, though!
+		return self
+		# return InfiniteCounterIterator(self.current)
+
+	def __next__(self):
+		value = self.current # take the first value
+		self.current += 1    # advance the iterator
+		return value
+```
+
+```py
+# This is an infinite loop because we never raise `StopIteration`!
+container = InfiniteCounter()
+for i in container:
+	print(i) # 0, 1, 2, 3, ...
+```
+
+##### Singly Linked List
+
+Now let's do the same drill for a basic linked list implementation.
+
+```py
+from dataclasses import dataclass
+from typing import Optional, Self
+
+@dataclass
+class Node[T]:
+	next: Optional[Self]
+	data: T
+
+@dataclass
+class LinkedList[T]:
+	head: Optional[Node[T]]
+
+	def __iter__(self):
+		return _LinkedListIterator(self.head)
+
+class _LinkedListIterator[T]:
+	current: Optional[Node[T]]
+
+	def __iter__(self):
+		return self
+
+	def __next__(self):
+		if self.current is None:
+			# No more data to yield!
+			raise StopIteration
+
+		data = self.current.data         # take the current value
+		self.current = self.current.next # advance the iterator
+		return data
+```
+
+### Generators
+
+Now I'm sure you're thinking that writing explicit `Iterator` classes are such a hassle—and you'd be right! In _Pythonic_ code, we rarely interface with iterators at such a low level. Typically, we use **generators** and **comprehension syntax** to make our lives easier.
+
+Syntactically, a [`Generator`] is a function that contains at least one `yield` keyword. Contractually, it returns an `Iterator` that streams the `yield`-ed items. Colloquially, it is a "pausable function".
+
+[`Generator`]: https://docs.python.org/3/library/collections.abc.html#collections.abc.Generator
+
+```py
+# Generators are best understood by example.
+def generate_hello_world():
+	print('start')
+	yield 'hello' # pause!
+	print('middle')
+	yield 'world' # pause!
+	print('end')
+
+# Generators return iterators!
+iterator = generate_hello_world()
+
+print(next(iterator))
+# 'start'
+# 'hello'
+
+print(next(iterator))
+# 'world'
+# 'middle'
+
+print(next(iterator))
+# 'end'
+# StopIteration!
+```
+
+There are also times when it is useful to exhaust an _inner_ iterator first from within the generator. This is uncommon in practice, but it's handy to know it when you need it! For that, we have the `yield from ` keyword.
+
+```py
+def concat_iterators[T](
+	first: Iterator[T],
+	other: Iterator[T],
+	bonus: T,
+):
+	# Exhaust this iterator first and forward the results.
+	yield from first
+	# Then we can exhaust the second iterator after.
+	yield from other
+	# We can even yield our own items at any point.
+	yield bonus
+```
+
+```py
+def flatten_iterators[T](iterators: Iterator[Iterator[T]]):
+	''' A fancy way to flatten an iterator of iterators. '''
+	for iterator in iterators:
+		yield from iterator
+```
+
+#### The Comprehension Syntax
+
+You may also be familiar with generators through a different syntax: list/set/dictionary comprehensions!
+
+```py
+# Plain comprehensions are just fancy syntactic sugar over generators!
+iterator = (i for i in range(10) if i % 2 == 0)
+print(next(iterator)) # 0
+print(next(iterator)) # 2
+print(next(iterator)) # 4
+print(next(iterator)) # 6
+print(next(iterator)) # 8
+print(next(iterator)) # StopIteration!
+```
+
+One common use case for generators is the ability to "aggregate" them into a result or some other collection.
+
+```py
+# These are functionally equivalent!
+items = [i for i in range(10) if i % 2 == 0]
+
+# The `list` constructor also accepts a `Generator` argument.
+# The yielded items will be streamed into the final `list`.
+items = list(i for i in range(10) if i % 2 == 0)
+```
+
+```py
+# The same is true for sets and dictionaries!
+items = { i for i in range(10) if i % 2 == 0 }
+items = set(i for i in range(10) if i % 2 == 0)
+```
+
+Internally, you can imagine these "generator consumers" as `for` loops that process each element into an aggregation.
+
+```py
+from collections.abc import Iterator
+
+def collect_into_list[T](items: Iterator[T]):
+	''' This is effectively what the `list` constructor does. '''
+	result = list[T]()
+	for item in items:
+		result.append(item)
+	return result
+
+def collect_into_set[T](items: Iterator[T]):
+	''' This is effectively what the `set` constructor does. '''
+	result = set[T]()
+	for item in items:
+		result.add(item)
+	return result
+```
+
+```py
+from collections.abc import Iterator
+from math import nan
+
+def sum_floats(numbers: Iterator[float]):
+	''' This is how the actual `sum` function works! '''
+	total = 0.0
+	for number in numbers:
+		total += number
+	return total
+
+def avg_floats(numbers: Iterator[float]):
+	''' Now let's get fancy with arithmetic means! '''
+	items = 0
+	total = 0.0
+
+	for number in numbers:
+		items += 1
+		total += number
+
+	# Let's assume non-empty iterators for simplicity.
+	assert items > 0
+
+	# Alternatively, we may implement this as a running average.
+	return total / items
+```
+
+```py
+from random import random
+
+# Pro tip: you don't need a list comprehension here!
+# You can use plain generators to avoid the unnecessary
+# memory allocation for the temporary `list`.
+total = sum(i for i in range(10) if i % 2 == 0)
+float_total = sum_floats(random() for _ in range(10))
+float_average = avg_floats(random() for _ in range(10))
+```
+
+#### Simplifying the Worked Examples
+
+Now let's take the worked `Iterator` examples from the previous section and see how we can leverage generators to simplify their implementation.
+
+```py
+from dataclasses import dataclass
+
+@dataclass
+class InfiniteCounter:
+	''' The starting point of the counter. '''
+	start = 0
+
+	def __iter__(self):
+		# Now the infinite loop is more apparent...
+		current = self.start
+		while True:
+			yield current
+			current += 1
+```
+
+```py
+from dataclasses import dataclass
+from typing import Optional, Self
+
+@dataclass
+class Node[T]:
+	next: Optional[Self]
+	data: T
+
+	def __iter__(self):
+		# Do you notice the parallels to
+		# the explicit iterator version?
+		current = self.head
+		while current is not None:
+			yield current.data
+			current = current.next
+
+@dataclass
+class LinkedList[T]:
+	head: Optional[Node[T]]
+
+	def __iter__(self):
+		# Now we can just invoke the inner generator
+		# since we've moved the generator to the `Node`.
+		if self.head is not None:
+			yield from self.head
+```
+
+### The Conveniences of `itertools`
+
+Now that we've seen how we can build iterator primitives simply out of the `next` function and even the `yield` keyword, let's explore some of the builtin iterator utilities of the standard library: the [`itertools`] module.
+
+[`itertools`]: https://docs.python.org/3/library/itertools.html
+
+```py
+# Infinite Iterators
+import itertools as it
+
+print(*it.count(10)) # 10 11 12 13 ...
+print(*it.cycle('ABCD')) # A B C D A B C D ...
+print(*it.repeat(10)) # 10 10 10 10 ...
+```
+
+```py
+# Iterator Combinators
+import itertools as it
+
+print(*it.accumulate(range(1, 6))) # 1 3 6 10 15
+print(*it.batched('ABCDEFG', n=2)) # AB CD EF G
+print(*it.chain('ABC', 'DEF')) # A B C D E F
+print(*it.chain.from_iterable(['ABC', 'DEF'])) # A B C D E F
+print(*it.pairwise('ABCDEFG')) # AB BC CD DE EF FG
+print(*it.zip_longest('ABCD', 'ab', fillvalue='-')) # Aa Bb C- D-
+```
+
+```py
+# Combinatoric Iterators
+import itertools as it
+
+print(*it.product('ABCD', repeat=2))
+# AA AB AC AD BA BB BC BD CA CB CC CD DA DB DC DD
+
+print(*it.permutations('ABCD', repeat=2))
+# AB AC AD BA BC BD CA CB CD DA DB DC
+
+print(*it.combinations('ABCD', repeat=2))
+# AB AC AD BC BD CD
+
+print(*it.combinations_with_replacement('ABCD', 2))
+# AA AB AC AD BB BC BD CC CD DD
+```
+
+### Recap: what did we learn?
+
+We've discussed a lot, so let's recap on what we learned.
+
+- An `Iterable` is something you can create a `Iterator` from via the builtin `iter` function.
+    - You can then repeatedly invoke the builtin `next` function with an `Iterator` as its argument until the `StopIteration` exception is raised.
+    - Internally, a `for` loop is just syntactic sugar for advancing an `Iterator`.
+- `Generator` functions and the `yield` keyword are another syntactic sugar over explicit `Iterator` implementations.
+    - Generators stream data to the caller via the `yield` keyword.
+    - Generators use the `yield from` keyword to exhaust internal iterators first before proceeding.
+    - Generators are almost like "pausable functions", but not intended for that exact purpose.
+- The comprehension syntax is syntactic sugar over explicit simple `Generator` implementations.
+- **The `itertools` module is your best friend.**
+
+There's a common thread here: it's always one syntactic sugar over the other. That's what makes iterables, iterators, and generators so confusing to beginners! To best understand fancy generators, we had to go back to first principles: the **Iterator Contract**. Everything hinges on that basic design pattern as the primitive for composable utilities.
+
+Now, a lot of things in computer programming (and computer science in general!) are like that. We face abstractions _upon_ abstractions _upon_ abstractions every day. Although it's more convenient to live in higher levels of abstraction, we must never neglect understanding how things _really_ work at the lowest levels.
+
+_The best engineers never shy away from digging deeper._

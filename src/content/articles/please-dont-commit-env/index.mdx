@@ -1,0 +1,46 @@
+---
+title: "Please don't commit .env"
+description: "Whenever we decide to use .env files to hide our precious API keys and passwords, we are always reminded to never commit the .env file. Despite that, running a quick search on GitHub reveals that there are still a number of people who didn't get the memo."
+createdAt: '2018-12-19T15:11:32Z'
+publishedAt: '2018-12-19T18:27:12Z'
+updatedAt: '2019-02-03T11:36:15Z'
+cover:
+    src: './cover.png'
+    alt: "Please don't commit .env"
+tags: ['security', 'git', 'opensource', 'webdev']
+series: please-dont
+---
+
+Let's face it. `.env` files are _amazing_. They have an easy-to-read syntax that stores all of our essential configurations into one file. Not only that, they keep our deepest, darkest secrets as web developers. They make sure that our precious API keys and database passwords are kept locally, away from prying eyes. Having such a critical role in our code bases, we are constantly reminded by the community to never share our `.env` files; to treat them like how the government treats their confidential information.
+
+This is especially enforced in the open-source community where everyone shares, copies, and reuses code with each other. Accidentally committing and pushing the `.env` file is considered by many as a relatable moment. Personally, I have never done it myself _yet_, but I'm sure my fate is sealed at this point.
+
+As fun as it is to talk about "that one time you committed the _goods_" in a casual conversation between developers in a party, it is pretty alarming that it has become a common conversation—perhaps even a [rite of passage](https://en.wikipedia.org/wiki/Rite_of_passage)—in web development.
+
+## A stain in the commit history
+
+[Running a quick search on GitHub](https://github.com/search?q=add+env&type=Commits) reveals that there are still a number of people who didn't get the memo. The occasional `add .env` and `remove .env` commit titles appear every now and then in the search results. Looking into the content of the commits indeed shows their precious API keys and database passwords. It's honestly funny to see how they revert their changes like how a child becomes guilty of doing something they shouldn't have.
+
+What's more alarming about this is that there are still some others who have not reverted their commits. The `.env` file is still alive and well in their repositories. For all we know, these might be real, actual API keys and database passwords they currently depend on in a regular basis. To make matters worse, [sorting the search results by recently committed](https://github.com/search?o=desc&q=add+env&s=committer-date&type=Commits) shows how common and frequent these commits are.
+
+The problem with simply removing the `.env` file in the working tree is the fact that Git keeps a record of all the commits made in a repository, even the earliest ones. Unless clever tricks have been made (more on that later), committing that `.env` file will forever be a stain in the commit history. This is just what a [version control system](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control) is supposed to do after all: keep a history of changes, even the bad ones.
+
+Having said that, how _does_ one handle sensitive data in a repository?
+
+## `.gitignore` is your best friend
+
+Adding a `.gitignore` file to your repository is your first line of defense against these hiccups. Properly and explicitly specifying what files and directories to ignore is a surefire way of preventing sensitive data from ever reaching public repositories and prying eyes.
+
+[GitHub](https://github.com/github/gitignore) and [gitignore.io](https://www.gitignore.io/) provide general-purpose `.gitignore` templates for specific languages and environments. Most of the time, these templates are more than enough to suit your needs.
+
+In the case of already having committed sensitive data in a repository, GitHub has a handy, and rather overkill, guide on [how to purge a file from the commit history](https://help.github.com/articles/removing-sensitive-data-from-a-repository/). "Overkill" is not a bad thing, though. One can never be too safe when it comes to security. 😉
+
+## We all make mistakes
+
+We're all humans here. Nobody is perfect. Mistakes are just a part of life. In fact, it is probably one of the most important realities we have to face everyday. Without facing these mistakes, we can never become better developers. A huge part of learning isn't in the affirmation of success but in the recognition of the "whats" and "whys" of failure.
+
+Sure, committing the `.env` file is a grave mistake. Sure, it will pose serious security risks in your app. Sure, the business will suffer significant losses. Sure, it will be a hassle to clean up the commit history. Sure, it will be hard to sleep at night knowing that you have been compromised. But if there's one good thing that comes out of this experience, it has to be the fact that you will come out as a better, more experienced developer in the end.
+
+With that said, here's a toast to all the future projects that you will never commit the `.env` file to. _Cheers!_ 🥂 \*_clink_\* I shall conclude this article with a parting thought and a final reminder to you, the reader:
+
+_Please don't commit `.env`. You wouldn't want to end up at the top of [GitHub's search results](https://github.com/search?o=desc&q=add+env&s=committer-date&type=Commits)._
