@@ -13,16 +13,20 @@ const { id, data } = Astro.props;
 	<a class="group block h-full text-inherit hover:no-underline" href={`/articles/${id}/`}>
 		{
 			typeof data.cover === 'undefined' ? null : (
-				<PresetImage
-					source={data.cover.src}
-					preset="article-card"
-					alt={data.cover.alt}
-					class="aspect-1000/420 w-full object-cover transition-transform group-hover:scale-[1.02]"
-				/>
+				<div transition:name={`article-cover-${id}`}>
+					<PresetImage
+						source={data.cover.src}
+						preset="article-card"
+						alt={data.cover.alt}
+						class="aspect-1000/420 w-full object-cover transition-transform group-hover:scale-[1.02]"
+					/>
+				</div>
 			)
 		}
 		<div class="space-y-3 p-8">
-			<h2 class="text-xl leading-tight">{data.title}</h2>
+			<h2 transition:name={`article-title-${id}`} class="text-xl leading-tight">
+				{data.title}
+			</h2>
 			<p class="line-clamp-4 text-gray-700">{data.description}</p>
 			<p class="text-sm text-gray-600">
 				Published <LocalTime date={new Date(data.publishedAt)} />

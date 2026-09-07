@@ -87,17 +87,21 @@ const seriesArticleLink = tv({
 			>
 				{
 					typeof article.data.cover === 'undefined' ? null : (
-						<PresetImage
-							source={article.data.cover.src}
-							preset="article-cover"
-							alt={article.data.cover.alt}
-							class="aspect-[1000/420] w-full object-cover"
-						/>
+						<div transition:name={`article-cover-${article.id}`}>
+							<PresetImage
+								source={article.data.cover.src}
+								preset="article-cover"
+								alt={article.data.cover.alt}
+								class="aspect-[1000/420] w-full object-cover"
+							/>
+						</div>
 					)
 				}
 				<header class="p-6 sm:p-10">
 					<div class="mx-auto max-w-prose space-y-4">
-						<h1>{article.data.title}</h1>
+						<h1 transition:name={`article-title-${article.id}`}>
+							{article.data.title}
+						</h1>
 						<p class="text-lg text-gray-700">{article.data.description}</p>
 						<p class="text-sm text-gray-600">
 							Published <LocalTime date={new Date(article.data.publishedAt)} />{

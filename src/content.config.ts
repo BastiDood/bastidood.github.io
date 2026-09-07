@@ -28,6 +28,10 @@ const articles = defineCollection({
 			description: z.string(),
 			createdAt: z.iso.datetime({ precision: 0 }),
 			publishedAt: z.iso.datetime({ precision: 0 }),
+			featuredAt: z.iso
+				.datetime({ precision: 0 })
+				.transform(value => parseISO(value))
+				.optional(),
 			updatedAt: z.iso.datetime({ precision: 0 }).optional(),
 			cover: z
 				.object({
@@ -49,7 +53,7 @@ const milestones = defineCollection({
 		z.object({
 			date: z.object({
 				start: yearMonthSchema,
-				end: yearMonthSchema.nullable().optional(),
+				end: yearMonthSchema.nullish(),
 			}),
 			title: z.string(),
 			organization: z.object({

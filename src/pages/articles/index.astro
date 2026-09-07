@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntries } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 import ArticleCard from '#features/articles/article-card.astro';
 import BaseLayout from '#layout/index.astro';
@@ -7,15 +7,24 @@ import Card from '#components/card.astro';
 import Hero from '#components/hero.astro';
 
 const articles = await getCollection('articles');
-articles.sort((left, right) => right.data.publishedAt.localeCompare(left.data.publishedAt));
-const featured = await getEntries([
-	{ collection: 'articles', id: 'unlocking-agentic-workflows' },
-	{ collection: 'articles', id: 'vertically-sliced-coding-agents' },
-	{ collection: 'articles', id: 'course-cast-optimization' },
-	{ collection: 'articles', id: 'vertically-sliced-architectures' },
-	{ collection: 'articles', id: 'async-constructors' },
-	{ collection: 'articles', id: 'sequential-trap' },
-]);
+articles.sort((left, right) => {
+	const leftFeaturedAt = left.data.featuredAt;
+	const rightFeaturedAt = right.data.featuredAt;
+
+	if (typeof leftFeaturedAt === 'undefined' && typeof rightFeaturedAt !== 'undefined') return 1;
+	if (typeof leftFeaturedAt !== 'undefined' && typeof rightFeaturedAt === 'undefined') return -1;
+
+	if (typeof leftFeaturedAt !== 'undefined' && typeof rightFeaturedAt !== 'undefined') {
+		const featuredOrder = rightFeaturedAt.getTime() - leftFeaturedAt.getTime();
+		if (featuredOrder !== 0) return featuredOrder;
+	}
+
+	return right.data.publishedAt.localeCompare(left.data.publishedAt);
+});
+
+const { remaining, featured } = Object.groupBy(articles, article =>
+	typeof article.data.featuredAt === 'undefined' ? 'remaining' : 'featured',
+);
 ---
 
 <BaseLayout
@@ -33,14 +42,26 @@ const featured = await getEntries([
 		</Card>
 	</Hero>
 	<div class="m-4 mt-0! max-w-7xl space-y-12 sm:m-12 md:m-16 xl:mx-auto">
-		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{featured.map(article => <ArticleCard {...article} />)}
-		</div>
-		<section aria-labelledby="all-articles" class="space-y-5">
-			<h2 id="all-articles">All Articles</h2>
-			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-				{articles.map(article => <ArticleCard {...article} />)}
-			</div>
-		</section>
+		{
+			typeof featured === 'undefined' ? null : (
+				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{featured.map(article => (
+						<ArticleCard {...article} />
+					))}
+				</div>
+			)
+		}
+		{
+			typeof remaining === 'undefined' ? null : (
+				<section aria-labelledby="more-articles" class="space-y-5">
+					<h2 id="more-articles">More Articles</h2>
+					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+						{remaining.map(article => (
+							<ArticleCard {...article} />
+						))}
+					</div>
+				</section>
+			)
+		}
 	</div>
 </BaseLayout>
