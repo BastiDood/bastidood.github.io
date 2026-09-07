@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+
+import type { ImageMetadata } from 'astro';
+
+import { type ImagePresetName, imagePresets } from './image-presets.ts';
+
+interface Props {
+	source: ImageMetadata;
+	preset: ImagePresetName;
+	alt: string;
+	class?: string;
+}
+
+const { source, preset, alt, class: className } = Astro.props;
+const definition = imagePresets[preset];
+---
+
+<Image
+	src={source}
+	alt={alt}
+	class={className}
+	width={definition.width}
+	height={definition.height}
+	fit={definition.fit}
+	position={definition.position}
+	format={definition.format}
+	widths={definition.widths}
+	sizes={definition.sizes}
+	loading="lazy"
+	decoding="async"
+/>

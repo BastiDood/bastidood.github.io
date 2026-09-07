@@ -1,0 +1,154 @@
+---
+import { type CollectionEntry, getCollection, getEntry, render } from 'astro:content';
+import { getImage } from 'astro:assets';
+
+import BaseLayout from '#layout/index.astro';
+import LocalTime from '#features/articles/local-time.astro';
+import PresetImage from '#features/articles/preset-image.astro';
+import { imagePresets } from '#features/articles/image-presets.ts';
+import { tv } from 'tailwind-variants';
+
+export async function getStaticPaths() {
+	const articles = await getCollection('articles');
+	return articles.map(article => ({ params: { slug: article.id }, props: article }));
+}
+
+type Props = CollectionEntry<'articles'>;
+
+const article = Astro.props;
+const { Content } = await render(article);
+
+const seriesReference = article.data.series;
+let series: CollectionEntry<'series'> | null;
+if (typeof seriesReference === 'undefined') {
+	series = null;
+} else {
+	const seriesEntry = await getEntry(seriesReference);
+	if (typeof seriesEntry === 'undefined')
+		throw new Error(`Article references a missing series: ${seriesReference.id}`);
+	series = seriesEntry;
+}
+
+let seriesArticles: CollectionEntry<'articles'>[];
+if (series === null) {
+	seriesArticles = [];
+} else {
+	seriesArticles = await getCollection(
+		'articles',
+		seriesArticle => seriesArticle.data.series?.id === series.id,
+	);
+	seriesArticles.sort((left, right) =>
+		right.data.publishedAt.localeCompare(left.data.publishedAt),
+	);
+}
+
+const canonical = new URL(`/articles/${article.id}/`, Astro.site);
+const openGraphPreset = imagePresets['open-graph'];
+let openGraphImage: URL | null;
+if (typeof article.data.cover === 'undefined') {
+	openGraphImage = null;
+} else {
+	const openGraphAsset = await getImage({
+		src: article.data.cover.src,
+		width: openGraphPreset.width,
+		height: openGraphPreset.height,
+		fit: openGraphPreset.fit,
+		position: openGraphPreset.position,
+		format: openGraphPreset.format,
+	});
+	openGraphImage = new URL(openGraphAsset.src, Astro.site);
+}
+
+const seriesArticleLink = tv({
+	variants: {
+		current: {
+			true: 'font-bold',
+			false: null,
+		},
+	},
+});
+---
+
+<BaseLayout
+	title={`${article.data.title} · Basti Ortiz`}
+	description={article.data.description}
+	canonical={canonical}
+	{...openGraphImage === null ? {} : { openGraphImage }}
+	openGraphType="article"
+	publishedAt={article.data.publishedAt}
+	{...typeof article.data.updatedAt === 'undefined' ? {} : { updatedAt: article.data.updatedAt }}
+	tags={article.data.tags}
+>
+	<div class="mx-auto max-w-7xl p-4 sm:p-6">
+		<article
+			class="mx-auto max-w-4xl overflow-hidden rounded-xl border border-slate-200/60 bg-white shadow-sm"
+		>
+			{
+				typeof article.data.cover === 'undefined' ? null : (
+					<PresetImage
+						source={article.data.cover.src}
+						preset="article-cover"
+						alt={article.data.cover.alt}
+						class="aspect-[1000/420] w-full object-cover"
+					/>
+				)
+			}
+			<header class="border-b border-gray-200 p-6 sm:p-10">
+				<div class="mx-auto max-w-prose space-y-4">
+					<h1>{article.data.title}</h1>
+					<p class="text-lg text-gray-700">{article.data.description}</p>
+					<p class="text-sm text-gray-600">
+						Published <LocalTime date={new Date(article.data.publishedAt)} />{
+							typeof article.data.updatedAt === 'undefined' ? null : (
+								<>
+									{' '}
+									| Updated <LocalTime date={new Date(article.data.updatedAt)} />
+								</>
+							)
+						}
+					</p>
+					{
+						series === null ? null : (
+							<p>
+								Part of <a href={`/series/${series.id}/`}>{series.data.title}</a>
+							</p>
+						)
+					}
+				</div>
+			</header>
+			<div class="p-6 sm:p-10">
+				<div
+					class="prose prose-lg prose-a:text-sky-600 prose-a:hover:underline prose-headings:scroll-mt-20 mx-auto max-w-prose"
+				>
+					<Content />
+				</div>
+			</div>
+		</article>
+		{
+			series === null ? null : (
+				<nav
+					aria-label={`${series.data.title} series`}
+					class="mx-auto mt-8 max-w-4xl rounded-lg bg-gray-100 p-6"
+				>
+					<h2 class="text-xl">In This Series</h2>
+					<ol class="mt-3 list-decimal space-y-2 pl-6">
+						{seriesArticles.map(seriesArticle => {
+							const isCurrentArticle = seriesArticle.id === article.id;
+							return (
+								<li>
+									<a
+										class={seriesArticleLink({ current: isCurrentArticle })}
+										href={`/articles/${seriesArticle.id}/`}
+										aria-current={isCurrentArticle ? 'page' : null}
+									>
+										{seriesArticle.data.title}
+									</a>
+								</li>
+							);
+						})}
+					</ol>
+				</nav>
+			)
+		}
+	</div>
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+interface Props {
+	date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()}></time>
+
+<script>
+	import { format } from 'date-fns';
+
+	function renderDates() {
+		for (const time of document.querySelectorAll('time[datetime]')) {
+			if (!(time instanceof HTMLTimeElement))
+				throw new Error('A time[datetime] selector returned a non-time element');
+			time.textContent = format(new Date(time.dateTime), 'PPP');
+		}
+	}
+
+	document.addEventListener('astro:page-load', renderDates);
+	renderDates();
+</script>
