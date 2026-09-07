@@ -87,12 +87,18 @@ const seriesArticleLink = tv({
 			>
 				{
 					typeof article.data.cover === 'undefined' ? null : (
-						<div transition:name={`article-cover-${article.id}`}>
+						<div
+							transition:name={`article-cover-${article.id}`}
+							transition:animate="initial"
+						>
 							<PresetImage
 								source={article.data.cover.src}
 								preset="article-cover"
 								alt={article.data.cover.alt}
-								class="aspect-[1000/420] w-full object-cover"
+								class="aspect-1000/420 w-full object-cover"
+								loading="eager"
+								decoding="sync"
+								fetchPriority="high"
 							/>
 						</div>
 					)

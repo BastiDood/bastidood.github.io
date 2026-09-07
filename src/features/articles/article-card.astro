@@ -13,7 +13,7 @@ const { id, data } = Astro.props;
 	<a class="group block h-full text-inherit hover:no-underline" href={`/articles/${id}/`}>
 		{
 			typeof data.cover === 'undefined' ? null : (
-				<div transition:name={`article-cover-${id}`}>
+				<div transition:name={`article-cover-${id}`} transition:animate="initial">
 					<PresetImage
 						source={data.cover.src}
 						preset="article-card"

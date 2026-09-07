@@ -10,9 +10,20 @@ interface Props {
 	preset: ImagePresetName;
 	alt: string;
 	class?: string;
+	loading?: 'eager' | 'lazy';
+	decoding?: 'async' | 'auto' | 'sync';
+	fetchPriority?: 'auto' | 'high' | 'low';
 }
 
-const { source, preset, alt, class: className } = Astro.props;
+const {
+	source,
+	preset,
+	alt,
+	class: className,
+	loading = 'lazy',
+	decoding = 'async',
+	fetchPriority = 'auto',
+} = Astro.props;
 const definition = imagePresets[preset];
 ---
 
@@ -27,6 +38,7 @@ const definition = imagePresets[preset];
 	format={definition.format}
 	widths={definition.widths}
 	sizes={definition.sizes}
-	loading="lazy"
-	decoding="async"
+	loading={loading}
+	decoding={decoding}
+	fetchpriority={fetchPriority}
 />
