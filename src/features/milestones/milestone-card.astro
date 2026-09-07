@@ -1,17 +1,36 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 
 import Card from '#components/card.astro';
 import { format } from 'date-fns';
+import { tv } from 'tailwind-variants';
 
 type Props = CollectionEntry<'milestones'>;
+
+const milestoneBody = tv({
+	slots: {
+		root: 'mt-4',
+		badge: 'mx-auto mb-4 block w-28 hover:no-underline sm:mx-0 sm:mb-0',
+		content:
+			'prose prose-sm prose-slate prose-a:font-normal prose-a:text-sky-600 prose-a:no-underline prose-a:hover:underline prose-li:my-0 prose-li:marker:text-slate-400 prose-p:m-0 prose-ul:m-0 prose-ul:pl-5 flex max-w-none min-w-0 flex-col gap-3 text-pretty',
+	},
+	variants: {
+		hasBadge: {
+			true: {
+				root: 'sm:grid sm:grid-cols-[7rem_minmax(0,1fr)] sm:items-start sm:gap-4',
+			},
+		},
+	},
+});
 
 const milestone = Astro.props;
 const { Content } = await render(milestone);
 
-const { date } = milestone.data;
+const { badge, date } = milestone.data;
 const start = format(date.start, 'MMMM yyyy');
 const end = date.end instanceof Date ? format(date.end, 'MMMM yyyy') : null;
+const styles = milestoneBody({ hasBadge: typeof badge !== 'undefined' });
 ---
 
 <div
@@ -26,7 +45,7 @@ const end = date.end instanceof Date ? format(date.end, 'MMMM yyyy') : null;
 	</div>
 	<div class="ml-12 w-[calc(100%-4rem)] min-w-0 md:ml-0 md:w-[calc(50%-1.25rem)]">
 		<Card size="sm" class="bg-white/90 backdrop-blur-sm transition-colors hover:bg-white">
-			<p class="mb-1 text-xs text-slate-500">
+			<p class="text-xs leading-5 text-slate-500">
 				<time>{start}</time>{typeof date.end === 'undefined' ? ' – Present' : null}{
 					date.end instanceof Date ? (
 						<>
@@ -36,14 +55,38 @@ const end = date.end instanceof Date ? format(date.end, 'MMMM yyyy') : null;
 					) : null
 				}
 			</p>
-			<h3 class="text-2xl font-bold text-slate-800">{milestone.data.title}</h3>
-			<div class="mb-2 text-sm font-medium">
+			<h3
+				class="mt-1 text-xl leading-tight font-bold text-balance text-slate-800 sm:text-2xl"
+			>
+				{milestone.data.title}
+			</h3>
+			<div class="mt-1 text-sm leading-5 font-medium">
 				<a href={milestone.data.organization.url} target="_blank" rel="external"
 					>{milestone.data.organization.name} ↗</a
 				>
 			</div>
-			<div class="text-sm text-slate-600 [&_ul]:ml-4 [&_ul]:list-outside [&_ul]:list-disc">
-				<Content />
+			<div class={styles.root()}>
+				{
+					badge ? (
+						<a
+							href={milestone.data.organization.url}
+							target="_blank"
+							rel="external"
+							class={styles.badge()}
+						>
+							<Image
+								src={badge.src}
+								alt={badge.alt}
+								width={112}
+								loading="lazy"
+								class="h-auto w-full"
+							/>
+						</a>
+					) : null
+				}
+				<div class={styles.content()}>
+					<Content />
+				</div>
 			</div>
 		</Card>
 	</div>

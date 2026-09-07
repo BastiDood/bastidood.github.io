@@ -49,17 +49,24 @@ const milestones = defineCollection({
 		base: './src/content/milestones',
 		pattern: '*/index.mdx',
 	}),
-	schema: z.object({
-		date: z.object({
-			start: yearMonthSchema,
-			end: yearMonthSchema.nullable().optional(),
+	schema: ({ image }) =>
+		z.object({
+			date: z.object({
+				start: yearMonthSchema,
+				end: yearMonthSchema.nullable().optional(),
+			}),
+			title: z.string(),
+			organization: z.object({
+				name: z.string(),
+				url: z.url(),
+			}),
+			badge: z
+				.object({
+					src: image(),
+					alt: z.string(),
+				})
+				.optional(),
 		}),
-		title: z.string(),
-		organization: z.object({
-			name: z.string(),
-			url: z.url(),
-		}),
-	}),
 });
 
 const projects = defineCollection({
