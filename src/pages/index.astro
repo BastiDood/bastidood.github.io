@@ -1,0 +1,91 @@
+---
+import { getEntries } from 'astro:content';
+
+import BaseLayout from '#layout/index.astro';
+import bluesky from '#features/home/assets/bluesky.svg';
+import Card from '#components/card.astro';
+import dev from '#features/home/assets/dev.svg';
+import github from '#features/home/assets/github.svg';
+import Hero from '#components/hero.astro';
+import linkedin from '#features/home/assets/linkedin.svg';
+import MilestoneCard from '#features/home/milestone-card.astro';
+import profile from '#branding/profile.svg';
+import twitter from '#features/home/assets/twitter.svg';
+import { milestoneOrder } from '#features/home/milestone-order.ts';
+
+const milestones = await getEntries(milestoneOrder);
+---
+
+<BaseLayout>
+	<Hero class="h-[60dvh]">
+		<Card color="fade" size="md" class="m-6 space-y-2 p-6">
+			<div class="space-y-1">
+				<h1>I'm Basti Ortiz.</h1>
+				<p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
+			</div>
+			<div class="flex items-center gap-2">
+				<a href="/">
+					<img
+						src={profile.src}
+						width="32"
+						height="32"
+						alt="Cartoon avatar of Basti Ortiz waving hello"
+						loading="lazy"
+						class="size-8 rounded-full"
+					/>
+				</a>
+				<a
+					href="https://github.com/BastiDood"
+					aria-label="GitHub"
+					target="_blank"
+					rel="external"
+				>
+					<img src={github.src} alt="" class="size-8" loading="lazy" />
+				</a>
+				<a href="https://dev.to/somedood" aria-label="DEV" target="_blank" rel="external">
+					<img src={dev.src} alt="" class="size-8" loading="lazy" />
+				</a>
+				<a
+					href="https://www.linkedin.com/in/basti-ortiz/"
+					aria-label="LinkedIn"
+					target="_blank"
+					rel="external"
+				>
+					<img src={linkedin.src} alt="" class="size-8" loading="lazy" />
+				</a>
+				<a
+					href="https://twitter.com/BastiDood"
+					aria-label="Twitter"
+					target="_blank"
+					rel="external"
+				>
+					<img src={twitter.src} alt="" class="size-8" loading="lazy" />
+				</a>
+				<a
+					href="https://bsky.app/profile/bastidood.dev"
+					aria-label="Bluesky"
+					target="_blank"
+					rel="external"
+				>
+					<img src={bluesky.src} alt="" class="size-8" loading="lazy" />
+				</a>
+				<a
+					href="mailto:ortiz@bastidood.dev"
+					aria-label="Email"
+					target="_blank"
+					rel="external"
+					class="text-4xl">📧</a
+				>
+			</div>
+		</Card>
+	</Hero>
+
+	<div class="m-4 mt-0! sm:m-12 md:m-16">
+		<section
+			aria-label="Career and education"
+			class="relative mx-auto max-w-7xl space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-linear-to-b before:from-transparent before:via-slate-300 before:to-transparent md:before:mx-auto md:before:translate-x-0 md:[&>*:nth-child(odd)]:flex-row-reverse"
+		>
+			{milestones.map(milestone => <MilestoneCard {...milestone} />)}
+		</section>
+	</div>
+</BaseLayout>

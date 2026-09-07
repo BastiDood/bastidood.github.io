@@ -1,0 +1,50 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+import Card from '#components/card.astro';
+import { format } from 'date-fns';
+
+type Props = CollectionEntry<'milestones'>;
+
+const milestone = Astro.props;
+const { Content } = await render(milestone);
+
+const { date } = milestone.data;
+const start = format(date.start, 'MMMM yyyy');
+const end = date.end instanceof Date ? format(date.end, 'MMMM yyyy') : null;
+---
+
+<div
+	id={milestone.id}
+	class="group relative flex w-full min-w-0 scroll-mt-20 items-center justify-between md:justify-normal"
+>
+	<div
+		aria-hidden="true"
+		class="absolute left-0 flex size-10 shrink-0 translate-x-0 items-center justify-center rounded-full md:static md:order-1 md:translate-x-0"
+	>
+		<div class="size-3 rounded-full bg-[#b2ebff]"></div>
+	</div>
+	<div class="ml-12 w-[calc(100%-4rem)] min-w-0 md:ml-0 md:w-[calc(50%-1.25rem)]">
+		<Card size="sm" class="bg-white/90 backdrop-blur-sm transition-colors hover:bg-white">
+			<p class="mb-1 text-xs text-slate-500">
+				<time>{start}</time>{typeof date.end === 'undefined' ? ' – Present' : null}{
+					date.end instanceof Date ? (
+						<>
+							{' – '}
+							<time>{end}</time>
+						</>
+					) : null
+				}
+			</p>
+			<h3 class="text-2xl font-bold text-slate-800">{milestone.data.title}</h3>
+			<div class="mb-2 text-sm font-medium">
+				<a href={milestone.data.organization.url} target="_blank" rel="external"
+					>{milestone.data.organization.name} ↗</a
+				>
+			</div>
+			<div class="text-sm text-slate-600 [&_ul]:ml-4 [&_ul]:list-outside [&_ul]:list-disc">
+				<Content />
+			</div>
+		</Card>
+	</div>
+</div>
