@@ -102,7 +102,7 @@ export default defineConfig({
 					'twitter',
 					'typescript',
 					'vitejs',
-				],
+				] as const,
 				'simple-icons': [
 					'bluesky',
 					'devdotto',
@@ -111,8 +111,8 @@ export default defineConfig({
 					'huggingface',
 					'hyper',
 					'tokio',
-				],
-				'token-branded': ['arbitrum-one', 'ethereum', 'solana'],
+				] as const,
+				'token-branded': ['arbitrum-one', 'ethereum', 'solana'] as const,
 			},
 		}),
 		mdx({
