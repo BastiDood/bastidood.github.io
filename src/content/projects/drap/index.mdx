@@ -1,0 +1,32 @@
+---
+title: 'DRAP: Draft Ranking Automated Processor'
+description: "DRAP is the open-source Draft Ranking Automated Processor for the University of the Philippines Diliman , Department of Computer Science 's annual draft of research lab assignments. The system automates the submission of lab preferences by students, the selection of draftees by faculty members, the assignment of lab memberships per draft round, the randomization of draftees during lottery rounds, and the dispatch of email notifications throughout the entire draft process."
+logo:
+    src: './assets/logo.svg'
+    alt: 'DRAP'
+technologies:
+    ['git', 'nodejs', 'typescript', 'javascript', 'svelte', 'html', 'css', 'tailwind', 'postgresql']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import history1 from './assets/history-1.png';
+import history2 from './assets/history-2.png';
+import rankings from './assets/rankings.png';
+
+[DRAP](https://drap.dcs.upd.edu.ph/) is the [open-source](https://github.com/BastiDood/drap) Draft Ranking Automated Processor for the [University of the Philippines](https://up.edu.ph/) [Diliman](https://upd.edu.ph/), [Department of Computer Science](https://dcs.upd.edu.ph/)'s annual draft of research lab assignments. The system automates the submission of lab preferences by students, the selection of draftees by faculty members, the assignment of lab memberships per draft round, the randomization of draftees during lottery rounds, and the dispatch of email notifications throughout the entire draft process.
+
+Previously, this process would have spanned weeks' worth of email exchanges between the department administrators and the faculty members. With the DRAP automation in place, the August 2024 Draft wrapped up within the week. The August 2024 Draft also happened to be the _largest draft in DCS history:_ 111 participating students, 9 lab heads, and 3 draft administrators (i.e., 123 total users).
+
+The <abbr title="Draft Ranking Automated Processor">DRAP</abbr> automation is implemented as a full-stack [SvelteKit](https://kit.svelte.dev/) web application with [PostgreSQL](https://www.postgresql.org/) as the database. To streamline user authentication, the application leverages [Google's OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) provider via [OAuth 2.0](https://oauth.net/2/). Rather conveniently, the OAuth 2.0 integration also enables DRAP to send emails via the [Gmail API](https://developers.google.com/gmail/api/guides).
+
+<div class="md:flex md:gap-4">
+	<div>
+		<ProjectImage source={history1} alt="DRAP History Timeline" />
+	</div>
+	<div>
+		<ProjectImage source={history2} alt="DRAP History Timeline" />
+	</div>
+	<div>
+		<ProjectImage source={rankings} alt="DRAP Rankings Page" />
+	</div>
+</div>

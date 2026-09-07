@@ -1,0 +1,11 @@
+---
+title: 'A Block of Optionals!'
+description: 'The option-block crate is an open-source Rust package that provides a basic direct address look-up table, where empty slots are tracked by a single bit mask. Although it is rather simple, this is a fundamental data structure in embedded development, where memory constraints especially matter.'
+technologies: ['git', 'rust']
+---
+
+The [`option-block`](https://github.com/BastiDood/option-block) crate is an open-source Rust package that provides a basic direct address look-up table, where empty slots are tracked by a single bit mask. Although it is rather simple, this is a fundamental data structure in embedded development, where memory constraints especially matter.
+
+From the pull request [`dlkj/usbd-human-interface-device#89`](https://github.com/dlkj/usbd-human-interface-device/pull/89#issue-1574171393) by [@jedrzejboczar](https://github.com/jedrzejboczar):
+
+> Currently, `heapless::FnvIndexMap` is used to store idle times for reports, which takes 260B (out of 460B for whole `RawInterface`) to store at most 32 `u8` values. This PR changes it to use [`option-block`](https://github.com/BastiDood/option-block) which basically is `[u8; 32]` with `u32` bitmask of "used" slots, which takes 36B (`RawInterface` is now 236B)... In my use case, with 3 HID interfaces, this **saves 672 bytes of RAM usage**, while I also observed minor improvement in code size—[`usbd-human-interface-device`](https://github.com/dlkj/usbd-human-interface-device) takes **406 bytes less space**.

@@ -1,0 +1,36 @@
+---
+title: 'Botoken'
+description: 'Botoken is a simple open-source polling system for decentralized autonomous organizations. Polls, proposals, motions, and referendums are published in the Ethereum blockchain for permanence and transparency. Voting power is then quantified as fungible tokens that the organization controls and regulates. Members within the organization thus "spend" their voting power (i.e., fungible tokens) on polls to express their consent or dissent on organizational processes. The "tokenomics" of this setup enables an interesting exploration into self-balancing cycles of tokenized voting power.'
+technologies:
+    [
+        'git',
+        'ethereum',
+        'arbitrum',
+        'hardhat',
+        'solidity',
+        'nodejs',
+        'typescript',
+        'javascript',
+        'svelte',
+        'html',
+        'css',
+        'tailwind',
+    ]
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import poll from './assets/poll.png';
+import admin from './assets/admin.png';
+
+[Botoken](https://botoken.pages.dev/) is a simple [open-source](https://github.com/BastiDood/botoken) polling system for decentralized autonomous organizations. Polls, proposals, motions, and referendums are published in the [Ethereum](https://ethereum.org/) blockchain for permanence and transparency. Voting power is then quantified as fungible tokens that the organization controls and regulates. Members within the organization thus "spend" their voting power (i.e., fungible tokens) on polls to express their consent or dissent on organizational processes. The ["tokenomics"](https://www.coinbase.com/learn/wallet/tokenomics-101) of this setup enables an interesting exploration into self-balancing cycles of tokenized voting power.
+
+The main user application is an installable [progressive web application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) powered by [Svelte](https://svelte.dev/) that interfaces with [Arbitrum](https://arbitrum.io/), a Layer 2 blockchain technology on top of [Ethereum](https://ethereum.org/). The back-end logic is implemented and deployed as a [Solidity](https://soliditylang.org/) smart contract.
+
+<div class="md:flex md:gap-4">
+	<div>
+		<ProjectImage source={poll} alt="Botoken Poll Page" />
+	</div>
+	<div>
+		<ProjectImage source={admin} alt="Botoken Admin Page" />
+	</div>
+</div>

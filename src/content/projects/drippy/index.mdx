@@ -1,0 +1,74 @@
+---
+title: 'Drippy IoT'
+description: 'Drippy is an open-source Internet-of-Things (IoT) system that records the water flow rate of an outlet in a household over time. Periodic reports are aggregated in the cloud so that stakeholders (e.g., customers, the water company, etc.) may access a time-series representation of water consumption through a dashboard interface on the Web. The project was ultimately a Top 3 Finalist in the IoT Cup 2023 hosted by the University of Philippines Diliman Department of Computer Science.'
+logo:
+    src: './assets/logo.svg'
+    alt: 'Drippy'
+technologies:
+    [
+        'git',
+        'rust',
+        'tokio',
+        'hyper',
+        'espressif',
+        'typescript',
+        'svelte',
+        'html',
+        'css',
+        'postgresql',
+    ]
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import login from './assets/login.png';
+import dashboard from './assets/dashboard.png';
+import schematic from './assets/schematic.png';
+import testbench from './assets/testbench.png';
+import box from './assets/box.png';
+
+[Drippy](https://github.com/drippy-iot) is an open-source Internet-of-Things (IoT) system that records the water flow rate of an outlet in a household over time. Periodic reports are aggregated in the cloud so that stakeholders (e.g., customers, the water company, etc.) may access a time-series representation of water consumption through a dashboard interface on the Web. The project was ultimately a **Top 3 Finalist in the IoT Cup 2023** hosted by the [University of Philippines Diliman](https://upd.edu.ph/) [Department of Computer Science](https://dcs.upd.edu.ph/).
+
+Aside from data analytics, Drippy's marquee feature is its ability to detect leaky pipes. As soon as the IoT device detects sufficient conditions for leakage, it automatically closes a master valve in the same pipe to stop the wasted flow of water. A prominently positioned LED lights up to indicate the actuation of said valve. Through the web dashboard, a customer/user may remotely release the valve. Inversely, they may also remotely close the valve (under normal operation) should the need arise. Thus, the IoT system reactively guards against wastage due to leaks and overconsumption.
+
+<div class="flex justify-around gap-4">
+	<div>
+		<ProjectImage class="m-0 max-h-96" source={login} alt="login page for Drippy dashboard" />
+	</div>
+	<div>
+		<ProjectImage class="m-0 max-h-96" source={dashboard} alt="Drippy dashboard" />
+	</div>
+</div>
+The [ESP32](https://www.espressif.com/en/products/socs/esp32) firmware is
+[open-source](https://github.com/drippy-iot/metro-tap) and written in
+[Rust](https://www.rust-lang.org/) on top of C bindings to the [ESP IoT Development
+Framework](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/), which are provided by
+[Espressif Systems](https://github.com/esp-rs) themselves. All cloud interactions (backed by a
+[PostgreSQL](https://www.postgresql.org/) database) are handled by an
+[open-source](https://github.com/drippy-iot/cloud) centralized web server written in
+[Rust](https://www.rust-lang.org/) with the [Hyper](https://hyper.rs/) HTTP framework on top of the
+[Tokio](https://tokio.rs/) asynchronous runtime. Finally, the dashboard is a web application written
+in [Svelte](https://svelte.dev/).
+
+<div class="flex gap-4">
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[543px] object-contain"
+			source={schematic}
+			alt="schematic diagram for Drippy circuitry"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-full object-contain"
+			source={testbench}
+			alt="Drippy testbench on actual hardware"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[543px] object-contain"
+			source={box}
+			alt="enclosed circuitry for Drippy and its ESP32 chip"
+		/>
+	</div>
+</div>

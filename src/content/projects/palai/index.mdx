@@ -1,0 +1,39 @@
+---
+title: 'pal.ai'
+description: 'The pal.ai project is an installable open-source mobile-first progressive web app that uses images of rice leaves to identify rice leaf diseases.'
+logo:
+    src: './assets/logo.svg'
+    alt: 'pal.ai'
+technologies: ['git', 'deno', 'typescript', 'svelte', 'html', 'css', 'python', 'hugging-face']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import home from './assets/home.png';
+import mobile from './assets/mobile.png';
+
+The [pal.ai](https://palai.deno.dev/) project is an installable [open-source](https://github.com/BastiDood/pal.ai) mobile-first [progressive web app](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) that uses images of rice leaves to identify rice leaf diseases.
+
+In the back end, we use a minimal [Deno Deploy](https://deno.com/deploy) server that proxies the [Hugging Face Hosted Inference API](https://huggingface.co/docs/api-inference/index), which interfaces with a model that uses a [BEiT vision transformer model](https://arxiv.org/pdf/2106.08254.pdf) to classify images of rice plants for the presence/absence of diseases. The model is pre-trained using [ImageNet 22k](https://arxiv.org/pdf/1409.0575.pdf) then finetuned using the [PH Rice Leave Diseases dataset](https://www.kaggle.com/datasets/shrupyag001/philippines-rice-diseases). The model achieves **95% accuracy** using the dataset test set despite having only 1120 training data points.
+
+- Kaggle Notebook: _[Classification by Fine-tuning BEiT](https://www.kaggle.com/code/josekristianresabal/classification-by-fine-tuning-beit)_
+- Hugging Face Hub Link for the Model: _[jkrperson/Beit-for-rice-disease](https://huggingface.co/jkrperson/Beit-for-rice-disease)_
+- Weights & Biases Experiments: _[jkrperson/huggingface](https://wandb.ai/jkrperson/huggingface/overview?workspace=user-jkrperson)_
+
+In the front end, [pal.ai](https://palai.deno.dev/) is an installable [progressive web app](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) (PWA) written in [TypeScript](https://www.typescriptlang.org/) with the [Svelte](https://svelte.dev/) framework. It uses the [Parcel](https://parceljs.org/) build tool for asset bundling, packaging, and optimization. The PWA allows users to upload their own images of rice plants for classification.
+
+<div class="flex gap-4">
+	<div>
+		<ProjectImage
+			class="m-0 max-h-full object-contain"
+			source={home}
+			alt="pal.ai home page with file upload and camera controls"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[1080px] object-contain"
+			source={mobile}
+			alt="pal.ai results page showing 79.28% confidence in Healthy classification"
+		/>
+	</div>
+</div>

@@ -1,0 +1,32 @@
+---
+title: 'ACDA: Aggregated Crash Data Analytics'
+description: 'The Aggregated Crash Data Analysis (ACDA) is a component of Project CREATE by the Intelligent Systems Laboratory (ITSLab) of the National Center for Transportation Studies (NCTS) . ACDA is a comprehensive solution designed to generate crash data reports and statistics to help policymakers and officials promote road safety in the Philippines. This solution combines data from various sources, including police reports, hospital records, and other data repositories collected by the Philippine Integrated Traffic Incident Database (PITAD) , to create a compsrehensive view of road safety incidents in the country.'
+logo:
+    src: './assets/logo.svg'
+    alt: 'ACDA'
+technologies:
+    ['git', 'nodejs', 'typescript', 'javascript', 'svelte', 'html', 'css', 'tailwind', 'postgresql']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import gis from './assets/gis.png';
+import analytics from './assets/analytics.png';
+import filters from './assets/filters.png';
+
+The **Aggregated Crash Data Analysis <dfn><abbr title="Aggregated Crash Data Analysis">(ACDA)</abbr></dfn>** is a component of [Project <dfn><abbr title="Collection, Recording, and Analysis of Traffic Incidence Data">CREATE</abbr></dfn>](https://itslab.ncts.upd.edu.ph/create/) by the [Intelligent Systems Laboratory <dfn><abbr title="Intelligent Transportation Systems Laboratory">(ITSLab)</abbr></dfn>](https://itslab.ncts.upd.edu.ph/) of the [National Center for Transportation Studies <dfn><abbr title="National Center for Transportation Studies">(NCTS)</abbr></dfn>](https://ncts.upd.edu.ph/). <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is a comprehensive solution designed to generate crash data reports and statistics to help policymakers and officials promote road safety in the Philippines. This solution combines data from various sources, including police reports, hospital records, and other data repositories collected by the **Philippine Integrated Traffic Incident Database <dfn><abbr title="Philippine Integrated Traffic Incident Database">(PITAD)</abbr></dfn>**, to create a compsrehensive view of road safety incidents in the country.
+
+Under the hood, <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is an installable full-stack [progressive web application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) powered by [SvelteKit](https://kit.svelte.dev/) with [PostgreSQL](https://www.postgresql.org/) as the database. To speed up the geospatial queries used in map visualizations and data aggregations, the back-end server extensively leveraged the [H3 geospatial indexing system](https://h3geo.org/) developed by Uber Engineering. The front end then renders the data in a [Svelte](https://svelte.dev/) application via [Chart.js](https://www.chartjs.org/).
+
+This application was completed as a service project of the [UP Center for Student Innovations](https://up-csi.org/), where I served as the lead developer of the entire project.
+
+<div class="md:flex md:gap-4">
+	<div>
+		<ProjectImage source={gis} alt="ACDA GIS Page" />
+	</div>
+	<div>
+		<ProjectImage source={analytics} alt="ACDA Analytics Page" />
+	</div>
+	<div>
+		<ProjectImage source={filters} alt="ACDA Help Page with Filters" />
+	</div>
+</div>

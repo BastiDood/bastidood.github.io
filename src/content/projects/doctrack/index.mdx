@@ -1,0 +1,36 @@
+---
+title: 'DocTrack'
+description: 'DocTrack is an open-source mobile-first document tracking system built for the modern age. It reimplements and improves on the DRS by the UP ITDC by leveraging PWA technologies for:'
+logo:
+    src: './assets/logo.svg'
+    alt: 'DocTrack'
+technologies: ['git', 'deno', 'typescript', 'javascript', 'svelte', 'html', 'css', 'postgresql']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import mobile from './assets/mobile.png';
+import desktop from './assets/desktop.png';
+
+[DocTrack](https://doctrack.deno.dev/) is an [open-source](https://github.com/BastiDood/doc-track) mobile-first document tracking system built for the modern age. It reimplements and improves on the [<dfn><abbr title="Document Routing System">DRS</abbr></dfn>](https://drs.up.edu.ph/) by the [<dfn><abbr title="University of the Philippines">UP</abbr></dfn>](https://up.edu.ph/) [<dfn><abbr title="Information Technology Development Center">ITDC</abbr></dfn>](https://itdc.up.edu.ph/) by leveraging [<dfn><abbr title="Progressive Web App">PWA</abbr></dfn>](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) technologies for:
+
+- Delivering push notifications via the [Web Push API](https://developer.mozilla.org/en-US/docs/Web/API/Push_API).
+- Maintaining an offline experience via [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+
+Wherever possible, the project utilizes a [TypeScript](https://www.typescriptlang.org/)-centric application stack. With [Svelte](https://svelte.dev/) in the front end, TypeScript ensures that events, messages, and interactions between UI components remain consistent. In the back end, [Deno](https://deno.land/) facilitates the development of robust type-safe <dfn><abbr title="Hypertext Transfer Protocol">HTTP</abbr></dfn> request handlers for the <dfn><abbr title="Representational State Transfer">REST</abbr></dfn> API.
+
+<div class="flex gap-4">
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[1080px] object-contain"
+			source={mobile}
+			alt="DocTrack Mobile"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-full object-contain"
+			source={desktop}
+			alt="DocTrack Desktop"
+		/>
+	</div>
+</div>

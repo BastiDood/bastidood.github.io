@@ -1,0 +1,30 @@
+---
+title: 'SoundRave'
+description: "SoundRave was an aggregator app for new music released by a user's followed artists on Spotify. At the time, the news feed was missing from Spotify's features. The app aimed to fill in this hole."
+technologies: ['git', 'nodejs', 'express', 'html', 'css', 'javascript', 'mongodb']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import mobile from './assets/mobile.webp';
+import desktop from './assets/desktop.webp';
+
+[SoundRave](https://github.com/BastiDood/soundrave) was an aggregator app for new music released by a user's followed artists on Spotify. At the time, the news feed was missing from Spotify's features. The app aimed to fill in this hole.
+
+The <dfn><abbr title="User Interface">UI</abbr></dfn> is primarily rendered by the server via the [Express](https://expressjs.com/) framework for [Node.js](https://nodejs.org/). For data persistence, [MongoDB](https://www.mongodb.com/) is used as the database and cache for Spotify <dfn><abbr title="Application Program Interface">API</abbr></dfn> calls.
+
+<div class="flex gap-4">
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[768px] object-contain"
+			source={mobile}
+			alt="SoundRave Mobile"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-full object-contain"
+			source={desktop}
+			alt="SoundRave Desktop"
+		/>
+	</div>
+</div>

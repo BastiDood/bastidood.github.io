@@ -1,0 +1,12 @@
+---
+title: 'UDP Multicast Chat'
+description: 'The UDP Multicast Chat Project is a basic chat application written in Rust. The front-end GUI uses the popular egui library to render the updates from the back end. Meanwhile, the back end is a Tokio -powered server that listens for UDP messages over a specified multicast address. The same multicast channel is also used for sending new messages. This setup effectively allows multiple hosts in the local area network to communicate with each other via a common UDP multicast channel.'
+technologies: ['git', 'rust', 'tokio']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import screenshot from './assets/screenshot.png';
+
+[<dfn><abbr title="User Datagram Protocol">UDP</abbr></dfn> Multicast Chat Project](https://github.com/BastiDood/udp-multicast-chat) is a basic chat application written in Rust. The front-end GUI uses the popular [`egui`](https://www.egui.rs/) library to render the updates from the back end. Meanwhile, the back end is a [Tokio](https://tokio.rs/)-powered server that listens for UDP messages over a specified multicast address. The same multicast channel is also used for sending new messages. This setup effectively allows multiple hosts in the local area network to communicate with each other via a common UDP multicast channel.
+
+<ProjectImage source={screenshot} alt="UDP Multicast Chat Preview" class="m-auto" />

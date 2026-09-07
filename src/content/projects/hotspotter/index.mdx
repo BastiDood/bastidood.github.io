@@ -1,0 +1,66 @@
+---
+title: 'Hotspotter'
+description: 'Developed in fulfillment of the final requirements for my Bachelor of Science degree in Computer Science, Hotspotter is an open-source incentivized crowdsensing system that collects, maps, and visualizes Wi-Fi and cellular data to pinpoint hotspots and dead zones. The system is composed of three main subsystems:'
+logo:
+    src: './assets/logo.svg'
+    alt: 'Hotspotter'
+technologies:
+    [
+        'git',
+        'android',
+        'capacitor',
+        'nodejs',
+        'typescript',
+        'javascript',
+        'svelte',
+        'html',
+        'css',
+        'tailwind',
+        'postgresql',
+    ]
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import diliman from './assets/diliman.png';
+import cached from './assets/cached.png';
+import readings from './assets/readings.png';
+import qcCircle from './assets/qc-circle.png';
+
+Developed in fulfillment of the final requirements for my Bachelor of Science degree in Computer Science, **Hotspotter** is an [open-source](https://github.com/BastiDood/hotspotter) incentivized crowdsensing system that collects, maps, and visualizes Wi-Fi and cellular data to pinpoint hotspots and dead zones. The system is composed of three main subsystems:
+
+1. The _database subsystem_ is responsible for (1) the persistence of user data, user-submitted readings, and leaderboards and (2) data aggregation for map visualization. Hotspotter uses the [PostgreSQL](https://www.postgresql.org/) database management system for all queries and mutations in SQL. To improve the efficiency of geospatial queries, Hotspotter leverages the [H3 hexagonal hierarchical geospatial indexing system](https://h3geo.org/) by Uber Engineering for generating, querying, and aggregating data points. The hierarchical index, which enables Hotspotter to aggregate data at varying resolutions, is especially useful for optimizing download times by pruning viewport-occluded data points from the map visualization.
+2. The _web subsystem_ interfaces with the _database subsystem_. It is responsible for marshaling HTTP requests as SQL queries to the [PostgreSQL](https://www.postgresql.org/) database. The web server is a Representational State Transfer <dfn><abbr title="Representational State Transfer">(REST)</abbr></dfn> Application Program Interface <dfn><abbr title="Application Program Interface">(API)</abbr></dfn> that returns SQL results in JSON format. The API endpoints service the dynamic interactions that the front-end user interfaces would require (e.g., data uploads).
+3. The _mobile subsystem_ features an Android mobile application that leverages built-in sensors in modern smartphones to collect and upload data on nearby Wi-Fi access points and cellular network signal strengths. Under the hood, the mobile application is a front-end [Svelte](https://svelte.dev/) web application wrapped inside an [Android WebView](https://developer.android.com/develop/ui/views/layout/webapps/webview) application. Low-level system calls into the Android API are marshaled by customized handwritten Java plugins for the [CapacitorJS](https://capacitorjs.com/) framework.
+
+Field work was then conducted in eight _sitios_ of Barangay San Lorenzo, Norzagaray, Bulacan to validate and stress-test the system under the extreme network conditions of Geographically Isolated and Disadvantaged Areas <dfn><abbr title="Geographically Isolated and Disadvantaged Areas">(GIDAs)</abbr></dfn>. In the end, the mobile application's passive sensing, collecting, and caching of data successfully operated even in the most isolated areas without an internet connection.
+
+<div class="md:flex md:gap-4">
+	<div>
+		<ProjectImage
+			class="max-h-[1080px]"
+			source={diliman}
+			alt="Wi-Fi Map of UP Diliman in Hotspotter"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="max-h-[1080px]"
+			source={cached}
+			alt="List of Cached Readings in Hotspotter"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="max-h-[1080px]"
+			source={readings}
+			alt="Data Collected by Readings in Hotspotter"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="max-h-[1080px]"
+			source={qcCircle}
+			alt="4G Map of Quezon Memorial Circle in Hotspotter"
+		/>
+	</div>
+</div>

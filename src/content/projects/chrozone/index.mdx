@@ -1,0 +1,33 @@
+---
+title: 'Chrozone'
+description: 'Chrozone is a Tokio -powered Discord bot written in Rust that provides time-based utilities via slash commands . One of its primary features is to format a given date as a dynamic timestamp message (as seen in the screenshots below).'
+logo:
+    src: './assets/logo.webp'
+    alt: 'Chrozone'
+technologies: ['git', 'rust', 'tokio', 'hyper', 'deno']
+---
+
+import ProjectImage from '#features/portfolio/project-image.astro';
+import autocomplete from './assets/autocomplete.png';
+import result from './assets/result.png';
+
+[Chrozone](https://github.com/BastiDood/chrozone) is a [Tokio](https://tokio.rs/)-powered [Discord bot](https://discord.com/api/oauth2/authorize?client_id=1008989318901137459&scope=applications.commands) written in [Rust](https://www.rust-lang.org/) that provides time-based utilities via [slash commands](https://discord.com/developers/docs/interactions/application-commands#slash-commands). One of its primary features is to format a given date as a dynamic timestamp message (as seen in the screenshots below).
+
+For global Discord communities that have special timezone considerations, Chrozone empowers users to send timezone-adaptive announcements. No need to convert the timezones yourself! Let Chrozone do the work.
+
+<div class="flex justify-around gap-4">
+	<div>
+		<ProjectImage
+			class="m-0 max-h-[596px] object-contain"
+			source={autocomplete}
+			alt="Chrozone Autocompletion Menu"
+		/>
+	</div>
+	<div>
+		<ProjectImage
+			class="m-0 max-h-full object-contain"
+			source={result}
+			alt="Chrozone Preview Result"
+		/>
+	</div>
+</div>
