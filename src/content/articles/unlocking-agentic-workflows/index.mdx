@@ -23,13 +23,13 @@ The reason for this, of course, is that Claude (like all current-gen LLMs) have 
 
 Anyway, what's important to point out here is that anecdotally, LLMs like Claude have a so-called "dumb zone". Beyond 40% of the context window, "context rot" kicks in and the model's ability to reason, recall, and perform significantly degrades. That's why Claude Code automatically compacts a conversation at 85% capacity.
 
-![visualization of 0-40% being the "smart zone", 40-85% being the "dumb zone", and 85-100% being the "compact zone"](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/716i2j4vzuveupykhbqy.PNG)
+![visualization of 0-40% being the "smart zone", 40-85% being the "dumb zone", and 85-100% being the "compact zone"](./assets/context-window-zones.png)
 
 But what this means is that whatever you were doing or talking about prior to compaction suddenly gets compressed into a lossy summary that gets prefixed at the start of the next session. What looks like a long conversation is actually just compacted summaries stitched together.
 
-![visualization of a full conversation context window with a system prompt and its tool calls](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2v0dzrk5d1yjff0t1ia3.PNG)
+![visualization of a full conversation context window with a system prompt and its tool calls](./assets/full-conversation-context.png)
 
-![visualization of a compacted conversation context window with a system prompt and its tool calls](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/umdbyqrdcc9zisrdp9f6.PNG)
+![visualization of a compacted conversation context window with a system prompt and its tool calls](./assets/compacted-conversation-context.png)
 
 ### A World without Proper Context Management
 
@@ -50,7 +50,7 @@ Just to give you a picture of how bad **context rot** can get if we're not caref
 6. Execute Mode (`Bash`, `Write`, etc.)
 7. More Tool Calls!
 
-![visualization of an overloaded conversation context window with a system prompt and its tool calls](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2ytth18luz8vsm4lm2bw.PNG)
+![visualization of an overloaded conversation context window with a system prompt and its tool calls](./assets/overloaded-conversation-context.png)
 
 You'll probably get away with one or two features. But in the limit, compaction will be inevitable. And soon, your compaction will get compacted. And your compacted compaction accumulates in the conversation preamble until the summary itself takes up more than 40% of the context window!
 
@@ -62,7 +62,7 @@ Imagine what that looks like in a typical Plan Mode. A medium-sized feature in a
 
 We haven't even gotten to the main planning work, much less the actual task!
 
-![three explorer agents taking up around ~60k tokens each](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jtufhn9j4otxc5p287sc.PNG)
+![three explorer agents taking up around ~60k tokens each](./assets/parallel-explorer-context.png)
 
 It gets even worse because when Claude approaches its context limits, it's trained to be lazier and lazier in an effort to preserve its remaining window. Anthropic calls this **context awareness**; I call it laziness. 🤣
 
@@ -110,8 +110,6 @@ When it comes to dependency management, **it's so much easier to keep up than ca
 
 #### Dependabump: A Case Study on Effective Map-Reduce Patterns
 
-[View embedded content](https://github.com/BastiDood/dependency-wrangler)
-
 And that's why I automated this workflow and wrote the [Dependabump plugin for Claude Code][Dependabump].
 
 Dependabump takes everything that I just explained to you and does the changelog research for all outdated dependencies **in parallel sub-agents**.
@@ -120,7 +118,7 @@ In a typical run, Claude Code orchestrates around \~20 parallel researcher sub-a
 
 But our story doesn't end there. It's easy to parallelize work, but how do you consolidate the results? The (naive) default way is to dump all the summaries to the orchestrator. But this is stupid! We're back to square one by polluting the context window with changelog summaries.
 
-![visualization of a naive map-reduce workflow with a main orchestrator and its sub-agents dumping their context into the main context window](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bvx8xz3b076cci5x08zg.PNG)
+![visualization of a naive map-reduce workflow with a main orchestrator and its sub-agents dumping their context into the main context window](./assets/naive-map-reduce.png)
 
 #### Side Channel Persistence
 
@@ -128,7 +126,7 @@ The better way to do this is to have sub-agents dump their analyses in Markdown 
 
 Now here's the clever part: we spawn a brand new sub-agent whose responsibility is to read all of these `*.md` files and perform the consolidation work in its own context window.
 
-![visualization of a parallel map-reduce workflow with a main orchestrator and its sub-agents dumping their context into their own file outputs](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/dd5t7t61x0tvo80ca4nk.PNG)
+![visualization of a parallel map-reduce workflow with a main orchestrator and its sub-agents dumping their context into their own file outputs](./assets/file-backed-map-reduce.png)
 
 _Congratulations! You just shielded the orchestrator from the context dump._ 🎉
 

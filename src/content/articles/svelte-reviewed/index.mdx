@@ -224,9 +224,7 @@ The fix is frustratingly simple: **normalize the primitives!**
 <button on:click="{increment}">+</button>
 ```
 
-Kevin Bridges (@kevinast) goes into great detail about this behavior in his article on exploring Svelte's reactivity. The main point is that Svelte lets us "fine tune the reactivity"—for better or worse...
-
-[View embedded content](https://dev.to/kevinast/responsive-svelte-exploring-svelte-s-reactivity-5cen)
+Kevin Bridges (@kevinast) goes into great detail about this behavior in [his article on exploring Svelte's reactivity](https://dev.to/kevinast/responsive-svelte-exploring-svelte-s-reactivity-5cen). The main point is that Svelte lets us "fine tune the reactivity"—for better or worse...
 
 There are more examples out there where Svelte is not as fine-grained as I first thought. To cite another example, the `{#each}` block [actually diffs](https://svelte.dev/docs/logic-blocks#each) by the provided key expression when the backing array gets modified. This should be an incredibly fast operation, but I was nevertheless disappointed to find out that there was no fancy compile-time machinery happening behind the scenes.
 

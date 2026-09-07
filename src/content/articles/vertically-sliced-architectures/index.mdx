@@ -39,7 +39,7 @@ In this article, we'll explore a _better_ way to structure a codebase using a **
 
 The MVC architecture is an example of a **horizontally sliced architecture**. In a horizontally sliced architecture, the separation of concerns is sliced according to technical layers.
 
-![A diagram of a horizontally sliced three-layer architecture featuring the MVC architecture](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cjo5ook27d2ab2t3vkx1.png)
+![A diagram of a horizontally sliced three-layer architecture featuring the MVC architecture](./assets/horizontal-architecture.png)
 
 Note that the layers needn't be exclusively "models", "views", and "controllers". In a full-stack web application, you might find yourself slicing by "components", "endpoints", and "databases" instead.
 
@@ -69,7 +69,7 @@ _So, what's wrong with this project structure?_
 
 Now let's turn MVC on its side—literally! In a **vertically sliced architecture**, the separation of concerns is sliced according to features. The core idea being: each feature module must encapsulate only its own _end-to-end_ logic and nothing else.
 
-![A diagram of a vertically sliced three-layer architecture where a feature module is superimposed on all layers of the tech stack](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2pscpfruj09x09hwbdz7.png)
+![A diagram of a vertically sliced three-layer architecture where a feature module is superimposed on all layers of the tech stack](./assets/vertical-architecture.png)
 
 In practice, here is what a feature-driven project structure could look like:
 

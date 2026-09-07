@@ -171,7 +171,7 @@ In summary, the `Arc<str>` is only worth 16 bytes on the stack. Meanwhile, on th
 
 Therefore, _if mutability is **not** necessary, then perhaps an owned `str` reference may be a worthwhile optimization._ The same also applies for `[u8]`, `Path`, `CStr`, and other slice-like types.
 
-![Double Indirection Illustration](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/11ggfjhfbijl8pvpm5t4.png)
+![Double Indirection Illustration](./assets/double-indirection.png)
 
 <figcaption>
 	This is not an accurate figure, but it's meant to roughly illustrate the optimization. The

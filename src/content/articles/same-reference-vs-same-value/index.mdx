@@ -32,7 +32,7 @@ const went = 'to';
 
 The variables `dev` and `went` both have the same value. However, `dev` and `went` are not necessarily the same references. Although they both store the value `'to'`, they do not store the same instance of `'to'`. They occupy two different places in memory. `dev` stores a different string in memory while `went` stores another string in memory. The two variables just happen to store strings that have the same value. The diagram below illustrates this. The arrows represent what values each variable is referencing/pointing to.
 
-![Each variable points to their own instance of the string.](https://thepracticaldev.s3.amazonaws.com/i/k94h9y480jtv53otq1av.png)
+![Each variable points to their own instance of the string.](./assets/separate-string-instances.png)
 
 Now, you may be wondering how to achieve two variables having the same reference and same value. To do that, we simply assign the reference to another variable.
 
@@ -47,7 +47,7 @@ const went = dev;
 
 In this case, the `dev` and `went` both have the same value _and_ the same reference. The diagram below is updated to reflect what has changed under the hood by doing this.
 
-![Both variables point to the same string.](https://thepracticaldev.s3.amazonaws.com/i/vn8ejmk0rktmrg5bqbqc.png)
+![Both variables point to the same string.](./assets/shared-string-instance.png)
 
 The diagram shows that running the code now takes up less memory because both `dev` and `went` now point to the same string. There is no longer a need to store two separate instances of the same string in memory. In a larger scale, this can prove to be useful in memory optimization. Compared to the previous example, memory usage has essentially been cut to half.
 

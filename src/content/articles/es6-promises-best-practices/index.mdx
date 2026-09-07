@@ -27,9 +27,7 @@ Besides, in future versions of Node.js, unhandled promise rejections will crash 
 
 ## Keep it "linear"
 
-[Read the referenced article](https://dev.to/somedood/please-don-t-nest-promises-3o1o)
-
-In a recent article, I explained why it is important to avoid nesting promises. In short, nested promises stray back into the territory of "callback hell". The goal of promises is to provide idiomatic standardized semantics for asynchronous programming. By nesting promises, we are vaguely returning to the verbose and rather cumbersome error-first callbacks popularized by Node.js APIs.
+In [a recent article](/articles/please-dont-nest-promises/), I explained why it is important to avoid nesting promises. In short, nested promises stray back into the territory of "callback hell". The goal of promises is to provide idiomatic standardized semantics for asynchronous programming. By nesting promises, we are vaguely returning to the verbose and rather cumbersome error-first callbacks popularized by Node.js APIs.
 
 To keep asynchronous activity "linear", we can make use of either [asynchronous functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) or _properly_ chained promises.
 
@@ -79,9 +77,7 @@ await sleep(1000);
 
 ## Avoid the sequential trap
 
-[Read the referenced article](https://dev.to/somedood/javascript-concurrency-avoiding-the-sequential-trap-7f0)
-
-In the previous article in this series, I extensively discussed the power of scheduling multiple independent promises. Promise chains can only get us so far when it comes to efficiency due to its sequential nature. Therefore, the key to minimizing a program's "idle time" is concurrency.
+In [the previous article](/articles/sequential-trap/) of [this series](/series/making-the-most-out-of-asynchronous-javascript/), I extensively discussed the power of scheduling multiple independent promises. Promise chains can only get us so far when it comes to efficiency due to its sequential nature. Therefore, the key to minimizing a program's "idle time" is concurrency.
 
 ```javascript
 import { promisify } from 'util';

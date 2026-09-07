@@ -10,6 +10,8 @@ tags: ['javascript', 'node', 'programming', 'tips']
 series: please-dont
 ---
 
+import YouTubeEmbed from '#features/articles/youtube-embed.astro';
+
 ```javascript
 const fs = require('fs');
 
@@ -200,7 +202,7 @@ fs.readFile('file1.txt', async (err, text1) => {
 
 To make matters worse, the example above can even cause memory leaks as well. That discussion is beyond the scope of this article, but [James Snell](https://twitter.com/jasnell) explained these issues in detail in his talk ["Broken Promises"](https://www.youtube.com/watch?v=XV-u_Ow47s0) from [Node+JS Interactive 2019](https://events19.linuxfoundation.org/events/nodejs-interactive-2019/).
 
-[Watch on YouTube](https://www.youtube.com/watch?v=XV-u_Ow47s0)
+<YouTubeEmbed videoId="XV-u_Ow47s0" title="Broken Promises by James Snell" />
 
 ## Conclusion
 

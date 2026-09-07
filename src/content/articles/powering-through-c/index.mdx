@@ -10,6 +10,8 @@ cover:
 tags: ['rust', 'c', 'computerscience', 'devjournal']
 ---
 
+import SpotifyEmbed from '#features/articles/spotify-embed.astro';
+
 The fundamental study of data structures and algorithms is a staple of any computer science course. In tandem, data structures and algorithms enable us to _efficiently_ access, query, and modify the data and inputs that arise from a problem or use case.
 
 In my experience, one of the several requirements for passing was an implementation of the various data structures and algorithms discussed throughout the semester. Just to cite some examples, most activities required implementations of dynamic arrays, linked lists, and hash tables (given some particular probing scheme).
@@ -365,15 +367,16 @@ As noted in the code snippet, it is worth reiterating that we have essentially i
 
 ### The "Mini-Borrow-Checker" in My Brain
 
-[Listen on Spotify](https://open.spotify.com/episode/4MLeiKW20dSiGYKkGSvP8T)
+<SpotifyEmbed
+	episodeId="4MLeiKW20dSiGYKkGSvP8T"
+	title="Rustacean Station interview with Sebastian Thiel"
+/>
 
 > _"I was close to giving up back in the days when it was much harder to learn Rust than it is now, but I went through the pain. I keep saying that pain caused the growth of some tumor that is like a **mini-borrow-checker in my brain**. Now, I can finally write code that compiles the first time around... I appreciate the Rust compiler that really makes sure that **if [the code] compiles, it's probably [correct]**."_ — [Sebastian Thiel](https://github.com/Byron) (author of [`gitoxide`](https://github.com/Byron/gitoxide))
 
 In a recent episode of the [Rustacean Station Podcast](https://rustacean-station.org/), Sebastian Thiel shared his initial experience with Rust back in 2015 "when it was much harder to learn that it is now". Although documentation and resources have significantly improved over the years, Rust is still rather infamous for its tough learning curve. Indeed, this is an assertion I can attest to based on my experience.
 
-[Read the referenced article](https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1)
-
-However, this is not to say that I am dissatisfied. [In an article I published last year](https://dev.to/somedood/rust-reviewed-is-the-hype-justified-1pa1), I spoke about how the _"Rustacean Mindset"_ pushes us to view a problem in various perspectives. Whenever we find ourselves fighting the compiler, it is perhaps time to reconsider the overall approach to the problem.
+However, this is not to say that I am dissatisfied. [In an article I published last year](/articles/rust-reviewed/), I spoke about how the _"Rustacean Mindset"_ pushes us to view a problem in various perspectives. Whenever we find ourselves fighting the compiler, it is perhaps time to reconsider the overall approach to the problem.
 
 But, when the compiler _does_ agree, it is often a golden sign that we are probably doing something right. This is a neat side effect that Thiel brought up in the aforementioned podcast episode. Assuming the absence of funny business in the code, the Rust compiler _almost_ always guarantees correctness.
 

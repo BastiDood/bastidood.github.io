@@ -24,11 +24,9 @@ _So, how do we structure a codebase in such a way that optimizes for token effic
 
 ## Optimizing for Feature-Localized Context
 
-A while back, I wrote about vertically sliced architectures. Today, we revisit the notion of a feature-driven project structure because it also happens to optimize for the way coding agents explore codebases.
+A while back, I wrote about [vertically sliced architectures](/articles/vertically-sliced-architectures/). Today, we revisit the notion of a feature-driven project structure because it also happens to optimize for the way coding agents explore codebases.
 
 _(For the rest of the article, I'll assume that you've already read this.)_
-
-[View embedded content](https://dev.to/somedood/youre-slicing-your-architecture-wrong-4ob9)
 
 Stepping into the shoes of a coding agent, the typical workflow involves implementing a single feature at a time (i.e., per context window). At least for now, it's strongly discouraged to do too many unrelated things within a single context window.
 
@@ -38,7 +36,7 @@ When a coding agent examines your prompt, it invokes tools that can semantically
 
 Visually, the trace of tool calls resemble a search tree that narrows down from entire subsystems to individual files. Cool, right?
 
-![An overview of the tree-like traversal of coding agents in a codebase](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ujx63l7q4957688gpd8a.png)
+![An overview of the tree-like traversal of coding agents in a codebase](./assets/coding-agent-overview.png)
 
 This exploration doesn't come for free, though! Each tool call dumps intermediate output tokens (e.g., MCP tools, search results, shell invocations, full file reads, etc.) into our already limited context window.
 
@@ -67,7 +65,7 @@ The opposite of what we want are the classical horizontally-sliced architectures
 - Monolithic `Service` classes tend to bundle all CRUD operations in one big file even if many of them are unrelated to a particular feature exploration. Invoking the `Read` tool on such files thus dumps more code **noise** than **signal** into the context window.
 - Unless the index of the codebase knows _a priori_ which subset of lines to `Read`, large "service" and "repository" files only pollute the context window with unrelated code—as if the haystack wasn't large enough already.
 
-![Visualization of a horizontally sliced codebase require bloated reads and exploration in the codebase](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f0kx9l597nhvw2p1musn.png)
+![Visualization of a horizontally sliced codebase require bloated reads and exploration in the codebase](./assets/monolithic-files-bloat-context.png)
 
 The situation is exasperated by unit tests and integration tests, where it's easy (and encouraged also for good reason!) to reach thousands of lines. A simple prompt to "write more unit tests" could (very likely!) mean reading the entire test file again.
 
@@ -77,7 +75,7 @@ Unless cleverly broken up into separate test files, monolithic modules imply eve
 
 What we actually want is a malleable codebase with self-contained feature modules that cohesively implement all of its logic end-to-end. In doing so, files are collocated within a narrow slice of the project structure. Coding agents thus naturally traverse the repository in a few depth-first passes.
 
-![Visualization of how narrow slices in a vertically sliced architecture yield more surgical reads, edits, and incremental changes](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7tovrl9glb3p0qy91vp0.png)
+![Visualization of how narrow slices in a vertically sliced architecture yield more surgical reads, edits, and incremental changes](./assets/vertical-slices-and-surgical-edits.png)
 
 The serendipitous consequence is that codebase exploration becomes highly selective by construction and organization. There's no need to explore `feature-a/` when the entire end-to-end logic of `feature-b/` is already self-contained. File recall almost becomes trivial by virtue of collocation.
 
