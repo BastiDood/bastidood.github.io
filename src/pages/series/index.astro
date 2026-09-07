@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+
+import BaseLayout from '#layout/index.astro';
+
+const seriesEntries = await getCollection('series');
+const articles = await getCollection('articles');
+seriesEntries.sort((left, right) => left.data.title.localeCompare(right.data.title));
+---
+
+<BaseLayout title="Article Series · Basti Ortiz" description="Browse Basti Ortiz's article series.">
+	<div class="mx-auto max-w-7xl space-y-8 p-4 sm:p-6">
+		<header class="space-y-2">
+			<h1>Article Series</h1><p class="text-lg text-gray-700">
+				Collections of articles that build on one another.
+			</p>
+		</header>
+		<div class="grid gap-6 md:grid-cols-2">
+			{
+				seriesEntries.map(entry => {
+					const articleCount = articles.filter(
+						article => article.data.series?.id === entry.id,
+					).length;
+					return (
+						<a
+							class="bg-card group rounded-lg p-6 text-inherit shadow-md transition-transform hover:-translate-y-1 hover:no-underline"
+							href={`/series/${entry.id}/`}
+						>
+							<h2 class="text-sky-600 group-hover:underline">{entry.data.title}</h2>
+							<p class="mt-2 text-gray-700">
+								{articleCount} {articleCount === 1 ? 'article' : 'articles'}
+							</p>
+						</a>
+					);
+				})
+			}
+		</div>
+	</div>
+</BaseLayout>
