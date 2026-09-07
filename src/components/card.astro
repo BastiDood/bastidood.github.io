@@ -1,0 +1,29 @@
+---
+import { tv, type VariantProps } from 'tailwind-variants';
+
+const card = tv({
+	variants: {
+		color: {
+			card: 'bg-card',
+			fade: 'bg-fade',
+		},
+		size: {
+			sm: 'rounded-lg border border-slate-200/60 p-4 shadow-sm',
+			md: 'rounded-xl border border-slate-200/60 p-8 shadow-sm',
+			lg: 'rounded-2xl border border-slate-200/60 p-12 shadow-sm',
+		},
+	},
+	defaultVariants: {
+		color: 'card',
+	},
+});
+
+interface Props extends VariantProps<typeof card> {
+	class?: string;
+}
+
+const { class: className, size, color } = Astro.props;
+const classes = card({ class: className, size, color });
+---
+
+<div class={classes}><slot /></div>

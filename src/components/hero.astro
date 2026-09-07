@@ -1,0 +1,13 @@
+---
+import { cn } from 'cn';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<section class={cn('from-sky flex items-center justify-center bg-linear-to-b to-white', className)}>
+	<slot />
+</section>
