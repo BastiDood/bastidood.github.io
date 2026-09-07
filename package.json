@@ -17,10 +17,10 @@
 		"lint:fix": "eslint --cache --concurrency auto --fix \"**/*.{js,mjs,ts,mts,astro,css}\""
 	},
 	"devDependencies": {
-		"@astrojs/check": "^0.9.6",
+		"@astrojs/check": "^0.9.10",
 		"@astrojs/markdown-satteri": "^0.4.0",
 		"@astrojs/mdx": "^8.0.0",
-		"@astrojs/sitemap": "^3.6.0",
+		"@astrojs/sitemap": "^3.7.4",
 		"@bastidood/eslint-plugin-imsort": "^0.12.0",
 		"@eslint/css": "^2.0.0",
 		"@eslint/js": "^10.0.1",
@@ -49,8 +49,8 @@
 		"vite": "^8.2.2"
 	},
 	"dependencies": {
-		"@astrojs/rss": "^4.0.15",
-		"cn": "^0.2.5",
+		"@astrojs/rss": "^4.0.19",
+		"cn": "^0.2.6",
 		"date-fns": "^4.4.0",
 		"posthog-js": "^1.427.2",
 		"tailwind-variants": "^3.3.1"
