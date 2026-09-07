@@ -2,7 +2,7 @@ allowBuilds:
   '@tailwindcss/oxide': true
   core-js: false
   esbuild: false
-  protobufjs: false
+  sharp: true
 
 cleanupUnusedCatalogs: true
 
@@ -15,3 +15,5 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   - chokidar@4.0.3
   - undici-types@6.21.0
+
+includeWorkspaceRoot: true

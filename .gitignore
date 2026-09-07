@@ -1,8 +1,8 @@
 /.eslintcache
 /.prettiercache
-/.svelte-kit
+/.astro
 /.vscode
-/build
+/dist
 
 .env
 .env.*

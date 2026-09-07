@@ -5,10 +5,11 @@
 	"singleQuote": true,
 	"printWidth": 100,
 	"trailingComma": "all",
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+	"plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+	"tailwindFunctions": ["cn", "tv"],
 	"overrides": [
 		{ "files": "{j,t}sconfig.json", "options": { "parser": "jsonc" } },
 		{ "files": "**/*.yaml", "options": { "useTabs": false, "tabWidth": 2 } },
-		{ "files": "**/*.svelte", "options": { "parser": "svelte", "svelteStrictMode": false } }
+		{ "files": "**/*.astro", "options": { "parser": "astro" } }
 	]
 }
