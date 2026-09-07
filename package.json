@@ -10,6 +10,7 @@
 		"dev": "astro dev",
 		"build": "astro build",
 		"check": "astro check",
+		"sync": "astro sync",
 		"preview": "astro preview",
 		"fmt": "prettier . --experimental-cli --cache-location .prettiercache --check",
 		"fmt:fix": "prettier . --experimental-cli --cache-location .prettiercache --write",

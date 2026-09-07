@@ -33,6 +33,8 @@ jobs:
           node-version: 24
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
+      - name: Generate Astro Types
+        run: pnpm sync
       - name: Restore Astro Build Cache
         uses: actions/cache@v5
         with:
