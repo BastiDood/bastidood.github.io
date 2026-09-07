@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build SvelteKit
+    name: Build Astro
     runs-on: ubuntu-latest
     env:
       PUBLIC_POSTHOG_API_KEY: ${{ secrets.PUBLIC_POSTHOG_API_KEY }}
@@ -32,11 +32,21 @@ jobs:
           cache-dependency-path: pnpm-lock.yaml
           node-version: 24
       - name: Install Dependencies
-        run: pnpm install
-      - name: Check Formatters
+        run: pnpm install --frozen-lockfile
+      - name: Restore Astro Build Cache
+        uses: actions/cache@v5
+        with:
+          path: node_modules/.astro
+          key: ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml', 'astro.config.ts', 'src/features/articles/image-presets.ts', 'src/content/articles/**/cover.*') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-astro-
+      - name: Check Formatting
         run: pnpm fmt
-      - name: Run All Lints in Parallel
+      - name: Lint Source
         run: pnpm lint
+      - name: Check Astro
+        run: pnpm check
       - name: Build Website
         run: pnpm build
       - name: Setup Pages
@@ -45,7 +55,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: build
+          path: dist
   deploy:
     needs: build
     name: Deployment
