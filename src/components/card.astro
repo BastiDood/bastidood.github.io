@@ -26,4 +26,6 @@ const { class: className, size, color } = Astro.props;
 const classes = card({ class: className, size, color });
 ---
 
-<div class={classes}><slot /></div>
+<div class={classes}>
+	<slot />
+</div>

@@ -11,4 +11,6 @@ interface Props {
 const { technologies } = Astro.props;
 ---
 
-{technologies.map(technology => <TechnologyLogo logo={projectTechnologyLogos[technology]} />)}
+{technologies.map(technology => (
+	<TechnologyLogo logo={projectTechnologyLogos[technology]} />
+))}

@@ -23,12 +23,18 @@ articles.sort((left, right) => right.data.publishedAt.localeCompare(left.data.pu
 >
 	<div class="mx-auto max-w-7xl space-y-8 p-4 sm:p-6">
 		<header class="space-y-2">
-			<p><a href="/series/">All Series</a></p><h1>
-				{series.data.title}
-			</h1><div class="prose text-lg text-gray-700"><Content /></div>
+			<p>
+				<a href="/series/">All Series</a>
+			</p>
+			<h1>{series.data.title}</h1>
+			<div class="prose text-lg text-gray-700">
+				<Content />
+			</div>
 		</header>
 		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{articles.map(article => <ArticleCard {...article} />)}
+			{articles.map(article => (
+				<ArticleCard {...article} />
+			))}
 		</div>
 	</div>
 </BaseLayout>

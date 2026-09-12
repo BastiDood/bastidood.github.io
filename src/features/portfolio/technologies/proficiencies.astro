@@ -25,18 +25,16 @@ const { class: className } = Astro.props;
 ---
 
 <article class={cn('grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3', className)}>
-	{
-		proficiencyGroups.map(group => (
-			<Card size="md" class="prose">
-				<h2>{group.title}</h2>
-				<ul class={logoList({ group: group.title })}>
-					{group.logos.map(logo => (
-						<li>
-							<TechnologyLogo logo={logo} />
-						</li>
-					))}
-				</ul>
-			</Card>
-		))
-	}
+	{proficiencyGroups.map(group => (
+		<Card size="md" class="prose">
+			<h2>{group.title}</h2>
+			<ul class={logoList({ group: group.title })}>
+				{group.logos.map(logo => (
+					<li>
+						<TechnologyLogo logo={logo} />
+					</li>
+				))}
+			</ul>
+		</Card>
+	))}
 </article>

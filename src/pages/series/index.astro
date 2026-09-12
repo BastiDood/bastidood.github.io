@@ -23,14 +23,12 @@ seriesEntries.sort((left, right) => left.data.title.localeCompare(right.data.tit
 	</Hero>
 	<div class="mx-auto max-w-7xl p-4 sm:p-6">
 		<div class="grid gap-6 md:grid-cols-2">
-			{
-				seriesEntries.map(entry => {
-					const articleCount = articles.filter(
-						article => article.data.series?.id === entry.id,
-					).length;
-					return <SeriesCard series={entry} articleCount={articleCount} />;
-				})
-			}
+			{seriesEntries.map(entry => {
+				const articleCount = articles.filter(
+					article => article.data.series?.id === entry.id,
+				).length;
+				return <SeriesCard series={entry} articleCount={articleCount} />;
+			})}
 		</div>
 	</div>
 </BaseLayout>

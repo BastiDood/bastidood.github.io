@@ -17,17 +17,17 @@ const { Content } = await render(project);
 	<Card size="md">
 		<h2>{project.data.title}</h2>
 		<div class="not-prose flex flex-wrap items-center gap-2">
-			{
-				typeof project.data.logo === 'undefined' ? null : (
-					<ProjectImage
-						source={project.data.logo.src}
-						alt={project.data.logo.alt ?? ''}
-						class="h-10 w-auto max-w-16 object-contain"
-					/>
-				)
-			}
+			{typeof project.data.logo === 'undefined' ? null : (
+				<ProjectImage
+					source={project.data.logo.src}
+					alt={project.data.logo.alt ?? ''}
+					class="h-10 w-auto max-w-16 object-contain"
+				/>
+			)}
 			<ProjectTechnologies technologies={project.data.technologies} />
 		</div>
-		<div class="contents"><Content /></div>
+		<div class="contents">
+			<Content />
+		</div>
 	</Card>
 </section>

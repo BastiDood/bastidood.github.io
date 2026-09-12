@@ -46,42 +46,40 @@ const styles = milestoneBody({ hasBadge: typeof badge !== 'undefined' });
 	<div class="ml-12 w-[calc(100%-4rem)] min-w-0 md:ml-0 md:w-[calc(50%-1.25rem)]">
 		<Card size="sm" class="bg-white/90 backdrop-blur-sm transition-colors hover:bg-white">
 			<p class="text-xs leading-5 text-slate-500">
-				<time>{start}</time>{typeof date.end === 'undefined' ? ' – Present' : null}{
-					date.end instanceof Date ? (
-						<>
-							{' – '}
-							<time>{end}</time>
-						</>
-					) : null
-				}
+				<time>{start}</time>
+				{typeof date.end === 'undefined' ? ' – Present' : null}
+				{date.end instanceof Date ? (
+					<>
+						{' – '}
+						<time>{end}</time>
+					</>
+				) : null}
 			</p>
 			<h3 class="mt-1 text-xl leading-tight font-bold text-slate-800 sm:text-2xl">
 				{milestone.data.title}
 			</h3>
 			<div class="mt-1 text-sm leading-5 font-medium">
-				<a href={milestone.data.organization.url} target="_blank" rel="external"
-					>{milestone.data.organization.name} ↗</a
-				>
+				<a href={milestone.data.organization.url} target="_blank" rel="external">
+					{milestone.data.organization.name} ↗
+				</a>
 			</div>
 			<div class={styles.root()}>
-				{
-					badge ? (
-						<a
-							href={milestone.data.organization.url}
-							target="_blank"
-							rel="external"
-							class={styles.badge()}
-						>
-							<Image
-								src={badge.src}
-								alt={badge.alt}
-								width={112}
-								loading="lazy"
-								class="h-auto w-full"
-							/>
-						</a>
-					) : null
-				}
+				{badge ? (
+					<a
+						href={milestone.data.organization.url}
+						target="_blank"
+						rel="external"
+						class={styles.badge()}
+					>
+						<Image
+							src={badge.src}
+							alt={badge.alt}
+							width={112}
+							loading="lazy"
+							class="h-auto w-full"
+						/>
+					</a>
+				) : null}
 				<div class={styles.content()}>
 					<Content />
 				</div>

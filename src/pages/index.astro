@@ -76,8 +76,10 @@ const milestones = await getMilestones();
 					aria-label="Email"
 					target="_blank"
 					rel="external"
-					class="text-4xl hover:no-underline">📧</a
+					class="text-4xl hover:no-underline"
 				>
+					📧
+				</a>
 			</div>
 		</Card>
 	</Hero>
@@ -87,7 +89,9 @@ const milestones = await getMilestones();
 			aria-label="Career and education"
 			class="relative mx-auto max-w-7xl space-y-8 before:absolute before:inset-0 before:ml-5 before:h-full before:w-0.5 before:-translate-x-px before:bg-linear-to-b before:from-transparent before:via-slate-300 before:to-transparent md:before:mx-auto md:before:translate-x-0 md:[&>*:nth-child(odd)]:flex-row-reverse"
 		>
-			{milestones.map(milestone => <MilestoneCard {...milestone} />)}
+			{milestones.map(milestone => (
+				<MilestoneCard {...milestone} />
+			))}
 		</section>
 	</div>
 </BaseLayout>
