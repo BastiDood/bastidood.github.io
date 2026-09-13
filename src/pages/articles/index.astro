@@ -5,7 +5,7 @@ import ArticleCard from '#features/articles/article-card.astro';
 import BaseLayout from '#layout/index.astro';
 import Card from '#components/card.astro';
 import Hero from '#components/hero.astro';
-import { Icon } from 'astro-icon/components';
+import RssLinkButton from '#components/rss-link-button.astro';
 
 const articles = await getCollection('articles');
 articles.sort((left, right) => {
@@ -40,13 +40,7 @@ const { remaining, featured } = Object.groupBy(articles, article =>
 				source, and the practical craft of building reliable systems—including how AI and
 				coding agents are changing that work.
 			</p>
-			<a
-				href="/articles/rss.xml"
-				class="bg-rss hover:bg-rss-hover ml-auto flex w-fit items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-white no-underline shadow-sm transition-colors hover:no-underline"
-			>
-				<Icon name="simple-icons:rss" class="size-4" aria-hidden="true" />
-				<span>Follow</span>
-			</a>
+			<RssLinkButton href="/articles/rss.xml" />
 		</Card>
 	</Hero>
 	<div class="m-4 mt-0! max-w-7xl space-y-12 sm:m-12 md:m-16 xl:mx-auto">
