@@ -11,6 +11,12 @@ tags: ['ux', 'writing', 'tips', 'opensource']
 series: please-dont
 ---
 
+import ArticlePicture from '#components/optimized-picture.astro';
+import discord from './assets/discord.png';
+import visualStudioCode from './assets/visual-studio-code.png';
+import paintNet from './assets/paint-net.png';
+import minecraft from './assets/minecraft.png';
+
 An often overlooked, underappreciated, and seemingly mundane stage of the development cycle is the process of writing a changelog. For those who are unaware, a changelog is basically a simple list of new features, changes, tweaks, and bug fixes since the last update (or version) of some software. Changelogs can be as lengthy as necessary, but usually exclude the list of bug fixes for the sake of brevity.
 
 Changelogs are great, especially from a user standpoint! As a user, I genuinely look forward to the new releases of the software I use. I get really excited about new features. In the case of video games, nothing is more exciting than the anticipation of new game mechanics, characters, items, and quests (among other features). The promise of optimizations and a plethora of bug fixes simply satisfy my inner perfectionist.
@@ -33,7 +39,7 @@ In this article, by comparing various examples, I will discuss the many, great w
 
 ## Exhibit A: Discord
 
-![Discord logo](./assets/discord.png)
+<ArticlePicture src={discord} alt="Discord logo" />
 
 [Discord](https://discordapp.com) is a real-time communications app mainly intended for its gaming audience. It's basically Skype... but for gamers. It enables online messaging, voice calls, video calls, and screen-sharing. Its main strength as a force in the gaming community is its ability to provide a centralized platform for fans (of a certain game) to communicate and share interests with each other.
 
@@ -41,7 +47,7 @@ Though, what I find to be most impressive about Discord is how it appeals to its
 
 ## Exhibit B: Visual Studio Code (VS Code)
 
-![VS Code Logo](./assets/visual-studio-code.png)
+<ArticlePicture src={visualStudioCode} alt="VS Code Logo" />
 
 Since we're all developers here, I don't think I have to explain what [VS Code](https://code.visualstudio.com) is. The [2019 Stack Overflow Survey](https://insights.stackoverflow.com/survey/2019#development-environments-and-tools) attests to the fact that it is indeed the most popular and most preferred text editor among developers.
 
@@ -49,7 +55,7 @@ Similar to Discord, VS Code also appeals to its userbase of developers through a
 
 ## Exhibit C: Paint&#46;NET
 
-![Paint.NET Logo](./assets/paint-net.png)
+<ArticlePicture src={paintNet} alt="Paint.NET Logo" />
 
 [Paint&#46;NET](https://www.getpaint.net) is a simple and extensible image manipulation program maintained by [Rick Brewster](https://twitter.com/rickbrewpdn). It was originally meant to be an alternative for [Microsoft Paint](https://en.wikipedia.org/wiki/Microsoft_Paint), but the project grew to be more than _just that_. Besides the usual image manipulation tools such as cropping, resizing, color adjustments, blending, and shape insertion, one of Paint&#46;NET's most notable features is its plugin system, where users can extend standard functionality through distributed [DLLs](https://en.wikipedia.org/wiki/Dynamic-link_library). Personally, I use Paint&#46;NET myself to create the cover images of my articles (among other applications).
 
@@ -57,7 +63,7 @@ On the topic of changelogs, [Paint&#46;NET's changelogs](https://blog.getpaint.n
 
 ## Exhibit D: Minecraft
 
-![Minecraft Logo](./assets/minecraft.png)
+<ArticlePicture src={minecraft} alt="Minecraft Logo" />
 
 It goes without saying that [Minecraft](https://www.minecraft.net) is one of the most popular video games in recent times. It was briefly overthroned by [Fortnite](https://www.epicgames.com/fortnite) until it had another resurgence in popularity largely thanks to the endorsement of Swedish YouTuber [PewDiePie](https://www.youtube.com/user/PewDiePie).
 

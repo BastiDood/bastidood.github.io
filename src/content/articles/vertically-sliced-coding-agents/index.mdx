@@ -11,6 +11,11 @@ cover:
 tags: ['ai', 'agents', 'llm', 'architecture']
 ---
 
+import ArticlePicture from '#components/optimized-picture.astro';
+import codingAgentOverview from './assets/coding-agent-overview.png';
+import monolithicFilesBloatContext from './assets/monolithic-files-bloat-context.png';
+import verticalSlicesAndSurgicalEdits from './assets/vertical-slices-and-surgical-edits.png';
+
 Coding agents have arguably been the most revolutionary unlock in software engineering since... ever? (Citation needed!) Post-2023, we have lived in a world where probabilistic machines now write much of the world's software for better _and_ worse.
 
 But, we're not here to argue if it's for the best. The genie is already out of the bottle, and the most productive way forward is figuring out the best way to use these new tools to ship better (correct!) software faster.
@@ -37,7 +42,10 @@ When a coding agent examines your prompt, it invokes tools that can semantically
 
 Visually, the trace of tool calls resemble a search tree that narrows down from entire subsystems to individual files. Cool, right?
 
-![An overview of the tree-like traversal of coding agents in a codebase](./assets/coding-agent-overview.png)
+<ArticlePicture
+	src={codingAgentOverview}
+	alt="An overview of the tree-like traversal of coding agents in a codebase"
+/>
 
 This exploration doesn't come for free, though! Each tool call dumps intermediate output tokens (e.g., MCP tools, search results, shell invocations, full file reads, etc.) into our already limited context window.
 
@@ -66,7 +74,10 @@ The opposite of what we want are the classical horizontally-sliced architectures
 - Monolithic `Service` classes tend to bundle all CRUD operations in one big file even if many of them are unrelated to a particular feature exploration. Invoking the `Read` tool on such files thus dumps more code **noise** than **signal** into the context window.
 - Unless the index of the codebase knows _a priori_ which subset of lines to `Read`, large "service" and "repository" files only pollute the context window with unrelated code—as if the haystack wasn't large enough already.
 
-![Visualization of a horizontally sliced codebase require bloated reads and exploration in the codebase](./assets/monolithic-files-bloat-context.png)
+<ArticlePicture
+	src={monolithicFilesBloatContext}
+	alt="Visualization of a horizontally sliced codebase require bloated reads and exploration in the codebase"
+/>
 
 The situation is exasperated by unit tests and integration tests, where it's easy (and encouraged also for good reason!) to reach thousands of lines. A simple prompt to "write more unit tests" could (very likely!) mean reading the entire test file again.
 
@@ -76,7 +87,10 @@ Unless cleverly broken up into separate test files, monolithic modules imply eve
 
 What we actually want is a malleable codebase with self-contained feature modules that cohesively implement all of its logic end-to-end. In doing so, files are collocated within a narrow slice of the project structure. Coding agents thus naturally traverse the repository in a few depth-first passes.
 
-![Visualization of how narrow slices in a vertically sliced architecture yield more surgical reads, edits, and incremental changes](./assets/vertical-slices-and-surgical-edits.png)
+<ArticlePicture
+	src={verticalSlicesAndSurgicalEdits}
+	alt="Visualization of how narrow slices in a vertically sliced architecture yield more surgical reads, edits, and incremental changes"
+/>
 
 The serendipitous consequence is that codebase exploration becomes highly selective by construction and organization. There's no need to explore `feature-a/` when the entire end-to-end logic of `feature-b/` is already self-contained. File recall almost becomes trivial by virtue of collocation.
 

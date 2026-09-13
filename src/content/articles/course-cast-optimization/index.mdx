@@ -11,7 +11,12 @@ cover:
 tags: ['javascript', 'python', 'webdev', 'performance']
 ---
 
-![CourseCast Dashboard Home](./assets/dashboard.png)
+import ArticlePicture from '#components/optimized-picture.astro';
+import dashboard from './assets/dashboard.png';
+import utilityConfiguration from './assets/utility-configuration.png';
+import simulationResults from './assets/simulation-results.png';
+
+<ArticlePicture src={dashboard} alt="CourseCast Dashboard Home" />
 
 This is the story of how I made a Monte Carlo simulation of student schedule assignments **600x faster** with web workers.
 
@@ -32,13 +37,13 @@ On simulation day, the Course Match algorithm determines the **"clearing price"*
 
 > 💡 You can think of Course Match as an autonomous shopper that "buys" courses on behalf of the student. The purchasing power is only limited by the student's token budget, their maximum workload/credits, and their assigned utilities. The higher the token budget, the greater the student's capability to "afford" the clearing price for a course.
 
-![CourseCast Course Utility Configuration](./assets/utility-configuration.png)
+<ArticlePicture src={utilityConfiguration} alt="CourseCast Course Utility Configuration" />
 
 Since it's impossible to know ahead of time what the actual clearing prices will be, CourseCast instead forecasts the clearing prices based on the most recent historical data of actual clearing prices in previous Course Match runs. These predicted prices (and their statistical variances) are the "weights" of the model trained on the latest course and instructor trends.
 
 To account for forecast uncertainty, the CourseCast model assumes that the predicted clearing price is a normally distributed random variable. As such, CourseCast runs 100 Monte Carlo simulations and counts the frequency of particular courses and schedule configurations being selected. These simulation results are presented to the user as a probability.
 
-![CourseCast Simulation Results](./assets/simulation-results.png)
+<ArticlePicture src={simulationResults} alt="CourseCast Simulation Results" />
 
 ### So where was the bottleneck?
 

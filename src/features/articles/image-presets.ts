@@ -3,7 +3,6 @@ interface ImagePresetDefinitionOptions {
 	height: number;
 	fit: 'cover';
 	position: 'center';
-	format: 'png';
 	widths: number[];
 	sizes: string;
 }
@@ -13,7 +12,6 @@ export class ImagePresetDefinition {
 	public readonly height: number;
 	public readonly fit: 'cover';
 	public readonly position: 'center';
-	public readonly format: 'png';
 	public readonly widths: number[];
 	public readonly sizes: string;
 
@@ -22,7 +20,6 @@ export class ImagePresetDefinition {
 		height,
 		fit,
 		position,
-		format,
 		widths,
 		sizes,
 	}: ImagePresetDefinitionOptions) {
@@ -30,7 +27,6 @@ export class ImagePresetDefinition {
 		this.height = height;
 		this.fit = fit;
 		this.position = position;
-		this.format = format;
 		this.widths = widths;
 		this.sizes = sizes;
 	}
@@ -42,7 +38,6 @@ export const imagePresets = {
 		height: 252,
 		fit: 'cover',
 		position: 'center',
-		format: 'png',
 		widths: [300, 400, 600, 1000],
 		sizes: '(min-width: 1280px) 411px, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw',
 	}),
@@ -51,7 +46,6 @@ export const imagePresets = {
 		height: 420,
 		fit: 'cover',
 		position: 'center',
-		format: 'png',
 		widths: [480, 720, 1000],
 		sizes: '(min-width: 896px) 896px, 100vw',
 	}),
@@ -60,7 +54,6 @@ export const imagePresets = {
 		height: 420,
 		fit: 'cover',
 		position: 'center',
-		format: 'png',
 		widths: [1000],
 		sizes: '1000px',
 	}),

@@ -55,7 +55,7 @@ if (typeof article.data.cover === 'undefined') {
 		height: openGraphPreset.height,
 		fit: openGraphPreset.fit,
 		position: openGraphPreset.position,
-		format: openGraphPreset.format,
+		format: 'png',
 	});
 	openGraphImage = new URL(openGraphAsset.src, Astro.site);
 }

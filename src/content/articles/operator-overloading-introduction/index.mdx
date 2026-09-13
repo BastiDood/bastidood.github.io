@@ -9,6 +9,9 @@ cover:
 tags: ['beginners', 'cpp', 'oop', 'programming']
 ---
 
+import ArticlePicture from '#components/optimized-picture.astro';
+import overloadAllTheOperators from './assets/overload-all-the-operators.png';
+
 Recently, I started learning the beautiful and punishing programming language of C++. I am currently very invested in the arduous journey towards mastery. After all, it will eventually help me in my journey in becoming a game developer.
 
 Coming from the relatively less difficult programming language of JavaScript, there were so many unfamiliar concepts to me such as memory management and header files. Of course, I was initially confused about pointers, as do all beginners. However, as I learned more about the language, I stumbled upon a concept that was so new, so strange, so powerful, and so useful that I just had to explain it _for_ beginners in the point of view of a beginner _himself_.
@@ -198,8 +201,10 @@ int main() {
 
 ## Great Power == Great Responsibility
 
-!["Overload all the operators" meme](./assets/overload-all-the-operators.png)
-As tempting as it is to overload every single operator in C++—and yes, it is possible—we must remember that, like most things in life, "great power comes with great responsibility." Operator overloading must be used sparingly and only when _completely_ and _absolutely_ necessary.
+<ArticlePicture src={overloadAllTheOperators} alt={'"Overload all the operators" meme'} />
+As tempting as it is to overload every single operator in C++—and yes, it is possible—we must
+remember that, like most things in life, "great power comes with great responsibility." Operator
+overloading must be used sparingly and only when _completely_ and _absolutely_ necessary.
 
 In the case of writing Math APIs and data structures, such as my `ComplexNumber` example, it is a necessary tool in making code more readable and intuitive in the long run. It is definitely a justifiable added layer of complexity to the code base (or API).
 

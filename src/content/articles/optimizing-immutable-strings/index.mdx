@@ -10,6 +10,9 @@ cover:
 tags: ['rust', 'performance', 'tips']
 ---
 
+import ArticlePicture from '#components/optimized-picture.astro';
+import doubleIndirection from './assets/double-indirection.png';
+
 ### An Aversion to Clones and Heap Allocations
 
 Rust, Go, and C++ programmers alike have a particular aversion to heap allocations and cloned data. As much as possible, variables are allocated locally (in the stack) so that there is no need for _extra_ dynamic memory.[^1] In other words, we often go above and beyond to ensure that we only allocate when _absolutely_ necessary.
@@ -171,7 +174,7 @@ In summary, the `Arc<str>` is only worth 16 bytes on the stack. Meanwhile, on th
 
 Therefore, _if mutability is **not** necessary, then perhaps an owned `str` reference may be a worthwhile optimization._ The same also applies for `[u8]`, `Path`, `CStr`, and other slice-like types.
 
-![Double Indirection Illustration](./assets/double-indirection.png)
+<ArticlePicture src={doubleIndirection} alt="Double Indirection Illustration" />
 
 <figcaption>
 	This is not an accurate figure, but it's meant to roughly illustrate the optimization. The
