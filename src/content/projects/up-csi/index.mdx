@@ -7,7 +7,7 @@ logo:
 technologies: ['git', 'nodejs', 'typescript', 'javascript', 'svelte', 'html', 'css', 'tailwind']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import home from './assets/home.png';
 import events from './assets/events.png';
 
@@ -16,6 +16,6 @@ The [UP Center for Student Innovations](https://up-csi.org/) is a student-orient
 The website is an [open-source](https://github.com/up-csi/up-csi.github.io) static website powered by [SvelteKit](https://kit.svelte.dev/) and developed in the open by UP CSI's members.
 
 <div class="grid items-start gap-4 md:grid-cols-2">
-	<ProjectImage class="m-0 w-full" source={home} alt="UP CSI Home Page" />
-	<ProjectImage class="m-0 w-full" source={events} alt="UP CSI Events Page" />
+	<ProjectImage class="m-0 w-full" src={home} alt="UP CSI Home Page" />
+	<ProjectImage class="m-0 w-full" src={events} alt="UP CSI Events Page" />
 </div>

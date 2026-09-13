@@ -7,7 +7,7 @@ logo:
 technologies: ['git', 'deno', 'typescript', 'svelte', 'html', 'css', 'python', 'hugging-face']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import home from './assets/home.png';
 import mobile from './assets/mobile.png';
 
@@ -24,12 +24,12 @@ In the front end, [pal.ai](https://palai.deno.dev/) is an installable [progressi
 <div class="grid items-start gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
 	<ProjectImage
 		class="m-0 w-full"
-		source={home}
+		src={home}
 		alt="pal.ai home page with file upload and camera controls"
 	/>
 	<ProjectImage
 		class="m-0 w-full"
-		source={mobile}
+		src={mobile}
 		alt="pal.ai results page showing 79.28% confidence in Healthy classification"
 	/>
 </div>

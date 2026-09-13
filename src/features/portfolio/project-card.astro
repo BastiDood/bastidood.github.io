@@ -1,9 +1,9 @@
 ---
 import { type CollectionEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
 
 import Card from '#components/card.astro';
-
-import ProjectImage from './project-image.astro';
+import OptimizedPicture from '#components/optimized-picture.astro';
 
 import ProjectTechnologies from './technologies/project-list.astro';
 
@@ -11,17 +11,21 @@ type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props;
 const { Content } = await render(project);
+const { logo } = project.data;
+const LogoImage = logo?.src.format === 'svg' ? Image : OptimizedPicture;
 ---
 
 <section id={project.id} class="scroll-mt-20">
 	<Card size="md">
 		<h2>{project.data.title}</h2>
 		<div class="not-prose flex flex-wrap items-center gap-2">
-			{typeof project.data.logo === 'undefined' ? null : (
-				<ProjectImage
-					source={project.data.logo.src}
-					alt={project.data.logo.alt ?? ''}
+			{typeof logo === 'undefined' ? null : (
+				<LogoImage
+					src={logo.src}
+					alt={logo.alt}
 					class="h-10 w-auto max-w-16 object-contain"
+					loading="lazy"
+					decoding="async"
 				/>
 			)}
 			<ProjectTechnologies technologies={project.data.technologies} />

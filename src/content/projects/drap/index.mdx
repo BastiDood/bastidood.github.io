@@ -8,7 +8,7 @@ technologies:
     ['git', 'nodejs', 'typescript', 'javascript', 'svelte', 'html', 'css', 'tailwind', 'postgresql']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import history1 from './assets/history-1.png';
 import history2 from './assets/history-2.png';
 import rankings from './assets/rankings.png';
@@ -20,7 +20,7 @@ Previously, this process would have spanned weeks' worth of email exchanges betw
 The <abbr title="Draft Ranking Automated Processor">DRAP</abbr> automation is implemented as a full-stack [SvelteKit](https://kit.svelte.dev/) web application with [PostgreSQL](https://www.postgresql.org/) as the database. To streamline user authentication, the application leverages [Google's OpenID Connect](https://developers.google.com/identity/openid-connect/openid-connect) provider via [OAuth 2.0](https://oauth.net/2/). Rather conveniently, the OAuth 2.0 integration also enables DRAP to send emails via the [Gmail API](https://developers.google.com/gmail/api/guides).
 
 <div class="grid items-start gap-4 md:grid-cols-3">
-	<ProjectImage class="m-0 w-full" source={history1} alt="DRAP History Timeline" />
-	<ProjectImage class="m-0 w-full" source={history2} alt="DRAP History Timeline" />
-	<ProjectImage class="m-0 w-full" source={rankings} alt="DRAP Rankings Page" />
+	<ProjectImage class="m-0 w-full" src={history1} alt="DRAP History Timeline" />
+	<ProjectImage class="m-0 w-full" src={history2} alt="DRAP History Timeline" />
+	<ProjectImage class="m-0 w-full" src={rankings} alt="DRAP Rankings Page" />
 </div>

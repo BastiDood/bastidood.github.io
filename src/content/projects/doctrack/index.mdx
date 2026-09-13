@@ -7,7 +7,7 @@ logo:
 technologies: ['git', 'deno', 'typescript', 'javascript', 'svelte', 'html', 'css', 'postgresql']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import mobile from './assets/mobile.png';
 import desktop from './assets/desktop.png';
 
@@ -19,6 +19,6 @@ import desktop from './assets/desktop.png';
 Wherever possible, the project utilizes a [TypeScript](https://www.typescriptlang.org/)-centric application stack. With [Svelte](https://svelte.dev/) in the front end, TypeScript ensures that events, messages, and interactions between UI components remain consistent. In the back end, [Deno](https://deno.land/) facilitates the development of robust type-safe <dfn><abbr title="Hypertext Transfer Protocol">HTTP</abbr></dfn> request handlers for the <dfn><abbr title="Representational State Transfer">REST</abbr></dfn> API.
 
 <div class="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-	<ProjectImage class="m-0 w-full" source={mobile} alt="DocTrack Mobile" />
-	<ProjectImage class="m-0 w-full" source={desktop} alt="DocTrack Desktop" />
+	<ProjectImage class="m-0 w-full" src={mobile} alt="DocTrack Mobile" />
+	<ProjectImage class="m-0 w-full" src={desktop} alt="DocTrack Desktop" />
 </div>

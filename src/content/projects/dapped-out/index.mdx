@@ -17,7 +17,7 @@ technologies:
     ]
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import mint from './assets/mint.png';
 import contest from './assets/contest.png';
 
@@ -30,6 +30,6 @@ Users may now join the existing contest by staking some tokens into the shared p
 The game is implemented as an installable [progressive web application](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) powered by [Svelte](https://svelte.dev/) in the front end. In the back end, the game logic runs on [Solana](https://solana.com/) programs written in [Rust](https://www.rust-lang.org/) with the [Anchor](https://www.anchor-lang.com/) framework.
 
 <div class="grid items-start gap-4 md:grid-cols-2">
-	<ProjectImage class="m-0 w-full" source={mint} alt="Botoken Mint Page" />
-	<ProjectImage class="m-0 w-full" source={contest} alt="Botoken Contest Page" />
+	<ProjectImage class="m-0 w-full" src={mint} alt="Botoken Mint Page" />
+	<ProjectImage class="m-0 w-full" src={contest} alt="Botoken Contest Page" />
 </div>

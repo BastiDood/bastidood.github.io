@@ -4,7 +4,7 @@ description: 'Using the popular SDL2 library, the sdl-basic-snake project reimpl
 technologies: ['git', 'cpp', 'cmake']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import score1 from './assets/score-1.webp';
 import score6 from './assets/score-6.webp';
 import score16 from './assets/score-16.webp';
@@ -14,7 +14,7 @@ Using the popular [<dfn><abbr title="Simple DirectMedia Layer 2.0">SDL2</abbr></
 In line with the theme of modern best practices, the project also uses [CMake](https://cmake.org/) as its cross-platform build system generator. Assuming the necessary system dependencies have been set up, the project may be built and run on any platform.
 
 <div class="grid items-start gap-4 sm:grid-cols-3">
-	<ProjectImage class="m-0 w-full" source={score1} alt="Snake Score 1" />
-	<ProjectImage class="m-0 w-full" source={score6} alt="Snake Score 6" />
-	<ProjectImage class="m-0 w-full" source={score16} alt="Snake Score 16" />
+	<ProjectImage class="m-0 w-full" src={score1} alt="Snake Score 1" />
+	<ProjectImage class="m-0 w-full" src={score6} alt="Snake Score 6" />
+	<ProjectImage class="m-0 w-full" src={score16} alt="Snake Score 16" />
 </div>

@@ -8,7 +8,7 @@ technologies:
     ['git', 'nodejs', 'typescript', 'javascript', 'svelte', 'html', 'css', 'tailwind', 'postgresql']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import gis from './assets/gis.png';
 import analytics from './assets/analytics.png';
 import filters from './assets/filters.png';
@@ -20,7 +20,7 @@ Under the hood, <abbr title="Aggregated Crash Data Analysis">ACDA</abbr> is an i
 This application was completed as a service project of the [UP Center for Student Innovations](https://up-csi.org/), where I served as the lead developer of the entire project.
 
 <div class="grid items-start gap-4 md:grid-cols-3">
-	<ProjectImage class="m-0 w-full" source={gis} alt="ACDA GIS Page" />
-	<ProjectImage class="m-0 w-full" source={analytics} alt="ACDA Analytics Page" />
-	<ProjectImage class="m-0 w-full" source={filters} alt="ACDA Help Page with Filters" />
+	<ProjectImage class="m-0 w-full" src={gis} alt="ACDA GIS Page" />
+	<ProjectImage class="m-0 w-full" src={analytics} alt="ACDA Analytics Page" />
+	<ProjectImage class="m-0 w-full" src={filters} alt="ACDA Help Page with Filters" />
 </div>

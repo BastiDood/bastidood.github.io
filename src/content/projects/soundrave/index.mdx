@@ -4,7 +4,7 @@ description: "SoundRave was an aggregator app for new music released by a user's
 technologies: ['git', 'nodejs', 'express', 'html', 'css', 'javascript', 'mongodb']
 ---
 
-import ProjectImage from '#features/portfolio/project-image.astro';
+import ProjectImage from '#components/optimized-picture.astro';
 import mobile from './assets/mobile.webp';
 import desktop from './assets/desktop.webp';
 
@@ -13,6 +13,6 @@ import desktop from './assets/desktop.webp';
 The <dfn><abbr title="User Interface">UI</abbr></dfn> is primarily rendered by the server via the [Express](https://expressjs.com/) framework for [Node.js](https://nodejs.org/). For data persistence, [MongoDB](https://www.mongodb.com/) is used as the database and cache for Spotify <dfn><abbr title="Application Program Interface">API</abbr></dfn> calls.
 
 <div class="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-	<ProjectImage class="m-0 w-full" source={mobile} alt="SoundRave Mobile" />
-	<ProjectImage class="m-0 w-full" source={desktop} alt="SoundRave Desktop" />
+	<ProjectImage class="m-0 w-full" src={mobile} alt="SoundRave Mobile" />
+	<ProjectImage class="m-0 w-full" src={desktop} alt="SoundRave Desktop" />
 </div>

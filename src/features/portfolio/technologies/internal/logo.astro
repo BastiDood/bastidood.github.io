@@ -1,4 +1,5 @@
 ---
+import OptimizedPicture from '#components/optimized-picture.astro';
 import { Icon } from 'astro-icon/components';
 
 import type { TechnologyLogo } from './catalog.ts';
@@ -19,10 +20,8 @@ const { logo } = Astro.props;
 		style={typeof logo.color === 'undefined' ? null : `color: ${logo.color}`}
 	/>
 ) : (
-	<img
-		src={logo.source.src}
-		width={logo.source.width}
-		height={logo.source.height}
+	<OptimizedPicture
+		src={logo.source}
 		alt={logo.label}
 		title={logo.label}
 		class="h-10 w-auto max-w-16"

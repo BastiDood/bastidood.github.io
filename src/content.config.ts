@@ -81,7 +81,7 @@ const projects = defineCollection({
 			logo: z
 				.object({
 					src: image(),
-					alt: z.string().optional(),
+					alt: z.string(),
 				})
 				.optional(),
 			technologies: z.array(
