@@ -1,0 +1,94 @@
+---
+title: 'Cool Things I Learned While Migrating My Blog to Astro'
+description: 'TODO'
+createdAt: '2026-09-13T06:52:12Z'
+publishedAt: '2026-09-13T06:52:12Z'
+tags: ['devjournal', 'astro', 'svelte']
+---
+
+I first joined the [DEV community](https://dev.to/) **8 years ago** (as of writing) to jump-start my writing journey and get my name out there. Since then, my reading audience has grown to hundreds of thousands of readers globally. I owe a huge part of my early career to the DEV community.
+
+I've been contemplating this for a couple of years now, but I think it's about time to finally move my blog to my [personal website](https://bastidood.dev/). There are several reasons why I decided to do this only now.
+
+- Back when I started writing DEV articles in high school, I hadn't bought myself a personal domain yet. I've grown a lot since then, and now with a website to call my own, it's nice to finally have greater control over the discoverability of my content and portfolio.[^1] _It's good for branding, ya know?_
+- I no longer have to limit myself to only writing about developer-related articles! This was admittedly a semi-artificial constraint that I've placed onto myself for DEV, but now that my blog is on my personal website, I can write about whatever interests me (not just developer stuff!).
+- My articles can now be version-controlled in a Git repository. Historically, my content management was a Wild West of folder conventions on my local filesystem. I can't believe that my workflow survived this long without proper backups! _Yikes!_
+- With more to discuss (on the implementation details) later, I now have the ability to write bespoke first-party visualizations in my articles! This has been a long time coming, but I was especially motivated to do so following Cursor's article on ["Git at any scale"](https://cursor.com/blog/git-at-any-scale) and PlanetScale's visualizations on ["the lifecycle of a sharded Postgres query"](https://planetscale.com/blog/the-lifecycle-of-a-sharded-postgres-query) (among many other examples over the years).
+- What ultimately convinced me is Sean McArthur's reflections on ["owning \[his\] microblog with POSSE"](https://seanmonstar.com/micro/20260623-owning-my-microblog-with-posse/) — that is, the practice of ["Publishing (on your own) Site \[and\] Syndicating Elsewhere"](https://indieweb.org/POSSE).
+
+[^1]: To be clear, I've had this domain for years now; I'm only moving the source of truth from DEV to my personal website, where DEV is now a syndication target rather than primary publication target.
+
+To my followers on DEV: I'm still cross-posting my articles accordingly. Moving forward, the only difference is that interactive visualizations are only available _exclusively_ through my personal website (due to technical limitations). Subscribe to the [RSS feed](https://bastidood.dev/articles/rss.xml) to stay up-to-date with my latest articles.
+
+---
+
+That's about it as far as announcements go. The rest of this article is an assorted fire hose of my journey to shipping the migration.
+
+## Migrating from SvelteKit to Astro
+
+The first step was to migrate what was previously a SvelteKit `adapter-static` app into a real content-centric Astro app.[^2]
+
+[^2]: As a SvelteKit fanboy, I will admit that I am still a little bitter about this. Nevertheless, I still think Astro is the right tool for the job.
+
+SvelteKit served me well for static site generation, but a hard lesson that I learned from previous static-site projects was that I always ended up needing to reimplement some kind of hard-coded content management system anyway. That was typically a hodgepodge of scattered `.json` content files, which were basically the "constants" of the static website.
+
+Over time, I just became acutely aware that I was effectively reimplementing a bastardized version of Astro's content-first data model in SvelteKit. At the point, the solution was clear: stop the madness and embrace Astro. _I'm glad to say that it was the right decision._
+
+- I still maintain the familiar DX of file-based routing via `src/pages/` (instead of `src/routes/` in SvelteKit).
+- I still have access to a powerful component system on top of Astro's JSX-like templating syntax.[^3]
+- The website still supports client-side navigation via Astro's router that can prefetch optimized assets on hover.
+- Content files are now a first-class citizen in the framework's build system.
+- Images are also first-class optimization targets with caching mechanics.
+- Much to my surprise, support for syntax highlighting, footnotes, and metadata type safety all come out of the box!
+- Should the need arise for interactive visualizations, I can leverage Astro's islands architecture to build them in Svelte — or any other framework! The flexible integration system is a work of art.
+
+[^3]: I still do much prefer SvelteKit's more explicit templating syntax, though! _But alas, we can't win them all..._
+
+Overall, Astro was far more "batteries-included" than I initially thought. In particular, I was pleasantly surprised by the footnotes and syntax highlighting in my articles magically working on the first try. This would've required upfront feature work if I had stayed on SvelteKit!
+
+## Hosting Optimized Images
+
+The next big step in the Astro migration was to figure out the image hosting situation. Originally, all images were hosted on the DEV CDN. The old [`/articles`](/articles/) page simply dispatched a client-side `fetch` request to the [public DEV API](https://developers.forem.com/api/v1) for the respective image URLs.
+
+I didn't want to piggy-back on the DEV CDN for image hosting anymore because I've had plenty of experiences in the past where the DEV API would give invalid image URLs (i.e., the "Image Not Found" fallback image). I needed a more reliable solution that wouldn't return 404s under my nose.
+
+The debate ultimately came down to two options: whether...
+
+1. To store + optimize the images statically at build-time with Astro; or
+1. To store the original images in-repository and dynamically optimize them at fetch-time with Cloudflare Images.
+
+After much internal debate, I decided against the dynamic on-demand transformations on Cloudflare Images because:
+
+- Being a static website, I already have the complete assets right off the bat. No dynamic look-ups are required.
+- No custom user uploads are required; everything is literally known statically at build time.
+- Most crucially: Cloudflare's free plan includes 5,000 unique transformations per month. If I exposed arbitrary transformation parameters in public image URLs, an attacker could request enough distinct variations to exhaust that allowance. Cached variations would continue to work, but Cloudflare would reject new ones for the rest of the month, which is effectively a denial-of-service.
+	- I could restrict the permitted sizes in a Worker, but that would introduce runtime logic solely to protect an image pipeline whose complete set of outputs is already known at build time.
+	- Cloudflare also supports [predefined variants](https://developers.cloudflare.com/images/optimization/hosted-images/create-variants/), but those require uploading the originals to Cloudflare Images, whose managed storage is available only on a paid plan.
+
+So, I went with the static build-time approach. Static images are now version-controlled in the repository. At build time, Astro optimizes them for different screen sizes and formats.
+
+## Caching Build Artifacts
+
+The next problem was the build times in CI. Image optimization isn't cheap! If we're not careful, it's easy to end up with a workflow that takes 10+ minutes to complete — and much of that time would be spent on image optimization.[^4]
+
+[^4]: In my own CI runs, that's the difference between a 2m20s cold build and an 8s warm build.
+
+Previously, I would've reached for SvelteKit's [`enhanced-img`](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) plugin to optimize my static images for different sizes and formats. Astro has the same functionality built-in with first-class support for caching build artifacts across CI runs via the [`cacheDir`](https://docs.astro.build/en/reference/configuration-reference/#cachedir) configuration. That turns out to be a lifesaver across repeat builds!
+
+```yaml
+# In GitHub Actions, the step configuration looks something like...
+- name: Restore Astro Build Cache
+  uses: actions/cache@v5
+  with:
+    path: node_modules/.astro # very cool!
+    key: ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+    restore-keys: |
+      ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml') }}-
+```
+
+---
+
+- Semantic limitations of `canonical_url` (retroactively updating the metadata)
+    - Turns out Forem supports `canonical_url` in the article metadata and Markdown body
+- Redownloading images
+- View transitions
