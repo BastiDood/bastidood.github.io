@@ -15,8 +15,8 @@ interface Props {
 	canonical?: URL;
 	openGraphImage?: URL;
 	openGraphType?: 'website' | 'article';
-	publishedAt?: string;
-	updatedAt?: string;
+	publishedAt?: Date;
+	updatedAt?: Date;
 	tags?: string[];
 }
 
@@ -68,10 +68,10 @@ const {
 		<meta property="og:image" content={openGraphImage} />
 		<meta name="twitter:card" content="summary_large_image" />
 		{typeof publishedAt === 'undefined' ? null : (
-			<meta property="article:published_time" content={publishedAt} />
+			<meta property="article:published_time" content={publishedAt.toISOString()} />
 		)}
 		{typeof updatedAt === 'undefined' ? null : (
-			<meta property="article:modified_time" content={updatedAt} />
+			<meta property="article:modified_time" content={updatedAt.toISOString()} />
 		)}
 		{tags.map(tag => (
 			<meta property="article:tag" content={tag} />

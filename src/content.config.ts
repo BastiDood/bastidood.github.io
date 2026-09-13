@@ -26,13 +26,10 @@ const articles = defineCollection({
 		z.object({
 			title: z.string(),
 			description: z.string(),
-			createdAt: z.iso.datetime({ precision: 0 }),
-			publishedAt: z.iso.datetime({ precision: 0 }),
-			featuredAt: z.iso
-				.datetime({ precision: 0 })
-				.transform(value => parseISO(value))
-				.optional(),
-			updatedAt: z.iso.datetime({ precision: 0 }).optional(),
+			createdAt: z.date(),
+			publishedAt: z.date(),
+			featuredAt: z.date().optional(),
+			updatedAt: z.date().optional(),
 			cover: z
 				.object({
 					src: image(),

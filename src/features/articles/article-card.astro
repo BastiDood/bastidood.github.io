@@ -27,7 +27,7 @@ const { id, data } = Astro.props;
 			</h2>
 			<p class="line-clamp-4 text-gray-700">{data.description}</p>
 			<p class="text-sm text-gray-600">
-				Published <LocalTime date={new Date(data.publishedAt)} />
+				Published <LocalTime date={data.publishedAt} />
 			</p>
 		</div>
 	</a>

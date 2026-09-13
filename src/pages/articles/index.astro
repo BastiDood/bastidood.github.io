@@ -19,7 +19,7 @@ articles.sort((left, right) => {
 		if (featuredOrder !== 0) return featuredOrder;
 	}
 
-	return right.data.publishedAt.localeCompare(left.data.publishedAt);
+	return right.data.publishedAt.getTime() - left.data.publishedAt.getTime();
 });
 
 const { remaining, featured } = Object.groupBy(articles, article =>

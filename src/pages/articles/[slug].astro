@@ -38,8 +38,8 @@ if (series === null) {
 		'articles',
 		seriesArticle => seriesArticle.data.series?.id === series.id,
 	);
-	seriesArticles.sort((left, right) =>
-		right.data.publishedAt.localeCompare(left.data.publishedAt),
+	seriesArticles.sort(
+		(left, right) => right.data.publishedAt.getTime() - left.data.publishedAt.getTime(),
 	);
 }
 
@@ -108,11 +108,11 @@ const seriesArticleLink = tv({
 						</h1>
 						<p class="text-lg text-gray-700">{article.data.description}</p>
 						<p class="text-sm text-gray-600">
-							Published <LocalTime date={new Date(article.data.publishedAt)} />
+							Published <LocalTime date={article.data.publishedAt} />
 							{typeof article.data.updatedAt === 'undefined' ? null : (
 								<>
 									{' '}
-									| Updated <LocalTime date={new Date(article.data.updatedAt)} />
+									| Updated <LocalTime date={article.data.updatedAt} />
 								</>
 							)}
 						</p>

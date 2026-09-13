@@ -14,7 +14,7 @@ type Props = CollectionEntry<'series'>;
 const series = Astro.props;
 const { Content } = await render(series);
 const articles = await getCollection('articles', article => article.data.series?.id === series.id);
-articles.sort((left, right) => right.data.publishedAt.localeCompare(left.data.publishedAt));
+articles.sort((left, right) => right.data.publishedAt.getTime() - left.data.publishedAt.getTime());
 ---
 
 <BaseLayout

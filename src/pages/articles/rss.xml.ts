@@ -4,7 +4,9 @@ import rss from '@astrojs/rss';
 
 export async function GET(context: { site: URL }) {
 	const articles = await getCollection('articles');
-	articles.sort((left, right) => right.data.publishedAt.localeCompare(left.data.publishedAt));
+	articles.sort(
+		(left, right) => right.data.publishedAt.getTime() - left.data.publishedAt.getTime(),
+	);
 
 	return rss({
 		title: "Basti Ortiz's Articles",
@@ -14,7 +16,7 @@ export async function GET(context: { site: URL }) {
 		items: articles.map(article => ({
 			title: article.data.title,
 			description: article.data.description,
-			pubDate: new Date(article.data.publishedAt),
+			pubDate: article.data.publishedAt,
 			link: `/articles/${article.id}/`,
 			categories: article.data.tags,
 		})),
