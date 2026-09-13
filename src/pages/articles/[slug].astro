@@ -7,6 +7,7 @@ import Hero from '#components/hero.astro';
 import LocalTime from '#features/articles/local-time.astro';
 import PresetImage from '#features/articles/preset-image.astro';
 import { imagePresets } from '#features/articles/image-presets.ts';
+import type { OpenGraphImage } from '#layout/open-graph.ts';
 import { tv } from 'tailwind-variants';
 
 export async function getStaticPaths() {
@@ -45,10 +46,8 @@ if (series === null) {
 
 const canonical = new URL(`/articles/${article.id}/`, Astro.site);
 const openGraphPreset = imagePresets['open-graph'];
-let openGraphImage: URL | null;
-if (typeof article.data.cover === 'undefined') {
-	openGraphImage = null;
-} else {
+let openGraphImage: OpenGraphImage | undefined;
+if (typeof article.data.cover !== 'undefined') {
 	const openGraphAsset = await getImage({
 		src: article.data.cover.src,
 		width: openGraphPreset.width,
@@ -57,7 +56,13 @@ if (typeof article.data.cover === 'undefined') {
 		position: openGraphPreset.position,
 		format: 'png',
 	});
-	openGraphImage = new URL(openGraphAsset.src, Astro.site);
+	openGraphImage = {
+		url: new URL(openGraphAsset.src, Astro.site),
+		mimeType: 'image/png',
+		width: openGraphAsset.attributes.width,
+		height: openGraphAsset.attributes.height,
+		alt: article.data.cover.alt,
+	};
 }
 
 const seriesArticleLink = tv({
@@ -74,12 +79,12 @@ const seriesArticleLink = tv({
 	title={`${article.data.title} · Basti Ortiz`}
 	description={article.data.description}
 	canonical={canonical}
-	{...(openGraphImage === null ? {} : { openGraphImage })}
+	openGraphTitle={article.data.title}
+	openGraphImage={openGraphImage}
 	openGraphType="article"
+	author={new URL('/', Astro.site)}
 	publishedAt={article.data.publishedAt}
-	{...(typeof article.data.updatedAt === 'undefined'
-		? {}
-		: { updatedAt: article.data.updatedAt })}
+	updatedAt={article.data.updatedAt}
 	tags={article.data.tags}
 >
 	<article>

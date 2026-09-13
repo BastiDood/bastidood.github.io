@@ -10,7 +10,12 @@ import { Icon } from 'astro-icon/components';
 const milestones = await getMilestones();
 ---
 
-<BaseLayout>
+<BaseLayout
+	openGraphType="profile"
+	profileFirstName="Basti"
+	profileLastName="Ortiz"
+	profileUsername="BastiDood"
+>
 	<Hero class="h-[60dvh]">
 		<Card color="fade" size="md" class="m-6 p-6">
 			<div class="space-y-1">

@@ -6,26 +6,72 @@ import favicon from '#branding/profile.png';
 import './global.css';
 import Footer from './footer.astro';
 import Navbar from './navbar.astro';
+import type { OpenGraphImage } from './open-graph.ts';
 
-import defaultOpenGraphImage from './assets/open-graph.webp';
+import DEFAULT_OPEN_GRAPH_IMAGE from './assets/open-graph.webp';
 
-interface Props {
+interface SharedProps {
 	title?: string;
 	description?: string;
 	canonical?: URL;
-	openGraphImage?: URL;
-	openGraphType?: 'website' | 'article';
-	publishedAt?: Date;
-	updatedAt?: Date;
-	tags?: string[];
+	openGraphTitle?: string;
+	openGraphImage?: OpenGraphImage | undefined;
 }
+
+interface WebsiteProps extends SharedProps {
+	openGraphType?: 'website';
+	profileFirstName?: never;
+	profileLastName?: never;
+	profileUsername?: never;
+	author?: never;
+	publishedAt?: never;
+	updatedAt?: never;
+	tags?: never;
+}
+
+interface ArticleProps extends SharedProps {
+	openGraphType: 'article';
+	profileFirstName?: never;
+	profileLastName?: never;
+	profileUsername?: never;
+	author: URL;
+	publishedAt: Date;
+	updatedAt?: Date | undefined;
+	tags: string[];
+}
+
+interface ProfileProps extends SharedProps {
+	openGraphType: 'profile';
+	profileFirstName: string;
+	profileLastName: string;
+	profileUsername: string;
+	author?: never;
+	publishedAt?: never;
+	updatedAt?: never;
+	tags?: never;
+}
+
+type Props = WebsiteProps | ArticleProps | ProfileProps;
+
+const DEFAULT_OPEN_GRAPH_IMAGE_METADATA: OpenGraphImage = {
+	url: new URL(DEFAULT_OPEN_GRAPH_IMAGE.src, Astro.site),
+	mimeType: 'image/webp',
+	width: DEFAULT_OPEN_GRAPH_IMAGE.width,
+	height: DEFAULT_OPEN_GRAPH_IMAGE.height,
+	alt: 'Basti Ortiz, web developer, with Rust, TypeScript, JavaScript, Python, Deno, HTML, CSS, and Node.js logos',
+};
 
 const {
 	title = 'Basti Ortiz',
 	description = 'Web developer, open-source contributor, learner, writer, mentor, and leader.',
 	canonical = new URL(Astro.url.pathname, Astro.site),
-	openGraphImage = new URL(defaultOpenGraphImage.src, Astro.site),
+	openGraphTitle = title,
+	openGraphImage = DEFAULT_OPEN_GRAPH_IMAGE_METADATA,
 	openGraphType = 'website',
+	profileFirstName,
+	profileLastName,
+	profileUsername,
+	author,
 	publishedAt,
 	updatedAt,
 	tags = [],
@@ -33,7 +79,11 @@ const {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html
+	lang="en"
+	prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article# profile: https://ogp.me/ns/profile#"
+	class="scroll-smooth"
+>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -61,12 +111,27 @@ const {
 		/>
 		<title>{title}</title>
 		<meta property="og:site_name" content="Basti Ortiz" />
-		<meta property="og:title" content={title} />
+		<meta property="og:title" content={openGraphTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content={openGraphType} />
 		<meta property="og:url" content={canonical} />
-		<meta property="og:image" content={openGraphImage} />
+		<meta property="og:image" content={openGraphImage.url} />
+		<meta property="og:image:type" content={openGraphImage.mimeType} />
+		<meta property="og:image:width" content={openGraphImage.width.toString()} />
+		<meta property="og:image:height" content={openGraphImage.height.toString()} />
+		<meta property="og:image:alt" content={openGraphImage.alt} />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@BastiDood" />
+		<meta name="twitter:title" content={openGraphTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={openGraphImage.url} />
+		<meta name="twitter:image:alt" content={openGraphImage.alt} />
+		{typeof author === 'undefined' ? null : (
+			<>
+				<meta property="article:author" content={author} />
+				<meta name="twitter:creator" content="@BastiDood" />
+			</>
+		)}
 		{typeof publishedAt === 'undefined' ? null : (
 			<meta property="article:published_time" content={publishedAt.toISOString()} />
 		)}
@@ -76,6 +141,13 @@ const {
 		{tags.map(tag => (
 			<meta property="article:tag" content={tag} />
 		))}
+		{typeof profileFirstName === 'undefined' ? null : (
+			<>
+				<meta property="profile:first_name" content={profileFirstName} />
+				<meta property="profile:last_name" content={profileLastName} />
+				<meta property="profile:username" content={profileUsername} />
+			</>
+		)}
 		<ClientRouter />
 	</head>
 	<body>
