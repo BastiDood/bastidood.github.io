@@ -12,7 +12,7 @@ const milestones = await getMilestones();
 
 <BaseLayout>
 	<Hero class="h-[60dvh]">
-		<Card color="fade" size="md" class="m-6 space-y-2 p-6">
+		<Card color="fade" size="md" class="m-6 p-6">
 			<div class="space-y-1">
 				<h1>I'm Basti Ortiz.</h1>
 				<p>Web developer. Open-source contributor. Learner. Writer. Mentor. Leader.</p>
@@ -79,6 +79,9 @@ const milestones = await getMilestones();
 					class="text-4xl hover:no-underline"
 				>
 					📧
+				</a>
+				<a href="/rss.xml" aria-label="Milestones RSS feed">
+					<Icon name="simple-icons:rss" class="text-rss size-7" aria-hidden="true" />
 				</a>
 			</div>
 		</Card>

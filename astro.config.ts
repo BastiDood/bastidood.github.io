@@ -110,6 +110,7 @@ export default defineConfig({
 					'django',
 					'espressif',
 					'hyper',
+					'rss',
 					'tokio',
 				] as const,
 				'token-branded': ['arbitrum-one', 'ethereum', 'solana'] as const,
