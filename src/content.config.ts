@@ -98,7 +98,6 @@ const projects = defineCollection({
 					'hardhat',
 					'html',
 					'hugging-face',
-					'hyper',
 					'javascript',
 					'mongodb',
 					'nodejs',

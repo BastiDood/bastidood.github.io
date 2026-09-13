@@ -56,7 +56,6 @@ const goLogo = new IconTechnologyLogo('Go', 'devicon:go');
 const hardhatLogo = new IconTechnologyLogo('Hardhat', 'devicon:hardhat');
 const htmlLogo = new IconTechnologyLogo('HTML', 'devicon:html5');
 const huggingFaceLogo = new IconTechnologyLogo('Hugging Face', 'devicon:huggingface');
-const hyperLogo = new IconTechnologyLogo('Hyper', 'simple-icons:hyper', '#000000');
 const javaLogo = new IconTechnologyLogo('Java', 'devicon:java');
 const javascriptLogo = new IconTechnologyLogo('JavaScript', 'devicon:javascript');
 const mongodbLogo = new IconTechnologyLogo('MongoDB', 'devicon:mongodb');
@@ -74,7 +73,7 @@ const solidLogo = new IconTechnologyLogo('SolidJS', 'devicon:solidjs');
 const svelteLogo = new IconTechnologyLogo('Svelte', 'devicon:svelte');
 const tailwindLogo = new IconTechnologyLogo('Tailwind CSS', 'devicon:tailwindcss');
 const tokioLogo = new IconTechnologyLogo('Tokio', 'simple-icons:tokio', '#000000');
-const turborepoLogo = new IconTechnologyLogo('Turborepo', 'devicon:turbo');
+const turborepoLogo = new IconTechnologyLogo('Turborepo', 'simple-icons:turborepo', '#ff1e56');
 const typescriptLogo = new IconTechnologyLogo('TypeScript', 'devicon:typescript');
 const viteLogo = new IconTechnologyLogo('Vite', 'devicon:vitejs');
 
@@ -99,7 +98,6 @@ export const proficiencyGroups = [
 		solidLogo,
 		tailwindLogo,
 		tokioLogo,
-		hyperLogo,
 		espressifLogo,
 		nextJsLogo,
 		expressLogo,
@@ -147,7 +145,6 @@ export const projectTechnologyLogos = {
 	hardhat: hardhatLogo,
 	html: htmlLogo,
 	'hugging-face': huggingFaceLogo,
-	hyper: hyperLogo,
 	javascript: javascriptLogo,
 	mongodb: mongodbLogo,
 	nodejs: nodeJsLogo,
