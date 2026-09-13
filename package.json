@@ -14,8 +14,8 @@
 		"preview": "astro preview",
 		"fmt": "prettier . --experimental-cli --cache-location .prettiercache --check",
 		"fmt:fix": "prettier . --experimental-cli --cache-location .prettiercache --write",
-		"lint": "eslint --cache --concurrency auto \"**/*.{js,mjs,ts,mts,astro,css}\"",
-		"lint:fix": "eslint --cache --concurrency auto --fix \"**/*.{js,mjs,ts,mts,astro,css}\""
+		"lint": "eslint --cache --concurrency auto",
+		"lint:fix": "eslint --cache --concurrency auto --fix"
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.10",
