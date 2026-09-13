@@ -63,7 +63,7 @@
 	h4,
 	h5,
 	h6 {
-		@apply font-bold;
+		@apply font-bold text-balance;
 	}
 
 	h1 {
@@ -91,11 +91,11 @@
 	}
 
 	html {
-		@apply bg-white text-balance text-gray-900;
+		@apply bg-white text-gray-900;
 	}
 
 	body {
-		@apply m-0 min-h-screen font-sans;
+		@apply m-0 min-h-screen font-sans text-pretty;
 	}
 
 	:focus-visible {
