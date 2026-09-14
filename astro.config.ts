@@ -111,6 +111,7 @@ export default defineConfig({
 					'rss',
 					'tokio',
 					'turborepo',
+					'youtube',
 				] as const,
 				'token-branded': ['arbitrum-one', 'ethereum', 'solana'] as const,
 			},
