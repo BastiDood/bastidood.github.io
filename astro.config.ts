@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -123,7 +125,20 @@ export default defineConfig({
 		sitemap(),
 	],
 	vite: {
-		plugins: [tailwindcss()],
+		plugins: [
+			tailwindcss(),
+			{
+				name: 'service-worker',
+				apply: 'build',
+				buildStart() {
+					this.emitFile({
+						type: 'chunk',
+						id: fileURLToPath(new URL('src/service-worker.ts', import.meta.url)),
+						fileName: 'service-worker.js',
+					});
+				},
+			},
+		],
 		build: { assetsInlineLimit: 0 },
 	},
 });
