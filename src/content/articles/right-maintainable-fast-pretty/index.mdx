@@ -1,0 +1,130 @@
+---
+title: 'Make it right, maintainable, fast, and pretty (in that order)'
+description: 'Make it right, make it maintainable, make it fast, and make it pretty in that exact order. These have been the mastras that I repeat to myself to hold myself accountable for the software that I ship to users.'
+createdAt: 2026-09-15T13:48:25Z
+featuredAt: 2026-09-15T13:48:25Z
+publishedAt: 2026-09-20T07:35:04Z
+cover:
+    src: './cover.png'
+    alt: 'Make it right. Make it maintainable. Make it fast. Make it pretty. (In that order.)'
+tags: ['ai', 'llm', 'productivity', 'tooling']
+---
+
+I don't consider myself a vibe coder. I like reading the code. More specifically, I _want_ to architect a feature, debate about its merits, iterate on its implementation, and finally review the code at a high level. I have two main reasons why I still work like this:
+
+- It's in my best long-term interests to stay in touch with the mechanics of the codebase: the architecture, the module structure, and the code style — not because I think my work is particularly mission-critical, but because my thesis is that the more I do this, the more I can inject exemplar prior art for coding agents. Because LLMs thrive in statistically unsurprising patterns, coding agents can better excel at shipping maintainable code if given consistent prior art. (That's less work for me in the long run!)
+- I'm generally unconvinced that today's LLMs are capable of producing code that is up to my standards in software engineering. For instance, the GPT-5 and GPT-6 family of models _love_ to generate defensive programming slop, helper function slop, and unit test slop out of the box. [So much for "AGI", huh?](https://openai.com/index/gpt-6-astra/) Jokes aside: even with strict deterministic lints and [highly opinionated agent skills](https://github.com/BastiDood/skills), sloppy code always finds a way.
+
+In practice, I'm aggressively hands-on in a greenfield codebase and generally more hands-off for larger ones where the conventions are already well-established. Much like a child's early development, an early-stage codebase requires more attention to detail because wrong patterns compound with relentless coding agents now in the mix.
+
+> In a time when writing code is no longer the bottleneck, it is the software engineer's wisdom to say 'no' that makes a world of difference in the long-term maintainability of the codebase and (ultimately) the product.
+
+That is how I keep myself in the loop. I believe this is how we can continue to be _responsible_ and _accountable_ software engineers in the face of abundant code generation. True to Mitchell Hashimoto's philosophy, we must always be ready for the [Whiteboard Defense](https://twitter.com/mitchellh/status/2100249348345057389).
+
+## How I've Always Worked with Coding Agents
+
+Needless to say, I was never a fan of the absolutists in the "Don't-Read-Code" school of thought. Again, this is not because I think my work is particularly mission-critical, but because I strongly believe I owe it to my users to be responsible and accountable for what I ship to the software that they depend on every day.
+
+After a year and a half of working with coding agents, I found myself converging on an implementation philosophy that balances feature velocity with long-term maintainability. At least for the (non-prototype) projects that I care about, my work revolved around the following mantras:
+
+1. Make it right.
+1. Make it maintainable.
+1. Make it fast.
+1. Make it pretty.
+
+_Exclusively in that exact order._
+
+### Make It Right
+
+This first step is deceptively simple because it actually asks two things:
+
+- Did we build the thing right?
+- Did we build the right thing?
+
+The former is an engineer's primary concern while the latter is a product manager's concern. To be successful, the key is to dig deep into the [two wolves inside you](https://knowyourmeme.com/memes/inside-you-there-are-two-wolves). Engineering excellence must be complemented by empathy for the user.
+
+As luck may have it, both of these questions can be answered through quick iteration. That's always why the first step is to "make it right". With a prototype-first mindset, the goal is to get a feel for the engineering pitfalls, the UI/UX shortcomings, and the product implications. A scrappy prototype surfaces all of those concerns early. Even if only one of those is dubious, it's back to the drawing board until everything is ironed out.
+
+This is where coding agents come to the rescue. Iterate quickly on prototypes to validate an idea or a full feature. Generate UI variants in HTML files. Test if the end-to-end flow works as expected.[^1] Prove the concept. Or sometimes, _disprove_ assumptions along the way.
+
+[^1]: I absolutely love the [browser use](https://learn.chatgpt.com/docs/browser) and [computer use](https://learn.chatgpt.com/docs/computer-use) in [Codex](https://openai.com/codex/)!
+
+### Make It Maintainable
+
+Only after we make it right, it's time to make it maintainable. This is the part where I spend a lot of time because I'm a particularly ruthless reviewer, especially when the other side is just an LLM agent.
+
+- Did the changes make sense?
+- Did the LLM generate unnecessary defensive programming slop?
+- Did the LLM write low-value tests?
+- Did the feature exhibit poor interface/abstraction boundaries?
+- Did the implementation follow codebase conventions, prior art, and best practices?
+- Did the linter, the formatter, and the tests all pass?
+
+The reason why I don't cheap out on this step is because I've observed that coding agents are "stickier" to patterns when they have more prior art to draw from. This is a double-edged sword, though! In artificial intelligence, there's a common saying:
+
+> Garbage in, garbage out.
+
+If you keep introducing garbage in the codebase, then you'll keep getting garbage out of the coding agents as well. Prior art helps when it's good, but it's counterproductive when it's slop. And unfortunately for us, coding agents are predisposed to generate code than to proactively prune/deduplicate/question its own slop.
+
+Getting the codebase to a maintainable state early therefore has the compounding effect of making it easier to maintain and extend in the future. _Who would've thought, huh?_
+
+### Make It Fast
+
+Only after we make it maintainable, it's time to make it fast. This part is arguably the easiest of the four. At this point, the behavior is already correct and the interfaces are already well-designed. Any optimizations should be constrained by the correctness of the existing implementation. A self-correcting loop can easily patch up any regressions.
+
+As luck may have it again, coding agents thrive on verifiable feedback loops like test suites and benchmarks. These `/goal`-like objectives are where I'm more comfortable to just let the coding agent take the wheel as I can rest fairly assured that it operates within the confines of the testing harness.
+
+### Make It Pretty
+
+With all the critical implementation details in place, it's finally time to inject some human creativity/artistry into polishing the UI/UX. This is honestly the funnest part of the process. By now, it's often just playing and seeing what sticks based on vibes. (That's what makes it fun!)
+
+Of course, there _is_ an art to it because it also happens to require the _most_ empathy for the user in the tangible sense. A feature can be cool and all, but if it isn't presentable, usable, or discoverable, then all of that effort is frankly wasted. It's always a good idea to take a step back and into the user's shoes.
+
+## My "Smart-Commit" Workflow
+
+So, what do these mantras mean for my workflow?
+
+The way I like to work nowadays is to have an agent complete a scrappy end-to-end implementation of a feature to prove its feasibility and (deliberately) run into its pitfalls. Oftentimes, the coding agent actually gets this right on its first pass thanks to modern harness features like Computer Use. Indeed, _make it right_ first and foremost.
+
+But, as you would expect from an end-to-end implementation, the result is one **huge** staging area in Git that is pending _my_ review. With a mountain of code ahead of me, the sustainable solution is _not_ to eliminate code review outright, but to make it easier and more efficient!
+
+The first problem is that commits alone are not enough to tell the story of an implementation and how it relates to the prior planning session. I need logically grouped diffs, a sequential implementation narrative, and a record of backtracked design decisions in order to fully understand the journey of a feature.
+
+_But, that's not what `git diff` renders out of the box._ That's why I wrote my own ["smart-commit" skill](https://github.com/BastiDood/skills/tree/9dfab1713cb24ccb515563de166def3239e92f1a/plugins/workflows/skills/git-commit). Inspired by prior art in [Devin Review](https://docs.devin.ai/work-with-devin/devin-review), [CodeRabbit Change Stack](https://www.coderabbit.ai/blog/introducing-change-stack-the-first-ai-native-code-review-interface), and [Linear Diffs](https://linear.app/docs/diffs#guides), a smart-commit examines the monolithic staging area and incrementally stages disjoint [vertical slices](/articles/vertically-sliced-architectures/) of the work in topological order. Leaf slices are always staged first followed by the integration glue between them.
+
+Each round stages a narrow subset of the modified files for me to review. I get a walkthrough of what was accomplished in that slice, why it was necessary, how it fits into the overall plan/architecture, and what details have been deferred for the next rounds.
+
+What's great about this workflow is that I only have to focus on (or even just skim for) subtle correctness issues, testing gaps, architectural hazards, and code style nitpicks now that I've already seen (and interacted with) the working end-to-end demo earlier.
+
+This is arguably far simpler than worrying about end-to-end correctness all throughout the review, which previously would've demanded way more cognitive load at the back of my mind back in the olden days pre-AI. Now, I only have to worry about _making it maintainable_ during the review.
+
+On my end, the feedback that I can give to the coding agent is more contextual, precise, and targeted thanks to these narrow slices. Because the review is topologically incremental, any non-trivial refactor requests from me naturally cascade/propagate to later stages, which ultimately saves me from repeating that feedback in the future.
+
+This process continues until all files have been reviewed, corrected, and committed. By the end, I would have a cohesive mental model of the implementation, which is exactly what I would need to pass Mitchell Hashimoto's Whiteboard Defense.
+
+Followup work optionally continues from here to _make it fast_ and _make it pretty_, both of which undergo the same smart-commit review process. The main benefit now is that I can switch my review lens from **correctness mode** to **performance mode** or **style mode**.
+
+Again, the goal is to make reviews mentally easier. I'm not in the business of keeping myself fully out of the loop. [Don't be a meat proxy.](https://gruhn.me/blog/2026-08-03/)
+
+## Nothing New Here
+
+I'll admit that there isn't anything particularly new here. In a similar vein, test-driven development had always taught us to "make it right" first before refactoring and optimizing.
+
+But, the general pattern that's worth pointing out here is that a lot of old software engineering principles are suddenly trendy again now that the volume of work that we can do is now bottle-necked by human review and attention. We're rediscovering from first principles _why_ best practices in software engineering exist and _how_ they were established to scale team productivity.
+
+- We've always known pre-AI that linters and formatters were a great idea.
+- We've always known that investing in reliable testing infrastructure were a great idea.
+- We've always known that isolating developer environments leads to more scalable and more reproducible environments.
+- We've always known that poor abstractions, abstruse indirections, and incoherent interfaces were unmaintainable in the long run.
+- We've always known that visible incremental work (e.g., [stacked diffs](https://graphite.com/guides/stacked-diffs)) keeps everyone in the loop without overwhelming the reviewer.
+- We've always known... `[insert-trendy-hot-take-here]`.
+
+With software engineering fundamentals being reshaped by each new LLM release, I am always reminded of what my university professor used to tell me in a tongue-in-cheek manner:
+
+> The best practice is the practice that works.
+
+And this is the practice that works for me. I hope it does for you, too.
+
+---
+
+_(If not, I wish it at least inspires and invites you to ask yourself how you can make your own workflows easier.)_
