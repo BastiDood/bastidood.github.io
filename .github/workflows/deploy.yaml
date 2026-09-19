@@ -30,7 +30,7 @@ jobs:
         with:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-          node-version: 24
+          node-version: 26
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Generate Astro Types
