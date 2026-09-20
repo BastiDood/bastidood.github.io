@@ -8,43 +8,9 @@ import { defineConfig, envField } from 'astro/config';
 import { defineHastPlugin } from 'satteri';
 import { satteri } from '@astrojs/markdown-satteri';
 
-const site = new URL('https://bastidood.dev');
-
-const lazyImages = defineHastPlugin({
-	name: 'lazy-images',
-	element: {
-		filter: ['img'],
-		visit(node, context) {
-			context.setProperty(node, 'loading', 'lazy');
-			context.setProperty(node, 'decoding', 'async');
-		},
-	},
-});
-
-const externalLinks = defineHastPlugin({
-	name: 'external-links',
-	element: {
-		filter: ['a'],
-		visit(node, context) {
-			if (typeof node.properties.href !== 'undefined') {
-				const target = new URL(node.properties.href, site);
-				switch (target.protocol) {
-					case 'http:':
-					case 'https:':
-						if (target.origin === site.origin) return;
-						context.setProperty(node, 'target', '_blank');
-						context.setProperty(node, 'rel', 'noopener noreferrer');
-						break;
-					default:
-						break;
-				}
-			}
-		},
-	},
-});
-
+const SITE = new URL('https://bastidood.dev');
 export default defineConfig({
-	site: site.href,
+	site: SITE.href,
 	output: 'static',
 	trailingSlash: 'always',
 	compressHTML: true,
@@ -119,7 +85,60 @@ export default defineConfig({
 			},
 		}),
 		mdx({
-			processor: satteri({ hastPlugins: [lazyImages, externalLinks] }),
+			processor: satteri({
+				hastPlugins: [
+					defineHastPlugin({
+						name: 'lazy-images',
+						element: {
+							filter: ['img'],
+							/** Sets Markdown images to be lazy-loaded by default. */
+							visit(node, context) {
+								context.setProperty(node, 'loading', 'lazy');
+								context.setProperty(node, 'decoding', 'async');
+							},
+						},
+					}),
+					defineHastPlugin({
+						name: 'external-links',
+						element: {
+							filter: ['a'],
+							/** Sets external Markdown links to open in a new tab by default. */
+							visit(node, context) {
+								if (typeof node.properties.href !== 'undefined') {
+									const target = new URL(node.properties.href, SITE);
+									switch (target.protocol) {
+										case 'http:':
+										case 'https:':
+											if (target.origin === SITE.origin) return;
+											context.setProperty(node, 'target', '_blank');
+											context.setProperty(node, 'rel', 'noopener noreferrer');
+											break;
+										default:
+											break;
+									}
+								}
+							},
+						},
+					}),
+					defineHastPlugin({
+						name: 'footnotes-separator',
+						element: {
+							filter: ['section'],
+							/** Inserts a horizontal rule before footnotes sections. */
+							visit(node, context) {
+								if (node.properties.dataFootnotes === true) {
+									context.insertBefore(node, {
+										type: 'element',
+										tagName: 'hr',
+										properties: {},
+										children: [],
+									});
+								}
+							},
+						},
+					}),
+				],
+			}),
 			shikiConfig: { theme: 'one-dark-pro' },
 		}),
 		sitemap(),
