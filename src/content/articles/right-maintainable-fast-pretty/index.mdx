@@ -2,6 +2,7 @@
 title: 'Make it right, maintainable, fast, and pretty (in that order)'
 description: 'Make it right, make it maintainable, make it fast, and make it pretty in that exact order. These have been the mastras that I repeat to myself to hold myself accountable for the software that I ship to users.'
 createdAt: 2026-09-15T13:48:25Z
+updatedAt: 2026-09-22T07:03:04Z
 featuredAt: 2026-09-15T13:48:25Z
 publishedAt: 2026-09-20T07:35:04Z
 cover:
@@ -85,6 +86,8 @@ Of course, there _is_ an art to it because it also happens to require the _most_
 So, what do these mantras mean for my workflow?
 
 The way I like to work nowadays is to have an agent complete a scrappy end-to-end implementation of a feature to prove its feasibility and (deliberately) run into its pitfalls. Oftentimes, the coding agent actually gets this right on its first pass thanks to modern harness features like Computer Use. Indeed, _make it right_ first and foremost.
+
+I've tried the opposite of this workflow, where I had the agent incrementally "implement in phases" (a la [Matt Pocock](https://www.aihero.dev/workshops/ai-coding-crash-course)). This never really worked for me because I typically ended up with a patchwork of seemingly unrelated changes to review that didn't work end-to-end until the final integration phase. I had to suspend disbelief and blindly trust that the agent was going in the right direction. In contrast, a fuller implementation out of the box made it easier to preview the end-to-end correctness.
 
 But, as you would expect from an end-to-end implementation, the result is one **huge** staging area in Git that is pending _my_ review. With a mountain of code ahead of me, the sustainable solution is _not_ to eliminate code review outright, but to make it easier and more efficient!
 
