@@ -19,6 +19,15 @@
 	--font-mono: 'Fira Code', monospace;
 }
 
+.prose :where(code):not(:where(pre code, [class~='not-prose'], [class~='not-prose'] *)) {
+	@apply rounded-[3px] border border-slate-300 bg-slate-100 px-[0.125em] py-0 font-mono font-normal;
+}
+
+.prose :where(code):not(:where(pre code, [class~='not-prose'], [class~='not-prose'] *))::before,
+.prose :where(code):not(:where(pre code, [class~='not-prose'], [class~='not-prose'] *))::after {
+	content: none;
+}
+
 @layer base {
 	@font-face {
 		font-family: 'Fira Code';
