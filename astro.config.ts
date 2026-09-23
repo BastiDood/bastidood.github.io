@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
+import satteriCallouts from 'satteri-callouts';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
@@ -87,6 +88,7 @@ export default defineConfig({
 		mdx({
 			processor: satteri({
 				hastPlugins: [
+					satteriCallouts({ theme: 'docusaurus' }),
 					defineHastPlugin({
 						name: 'lazy-images',
 						element: {
