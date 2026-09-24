@@ -2,6 +2,7 @@
 title: 'The Lock Trick: How to Write Portable Agent Skills with Reproducible External Dependencies'
 description: "I've been writing a lot of agent skills at my day job. Unfortunately, as soon as the skill scripts need anything beyond the standard library, portability across harnesses gets a lot harder than it sounds. In this article, I'll share how to write portable agent skills with reproducible external dependencies with the Lock Trick."
 createdAt: 2026-09-20T15:32:57Z
+updatedAt: 2026-09-24T17:00:03Z
 featuredAt: 2026-09-20T15:32:57Z
 publishedAt: 2026-09-24T09:33:09Z
 cover:
@@ -25,7 +26,7 @@ That's why my job (as a software engineer) is to wrangle these skills and delega
 
 [^1]: For obvious reasons, I can't disclose internal data and benchmarks, but I think we can all intuit that substituting chatty agentic loops (powered by expensive + high-latency token inference) with fast deterministic scripts can lead to more reliable and cost-effective agent skills.
 
-However, this approach comes with a significant drawback: packaged scripts typically don't have access to powerful external packages such as `pydantic` and `beautifulsoup4`. For maximum portability across harnesses (e.g., Claude Code, Claude Cowork, Codex, ChatGPT Work, etc.), usage must be restricted to the standard library.
+However, this approach comes with a significant drawback: packaged scripts typically don't have access to powerful external packages such as `pydantic`, `pandas`, and `beautifulsoup4`. For maximum portability across harnesses (e.g., Claude Code, Claude Cowork, Codex, ChatGPT Work, etc.), usage must be restricted to the standard library.
 
 > [!INFO]
 > It's worth clarifying here what I mean by "portable".
@@ -109,7 +110,7 @@ So, problem solved? Not yet!
 We've solved the convenience rubric, but this approach has a major security flaw. The `dependencies` field in the metadata only declare semver-compatible ranges for direct dependencies. Future invocations of `uv run` (likely in a different sandbox session) can end up installing newer semver-compatible versions, which may break the skill script without warning. In the worst-case scenario, this is a **supply chain attack** waiting to happen!
 
 > [!WARNING]
-> We _can_ instead define an exact semver specifier for `pydantic`, but that doesn't _lock_ the versions of its transitive dependencies. Nothing stops `uv` from installing newer versions of semver-compatible transitive dependencies during the next `uv run` in a different sandbox session.
+> We _can_ instead define an exact semver specifier for `pydantic==2.13.5`, but that doesn't _lock_ the versions of its transitive dependencies. Nothing stops `uv` from installing newer versions of semver-compatible transitive dependencies during the next `uv run` in a different sandbox session.
 
 ### The Lock Trick
 
