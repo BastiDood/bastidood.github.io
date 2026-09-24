@@ -1,3 +1,5 @@
+autoDedupe: true
+
 allowBuilds:
   '@tailwindcss/oxide': true
   core-js: false
@@ -9,6 +11,8 @@ catalogPrune: true
 engineStrict: true
 
 minimumReleaseAgeStrict: true
+
+saveTypes: true
 
 trustPolicy: no-downgrade
 
