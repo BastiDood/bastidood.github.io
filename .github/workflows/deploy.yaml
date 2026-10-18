@@ -33,8 +33,6 @@ jobs:
           node-version: 26
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
-      - name: Generate Astro Types
-        run: pnpm sync
       - name: Restore Astro Build Cache
         uses: actions/cache@v5
         with:
@@ -42,17 +40,21 @@ jobs:
           key: ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-astro-${{ hashFiles('pnpm-lock.yaml') }}-
-      - name: Check Formatting
-        run: pnpm fmt
-      - name: Lint Source
-        run: pnpm lint
-      - name: Check Astro
-        run: pnpm check
-      - name: Build Website
-        run: pnpm build
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v6
+      - name: Generate Astro Types
+        run: pnpm sync
+      - parallel:
+          - name: Check Formatting
+            run: pnpm fmt
+          - name: Lint Source
+            run: pnpm lint
+          - name: Check Astro
+            run: pnpm check --noSync
+      - parallel:
+          - name: Build Website
+            run: pnpm build
+          - name: Setup Pages
+            id: pages
+            uses: actions/configure-pages@v6
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v5
         with:
