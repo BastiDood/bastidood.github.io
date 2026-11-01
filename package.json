@@ -62,6 +62,6 @@
 		"mrmime": "^2.0.1",
 		"posthog-js": "^1.444.0",
 		"satteri-callouts": "^1.0.1",
-		"tailwind-variants": "^3.3.1"
+		"tailwind-variants": "^4.0.1"
 	}
 }
