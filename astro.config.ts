@@ -86,7 +86,6 @@ export default defineConfig({
 		mdx({
 			processor: satteri({
 				hastPlugins: [
-					/* eslint-disable unicorn/max-nested-calls -- Keep the Markdown plugins with their processor configuration. */
 					satteriCallouts({ theme: 'docusaurus' }),
 					defineHastPlugin({
 						name: 'lazy-images',
@@ -141,7 +140,6 @@ export default defineConfig({
 							},
 						},
 					}),
-					/* eslint-enable unicorn/max-nested-calls */
 				],
 			}),
 			shikiConfig: { theme: 'one-dark-pro' },

@@ -1,9 +1,7 @@
 autoDedupe: true
 
 allowBuilds:
-  '@tailwindcss/oxide': true
   core-js: false
-  sharp: true
 
 catalogPrune: true
 
