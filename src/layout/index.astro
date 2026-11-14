@@ -4,11 +4,10 @@ import { ClientRouter } from 'astro:transitions';
 import favicon from '#branding/profile.png';
 
 import './global.css';
+import DEFAULT_OPEN_GRAPH_IMAGE from './assets/open-graph.webp';
 import Footer from './footer.astro';
 import Navbar from './navbar.astro';
 import type { OpenGraphImage } from './open-graph.ts';
-
-import DEFAULT_OPEN_GRAPH_IMAGE from './assets/open-graph.webp';
 
 interface SharedProps {
 	title?: string;

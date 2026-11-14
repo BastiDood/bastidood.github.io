@@ -1,11 +1,12 @@
 ---
-import BaseLayout from '#layout/index.astro';
+import { Icon } from 'astro-icon/components';
+
+import profile from '#branding/profile.svg';
 import Card from '#components/card.astro';
 import Hero from '#components/hero.astro';
-import MilestoneCard from '#features/milestones/milestone-card.astro';
-import profile from '#branding/profile.svg';
 import { getMilestones } from '#features/milestones/get-milestones.ts';
-import { Icon } from 'astro-icon/components';
+import MilestoneCard from '#features/milestones/milestone-card.astro';
+import BaseLayout from '#layout/index.astro';
 
 const milestones = await getMilestones();
 ---
@@ -98,7 +99,7 @@ const milestones = await getMilestones();
 					📧
 				</a>
 				<a href="/rss.xml" aria-label="Milestones RSS feed">
-					<Icon name="simple-icons:rss" class="text-rss size-7" aria-hidden="true" />
+					<Icon name="simple-icons:rss" class="size-7 text-rss" aria-hidden="true" />
 				</a>
 			</div>
 		</Card>

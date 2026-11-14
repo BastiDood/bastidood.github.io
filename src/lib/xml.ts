@@ -1,7 +1,5 @@
-import XMLBuilder from 'fast-xml-builder';
+import XmlBuilder from 'fast-xml-builder';
 
-const xmlBuilder = new XMLBuilder({ ignoreAttributes: false, suppressEmptyNode: true });
+const xmlBuilder = new XmlBuilder({ ignoreAttributes: false, suppressEmptyNode: true });
 
-export function buildXml<const Data>(data: Data) {
-	return xmlBuilder.build(data);
-}
+export const buildXml = xmlBuilder.build.bind(xmlBuilder);

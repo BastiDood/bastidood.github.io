@@ -1,14 +1,14 @@
 ---
-import { type CollectionEntry, getCollection, getEntry, render } from 'astro:content';
 import { getImage } from 'astro:assets';
+import { type CollectionEntry, getCollection, getEntry, render } from 'astro:content';
+import { tv } from 'tailwind-variants';
 
-import BaseLayout from '#layout/index.astro';
 import Hero from '#components/hero.astro';
+import { imagePresets } from '#features/articles/image-presets.ts';
 import LocalTime from '#features/articles/local-time.astro';
 import PresetImage from '#features/articles/preset-image.astro';
-import { imagePresets } from '#features/articles/image-presets.ts';
+import BaseLayout from '#layout/index.astro';
 import type { OpenGraphImage } from '#layout/open-graph.ts';
-import { tv } from 'tailwind-variants';
 
 export async function getStaticPaths() {
 	const articles = await getCollection('articles');
@@ -26,8 +26,9 @@ if (typeof seriesReference === 'undefined') {
 	series = null;
 } else {
 	const seriesEntry = await getEntry(seriesReference);
-	if (typeof seriesEntry === 'undefined')
+	if (typeof seriesEntry === 'undefined') {
 		throw new Error(`Article references a missing series: ${seriesReference.id}`);
+	}
 	series = seriesEntry;
 }
 
@@ -89,7 +90,7 @@ const seriesArticleLink = tv({
 >
 	<article>
 		<Hero>
-			<div class="bg-card m-4 w-full max-w-4xl overflow-hidden rounded-xl shadow-sm sm:m-12 md:m-16">
+			<div class="m-4 w-full max-w-4xl overflow-hidden rounded-xl bg-card shadow-sm sm:m-12 md:m-16">
 				{typeof article.data.cover === 'undefined' ? null : (
 					<div
 						transition:name={`article-cover-${article.id}`}
@@ -131,7 +132,7 @@ const seriesArticleLink = tv({
 			</div>
 		</Hero>
 		<div class="mx-auto max-w-4xl p-6 sm:p-10">
-			<div class="prose prose-lg prose-a:text-sky-600 prose-a:hover:underline prose-headings:scroll-mt-20 mx-auto max-w-prose">
+			<div class="mx-auto prose prose-lg max-w-prose prose-headings:scroll-mt-20 prose-a:text-sky-600 prose-a:hover:underline">
 				<Content />
 			</div>
 		</div>

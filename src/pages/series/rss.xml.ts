@@ -2,19 +2,19 @@ import { getCollection } from 'astro:content';
 
 import { buildRssFeed, FEED_AUTHOR } from '#features/rss/build-rss-feed.ts';
 
-export async function GET(context: { site: URL }) {
+export async function GET({ site }: { site: URL }) {
 	const series = await getCollection('series');
-	series.sort((left, right) => left.data.title.localeCompare(right.data.title));
+	series.sort(({ data: left }, { data: right }) => left.title.localeCompare(right.title));
 
-	return buildRssFeed({
+	return await buildRssFeed({
 		title: "Basti Ortiz's Article Series",
 		description: 'Collections of related articles by Basti Ortiz.',
-		site: context.site,
+		site,
 		pagePath: '/series/',
 		feedPath: '/series/rss.xml',
-		items: series.map(entry => ({
-			title: entry.data.title,
-			link: `/series/${entry.id}/`,
+		items: series.map(({ id, data: { title } }) => ({
+			title,
+			link: `/series/${id}/`,
 			author: FEED_AUTHOR,
 		})),
 	});

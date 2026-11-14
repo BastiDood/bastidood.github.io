@@ -1,81 +1,117 @@
+import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 
 import anchor from '#features/portfolio/technologies/assets/anchor.png';
-import type { ImageMetadata } from 'astro';
 
 type ProjectTechnologyId = CollectionEntry<'projects'>['data']['technologies'][number];
 
-class IconTechnologyLogo {
-	public readonly kind = 'icon';
+interface IconTechnologyLogoOptions {
+	label: string;
+	icon: string;
+	color?: string;
+}
 
-	public constructor(
-		public readonly label: string,
-		public readonly icon: string,
-		public readonly color?: string,
-	) {}
+class IconTechnologyLogo {
+	readonly kind = 'icon';
+	readonly label: string;
+	readonly icon: string;
+	readonly color: string | undefined;
+
+	constructor({ label, icon, color }: IconTechnologyLogoOptions) {
+		this.label = label;
+		this.icon = icon;
+		this.color = color;
+	}
 }
 
 class ImageTechnologyLogo {
-	public readonly kind = 'image';
+	readonly kind = 'image';
+	readonly label: string;
+	readonly source: ImageMetadata;
 
-	public constructor(
-		public readonly label: string,
-		public readonly source: ImageMetadata,
-	) {}
+	constructor(label: string, source: ImageMetadata) {
+		this.label = label;
+		this.source = source;
+	}
 }
 
 export type TechnologyLogo = IconTechnologyLogo | ImageTechnologyLogo;
 
 class TechnologyLogoGroup<Title extends string> {
-	public constructor(
-		public readonly title: Title,
-		public readonly logos: readonly TechnologyLogo[],
-	) {}
+	readonly title: Title;
+	readonly logos: readonly TechnologyLogo[];
+
+	constructor(title: Title, logos: readonly TechnologyLogo[]) {
+		this.title = title;
+		this.logos = logos;
+	}
 }
 
 const anchorLogo = new ImageTechnologyLogo('Anchor', anchor);
-const androidLogo = new IconTechnologyLogo('Android', 'devicon:android');
-const arbitrumLogo = new IconTechnologyLogo('Arbitrum', 'token-branded:arbitrum-one');
-const capacitorLogo = new IconTechnologyLogo('Capacitor', 'devicon:capacitor');
-const cLogo = new IconTechnologyLogo('C', 'devicon:c');
-const cmakeLogo = new IconTechnologyLogo('CMake', 'devicon:cmake');
-const cppLogo = new IconTechnologyLogo('C++', 'devicon:cplusplus');
-const cssLogo = new IconTechnologyLogo('CSS', 'devicon:css3');
-const denoLogo = new IconTechnologyLogo('Deno', 'devicon:denojs');
-const discordJsLogo = new IconTechnologyLogo('Discord.js', 'devicon:discordjs');
-const djangoLogo = new IconTechnologyLogo('Django', 'simple-icons:django', '#092e20');
-const dockerLogo = new IconTechnologyLogo('Docker', 'devicon:docker');
-const electronLogo = new IconTechnologyLogo('Electron', 'devicon:electron');
-const espressifLogo = new IconTechnologyLogo('Espressif', 'simple-icons:espressif', '#e7352c');
-const ethereumLogo = new IconTechnologyLogo('Ethereum', 'token-branded:ethereum');
-const expressLogo = new IconTechnologyLogo('Express', 'devicon:express');
-const fastApiLogo = new IconTechnologyLogo('FastAPI', 'devicon:fastapi');
-const flaskLogo = new IconTechnologyLogo('Flask', 'devicon:flask');
-const gitLogo = new IconTechnologyLogo('Git', 'devicon:git');
-const goLogo = new IconTechnologyLogo('Go', 'devicon:go');
-const hardhatLogo = new IconTechnologyLogo('Hardhat', 'devicon:hardhat');
-const htmlLogo = new IconTechnologyLogo('HTML', 'devicon:html5');
-const huggingFaceLogo = new IconTechnologyLogo('Hugging Face', 'devicon:huggingface');
-const javaLogo = new IconTechnologyLogo('Java', 'devicon:java');
-const javascriptLogo = new IconTechnologyLogo('JavaScript', 'devicon:javascript');
-const mongodbLogo = new IconTechnologyLogo('MongoDB', 'devicon:mongodb');
-const mysqlLogo = new IconTechnologyLogo('MySQL', 'devicon:mysql');
-const nextJsLogo = new IconTechnologyLogo('Next.js', 'devicon:nextjs');
-const nodeJsLogo = new IconTechnologyLogo('Node.js', 'devicon:nodejs');
-const phpLogo = new IconTechnologyLogo('PHP', 'devicon:php');
-const postgresqlLogo = new IconTechnologyLogo('PostgreSQL', 'devicon:postgresql');
-const pythonLogo = new IconTechnologyLogo('Python', 'devicon:python');
-const reactLogo = new IconTechnologyLogo('React', 'devicon:react');
-const rustLogo = new IconTechnologyLogo('Rust', 'devicon:rust');
-const solanaLogo = new IconTechnologyLogo('Solana', 'token-branded:solana');
-const solidityLogo = new IconTechnologyLogo('Solidity', 'devicon:solidity');
-const solidLogo = new IconTechnologyLogo('SolidJS', 'devicon:solidjs');
-const svelteLogo = new IconTechnologyLogo('Svelte', 'devicon:svelte');
-const tailwindLogo = new IconTechnologyLogo('Tailwind CSS', 'devicon:tailwindcss');
-const tokioLogo = new IconTechnologyLogo('Tokio', 'simple-icons:tokio', '#000000');
-const turborepoLogo = new IconTechnologyLogo('Turborepo', 'simple-icons:turborepo', '#ff1e56');
-const typescriptLogo = new IconTechnologyLogo('TypeScript', 'devicon:typescript');
-const viteLogo = new IconTechnologyLogo('Vite', 'devicon:vitejs');
+const androidLogo = new IconTechnologyLogo({ label: 'Android', icon: 'devicon:android' });
+const arbitrumLogo = new IconTechnologyLogo({
+	label: 'Arbitrum',
+	icon: 'token-branded:arbitrum-one',
+});
+const capacitorLogo = new IconTechnologyLogo({ label: 'Capacitor', icon: 'devicon:capacitor' });
+const cLogo = new IconTechnologyLogo({ label: 'C', icon: 'devicon:c' });
+const cmakeLogo = new IconTechnologyLogo({ label: 'CMake', icon: 'devicon:cmake' });
+const cppLogo = new IconTechnologyLogo({ label: 'C++', icon: 'devicon:cplusplus' });
+const cssLogo = new IconTechnologyLogo({ label: 'CSS', icon: 'devicon:css3' });
+const denoLogo = new IconTechnologyLogo({ label: 'Deno', icon: 'devicon:denojs' });
+const discordJsLogo = new IconTechnologyLogo({ label: 'Discord.js', icon: 'devicon:discordjs' });
+const djangoLogo = new IconTechnologyLogo({
+	label: 'Django',
+	icon: 'simple-icons:django',
+	color: '#092e20',
+});
+const dockerLogo = new IconTechnologyLogo({ label: 'Docker', icon: 'devicon:docker' });
+const electronLogo = new IconTechnologyLogo({ label: 'Electron', icon: 'devicon:electron' });
+const espressifLogo = new IconTechnologyLogo({
+	label: 'Espressif',
+	icon: 'simple-icons:espressif',
+	color: '#e7352c',
+});
+const ethereumLogo = new IconTechnologyLogo({ label: 'Ethereum', icon: 'token-branded:ethereum' });
+const expressLogo = new IconTechnologyLogo({ label: 'Express', icon: 'devicon:express' });
+const fastApiLogo = new IconTechnologyLogo({ label: 'FastAPI', icon: 'devicon:fastapi' });
+const flaskLogo = new IconTechnologyLogo({ label: 'Flask', icon: 'devicon:flask' });
+const gitLogo = new IconTechnologyLogo({ label: 'Git', icon: 'devicon:git' });
+const goLogo = new IconTechnologyLogo({ label: 'Go', icon: 'devicon:go' });
+const hardhatLogo = new IconTechnologyLogo({ label: 'Hardhat', icon: 'devicon:hardhat' });
+const htmlLogo = new IconTechnologyLogo({ label: 'HTML', icon: 'devicon:html5' });
+const huggingFaceLogo = new IconTechnologyLogo({
+	label: 'Hugging Face',
+	icon: 'devicon:huggingface',
+});
+const javaLogo = new IconTechnologyLogo({ label: 'Java', icon: 'devicon:java' });
+const javascriptLogo = new IconTechnologyLogo({ label: 'JavaScript', icon: 'devicon:javascript' });
+const mongodbLogo = new IconTechnologyLogo({ label: 'MongoDB', icon: 'devicon:mongodb' });
+const mysqlLogo = new IconTechnologyLogo({ label: 'MySQL', icon: 'devicon:mysql' });
+const nextJsLogo = new IconTechnologyLogo({ label: 'Next.js', icon: 'devicon:nextjs' });
+const nodeJsLogo = new IconTechnologyLogo({ label: 'Node.js', icon: 'devicon:nodejs' });
+const phpLogo = new IconTechnologyLogo({ label: 'PHP', icon: 'devicon:php' });
+const postgresqlLogo = new IconTechnologyLogo({ label: 'PostgreSQL', icon: 'devicon:postgresql' });
+const pythonLogo = new IconTechnologyLogo({ label: 'Python', icon: 'devicon:python' });
+const reactLogo = new IconTechnologyLogo({ label: 'React', icon: 'devicon:react' });
+const rustLogo = new IconTechnologyLogo({ label: 'Rust', icon: 'devicon:rust' });
+const solanaLogo = new IconTechnologyLogo({ label: 'Solana', icon: 'token-branded:solana' });
+const solidityLogo = new IconTechnologyLogo({ label: 'Solidity', icon: 'devicon:solidity' });
+const solidLogo = new IconTechnologyLogo({ label: 'SolidJS', icon: 'devicon:solidjs' });
+const svelteLogo = new IconTechnologyLogo({ label: 'Svelte', icon: 'devicon:svelte' });
+const tailwindLogo = new IconTechnologyLogo({ label: 'Tailwind CSS', icon: 'devicon:tailwindcss' });
+const tokioLogo = new IconTechnologyLogo({
+	label: 'Tokio',
+	icon: 'simple-icons:tokio',
+	color: '#000000',
+});
+const turborepoLogo = new IconTechnologyLogo({
+	label: 'Turborepo',
+	icon: 'simple-icons:turborepo',
+	color: '#ff1e56',
+});
+const typescriptLogo = new IconTechnologyLogo({ label: 'TypeScript', icon: 'devicon:typescript' });
+const viteLogo = new IconTechnologyLogo({ label: 'Vite', icon: 'devicon:vitejs' });
 
 export const proficiencyGroups = [
 	new TechnologyLogoGroup('Languages', [

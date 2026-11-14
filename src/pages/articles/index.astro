@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 
-import ArticleCard from '#features/articles/article-card.astro';
-import BaseLayout from '#layout/index.astro';
 import Card from '#components/card.astro';
 import Hero from '#components/hero.astro';
 import RssLinkButton from '#components/rss-link-button.astro';
+import ArticleCard from '#features/articles/article-card.astro';
+import BaseLayout from '#layout/index.astro';
 
 const articles = await getCollection('articles');
 articles.sort((left, right) => {
@@ -33,7 +33,7 @@ const { remaining, featured } = Object.groupBy(articles, article =>
 	description="Articles by Basti Ortiz about software engineering, programming languages, and building dependable systems."
 >
 	<Hero>
-		<Card size="md" class="prose m-4 sm:m-12 md:m-16">
+		<Card size="md" class="m-4 prose sm:m-12 md:m-16">
 			<p>
 				I write about software architecture, programming languages, performance,
 				asynchronous JavaScript, web development, security, developer experience, open

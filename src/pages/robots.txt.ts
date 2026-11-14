@@ -5,10 +5,10 @@ export const GET = (({ site }) => {
 		throw new Error('Set site in `astro.config.ts` to generate `robots.txt`.');
 	}
 
-	const sitemap = new URL('/sitemap-index.xml', site);
+	const { href: sitemap } = new URL('/sitemap-index.xml', site);
 	return new Response(`User-agent: *
 Allow: /
 
-Sitemap: ${sitemap.href}
+Sitemap: ${sitemap}
 `);
 }) satisfies APIRoute;

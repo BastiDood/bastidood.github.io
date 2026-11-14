@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 
-import TechnologyLogo from './internal/logo.astro';
 import { projectTechnologyLogos } from './internal/catalog.ts';
+import TechnologyLogo from './internal/logo.astro';
 
 interface Props {
 	technologies: CollectionEntry<'projects'>['data']['technologies'];

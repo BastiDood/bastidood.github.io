@@ -1,6 +1,7 @@
-import { buildXml } from '#lib/xml.ts';
 import type { ImageMetadata } from 'astro';
 import { lookup } from 'mrmime';
+
+import { buildXml } from '#lib/xml.ts';
 
 interface FeedImage {
 	alt: string;

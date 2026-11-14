@@ -1,8 +1,7 @@
-import { defineCollection, reference } from 'astro:content';
-
 import { glob } from 'astro/loaders';
-import { parseISO } from 'date-fns';
 import { z } from 'astro/zod';
+import { defineCollection, reference } from 'astro:content';
+import { parseISO } from 'date-fns';
 
 const yearMonthSchema = z
 	.string()

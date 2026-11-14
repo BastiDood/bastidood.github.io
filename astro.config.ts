@@ -1,18 +1,17 @@
 import { fileURLToPath } from 'node:url';
 
-import icon from 'astro-icon';
+import { satteri } from '@astrojs/markdown-satteri';
 import mdx from '@astrojs/mdx';
-import satteriCallouts from 'satteri-callouts';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import icon from 'astro-icon';
 import { defineConfig, envField } from 'astro/config';
 import { defineHastPlugin } from 'satteri';
-import { satteri } from '@astrojs/markdown-satteri';
+import satteriCallouts from 'satteri-callouts';
 
 const SITE = new URL('https://bastidood.dev');
 export default defineConfig({
 	site: SITE.href,
-	output: 'static',
 	trailingSlash: 'always',
 	compressHTML: true,
 	env: {
@@ -26,7 +25,6 @@ export default defineConfig({
 	},
 	prefetch: {
 		prefetchAll: true,
-		defaultStrategy: 'hover',
 	},
 	integrations: [
 		icon({
@@ -88,6 +86,7 @@ export default defineConfig({
 		mdx({
 			processor: satteri({
 				hastPlugins: [
+					/* eslint-disable unicorn/max-nested-calls -- Keep the Markdown plugins with their processor configuration. */
 					satteriCallouts({ theme: 'docusaurus' }),
 					defineHastPlugin({
 						name: 'lazy-images',
@@ -107,11 +106,14 @@ export default defineConfig({
 							/** Sets external Markdown links to open in a new tab by default. */
 							visit(node, context) {
 								if (typeof node.properties.href !== 'undefined') {
-									const target = new URL(node.properties.href, SITE);
-									switch (target.protocol) {
+									const { protocol, origin } = new URL(
+										node.properties.href,
+										SITE,
+									);
+									switch (protocol) {
 										case 'http:':
 										case 'https:':
-											if (target.origin === SITE.origin) return;
+											if (origin === SITE.origin) return;
 											context.setProperty(node, 'target', '_blank');
 											context.setProperty(node, 'rel', 'noopener noreferrer');
 											break;
@@ -139,6 +141,7 @@ export default defineConfig({
 							},
 						},
 					}),
+					/* eslint-enable unicorn/max-nested-calls */
 				],
 			}),
 			shikiConfig: { theme: 'one-dark-pro' },

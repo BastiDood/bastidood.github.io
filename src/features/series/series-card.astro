@@ -10,7 +10,7 @@ const { articleCount, series } = Astro.props;
 const { Content } = await render(series);
 ---
 
-<article class="bg-card rounded-lg p-6 shadow-md transition-transform hover:-translate-y-1">
+<article class="rounded-lg bg-card p-6 shadow-md transition-transform hover:-translate-y-1">
 	<h2>
 		<a href={`/series/${series.id}/`}>{series.data.title}</a>
 	</h2>

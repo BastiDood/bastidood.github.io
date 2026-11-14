@@ -8,21 +8,14 @@ interface ImagePresetDefinitionOptions {
 }
 
 export class ImagePresetDefinition {
-	public readonly width: number;
-	public readonly height: number;
-	public readonly fit: 'cover';
-	public readonly position: 'center';
-	public readonly widths: number[];
-	public readonly sizes: string;
+	readonly width: number;
+	readonly height: number;
+	readonly fit: 'cover';
+	readonly position: 'center';
+	readonly widths: number[];
+	readonly sizes: string;
 
-	public constructor({
-		width,
-		height,
-		fit,
-		position,
-		widths,
-		sizes,
-	}: ImagePresetDefinitionOptions) {
+	constructor({ width, height, fit, position, widths, sizes }: ImagePresetDefinitionOptions) {
 		this.width = width;
 		this.height = height;
 		this.fit = fit;
